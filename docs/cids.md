@@ -1,0 +1,136 @@
+---
+title: "CIDs"
+slug: "cids"
+excerpt: "Content Identifiers"
+hidden: false
+metadata: 
+  image: []
+  robots: "index"
+createdAt: "Mon Aug 07 2023 12:54:36 GMT+0000 (Coordinated Universal Time)"
+updatedAt: "Wed Sep 13 2023 15:55:22 GMT+0000 (Coordinated Universal Time)"
+---
+Content Identifiers (CIDs) are one of the most important parts of IPFS. Whenever you share a file through IPFS, that file or folder gets assigned a CID that looks like this:
+
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/48a1f2c-Doc_Snippets_4.png",
+        "",
+        ""
+      ],
+      "align": "center"
+    }
+  ]
+}
+[/block]
+
+
+What's happening behind the scenes: IPFS is breaking the file into blocks and running it through a cryptographic hash. It's like a math equation, where if you had `x + 2 = y`, and then you pass in `x = 2`, then `y = 4`. No matter how many times you run it, you will have the same answer if you keep passing in `x = 2`. In the same way,  IPFS creates CIDs for files that are reproducible. If you share a file of `Pinnie.png` you will get the same CID every time. It is through this CID that content is fetched across the IPFS network, which each piece pointing to a blocks on different nodes, altogether building a cohesive piece of content. 
+
+> 📘 The CID is determined by the content of the file or folder
+
+Files can be retrieved either with a local IPFS node using a URL like `ipfs://{CID}` or if you don't have an IPFS node, you can use an [IPFS Gateway](doc:ipfs-gateways) like `https://gateway.pinata.cloud/ipfs/{CID}`. This simple concept of CIDs give them several super powers. 
+
+### Verifiability
+
+The CID's uniqueness and dependence on the content it represents make the data inherently verifiable. Suppose a creator shares an image of a digital artwork on the IPFS network: if someone tries to replace the original image with a different one, the CID for the new image will be different. This guarantees that the content cannot be tampered with, reinforcing trust within the network.
+
+### Portability and Addressability
+
+CIDs also facilitate data portability. Because a CID represents the content itself rather than its location, you can move your data across various nodes within the IPFS network without losing access to it. This content-addressed system breaks away from the traditional location-based addressing used in systems like HTTP, leading to a more robust and reliable data sharing network.
+
+### Ownership and Persistence
+
+The CID's capabilities don't stop at verification and portability. They also empower users to take ownership of data they care about. By 'pinning' a CID to a pinning service or their own node, users can ensure the longevity of data, even if the original data owner stops hosting it. This is particularly valuable in the context of non-fungible tokens (NFTs). For instance, if you purchase an NFT, you can pin the CID of the token's metadata and image to a pinning service or a node you control, securing its existence indefinitely. This practice truly underlines the principle of digital ownership.
+
+### Community Preservation
+
+In addition to ownership and persistence, communities can preserve digital content through the practice of pinning much like how traditional art is preserved in museums. CIDs provide an opportunity for groups to maintain access to valuable data, ensuring its longevity.
+
+## V0 & V1
+
+There are two different types of CIDs you might see while using IPFS. The first is V0, which looks something like this:
+
+`QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng`
+
+This was the first kind of IPFS CID that was used for several years, however over time a new version was developed called the V1. This version was more flexible and future proof, and looks something like this:
+
+`bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4`
+
+Both of these CIDs are the same content, a wonderful picture of Pinnie, however the cryptographic algorithm they were put through was different. Pinata has used the V0 for several years but now uses V1 for the previously mentioned reasons.
+
+## How Do I Reference CIDs?
+
+When it comes to providing an IPFS link, there are a few options to choose from. 
+
+### IPFS Protocol URL
+
+An IPFS protocol URL looks like this:
+
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/3af3f09-Doc_Snippets_5.png",
+        "",
+        ""
+      ],
+      "align": "center"
+    }
+  ]
+}
+[/block]
+
+
+If you copy and paste that into your browser, you may not get anything back. That is because in order to use this one, you have to have a local IPFS node running to participate in the network. Even when you do, it will likely be very very slow since IPFS is still a growing network. 
+
+Why use it? Well for a couple of reasons. If you are building on a blockchain that already uses IPFS a lot, like Ethereum or another L2 chain, lots of marketplaces and apps are used to seeing this format. When they see it, they use tools to convert the url into a gateway url so it can display the content on a website. This can be a good thing or a bad thing. If the platform has a dedicated/private gateway, the speed will be very fast (much like our own dedicated gateways). However, if the platform uses a public gateway, the speeds will be very slow. In the end, the platform has control over how well your content is received. Additionally, using the standard IPFS url might help future proof your assets, as public gateways might be stopped down the road (however the CID is still in the url in those cases, so if the platform knows what to do, they can still get the content if pinned).
+
+If you are on a different L1 chain, you may want to test it first.. There are some platforms on other blockchains that expect "https" instead and nothing will load if you use this. 
+
+### Public IPFS Gateway URL
+
+A public gateway URL looks something like this:
+
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/277d00c-Doc_Snippets_7.png",
+        "",
+        ""
+      ],
+      "align": "center"
+    }
+  ]
+}
+[/block]
+
+
+This will deliver the content in the browser without the need of a local IPFS node. However, since this gateway is a public gateway, your speed might vary due to the heavy traffic and congestion. Some platforms will see this kind of the url and switch it out with their own faster gateway choice, but not always. Generally you want to assume that if you take this path, the assets will be slow. 
+
+### Dedicated IPFS Gateway URL
+
+A [Dedicated Gateway](doc:dedicated-ipfs-gateways) URL looks something like this:
+
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/086ccab-Doc_Snippets_8.png",
+        "",
+        ""
+      ],
+      "align": "center"
+    }
+  ]
+}
+[/block]
+
+
+Dedicated Gateways are much much faster than any other method, and should ideally be used when trying to display content on your own platform. However, using them in NFTs should be done in caution. If you use a Dedicated Gateway in your NFT project metadata and image links, your speed will be great, however anytime another marketplace or rarity bot asks the blockchain for the IPFS data, your gateway will be hit. Since most Dedicated Gateways are paid services, this could greatly drive up your costs and usage. You'll get the best performance, control, and flexibility with this method, however you might have to pay more than the other methods.

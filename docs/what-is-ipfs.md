@@ -1,0 +1,119 @@
+---
+title: "What is IPFS?"
+slug: "what-is-ipfs"
+excerpt: ""
+hidden: false
+metadata: 
+  image: []
+  robots: "index"
+createdAt: "Tue Jul 18 2023 11:15:28 GMT+0000 (Coordinated Universal Time)"
+updatedAt: "Mon Sep 11 2023 05:49:54 GMT+0000 (Coordinated Universal Time)"
+---
+[IPFS](https://ipfs.io) (Inter-Planetary File System) is a peer-to-peer distributed file system that is used primarily for data that can't be stored on a blockchain. Unlike HTTP, a more standard file sharing protocol, IPFS has special properties that make it ideal for a decentralized data model that works in tandem with blockchains. Some of those abilities include:
+
+- **Distributed** - IPFS is made of multiple IPFS nodes, so not one entity can control what is shared on the network.
+- **Immutability** - Content that is shared on IPFS cannot be changed or altered.
+- **Addressability** - Content that is shared on IPFS uses unique addresses to locate content on the network. 
+- **Portability ** - Data that is pinned to IPFS can be re-pinned or transferred to other nodes, helping valued content persevere on the network.
+- **Garbage Collection ** -  The way IPFS handles data works in such a way that any content that is not pinned by a node will eventually fall off the network, keeping it clean from unwanted data and clutter.
+
+Due to these properties it is ideal for Web3 data storage such as NFTs, DeFi, and other decentralized infrastructures. 
+
+## How Does IPFS Work?
+
+The best way to understand IPFS is to see it as an alternative to HTTP. With HTTP server model the end user has a computer which makes a request to see content from a server, then that server sends back the requested content. This is a simple two way communication, and while there are more complex instances, the key is that the data is stored on the server and has ultimate control of that content. 
+
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/c835c68-homepage-new_fonts_1.png",
+        "",
+        ""
+      ],
+      "align": "center"
+    }
+  ]
+}
+[/block]
+
+
+IPFS on the other hand, is a network is made up of a multitude of different IPFS nodes which share data with each other. Whenever a node wants to share content on IPFS, it runs the content through a cryptographic hash and returns a [CID](doc:cids), or "Content Identifier." This CID serves as both the address and the verification that the content is what it says it is. After the CID has been created the IPFS node will "pin" that content to the network, essentially sharing it and saying it is worth keeping. 
+
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/52f02bc-homepage-new_fonts.png",
+        "",
+        ""
+      ],
+      "align": "center"
+    }
+  ]
+}
+[/block]
+
+
+As the CID is requested by other IPFS nodes, the content will pass through other nodes leaving a cache that can be used for faster retrieval the more it is requested. This cache will eventually get pretty big and can cause bloat, and this is where pinning really comes into play. The IPFS node will run a garbage collector from time to time which will clear the contents of the cache, except for any CIDs that are actively being pinned by another IPFS node. As long as one IPFS node is pinning that content, it will stay on the network. If the content is unpinned and there is no other node holding it, eventually the content will fade from the network. This creates a model that can persevere data but not to a point that will cause clutter and bloat. 
+
+## Why IPFS?
+
+Blockchains have an incredible ability to keep a long ledger of transactions and who sends or signs them, however blockchains are terrible at storing data. Since blockchains require gas fees to be paid anytime data is stored on the blockchain, larger forms of data can cause astronomical prices. As of 2023, storing 1GB of data on Ethereum would cost around $250,000,000! This caused a problem in particular for NFTs as they were first taking off. 
+
+NFTs, or really anything being used on the blockchain, will usually have a token element that is on chain that has a pointer to data off-chain (referred to as the token URI). This pointer is usually a link to a metadata file in the form of JSON, which has information like the name of the NFT, a description, and usually another link to an image that is also off-chain. Back in the earlier days of NFTs these pointers or token URIs were centralized servers, and that caused a problem. There was nothing stopping the owner of that server from changing the data to be something completely different. A link like `https://drive.google.com/nft/pinnie.png` could be dynamic; at any time the owner of that file could upload a picture of something else and name it `pinnie.png` and the link would still be the same. What was the point of buying a piece of art on the blockchain if it could change and be worthless? 
+
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/9405ef4-homepage-new_fonts_3.png",
+        "",
+        ""
+      ],
+      "align": "center"
+    }
+  ]
+}
+[/block]
+
+
+This is where IPFS steps in, along with it's special abilities of cryptography and distributed nature. Whenever a file is stored on IPFS, it gets a unique CID that is based on the content of the file. If the file is changed by a single pixel or character, then it will receive a completely different CID. It solves the problem of `pinnie.png` being replaced with something else since you couldn't simply just change the name. Due to the cryptographic nature of IPFS, anything shared on IPFS is immutable and cannot be changed. 
+
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/800a101-homepage-new_fonts_5.png",
+        "",
+        ""
+      ],
+      "align": "center"
+    }
+  ]
+}
+[/block]
+
+
+Since IPFS is decentralized in the way it stores the data, it also solved the potential crisis of something deleting the data or the server going offline. With IPFS pinning, multiple nodes can pin data to ensure that it stays online. A good metaphor for this is a fridge. If you wanted to put a picture on a fridge, you would likely use a magnet to put it up there. If you have two or three magnets on that picture, you could remove the original magnet and the picture would stay up. IPFS works in a similar way; anyone can take the CID for some content and pin it themselves to help preserve it. Content can persist as long as a single IPFS node is pinning it! 
+
+## What Does Pinata Do?
+
+Pinata is an IPFS Pinning Service that provides user with, you guessed it, IPFS services! These range from uploading files and pinning them to IPFS, to blazing fast [Dedicated Gateways](doc:how-to-i-use-my-gateway) which come in handy if you need to fetch content from IPFS. Our focus is to provide developers easy to use tools so they can add in IPFS to their Web3 architecture as simply as possible, and to make it reliable and trustworthy. If you're not sure where to start, check out our [Getting Started](doc:getting-started) page which will have you up and running with Pinata in no time! 🚀
+
+[block:embed]
+{
+  "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2F29k2C1JXyg4%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D29k2C1JXyg4&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2F29k2C1JXyg4%2Fhqdefault.jpg&key=7788cb384c9f4d5dbbdbeffd9fe4b92f&type=text%2Fhtml&schema=youtube\" width=\"854\" height=\"480\" scrolling=\"no\" title=\"YouTube embed\" frameborder=\"0\" allow=\"autoplay; fullscreen; encrypted-media; picture-in-picture;\" allowfullscreen=\"true\"></iframe>",
+  "url": "https://www.youtube.com/watch?v=29k2C1JXyg4",
+  "title": "Building Web3: Pinata",
+  "favicon": "https://www.google.com/favicon.ico",
+  "image": "https://i.ytimg.com/vi/29k2C1JXyg4/hqdefault.jpg",
+  "provider": "youtube.com",
+  "href": "https://www.youtube.com/watch?v=29k2C1JXyg4",
+  "typeOfEmbed": "youtube"
+}
+[/block]

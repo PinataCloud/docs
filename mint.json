@@ -7,12 +7,16 @@
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#6D57FF",
-    "light": "#582CD6",
-    "dark": "#6D57FF",
+    "primary": "#6D6FEB",
+    "light": "#5F61EA",
+    "dark": "#6D6FEB",
     "anchors": {
-      "from": "#582CD6",
-      "to": "#6D57FF"
+      "from": "#6D6FEB",
+      "to": "#6D6FEB"
+    },
+    "background": {
+      "light": "#FFFFFF",
+      "dark": "#16141F"
     }
   },
   "topbarLinks": [
@@ -29,6 +33,10 @@
     {
       "name": "API Reference",
       "url": "api-reference"
+    },
+    {
+      "name": "SDKs",
+      "url": "sdks"
     }
   ],
   "anchors": [
@@ -53,19 +61,7 @@
       "group": "Get Started",
       "pages": [
         "introduction",
-        "quickstart",
-        "development"
-      ]
-    },
-    {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "getting-started"
       ]
     },
     {
@@ -81,6 +77,16 @@
         "api-reference/endpoint/create",
         "api-reference/endpoint/delete",
         "api-reference/endpoint/pin-file-to-ipfs"
+      ]
+    },
+    {
+      "group": "Pinata SDKs",
+      "pages": [
+        "sdks/introduction",
+        "sdks/pinata-sdk",
+        "sdks/nextjs-starter",
+        "sdks/pinata-cli",
+        "sdks/pinata-raycast-extension"
       ]
     }
   ],

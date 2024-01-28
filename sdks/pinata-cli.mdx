@@ -1,0 +1,55 @@
+---
+title: "Pinata CLI"
+slug: "pinata-cli"
+excerpt: ""
+hidden: false
+metadata: 
+  image: []
+  robots: "index"
+createdAt: "Mon Aug 07 2023 13:11:54 GMT+0000 (Coordinated Universal Time)"
+updatedAt: "Mon Aug 14 2023 16:26:53 GMT+0000 (Coordinated Universal Time)"
+---
+## What is this?
+
+This is a simple command line tools designed to allow developers (and those familiar with the command line) to easily upload files and folders to their Pinata account. It is specifically built to help with large folder uploads. 
+
+## How to use this CLI
+
+<iframe
+  width="600"
+  height="400"
+  src="https://www.youtube.com/embed/YQMktd0llOo"
+  title="YouTube video player"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+  style={{ width: '100%', borderRadius: '0.5rem' }}
+></iframe>
+
+Make sure you are using a recent version of Node. We recommend `14.17.6` or above.
+
+First, you have to install it.
+
+`npm i -g pinata-upload-cli`
+
+Once it's installed, you will be able to check all the functionality by running: 
+
+`pinata-cli -h` 
+
+You can upload files and folders using this CLI, and you can upload them to the public IPFS network through Pinata.
+
+To upload to the public IPFS network, you'll need a [Pinata API Key JWT](). 
+
+## Usage
+
+Authenticate Public IPFS: 
+
+```
+pinata-cli -a [Pinata JWT]
+```
+
+Upload a folder or file to public IPFS: 
+
+```
+pinata-cli -u ../../../test/folder/relative/path
+```
