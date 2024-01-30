@@ -31,12 +31,12 @@
   },
   "tabs": [
     {
-      "name": "API Reference",
-      "url": "api-reference"
-    },
-    {
       "name": "SDKs",
       "url": "sdks"
+    },
+    {
+      "name": "API Reference",
+      "url": "api-reference"
     }
   ],
   "anchors": [
@@ -61,32 +61,86 @@
       "group": "Get Started",
       "pages": [
         "introduction",
-        "getting-started"
+        "quickstart",
+        {
+          "group": "Account Management",
+          "pages": [
+            "account-management/api-keys",
+            "account-management/workspaces",
+            "account-management/billing",
+            "account-management/limits"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "IPFS 101",
+      "pages": [
+        "ipfs-101/what-is-ipfs",
+        "ipfs-101/what-is-ipfs-pinning",
+        "ipfs-101/what-are-cids",
+        "ipfs-101/what-are-ipfs-gateways",
+        "ipfs-101/how-does-ipfs-work-with-nfts"
+      ]
+    },
+    {
+      "group": "Pinning",
+      "pages": [
+        "pinning/pinning-files",
+        "pinning/listing-files",
+        "pinning/pinata-metadata",
+        "pinning/deleting-files"
+      ]
+    },
+    {
+      "group": "Dedicated Gateways",
+      "pages": [
+        "gateways/dedicated-ipfs-gateways",
+        "gateways/gateway-access-controls",
+        "gateways/image-optimizations"
       ]
     },
     {
       "group": "API Documentation",
+      "pages": ["api-reference/introduction"]
+    },
+    {
+      "group": "Authentication",
+      "pages": ["api-reference/endpoint/test-authentication"]
+    },
+    {
+      "group": "Pinning",
       "pages": [
-        "api-reference/introduction"
+        "api-reference/endpoint/pin-file-to-ipfs",
+        "api-reference/endpoint/pin-json-to-ipfs",
+        "api-reference/endpoint/list-files",
+        "api-reference/endpoint/update-file-metadata",
+        "api-reference/endpoint/unpin-file"
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Pinning by CID",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete",
-        "api-reference/endpoint/pin-file-to-ipfs"
+        "api-reference/endpoint/pin-by-cid",
+        "api-reference/endpoint/list-pin-by-cid-jobs"
+      ]
+    },
+    {
+      "group": "Users",
+      "pages": [
+        "api-reference/endpoint/generate-pinata-api-key",
+        "api-reference/endpoint/list-api-keys",
+        "api-reference/endpoint/revoke-api-key"
       ]
     },
     {
       "group": "Pinata SDKs",
       "pages": [
-        "sdks/introduction",
         "sdks/pinata-sdk",
         "sdks/nextjs-starter",
         "sdks/pinata-cli",
-        "sdks/pinata-raycast-extension"
+        "sdks/pinata-raycast-extension",
+        "sdks/community-sdks"
       ]
     }
   ],

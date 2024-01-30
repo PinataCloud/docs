@@ -1,6 +1,6 @@
 ---
-title: "CIDs"
-slug: "cids"
+title: "What are CIDs?"
+slug: "what-are-cids"
 excerpt: "Content Identifiers"
 hidden: false
 metadata: 
@@ -11,27 +11,13 @@ updatedAt: "Wed Sep 13 2023 15:55:22 GMT+0000 (Coordinated Universal Time)"
 ---
 Content Identifiers (CIDs) are one of the most important parts of IPFS. Whenever you share a file through IPFS, that file or folder gets assigned a CID that looks like this:
 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/48a1f2c-Doc_Snippets_4.png",
-        "",
-        ""
-      ],
-      "align": "center"
-    }
-  ]
-}
-[/block]
-
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeifru5pzm3zksvprxkjtfg7xx5x24hzbltamugmwsuo7iutlmuejtu" />
 
 What's happening behind the scenes: IPFS is breaking the file into blocks and running it through a cryptographic hash. It's like a math equation, where if you had `x + 2 = y`, and then you pass in `x = 2`, then `y = 4`. No matter how many times you run it, you will have the same answer if you keep passing in `x = 2`. In the same way,  IPFS creates CIDs for files that are reproducible. If you share a file of `Pinnie.png` you will get the same CID every time. It is through this CID that content is fetched across the IPFS network, which each piece pointing to a blocks on different nodes, altogether building a cohesive piece of content. 
 
-> 📘 The CID is determined by the content of the file or folder
+<Info>The CID is determined by the content of the file or folder</Info>
 
-Files can be retrieved either with a local IPFS node using a URL like `ipfs://{CID}` or if you don't have an IPFS node, you can use an [IPFS Gateway](doc:ipfs-gateways) like `https://gateway.pinata.cloud/ipfs/{CID}`. This simple concept of CIDs give them several super powers. 
+Files can be retrieved either with a local IPFS node using a URL like `ipfs://{CID}` or if you don't have an IPFS node, you can use an [IPFS Gateway]() like `https://gateway.pinata.cloud/ipfs/{CID}`. This simple concept of CIDs give them several super powers. 
 
 ### Verifiability
 
@@ -69,21 +55,7 @@ When it comes to providing an IPFS link, there are a few options to choose from.
 
 An IPFS protocol URL looks like this:
 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/3af3f09-Doc_Snippets_5.png",
-        "",
-        ""
-      ],
-      "align": "center"
-    }
-  ]
-}
-[/block]
-
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeigooboyucupcfkiii6xc76nscv6rpo5v4vh4u5optsbbmddyx6or4" />
 
 If you copy and paste that into your browser, you may not get anything back. That is because in order to use this one, you have to have a local IPFS node running to participate in the network. Even when you do, it will likely be very very slow since IPFS is still a growing network. 
 
@@ -95,42 +67,14 @@ If you are on a different L1 chain, you may want to test it first.. There are so
 
 A public gateway URL looks something like this:
 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/277d00c-Doc_Snippets_7.png",
-        "",
-        ""
-      ],
-      "align": "center"
-    }
-  ]
-}
-[/block]
-
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeihrr4uz3wsr4dwx3n53uh7vkycsmak5b3ti2jciaozy6pyd3bsyhq" />
 
 This will deliver the content in the browser without the need of a local IPFS node. However, since this gateway is a public gateway, your speed might vary due to the heavy traffic and congestion. Some platforms will see this kind of the url and switch it out with their own faster gateway choice, but not always. Generally you want to assume that if you take this path, the assets will be slow. 
 
 ### Dedicated IPFS Gateway URL
 
-A [Dedicated Gateway](doc:dedicated-ipfs-gateways) URL looks something like this:
+A [Dedicated Gateway]() URL looks something like this:
 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/086ccab-Doc_Snippets_8.png",
-        "",
-        ""
-      ],
-      "align": "center"
-    }
-  ]
-}
-[/block]
-
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeifqqck34x7i2sbjwgcwtxrwvhtppqifu32ygj44d574rphqd6efge" />
 
 Dedicated Gateways are much much faster than any other method, and should ideally be used when trying to display content on your own platform. However, using them in NFTs should be done in caution. If you use a Dedicated Gateway in your NFT project metadata and image links, your speed will be great, however anytime another marketplace or rarity bot asks the blockchain for the IPFS data, your gateway will be hit. Since most Dedicated Gateways are paid services, this could greatly drive up your costs and usage. You'll get the best performance, control, and flexibility with this method, however you might have to pay more than the other methods.
