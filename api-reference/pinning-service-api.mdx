@@ -6,7 +6,7 @@ hidden: false
 createdAt: "Fri Nov 10 2023 15:02:42 GMT+0000 (Coordinated Universal Time)"
 updatedAt: "Tue Nov 21 2023 18:39:16 GMT+0000 (Coordinated Universal Time)"
 ---
-> 📘 Not to be confused with the Pinata API, the Pinning Service API allows you to create a link between your local IPFS node and Pinata
+<Info>Not to be confused with the Pinata API, the Pinning Service API allows you to create a link between your local IPFS node and Pinata</Info>
 
 ## IPFS Pinning Services API Spec Compatibility
 
@@ -16,7 +16,7 @@ The [IPFS Pinning Services API Spec](https://ipfs.github.io/pinning-services-api
 
 Pinata users looking to utilize the IPFS Pinning Services API can do so from our dedicated API endpoint:
 
-<https://api.pinata.cloud/psa>
+`https://api.pinata.cloud/psa`
 
 For an up-to-date list of available endpoints, as well as current documentation, please visit the [Official Endpoint Documentation](https://ipfs.github.io/pinning-services-api-spec/#tag/pins).
 
@@ -32,48 +32,22 @@ If you ever revoke the API key for this JWT, this JWT will no longer be valid fo
 
 If you are running the IPFS desktop app, you can configure your pinning service of choice within the user interface. To do so, open the app, go to your Preferences, then click Add Service: 
 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/56c2c96-Screenshot-IPFS_Desktop-11-21-2023-12-322x.png",
-        "",
-        ""
-      ],
-      "align": "center"
-    }
-  ]
-}
-[/block]
-
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeidvzrjgjigmagzlan77hzpqbxpdc3ixount6v4y3ojcbja3e2ol3a" />
 
 Select Pinata as the pinning service, and then configure with your secret access token (JWT): 
 
-[block:image]
-{
-  "images": [
-    {
-      "image": [
-        "https://files.readme.io/b01187d-Screenshot-IPFS_Desktop-11-21-2023-12-312x.png",
-        "",
-        ""
-      ],
-      "align": "center"
-    }
-  ]
-}
-[/block]
-
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://files.readme.io/b01187d-Screenshot-IPFS_Desktop-11-21-2023-12-312x.png" />
 
 From there you can upload files and have the option to pin locally as well as remotely to Pinata! 
 
-[block:html]
-{
-  "html": "<video muted autoplay style=\"width: 100%; height: auto; position: relative;\">\n    <source src=\"https://mktg/ipfs/QmYa6cX94JPoJuunjNfNjLhbs2FLm6LzmP9xPGCYef7e8p\" type=\"video/mp4\">\n</video>"
-}
-[/block]
-
+<video
+  autoplay
+  muted
+  loop
+  playsinline
+  className="w-full aspect-video"
+  src="https://mktg/ipfs/QmYa6cX94JPoJuunjNfNjLhbs2FLm6LzmP9xPGCYef7e8p"
+></video>
 
 ### Configuring Pinata in the IPFS CLI
 
