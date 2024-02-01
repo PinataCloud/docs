@@ -102,7 +102,7 @@
     },
     {
       "group": "API Documentation",
-      "pages": ["api-reference/introduction", "api-reference/pinning-service-api"]
+      "pages": ["api-reference/introduction"]
     },
     {
       "group": "Authentication",
@@ -122,7 +122,8 @@
       "group": "Pinning by CID",
       "pages": [
         "api-reference/endpoint/pin-by-cid",
-        "api-reference/endpoint/list-pin-by-cid-jobs"
+        "api-reference/endpoint/list-pin-by-cid-jobs",
+        "api-reference/pinning-service-api"
       ]
     },
     {
