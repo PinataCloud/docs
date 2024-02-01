@@ -15,7 +15,7 @@ Content Identifiers (CIDs) are one of the most important parts of IPFS. Whenever
 
 What's happening behind the scenes: IPFS is breaking the file into blocks and running it through a cryptographic hash. It's like a math equation, where if you had `x + 2 = y`, and then you pass in `x = 2`, then `y = 4`. No matter how many times you run it, you will have the same answer if you keep passing in `x = 2`. In the same way,  IPFS creates CIDs for files that are reproducible. If you share a file of `Pinnie.png` you will get the same CID every time. It is through this CID that content is fetched across the IPFS network, which each piece pointing to a blocks on different nodes, altogether building a cohesive piece of content. 
 
-<Info>The CID is determined by the content of the file or folder</Info>
+<Note>The CID is determined by the content of the file or folder</Note>
 
 Files can be retrieved either with a local IPFS node using a URL like `ipfs://{CID}` or if you don't have an IPFS node, you can use an [IPFS Gateway]() like `https://gateway.pinata.cloud/ipfs/{CID}`. This simple concept of CIDs give them several super powers. 
 
