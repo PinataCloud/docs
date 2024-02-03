@@ -9,3 +9,162 @@ createdAt: "Tue Jul 18 2023 11:23:21 GMT+0000 (Coordinated Universal Time)"
 updatedAt: "Tue Sep 12 2023 17:08:02 GMT+0000 (Coordinated Universal Time)"
 ---
 
+With Pinata there are a few ways you can pin files to IPFS
+
+## API & SDKs
+
+If you’re a developer that needs to build decentralized applications then you will likely want to use the **[Pinata API]()** or **[Pinata SDK]()**. These make it simple to upload files or raw JSON to IPFS!
+
+### Using the SDK
+
+The Pinata Node SDK is designed to work in a backend environment, so if you are trying to upload in a front end client please observe the API example.
+
+```javascript
+const fs = require('fs');
+const pinataSDK = require('@pinata/sdk');
+const pinata = new pinataSDK({ pinataJWTKey: 'yourPinataJWTKey'});
+
+const stream = fs.createReadStream('./yourfile.png');
+const res = await pinata.pinFileToIPFS(stream)`
+```
+
+The SDK is also equipped to handle folders as well as files, so you can pass a directory into the file path to upload it.
+
+```javascript
+const fs = require('fs');
+const pinataSDK = require('@pinata/sdk');
+const pinata = new pinataSDK({ pinataJWTKey: 'yourPinataJWTKey'});
+
+const stream = fs.createReadStream('./some-directory');
+const res = await pinata.pinFileToIPFS(stream)`
+```
+
+### Using the API
+
+The API is a bit more flexible as it can be used in multiple languages or environments, and is sometimes preferred for client side uploads. With that we should express warning in that client side applications will expose API keys.
+
+<Warning>Using your API Keys in a client side application will expose them!!</Warning>
+
+Here is an example of how you could upload with the API.
+
+```javascript
+const axios = require('axios')
+const FormData = require('form-data')
+const fs = require('fs')
+
+const pinFileToIPFS = async () => {
+    const formData = new FormData();
+    const src = "path/to/file.png";
+    
+    const file = fs.createReadStream(src)
+    formData.append('file', file)
+    
+    const pinataMetadata = JSON.stringify({
+      name: 'File name',
+    });
+    formData.append('pinataMetadata', pinataMetadata);
+    
+    const pinataOptions = JSON.stringify({
+      cidVersion: 0,
+    })
+    formData.append('pinataOptions', pinataOptions);
+
+    try{
+      const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+        maxBodyLength: "Infinity",
+        headers: {
+          'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+          Authorization: `Bearer YOUR_PINATA_JWT`
+        }
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+}
+```
+
+The API will expect a `File`, `Blob`, or a `readableStream` for any files uploaded. Here is an example of turning raw data into a `Blob` and then uploading it.
+
+```javascript
+async function pinFileToIPFS() {
+  try {
+    const text = "Hello World!";
+    const blob = new Blob([text], { type: "text/plain" });
+    const data = new FormData();
+    data.append("file", blob);
+    const req = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.PINATA_JWT}`,
+      },
+      body: data,
+    };
+
+    const res = await fetch(
+      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      req,
+    );
+    console.log(req, res);
+    const resData = await res.json();
+    console.log(resData);
+  } catch (error) {
+    console.log(error);
+  }
+};
+```
+
+
+
+We also have other tools like the **[Pinata CLI]()** or **[Next.js Starter]()** which can be used to upload using **[API Keys]()**.
+
+## Web App
+
+If you’re non-technical you can use **[Pinata App]()** to upload files, perfect if you just want to get started with NFTs and IPFS! It’s as simple as clicking the “Add Files” button in the top right corner of the **[files page]()**, selecting your file, give it a name, then upload. Once its complete you’ll see it listed in the files page.
+
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeieub2mj5ywdneuj44j5fkmty4i6twvu57qdnvsbrxofplqwld77vq" />
+
+Start uploading by **[signing up for a free account](https://app.pinata.cloud/register)**!
+
+## Pin by CID
+
+Another way you can upload content to Pinata is by transferring content that is already on IPFS. This could be CIDs that are on your own local IPFS node or another IPFS pinning service! You can do this with the “Add Files” button in the web app like so:
+
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeidjtt4zslkg74uc7tbyzjylrlqhyfksn5bn3iy6valhltxwt4hwgm" />
+
+Or you can pin by CID with our API using the **[Pin By CID]()** endpoint:
+
+```javascript
+const axios = require('axios');
+
+const data = JSON.stringify({
+  hashToPin: 'bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4'
+})
+
+const res = await axios.post('https://api.pinata.cloud/pinning/pinByHash', {
+	headers: {
+    accept: 'application/json', 
+    'content-type': 'application/json',
+    'Authorization': 'Bearer YOUR_JWT'
+  },
+  body: data
+})
+
+console.log(res.data)
+```
+
+This will result in a `request_id` and Pinata will start looking for the file. Progress can be checked by using the [list pinning jobs]() endpoint.
+
+```javascript
+const axios = require('axios');
+
+const res = await axios.get('https://api.pinata.cloud/pinning/pinJobs', {
+	headers: {
+    accept: 'application/json', 
+    'content-type': 'application/json',
+    'Authorization': 'Bearer YOUR_JWT'
+  },
+})
+
+console.log(res.data)
+```
