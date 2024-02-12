@@ -1,33 +1,34 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: 'Getting started with the Pinata API'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+Welcome to the Pinata API Reference! Before you can do anything in the API, you'll need some API Keys.
 
-## Welcome
+## API Keys
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+Visit the [Pinata API Keys](https://app.pinata.cloud/developers/api-keys) page to generate new keys.
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeics3mmzqr2qf27wczrf2r47qojlgfaiahbq277kilr4ykkdgoydqa" />
 
-## Authentication
+In the New Key modal you can choose if you want the key to be an Admin key and have full access over every endpoint, or scope the keys by selecting which endpoints you want to use. You can also give it a limited number of uses, and be sure to give it a name to keep track of it. Once you have that filled out click "Create Key" and it will show you the `pinata_api_key`, `pinata_api_secret_key`, and the `JWT`. It's best to click "Copy All" and keep the API key data safe and secure. 
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+<Warning>Once API keys have been created, you will not be able to see the secret or JWT again</Warning>
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+
+Once you have created your keys you can go ahead and try testing them! Try to paste this into your terminal with your `JWT`
+
+```curl cURL
+curl --request GET \
+     --url https://api.pinata.cloud/data/testAuthentication \
+     --header 'accept: application/json' \
+     --header 'authorization: Bearer YOUR_PINATA_JWT'
+```
+
+If successful you should see this! 
+
+```shell bash
+{  
+  "message": "Congratulations! You are communicating with the Pinata API!"  
+}
 ```
