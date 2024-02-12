@@ -1,5 +1,5 @@
 ---
-title: "Pinata Metadata"
+title: "Pinata Metadata & Options"
 slug: "pinata-metadata"
 excerpt: ""
 hidden: false
@@ -9,3 +9,40 @@ createdAt: "Tue Jul 18 2023 11:23:21 GMT+0000 (Coordinated Universal Time)"
 updatedAt: "Tue Sep 12 2023 17:08:02 GMT+0000 (Coordinated Universal Time)"
 ---
 
+For all operations that result in a file being uploaded or added to an account, there are optional pieces of data that can be included. 
+
+## `pinataMetadata`
+
+<Info>This is not to be confused with NFT metadata, as this metadata about files uploaded to Pinata is not on IPFS but a private database with Pinata</Info>
+
+In addition to pinning your file to Pinata, you also have the option to include metadata for Pinata to store internally for your to use later.
+
+This metadata can later be used for easy querying on what you've pinned with our [pinList]() request.
+
+The optional metadata object takes the following form:
+
+```json
+{
+    name: "A custom name. If you don't provide this value, it will automatically be populated by the original name of the file you've uploaded",
+    keyvalues: {
+        customKey: "customValue",
+        customKey2: "customValue2"
+    }
+}
+```
+
+## `pinataOptions`
+
+Pinata supports adding additional options when pinning a file. The following options are currently supported for this endpoint:
+
+- cidVersion - The CID Version IPFS will use when creating a hash for your content. Valid options are: "0" (CIDv0) or "1" (CIDv1)
+- wrapWithDirectory - Wrap your content inside of a directory when adding to IPFS. This allows users to retrieve content via a filename instead of just a hash. For a more detailed explanation, see [this informative blogpost](https://flyingzumwalt.gitbooks.io/decentralized-web-primer/content/files-on-ipfs/lessons/wrap-directories-around-content.html). Valid options are: true or false
+
+Here is an example of the object to create `pinataOptions`:
+
+```json
+pinataOptions: {
+    cidVersion: 0, 
+    wrapWithDirectory: false
+}
+```
