@@ -22,7 +22,7 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "mailto:team@pinata.cloud"
     }
   ],
   "topbarCtaButton": {
@@ -146,11 +146,8 @@
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
-  },
-  "integrations": {
-    "intercom": "km7gyxql"
+    "twitter": "https://twitter.com/pinatacloud",
+    "github": "https://github.com/PinataCloud",
+    "linkedin": "https://www.linkedin.com/company/pinatacloud"
   }
 }
