@@ -13,13 +13,13 @@ Pinata has been empowering the NFT space since 2018 and there's a good reason fo
 
 - **IPFS is Immutable** - Anything that is uploaded to IPFS cannot change, which helps preserve the value of an NFT.
 - **IPFS is Decentralized** - Instead of using a centralized server where one person can control the content, IPFS is distributed and makes sure anyone can pin the content and keep it persisted.
-- **IPFS is Portable** - Since the [CID]() for content will be constant, and IPFS pinning works in a decentralized manner, anyone can take a CID and pin it themselves. This allows content to be "transferred" and kept up on the network as people value it. (read more about that concept [here](https://medium.com/pinata/who-is-responsible-for-nft-data-99fb4e8147e4))
+- **IPFS is Portable** - Since the [CID](/ipfs-101/what-are-cids) for content will be constant, and IPFS pinning works in a decentralized manner, anyone can take a CID and pin it themselves. This allows content to be "transferred" and kept up on the network as people value it. (read more about that concept [here](https://medium.com/pinata/who-is-responsible-for-nft-data-99fb4e8147e4))
 
 One of the biggest reasons you want to use IPFS for NFTs is to prevent tampering or "rug pulls" where someone can just delete the data for an NFT and make it worthless. NFTs are tokens on the blockchain that have a "Token URI" which is simply a link pointing to data about that NFT off-chain, because putting data on-chain is far too expensive. If this link is a centralized server, like `https://server.com/pinnie.png`, then whoever has control of the server can simply upload totally different content and keep the same name, thus keeping the same link. Or they could just delete it and it would be empty! 
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeibcggc5ngxahj7k5pv3csn3owh27gejgfd5uv2sw5t6jyk262eide" />
 
-This is where IPFS becomes necessary. Since the address or link to the content on IPFS is the [CID](), which is based on the content itself and is immutable, you can't change it or alter it. In addition, the ability for multiple people to [pin]() content and help it persist on the network makes it harder for something to just be deleted.
+This is where IPFS becomes necessary. Since the address or link to the content on IPFS is the [CID](/ipfs-101/what-are-cids), which is based on the content itself and is immutable, you can't change it or alter it. In addition, the ability for multiple people to [pin](/ipfs-101/what-is-ipfs-pinning) content and help it persist on the network makes it harder for something to just be deleted.
 
 ## How to Make an NFT with Pinata
 
@@ -29,11 +29,11 @@ It's important to note that Pinata is currently not providing any minting servic
 
 The first thing you need to do is upload the content to Pinata. Since IPFS supports any kind of file, the truth is any kind of file can be an NFT. How that file is referenced in the metadata is a bit of a different story, so be sure to check [metadata standards](https://docs.opensea.io/docs/metadata-standards) to make sure you content will be seen on marketplaces or wallets. 
 
-To upload the content you can either do a simple upload through the Pinata App by navigating to the [files page]() and uploading through the UI like so:
+To upload the content you can either do a simple upload through the Pinata App by navigating to the [files page](https://app.pinata.cloud/pinmanager) and uploading through the UI like so:
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeieub2mj5ywdneuj44j5fkmty4i6twvu57qdnvsbrxofplqwld77vq" />
 
-Or you can upload through the [API]() using a script like this:
+Or you can upload through the [API](/quickstart/node-js) using a script like this:
 
 ```javascript pinFileToIPFS.js
 const axios = require('axios')
@@ -96,7 +96,7 @@ You'll notice that we are using the IPFS protocol URL for the image link. There 
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeigooboyucupcfkiii6xc76nscv6rpo5v4vh4u5optsbbmddyx6or4" />
 
-Once you have that file filled out you will want to save it as something like `metadata.json` (this might be different if you are making a large project using folders). Then you can upload the metadata file to Pinata using the app like before, or if you are using the API we have a [JSON endpoint]() you can use to simplify the process, like so:
+Once you have that file filled out you will want to save it as something like `metadata.json` (this might be different if you are making a large project using folders). Then you can upload the metadata file to Pinata using the app like before, or if you are using the API we have a [JSON endpoint](/api-reference/endpoint/pin-json-to-ipfs) you can use to simplify the process, like so:
 
 ```javascript pinJSONToIPFS
 const axios = require('axios')

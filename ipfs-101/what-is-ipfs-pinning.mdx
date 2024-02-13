@@ -9,7 +9,7 @@ metadata:
 createdAt: "Tue Jul 18 2023 11:17:23 GMT+0000 (Coordinated Universal Time)"
 updatedAt: "Tue Sep 12 2023 21:03:50 GMT+0000 (Coordinated Universal Time)"
 ---
-IPFS "Pinning" is the foundation to getting content on IPFS. When you upload a file to IPFS, the IPFS node will create a [CID]() for that file which will act as the identifier and the address. Then it will "pin" that file to the IPFS network, making it available for other nodes to request it. At that point any other IPFS node can request the content for a CID, and the content will pass through other nodes leaving a cache on that node. This makes it faster to fetch files again if those nodes are used. 
+IPFS "Pinning" is the foundation to getting content on IPFS. When you upload a file to IPFS, the IPFS node will create a [CID](/ipfs-101/what-are-cids) for that file which will act as the identifier and the address. Then it will "pin" that file to the IPFS network, making it available for other nodes to request it. At that point any other IPFS node can request the content for a CID, and the content will pass through other nodes leaving a cache on that node. This makes it faster to fetch files again if those nodes are used. 
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeicfeptvwjkwlbv2iye3m2oc5c44femjb4f2wpdn7bku4ylxqexli4" />
 
@@ -21,7 +21,7 @@ With Pinata there are a few ways you can pin files to IPFS
 
 ### API & SDKs
 
-If you're a developer that needs to build decentralized applications then you will likely want to use the [Pinata API]() or [Pinata SDK](). These make it simple to upload files or raw JSON to IPFS! 
+If you're a developer that needs to build decentralized applications then you will likely want to use the [Pinata API](/api-reference/introduction) or [Pinata SDK](/sdks/pinata-sdk). These make it simple to upload files or raw JSON to IPFS! 
 
 ```javascript pinFileToIPFS.js
 const fs = require('fs');
@@ -32,13 +32,13 @@ const stream = fs.createReadStream('./yourfile.png');
 const res = await pinata.pinFileToIPFS(stream)
 ```
 
-<Note>Check out the [Getting Started]() guide to upload your first file through the API!</Note>
+<Note>Check out the [Quickstart](/quickstart) guide to upload your first file through the API!</Note>
 
-We also have other tools like the [Pinata CLI]()  or [Next.js Starter]() which can be used to upload using [API Keys]().
+We also have other tools like the [Pinata CLI](/sdks/pinata-cli)  or [Next.js Starter](/sdks/nextjs-starter) which can be used to upload using [API Keys](/account-management/api-keys).
 
 ### Web App
 
-If you're non-technical you can use [Pinata App]() to upload files, perfect if you just want to get started with NFTs and IPFS! It's as simple as clicking the "Add Files" button in the top right corner of the [files page](), selecting your file, give it a name, then upload. Once its complete you'll see it listed in the files page! 
+If you're non-technical you can use [Pinata App](https://app.pinata.cloud/pinmanager) to upload files, perfect if you just want to get started with NFTs and IPFS! It's as simple as clicking the "Add Files" button in the top right corner of the files page, selecting your file, give it a name, then upload. Once its complete you'll see it listed in the files page! 
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeieub2mj5ywdneuj44j5fkmty4i6twvu57qdnvsbrxofplqwld77vq" />
 
@@ -50,7 +50,7 @@ Another way you can upload content to Pinata is by transferring content that is 
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeidjtt4zslkg74uc7tbyzjylrlqhyfksn5bn3iy6valhltxwt4hwgm" />
 
-Or you can pin by CID with our API using the [Pin By CID]() endpoint with a code snippet like this:
+Or you can pin by CID with our API using the [Pin By CID](/api-reference/pin-by-cid) endpoint with a code snippet like this:
 
 ```javascript pinByCID.js
 const axios = require('axios');
