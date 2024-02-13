@@ -11,7 +11,7 @@ updatedAt: "Tue Aug 22 2023 00:45:51 GMT+0000 (Coordinated Universal Time)"
 ---
 ## Overview
 
-The Pinata NodeJS SDK provides the quickest / easiest path for interacting with the [Pinata API]().
+The Pinata NodeJS SDK provides the quickest / easiest path for interacting with the [Pinata API](/api-reference/introduction).
 
 <iframe
   width="600"
@@ -32,7 +32,18 @@ npm install --save @pinata/sdk
 
 ## Setup
 
-To start, simply require the Pinata SDK and set up an instance with your Pinata API Keys or your JWT key. Don't know what your keys are? Check out your [Keys Page](https://app.pinata.cloud/developers/api-keys), or follow our guide on [Authentication]().  
+Pinata offers developer keys for various scenarios. The most common scenario is normal IPFS actions (pinning content, unpinning, listing content, etc). These actions happen through the core Pinata API, and are documented in the [Pinata API Reference](/api-reference/introduction).
+
+To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key. 
+
+<Note>If you are just getting started we recommend using Admin privileges, then move to scope keys as you better understand your needs</Note>
+
+<img style={{ borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeiagb7ld573mjoz54urwul5qpohrfrc6o6m6nrgrgqpd6enakg6qx4" />
+
+Once you have created the keys you will be shown your API Key Info. This will contain your **Api Key**, **API Secret**, and your **JWT**. Click "Copy All" and save them somewhere safe! 
+
+<Note>The API keys are only shown once, be sure to copy them somewhere safe!</Note>
+
 In the example below we provided with 3 ways to call the pinata SDK.
 
 ```javascript
@@ -69,7 +80,7 @@ Once you've set up your instance, using the Pinata SDK is easy. Simply call your
 ### `hashMetadata`
 
 Allows the user to change the name and keyvalues associated with content pinned to Pinata.  
-Changes made via this endpoint only affect the metadata for the hash passed in. [Metadata]() is specific to Pinata and does not modify the actual content stored on IPFS in any way. It is simply a convenient way of keeping track of what content you have stored.
+Changes made via this endpoint only affect the metadata for the hash passed in. [Metadata](/pinning/pinata-metadata) is specific to Pinata and does not modify the actual content stored on IPFS in any way. It is simply a convenient way of keeping track of what content you have stored.
 
 ##### `pinata.hashMetadata(ipfsPinHash, metadata)`
 
@@ -130,9 +141,9 @@ Adds a hash to Pinata's pin queue to be pinned asynchronously.
 
 - `hashToPin` - A string for a valid IPFS Hash (Also known as a CID)
 - `options` (optional): A JSON object that can contain following keyvalues:
-  - `pinataMetadata` (optional): A JSON object with [optional metadata]() for the hash being pinned
+  - `pinataMetadata` (optional): A JSON object with [optional metadata](/pinning/pinata-metadata) for the hash being pinned
   - `pinataOptions`
-    - `hostNodes` (optional): An array of [multiaddresses for nodes]() that are currently hosting the content to be pinned
+    - `hostNodes` (optional): An array of multiaddresses for nodes that are currently hosting the content to be pinned
 
 #### Response
 
@@ -177,8 +188,8 @@ Send a file to Pinata for direct pinning to IPFS.
 
 - `readableStream` - A [readableStream](https://nodejs.org/api/stream.html) of the file to be added 
 - `options` (optional): A JSON object that can contain the following keyvalues:
-  - `pinataMetadata` (optional): A JSON object with [metadata]() for the file being pinned
-  - `pinataOptions` (optional): A JSON object with additional [options]() for the file being pinned
+  - `pinataMetadata` (optional): A JSON object with [metadata](/pinning/pinata-metadata) for the file being pinned
+  - `pinataOptions` (optional): A JSON object with additional [options](pinning/pinata-metadata#pinataoptions) for the file being pinned
 
 #### Response
 
@@ -223,8 +234,8 @@ Both individual files, as well as directories can be read from.
 
 - `sourcePath` - The location on your local filesystem that should be read from. 
 - `options` (optional): A JSON object that can contain the following keyvalues:
-  - `pinataMetadata` (optional): A JSON object with [metadata]() for the file being pinned
-  - `pinataOptions` (optional): A JSON object with additional [options]() for the file being pinned
+  - `pinataMetadata` (optional): A JSON object with [metadata](/pinning/pinata-metadata) for the file being pinned
+  - `pinataOptions` (optional): A JSON object with additional [options](/pinning/pinata-metadata#pinataoptions) for the file being pinned
 
 #### Response
 
@@ -258,7 +269,7 @@ console.log(res)
 
 ### `pinJobs`
 
-This endpoint allows users to search for the status of all hashes that are currently in Pinata's pin queue. Records in the pin queue arrive there through the [pinByHash]() operation.
+This endpoint allows users to search for the status of all hashes that are currently in Pinata's pin queue. Records in the pin queue arrive there through the [pinByHash](/api-reference/endpoint/pin-by-cid) operation.
 
 ##### `pinata.pinJobs(filters)`
 
@@ -333,8 +344,8 @@ Send JSON to Pinata for direct pinning to IPFS.
 
 - `body` - Valid JSON you wish to pin to IPFS
 - `options` (optional): A JSON object that can contain the following keyvalues:
-  - `metadata` (optional): A JSON object with [metadata]() for the hash being pinned
-  - `pinataOptions` (optional): A JSON object with additional [options]() for the JSON being pinned
+  - `metadata` (optional): A JSON object with [metadata](/pinning/pinata-metadata) for the hash being pinned
+  - `pinataOptions` (optional): A JSON object with additional [options](/pinning/pinata-metadata#pinataoptions) for the JSON being pinned
 
 #### Response
 

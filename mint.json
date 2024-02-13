@@ -37,6 +37,10 @@
     {
       "name": "API Reference",
       "url": "api-reference"
+    },
+    {
+      "name": "Farcaster",
+      "url": "farcaster"
     }
   ],
   "anchors": [
@@ -150,11 +154,20 @@
         "sdks/pinata-raycast-extension",
         "sdks/community-sdks"
       ]
+    },
+    {
+      "group": "Get Started",
+      "pages": ["farcaster/introduction", "farcaster/hubs"]
     }
   ],
   "footerSocials": {
     "twitter": "https://twitter.com/pinatacloud",
     "github": "https://github.com/PinataCloud",
     "linkedin": "https://www.linkedin.com/company/pinatacloud"
-  }
+  },
+  "analytics": {
+    "ga4": {
+        "measurementId": "G-5RMPXG14TE"
+    }
+}
 }

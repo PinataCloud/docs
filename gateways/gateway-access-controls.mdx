@@ -11,7 +11,7 @@ updatedAt: "Wed Sep 20 2023 20:58:29 GMT+0000 (Coordinated Universal Time)"
 ---
 Pinata's Dedicated Gateways make it possible to fetch and serve IPFS content quickly and reliably, however there can be security risks in exposing your gateway to the world. That is why Pinata has created Gateway Access Controls. These controls will allow you to further limit your gateway,  making sure only your platform is using it. This is accomplished with **Access Tokens, IP Address Restrictions,** and **Host Origin Restrictions.**  
 
-To start, make sure you have a [Dedicated Gateway]() and then visit the [Access Controls page](https://app.pinata.cloud/developers/gateway-settings) .
+To start, make sure you have a [Dedicated Gateway](/gateways/dedicated-ipfs-gateways) and then visit the [Access Controls page](https://app.pinata.cloud/developers/gateway-settings) .
 
 By default, Dedicated Gateways are restricted with the lowest level restriction possible. They will only serve content that is pinned to your account. This restriction is helpful for creators and for those just getting started. But if you want to restrict access further, **or if you want to access IPFS content from the wider network that may not be pinned to your account, you'll need to add security restrictions.** 
 
@@ -25,7 +25,7 @@ To create an access token, click on the button that says "Request Token."
 
 When you create an access token you will have the ability to preview the token by clicking the "eye" icon, or copy the token to your clipboard with the "copy" icon. At any point you can delete an access token by clicking the three small dots on the right.
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs.bafkreiarziwumnza5k2bjk3miwn6srmqzrvniuvyq7th27ty5u5hmdnkbm" />
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafkreiarziwumnza5k2bjk3miwn6srmqzrvniuvyq7th27ty5u5hmdnkbm" />
 
 Once you have the token, there are two ways you can use it in the gateway request. 
 
@@ -71,6 +71,8 @@ After that you can add the domain you would like your gateway to be used from!
 
 Keep in mind that if you are rendering content on the client side using host origins, you will need to include a `crossorigin` tag in your `img`, `video`, `audio`, `link`, or `script` elements. Here is an example with an img element in React:
 
+<CodeGroup>
+
 ```javascript html
 <img 
  src="https://pinata-media.mypinata.cloud/ipfs/CID"
@@ -78,13 +80,15 @@ Keep in mind that if you are rendering content on the client side using host ori
  alt="pinnie" 
 />
 ```
-```Text React
+
+```javascript React
 <img 
  src="https://pinata-media.mypinata.cloud/ipfs/CID"
  crossOrigin='anonymous' 
  alt="pinnie" 
 />
 ```
+</CodeGroup>
 
 For more info on `crossorigin` please read this article [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin)!
 

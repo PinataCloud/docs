@@ -48,30 +48,30 @@ You can also pin to Pinata directly from the IPFS CLI using the `ipfs` command.
 
 To add Pinata credentials, use the following command (where YOUR\_JWT is the JWT token described in the “Authentication” section above):
 
-```
+```bash
 ipfs pin remote service add pinata https://api.pinata.cloud/psa YOUR_JWT
 ```
 
 To pin a CID to Pinata under a human-readable name:
 
-```
+```bash
 ipfs pin remote add --service=pinata --name=war-and-peace.txt bafybeib32tuqzs2wrc52rdt56cz73sqe3qu2deqdudssspnu4gbezmhig4
 ```
 
 To list successful pins:
 
-```
+```bash
 ipfs pin remote ls --service=pinata
 ```
 
 To list pending pins:
 
-```
+```bash
 ipfs pin remote ls --service=pinata --status=queued,pinning,failed
 ```
 
 For more commands and general help:
 
-```
+```bash
 ipfs pin remote --help
 ```
