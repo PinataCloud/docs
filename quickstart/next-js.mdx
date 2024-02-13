@@ -21,7 +21,7 @@ This guide will walk you through setting up Pinata in a Next.js app. If you don'
 ## Manual Setup
 
 ### Create an API Key and get Gateway URL
-    To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key. 
+To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key. 
 
   <Note>If you are just getting started we recommend using Admin privileges, then move to scope keys as you better understand your needs</Note>
 
@@ -43,7 +43,7 @@ This guide will walk you through setting up Pinata in a Next.js app. If you don'
 ### Start up Next.js Project
   As with any Next.js project we can start one up with the following command
 
-  ```
+  ```bash
   npx create-next-app@latest
   ```
 
@@ -59,7 +59,7 @@ NEXT_PUBLIC_GATEWAY_URL=
 ### Create Client Side Form
   Next we'll want to make an upload form on the client side that will allow someone to select a file and upload it.
 
-  In the `/app/page.tsx` file tak out the boiler plate code and use the following. 
+  In the `/app/page.tsx` file take out the boiler plate code and use the following. 
 
 ```typescript app/page.tsx
 "use client";
@@ -208,4 +208,5 @@ This will check to make sure the CID has been set, then pass it through our Dedi
 
 ## Next Steps
 
-Be sure to check out our [API Reference](/api-reference/introduction) to see what else you can do with the API like listing or deleting files, and check out [Gateway Access Controls](/gateways/gateway-access-controls) if you specifically need to fetch files outside your account that you have not uploaded yourself.
+If you will be working with images a lot then you may want to look at our built in [image optimizations](/gateways/image-optimizations) for resizing images on the fly. Be sure to check out our [API Reference](/api-reference/introduction) to see what else you can do with the API like listing or deleting files, and check out [Gateway Access Controls](/gateways/gateway-access-controls) if you specifically need to fetch files outside your account that you have not uploaded yourself.
+

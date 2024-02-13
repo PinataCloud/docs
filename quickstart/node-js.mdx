@@ -4,3 +4,113 @@ slug: "node-js"
 excerpt: ""
 hidden: false
 ---
+
+This Node.js quickstart should get you up and running with your standard backend javascript setup, and by using the API will give you flexibility when it comes to [pinning files](/pinning/pinning-files).
+
+## Generate your API Keys
+
+Pinata offers developer keys for various scenarios. The most common scenario is normal IPFS actions (pinning content, unpinning, listing content, etc). These actions happen through the core Pinata API, and are documented in the [Pinata API Reference](ref:pinningpinfiletoipfs).
+
+To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key. 
+
+<Note>If you are just getting started we recommend using Admin privileges, then move to scope keys as you better understand your needs</Note>
+
+<img style={{ borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeiagb7ld573mjoz54urwul5qpohrfrc6o6m6nrgrgqpd6enakg6qx4" />
+
+Once you have created the keys you will be shown your API Key Info. This will contain your **Api Key**, **API Secret**, and your **JWT**. Click "Copy All" and save them somewhere safe! 
+
+<Note>The API keys are only shown once, be sure to copy them somewhere safe!</Note>
+
+## Setup a Node.js Project
+
+To start you can go to your terminal and put in the following code
+
+```bash
+mkdir pinata && cd pinata && npm init -y
+```
+
+Now we'll make two files, `index.js` and `hello-world.txt`.
+
+```bash
+touch index.js && touch hello-world.txt
+```
+
+Inside the `hello-world.txt` you can put whatever you'd like such as `Hello from IPFS!`.
+
+## Upload a File to Pinata
+
+Once we have our initial project setup we can put the following code into our `index.js` file.
+
+<Note>For simplicity use the Pinata JWT you received when creating your API keys!</Note>
+
+
+```javascript index.js
+const axios = require('axios')
+const FormData = require('form-data')
+const fs = require('fs')
+const JWT = 'PASTE_YOUR_PINATA_JWT'
+
+async function main() {
+  try{
+  const formData = new FormData();
+  
+  const file = fs.createReadStream("./hello.txt")
+  formData.append('file', file)
+  
+  const pinataMetadata = JSON.stringify({
+    name: 'File name',
+  });
+  formData.append('pinataMetadata', pinataMetadata);
+  
+  const pinataOptions = JSON.stringify({
+    cidVersion: 1,
+  })
+  formData.append('pinataOptions', pinataOptions);
+
+    const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+      headers: {
+        Authorization: `Bearer ${JWT}`
+      }
+    });
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+main()
+```
+
+After uploading a file you should get a response that looks like this
+
+```json
+{
+  "IpfsHash": "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4",
+  "PinSize": 32942,
+  "Timestamp": "2023-06-16T17:24:37.998Z"
+}
+```
+
+## Fetch the File through a Gateway
+
+With the `IpfsHash` you can view the file or fetch the data using an IPFS Gateway, which acts as a bridge between the IPFS protocol and the HTTP protocol. Lets make a new file called `fetch.js` and put in the following code.
+
+```javascript fetch.js
+async function main() {
+  try {
+    const res = await fetch(
+      "https://mygateway.mypinata.cloud/ipfs/bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4",
+    );
+    const resData = await res.text();
+    console.log(resData);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+main();
+```
+
+## Next Steps
+
+If you will be working with images a lot then you may want to look at our built in [image optimizations](/gateways/image-optimizations) for resizing images on the fly. Be sure to check out our [API Reference](/api-reference/introduction) to see what else you can do with the API like listing or deleting files, and check out [Gateway Access Controls](/gateways/gateway-access-controls) if you specifically need to fetch files outside your account that you have not uploaded yourself.

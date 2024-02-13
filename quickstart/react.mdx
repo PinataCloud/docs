@@ -4,3 +4,230 @@ slug: "react"
 excerpt: ""
 hidden: false
 ---
+
+If you want to add Pinata to a React project that is client side only you can do so, however it must be stated that using your Pinata API keys in a client side app means they will be exposed! This approach is not secure and it is recommneded to either scope the API keys to certain permissions or use [signed JWTs](https://www.pinata.cloud/blog/how-to-upload-to-ipfs-from-the-frontend-with-signed-jwts) from a server.
+
+It is still highly recommend using the [Next.js Quickstart](/quickstart/next-js) as it is much more secure with server side API routes and works similar to React.
+
+<Warning>**Using Pinata API keys in a React app will expose them, proceed with caution!**</Warning>
+
+## Installation 
+
+### Create an API Key and get Gateway URL
+To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key. 
+
+  <Note>If you are just getting started we recommend using Admin privileges, then move to scope keys as you better understand your needs</Note>
+
+  <img style={{ borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeiagb7ld573mjoz54urwul5qpohrfrc6o6m6nrgrgqpd6enakg6qx4" />
+
+  Once you have created the keys you will be shown your API Key Info. This will contain your **Api Key**, **API Secret**, and your **JWT**. Click "Copy All" and save them somewhere safe! 
+
+  <Note>The API keys are only shown once, be sure to copy them somewhere safe!</Note> 
+
+  After you have your API key you will want to get your Dedicated Gateway domain. Dedicated Gateways are the fastest way to fetch content from IPFS, and are the ideal tool when building decentralized applications. When you create a Pinata account you'll automatically have a Dedicated Gateway created for you! To see it, simply visit the [Gateways Page](https://app.pinata.cloud/gateway) see it listed there. 
+
+  <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeibtzf3wne2gkg7bnrx6dtdhogrhnquinz6tkyybeix4xldexc7hgq" />
+
+  The gateway domains are randomly generated and might look something like this:
+
+  ```
+  aquamarine-casual-tarantula-177.mypinata.cloud
+  ```
+
+### Start up React Project
+
+Run the command below to make a new React project:
+```bash
+npm create vite@latest
+```
+Give the project a name and select the React framework. Then `cd` into the project and run `npm install` and `npm run dev`. 
+
+After making the project, create a `.env.local` file in the root of the project and put in the following variables:
+```
+VITE_PINATA_JWT=
+VITE_GATEWAY_URL=
+```
+  Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `https://mydomain.mypinata.cloud`.
+
+### Create Upload Form
+  Next we'll want to make an upload form on the client side that will allow someone to select a file and upload it.
+
+  In the `src/App.tsx` file take out the boiler plate code and use the following. Switch between tabs if you want to see how you would handle folder uploads.
+
+<Warning>Uploading files like this will expose your API keys!</Warning>
+
+<CodeGroup>
+
+```typescript src/App.tsx - Single File
+import { useState } from "react";
+
+function App() {
+  const [selectedFile, setSelectedFile]: any = useState();
+  const changeHandler = (event: any) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleSubmission = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      const metadata = JSON.stringify({
+        name: "File name",
+      });
+      formData.append("pinataMetadata", metadata);
+
+      const options = JSON.stringify({
+        cidVersion: 0,
+      });
+      formData.append("pinataOptions", options);
+
+      const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+          },
+          body: formData,
+        },
+      );
+      const resData = await res.json();
+      console.log(resData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <label className="form-label"> Choose File</label>
+      <input type="file" onChange={changeHandler} />
+      <button onClick={handleSubmission}>Submit</button>
+    </>
+  );
+}
+
+export default App;
+```
+
+```typescript src/App.tsx - Folder 
+import { useState } from "react";
+
+function App() {
+  const [selectedFile, setSelectedFile]: any = useState();
+  const changeHandler = (event: any) => {
+    setSelectedFile(event.target.files);
+  };
+
+  const handleSubmission = async () => {
+    try {
+      const formData = new FormData();
+      Array.from(selectedFile).forEach((file) => {
+        formData.append("file", file)
+      })
+      const metadata = JSON.stringify({
+        name: "File name",
+      });
+      formData.append("pinataMetadata", metadata);
+
+      const options = JSON.stringify({
+        cidVersion: 0,
+      });
+      formData.append("pinataOptions", options);
+
+      const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+          },
+          body: formData,
+        },
+      );
+      const resData = await res.json();
+      console.log(resData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <label className="form-label"> Choose File</label>
+      <input directory="" webkitdirectory="" type="file"  onChange={changeHandler} />
+      <button onClick={handleSubmission}>Submit</button>
+    </>
+  );
+}
+
+export default App;
+```
+
+</CodeGroup>
+
+### Pull Content from IPFS
+After we have uploaded the file and get the CID back we can pass it through our [Dedicatd Gateway](/gateways/dedicated-ipfs-gateways) to either download it or render it in our app. For this example we will assume the file is an image, but IPFS supports any kind of file type.
+
+We can do this by adding the following code to our `App.tsx` file. 
+
+```typescript src/App.tsx
+import { useState } from "react";
+
+function App() {
+  const [selectedFile, setSelectedFile]: any = useState();
+  const [cid, setCid]: any = useState()
+  const changeHandler = (event: any) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleSubmission = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      const metadata = JSON.stringify({
+        name: "File name",
+      });
+      formData.append("pinataMetadata", metadata);
+
+      const options = JSON.stringify({
+        cidVersion: 0,
+      });
+      formData.append("pinataOptions", options);
+
+      const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+          },
+          body: formData,
+        },
+      );
+      const resData = await res.json();
+      setCid(resData.IpfsHash)
+      console.log(resData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <label className="form-label"> Choose File</label>
+      <input type="file" onChange={changeHandler} />
+      <button onClick={handleSubmission}>Submit</button>
+      {cid && ( <img src={`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`} alt="ipfs image" /> )}
+    </>
+  );
+}
+
+export default App;
+```
+
+You can see in the image tag that we simply pass in our `VITE_GATEWAY_URL` variable followed by the `/ipfs` path, and finishing the url with the `cid`.
+
+## Next Steps
+
+If you will be working with images a lot then you may want to look at our built in [image optimizations](/gateways/image-optimizations) for resizing images on the fly. Be sure to check out our [API Reference](/api-reference/introduction) to see what else you can do with the API like listing or deleting files, and check out [Gateway Access Controls](/gateways/gateway-access-controls) if you specifically need to fetch files outside your account that you have not uploaded yourself.
