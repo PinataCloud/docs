@@ -20,8 +20,7 @@ This guide will walk you through setting up Pinata in a Next.js app. If you don'
 
 ## Manual Setup
 
-<Steps>
-  <Step title="Create an API Key and get Gateway URL">
+### Create an API Key and get Gateway URL
     To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key. 
 
   <Note>If you are just getting started we recommend using Admin privileges, then move to scope keys as you better understand your needs</Note>
@@ -41,8 +40,7 @@ This guide will walk you through setting up Pinata in a Next.js app. If you don'
   ```
   aquamarine-casual-tarantula-177.mypinata.cloud
   ```
-  </Step>
-  <Step title="Start up Next.js Project">
+### Start up Next.js Project
   As with any Next.js project we can start one up with the following command
 
   ```
@@ -58,8 +56,7 @@ NEXT_PUBLIC_GATEWAY_URL=
 ```
   Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `https://mydomain.mypinata.cloud`.
 
-  </Step>
-  <Step title="Create Client Side Form">
+### Create Client Side Form
   Next we'll want to make an upload form on the client side that will allow someone to select a file and upload it.
 
   In the `/app/page.tsx` file tak out the boiler plate code and use the following. 
@@ -117,8 +114,7 @@ This will take a file from the client side and upload it through an API route we
 
 <Note>Next.js does have a file size limitation for what can be passed through the API routes, so if you need more than the limit then it is advised to make signed JWTs by folloing [this guide](https://www.pinata.cloud/blog/how-to-upload-to-ipfs-from-the-frontend-with-signed-jwts).</Note>
 
-  </Step>
-  <Step title="Create API Route">
+### Create API Route
   Next.js is ideal for file uploads as it's API routes keep keys hidden and unexposed to the client. In the last step we made a function that uploads to `/api/files` so now we need to create that route by making `/app/api/files/route.ts` in our app.
   
   Once you have created that file you can paste in the following code.
@@ -210,8 +206,6 @@ export default function Home() {
 }
 ```
 This will check to make sure the CID has been set, then pass it through our Dedicated Gateway to render it in our `img` tag.
-  </Step>
-</Steps>
 
 ## Next Steps
 
