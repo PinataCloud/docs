@@ -167,7 +167,10 @@
   },
   "analytics": {
     "ga4": {
-        "measurementId": "G-5RMPXG14TE"
+      "measurementId": "G-5RMPXG14TE"
     }
-}
+  },
+  "feedback": {
+    "suggestEdit": true
+  }
 }
