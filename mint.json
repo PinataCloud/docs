@@ -26,7 +26,7 @@
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
+    "name": "Pinata App",
     "url": "https://app.pinata.cloud"
   },
   "tabs": [
@@ -41,19 +41,19 @@
   ],
   "anchors": [
     {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "discord",
-      "url": "https://discord.gg/pinata"
+      "name": "API Keys",
+      "icon": "key-skeleton-left-right",
+      "url": "https://app.pinata.cloud/developers/api-keys"
     },
     {
       "name": "Blog",
       "icon": "newspaper",
       "url": "https://pinata.cloud/blog"
+    },
+    {
+      "name": "Community",
+      "icon": "discord",
+      "url": "https://discord.gg/pinata"
     }
   ],
   "navigation": [
