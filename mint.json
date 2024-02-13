@@ -61,7 +61,14 @@
       "group": "Get Started",
       "pages": [
         "introduction",
-        "quickstart",
+        {
+          "group": "Quickstart",
+          "pages": [
+            "quickstart/next-js",
+            "quickstart/react",
+            "quickstart/node-js"
+          ]
+        },
         {
           "group": "Account Management",
           "pages": [
