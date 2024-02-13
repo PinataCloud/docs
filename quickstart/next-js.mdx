@@ -153,8 +153,7 @@ export async function POST(request: NextRequest) {
 ```
 
 This will accept a `POST` request from the client, create [`pinataMetadata`](/pinning/pinata-metadata), then send an API request to Pinata with the upload. Once complete it will return the [`CID`](/ipfs-101/what-are-cids) to the client.
-  </Step>
-  <Step title="Pull Content from IPFS">
+### Pull Content from IPFS
   After we have uploaded the file and get the CID back we can pass it through our [Dedicatd Gateway](/gateways/dedicated-ipfs-gateways) to either download it or render it in our app. For this example we will assume the file is an image, but IPFS supports any kind of file type.
 
   Back in `app/page.ts` we can add the following code.
