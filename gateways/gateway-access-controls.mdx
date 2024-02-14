@@ -3,31 +3,38 @@ title: "Gateway Access Controls"
 slug: "gateway-access-controls"
 excerpt: ""
 hidden: false
-metadata: 
+metadata:
   image: []
   robots: "index"
 createdAt: "Tue Jul 18 2023 11:24:49 GMT+0000 (Coordinated Universal Time)"
 updatedAt: "Wed Sep 20 2023 20:58:29 GMT+0000 (Coordinated Universal Time)"
 ---
-Pinata's Dedicated Gateways make it possible to fetch and serve IPFS content quickly and reliably, however there can be security risks in exposing your gateway to the world. That is why Pinata has created Gateway Access Controls. These controls will allow you to further limit your gateway,  making sure only your platform is using it. This is accomplished with **Access Tokens, IP Address Restrictions,** and **Host Origin Restrictions.**  
+
+Pinata's Dedicated Gateways make it possible to fetch and serve IPFS content quickly and reliably, however there can be security risks in exposing your gateway to the world. That's why Pinata has created Gateway Access Controls. These controls will allow you to further limit your gateway, making sure only your platform is using it. This is accomplished with **Access Tokens, IP Address Restrictions,** and **Host Origin Restrictions.**
 
 To start, make sure you have a [Dedicated Gateway](/gateways/dedicated-ipfs-gateways) and then visit the [Access Controls page](https://app.pinata.cloud/developers/gateway-settings) .
 
-By default, Dedicated Gateways are restricted with the lowest level restriction possible. They will only serve content that is pinned to your account. This restriction is helpful for creators and for those just getting started. But if you want to restrict access further, **or if you want to access IPFS content from the wider network that may not be pinned to your account, you'll need to add security restrictions.** 
+By default, Dedicated Gateways are restricted with the lowest level restriction possible. They will only serve content that is pinned to your account. This restriction is helpful for creators and for those just getting started. But if you want to restrict access further, **or if you want to access IPFS content from the wider network that may not be pinned to your account, you'll need to add security restrictions.**
 
 ## Access Tokens
 
-Adding an access token restriction means that content served through your gateway will only be served successfully if the access token is present with the request. **Importantly, you should note that even if the content is pinned to your account, it will not longer serve through your gateway if you have added an access token restriction and don't include that token in requests for content.** 
+Adding an access token restriction means that content served through your gateway will only be served successfully if the access token is present with the request. **Importantly, content pinned to your account won't be accessible through your gateway if you've implemented an access token restriction and fail to include that token in content requests.**
 
-To create an access token, click on the button that says "Request Token."
+To create an access token, click on the button that says "Request Key."
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafkreidy2uygdxbbsmy5x6bwheqqdfekqb7bbdqw4vnylaya7tapeujx2u" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmbD4KujBsW7dX8wsdbG1rhsm4wZwpWMKad5nUJC19NJFW"
+/>
 
-When you create an access token you will have the ability to preview the token by clicking the "eye" icon, or copy the token to your clipboard with the "copy" icon. At any point you can delete an access token by clicking the three small dots on the right.
+When you create an access token you will have the ability to preview the token by clicking the "eye" icon, or copy the token to your clipboard with the "copy" icon. At any point, you can delete an access token by clicking the "trash" icon.
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafkreiarziwumnza5k2bjk3miwn6srmqzrvniuvyq7th27ty5u5hmdnkbm" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmQNP5P4Auwt7ARWyRQpC5ZRePVGraETrEATEc8YYAHKir"
+/>
 
-Once you have the token, there are two ways you can use it in the gateway request. 
+Once you have the token, there are two ways you can use it in the gateway request.
 
 ### Query Parameter
 
@@ -45,53 +52,66 @@ Another way to use the access token is in the request header. The Key Value woul
 | ---------------------- | ------------ |
 | x-pinata-gateway-token | ACCESS_TOKEN |
 
-**Please keep in mind that using the access token in the request header may not work in a client side application, consider using IP Address restriction instead for those use cases.**
+**Please keep in mind that using the access token in the request header may not work in a client side application, so consider using IP Address restriction instead for those use cases.**
 
 ## IP Address
 
-You can also restrict your gateway by IP Address. You can add up to 100 different IP addresses (individually). When you add this restriction, only content requested from an IP address that you've added will be served through your gateway. 
+You can also restrict your gateway by IP Address. You can add up to 100 different IP addresses (individually). When you add this restriction, only content requested from an IP address that you've added will be served through your gateway.
 
-To start click "Set IP Address" on the right side of the menu. 
+To start, click "Set IP Address" on the right side of the menu.
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://files.readme.io/5092ea5-spaces_-MUp92Ia17fU7ZvnMCAm_uploads_MCPILkDpGubZ8EsoCYBw_CleanShot_2023-03-21_at_13.webp" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmPsWJif2mdv5EryMGPCv2oUWtXHJmefihWNwpTUCtr995"
+/>
 
-You will get window asking for a valid IP Address that will allow any requests being made from the IP Address to go through!
+You will get window asking for a valid IP Address which will allow any requests being made from the IP Address to go through!
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://files.readme.io/f32adce-spaces_-MUp92Ia17fU7ZvnMCAm_uploads_yavMxs5mSDwpFH5PBy3T_CleanShot_2023-03-21_at_13.webp" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmQwzGrzPHDGxScBkvkLjEKkUQc3ZXdYn63NHYH1Ccc1kq"
+/>
 
 ## Host Origin
 
-With the Host Origin restriction you can make sure your gateway can only be used on a specific Domain like app.pinata.cloud. To get started, click on "Add Host Origin."
+With the Host Origin restriction, you can make sure your gateway can only be used on a specific domain (for example, 'app.pinata.cloud'). To get started, click on "Add Host Origin."
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://files.readme.io/dad90bc-spaces_-MUp92Ia17fU7ZvnMCAm_uploads_0douTgVfiOPVU3V4b1cc_CleanShot_2023-03-21_at_13.webp" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmNyi2fS4ZaUcUearndZXUH5nqkdwnZMLNGVx9bZKDFMTS"
+/>
 
-After that you can add the domain you would like your gateway to be used from! 
+After that, you can add the domain you would like your gateway to be used from!
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://files.readme.io/fffda47-spaces_-MUp92Ia17fU7ZvnMCAm_uploads_QOrv7mHVXoAnAFlYMBeh_CleanShot_2023-03-21_at_13.webp" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmYU2A1KHT7mBcHHqKuT4Ygt6LSqvEyJYkjzMw1nCGwRWx"
+/>
 
-Keep in mind that if you are rendering content on the client side using host origins, you will need to include a `crossorigin` tag in your `img`, `video`, `audio`, `link`, or `script` elements. Here is an example with an img element in React:
+Keep in mind, if you are rendering content on the client side using Host Origins, you will need to include a `crossorigin` tag in your `img`, `video`, `audio`, `link`, or `script` elements. Here is an example with an img element in React:
 
 <CodeGroup>
 
 ```javascript html
-<img 
- src="https://pinata-media.mypinata.cloud/ipfs/CID"
- crossorigin='anonymous' 
- alt="pinnie" 
+<img
+  src="https://pinata-media.mypinata.cloud/ipfs/CID"
+  crossorigin="anonymous"
+  alt="pinnie"
 />
 ```
 
 ```javascript React
-<img 
- src="https://pinata-media.mypinata.cloud/ipfs/CID"
- crossOrigin='anonymous' 
- alt="pinnie" 
+<img
+  src="https://pinata-media.mypinata.cloud/ipfs/CID"
+  crossOrigin="anonymous"
+  alt="pinnie"
 />
 ```
+
 </CodeGroup>
 
 For more info on `crossorigin` please read this article [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin)!
 
 ## Multiple Restrictions
 
-You can add multiple Access Controls and they will perform as an "OR" operator, meaning if you have Host Origins and Access Token set, you can use either one for content to go through.
+You can add multiple Access Controls, and they will perform as an "OR" operator. This means that if you have Host Origins and Access Token set, you can use either one for content to go through.
