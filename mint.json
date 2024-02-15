@@ -158,6 +158,84 @@
     {
       "group": "Get Started",
       "pages": ["farcaster/introduction", "farcaster/hubs"]
+    },
+    {
+      "group": "Hub API Reference",
+      "pages": [
+        "farcaster/api-reference/endpoint/info/info",
+        {
+          "group": "Casts",
+          "pages": [
+            "farcaster/api-reference/endpoint/casts/fetch-all-casts-authored-by-an-fid",
+            "farcaster/api-reference/endpoint/casts/fetch-all-casts-by-parent-casts-fid-and-hash-or-by-the-parents-url",
+            "farcaster/api-reference/endpoint/casts/fetch-all-casts-that-mention-an-fid",
+            "farcaster/api-reference/endpoint/casts/get-a-cast-by-its-fid-and-hash"
+          ]
+        },
+        {
+          "group": "Reactions",
+          "pages": [
+            "farcaster/api-reference/endpoint/reactions/get-a-reaction-by-its-created-fid-and-target-cast",
+            "farcaster/api-reference/endpoint/reactions/get-all-reactions-by-an-fid",
+            "farcaster/api-reference/endpoint/reactions/get-all-reactions-to-a-cast",
+            "farcaster/api-reference/endpoint/reactions/get-all-reactions-to-a-target-url"
+          ]
+        },
+        {
+          "group": "Links",
+          "pages": [
+            "farcaster/api-reference/endpoint/links/get-a-link-by-its-fid-and-target-fid",
+            "farcaster/api-reference/endpoint/links/get-all-links-to-a-target-fid",
+            "farcaster/api-reference/endpoint/links/get-all-links-from-a-source-fid"
+          ]
+        },
+        {
+          "group": "User Data",
+          "pages": [
+            "farcaster/api-reference/endpoint/userdata/get-userdata-for-a-fid"
+          ]
+        },
+        {
+          "group": "Username Proofs",
+          "pages": [
+            "farcaster/api-reference/endpoint/usernames/get-a-list-of-proofs-provided-by-an-fid",
+            "farcaster/api-reference/endpoint/usernames/get-an-proof-for-a-username-by-the-farcaster-username"
+          ]
+        },
+        {
+          "group": "Verifications",
+          "pages": [
+            "farcaster/api-reference/endpoint/verifications/get-a-list-of-verifications-provided-by-an-fid"
+          ]
+        },
+        {
+          "group": "FIDs",
+          "pages": [
+            "farcaster/api-reference/endpoint/fids/get-a-list-of-all-the-fids"
+          ]
+        },
+        {
+          "group": "Storage",
+          "pages": [
+            "farcaster/api-reference/endpoint/storage/get-an-fids-storage-limits"
+          ]
+        },
+        {
+          "group": "Onchain API",
+          "pages": [
+            "farcaster/api-reference/endpoint/onchainevents/get-a-list-of-on-chain-events-provided-by-an-fid",
+            "farcaster/api-reference/endpoint/onchainevents/get-a-list-of-signers-provided-by-an-fid",
+            "farcaster/api-reference/endpoint/onchainevents/get-an-on-chain-id-registry-event-for-a-given-address"
+          ]
+        },
+        {
+          "group": "Events",
+          "pages": [
+            "farcaster/api-reference/endpoint/hubevents/get-a-page-of-hub-events",
+            "farcaster/api-reference/endpoint/hubevents/get-an-event-by-its-id"
+          ]
+        }
+      ]
     }
   ],
   "footerSocials": {
