@@ -162,7 +162,10 @@
     {
       "group": "Hub API Reference",
       "pages": [
-        "farcaster/api-reference/endpoint/info/info",
+        {
+          "group": "Info",
+          "pages": ["farcaster/api-reference/endpoint/info/info"]
+        },
         {
           "group": "Casts",
           "pages": [
