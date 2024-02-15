@@ -160,6 +160,10 @@
       "pages": ["farcaster/introduction", "farcaster/hubs"]
     },
     {
+      "group": "Dev Tools",
+      "pages": ["farcaster/fdk"]
+    },
+    {
       "group": "Hub API Reference",
       "pages": [
         {
