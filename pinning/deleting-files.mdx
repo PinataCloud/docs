@@ -3,7 +3,7 @@ title: "Deleting Files"
 slug: "deleting-files"
 excerpt: ""
 hidden: false
-metadata: 
+metadata:
   robots: "index"
 createdAt: "Tue Jul 18 2023 11:23:21 GMT+0000 (Coordinated Universal Time)"
 updatedAt: "Tue Sep 12 2023 17:08:02 GMT+0000 (Coordinated Universal Time)"
@@ -11,20 +11,23 @@ updatedAt: "Tue Sep 12 2023 17:08:02 GMT+0000 (Coordinated Universal Time)"
 
 The process of removing files from IPFS is called unpinning. When you unpin something from an IPFS storage node, it is marked for garbage collection. When garbage collection runs, the content is permanently deleted from the storage node.
 
-<Warning>Keep in mind that if someone else has pinned your content on IPFS then it will stay available even if you have deleted your files</Warning>
+<Warning>
+  Keep in mind that if someone else has pinned your content on IPFS, it will
+  remain available even if you delete your files!
+</Warning>
 
 ## Deleting by API
 
-The Pinata API has a very simple `DELETE` endpoint that will allow you to unpin a file by `CID`. 
+The Pinata API has a very simple `DELETE` endpoint that will allow you to unpin a file by `CID`.
 
 `https://api.pinata.cloud/pinning/unpin/{CID}`
 
 If you find yourself in a place where you need to unpin a lot of files or perhaps all your files, you can use a script like this to create an array of CIDs and unpin them one by one. The example below uses the [`pinList`](/api-reference/endpoint/list-files) queries to target all pinned files and return 1000 for each request. This could easily be done with a different query to target different files, please check out the [listing files](/pinning/listing-files) doc for more info.
 
 ```javascript Unpin All Files
-const PINATA_JWT = 'Bearer YOUR_JWT_HERE'
-const PIN_QUERY = `https://api.pinata.cloud/data/pinList?status=pinned&pageLimit=1000&includeCount=false`
-const fetch = require('node-fetch')
+const PINATA_JWT = "Bearer YOUR_JWT_HERE";
+const PIN_QUERY = `https://api.pinata.cloud/data/pinList?status=pinned&pageLimit=1000&includeCount=false`;
+const fetch = require("node-fetch");
 
 const wait = (milliseconds) => {
   return new Promise((resolve) => {
@@ -34,77 +37,87 @@ const wait = (milliseconds) => {
 
 const fetchPins = async () => {
   try {
-    console.log('Fetching pins...')
-    let pinHashes = []
-    let pageOffset = 0
-    let hasMore = true
+    console.log("Fetching pins...");
+    let pinHashes = [];
+    let pageOffset = 0;
+    let hasMore = true;
 
     while (hasMore === true) {
       try {
         const response = await fetch(`${PIN_QUERY}&pageOffset=${pageOffset}`, {
-          method: 'GET',
+          method: "GET",
           headers: {
-            accept: 'application/json',
-            Authorization: PINATA_JWT
-          }
-        })
-        const responseData = await response.json()
-        const rows = responseData.rows
+            accept: "application/json",
+            Authorization: PINATA_JWT,
+          },
+        });
+        const responseData = await response.json();
+        const rows = responseData.rows;
 
         if (rows.length === 0) {
-          hasMore = false
+          hasMore = false;
         }
-        const itemsReturned = rows.length
-        pinHashes.push(...rows.map(row => row.ipfs_pin_hash))
-        pageOffset += itemsReturned
-        await wait(300)
+        const itemsReturned = rows.length;
+        pinHashes.push(...rows.map((row) => row.ipfs_pin_hash));
+        pageOffset += itemsReturned;
+        await wait(300);
       } catch (error) {
-        console.log(error)
-        break
+        console.log(error);
+        break;
       }
     }
-    console.log('Total pins fetched: ', pinHashes.length)
-    return pinHashes
+    console.log("Total pins fetched: ", pinHashes.length);
+    return pinHashes;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 const deletePins = async () => {
-  const pinHashes = await fetchPins()
-  const totalPins = pinHashes.length
-  let deletedPins = 0
+  const pinHashes = await fetchPins();
+  const totalPins = pinHashes.length;
+  let deletedPins = 0;
   try {
     for (const hash of pinHashes) {
       try {
-        const response = await fetch(`https://api.pinata.cloud/pinning/unpin/${hash}`, {
-          method: 'DELETE',
-          headers: {
-            accept: 'application/json',
-            Authorization: PINATA_JWT
+        const response = await fetch(
+          `https://api.pinata.cloud/pinning/unpin/${hash}`,
+          {
+            method: "DELETE",
+            headers: {
+              accept: "application/json",
+              Authorization: PINATA_JWT,
+            },
           }
-        })
-        await wait(300)
-        deletedPins++
-        process.stdout.write(`Deleted ${deletedPins} of ${totalPins} pins\r`)
+        );
+        await wait(300);
+        deletedPins++;
+        process.stdout.write(`Deleted ${deletedPins} of ${totalPins} pins\r`);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
-    console.log('Pins deleted')
+    console.log("Pins deleted");
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-deletePins()
+deletePins();
 ```
 
 ## Deleting by Web App
 
 If you are trying to delete files (or in IPFS terms "Unpin"), you can do so by clicking on the "more" button and selecting "Unpin File”
 
-
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafkreicpuclqqsle422wqok46o55h7t4cpee5nrvjhndpzdnpkpk5iwhfi" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/bafkreicpuclqqsle422wqok46o55h7t4cpee5nrvjhndpzdnpkpk5iwhfi"
+/>
 
 Additionally, with our Bulk File Actions tool, you can select and manage multiple files at once - up to 100!
+
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmX9EKBjj3fvgZNeUL3NPcti2i6GWXrjc8N8m9UUTcf3Q5"
+/>

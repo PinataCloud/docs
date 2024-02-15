@@ -3,21 +3,21 @@ title: "Pinning Files"
 slug: "pinning-files"
 excerpt: ""
 hidden: false
-metadata: 
+metadata:
   robots: "index"
 createdAt: "Tue Jul 18 2023 11:23:21 GMT+0000 (Coordinated Universal Time)"
 updatedAt: "Tue Sep 12 2023 17:08:02 GMT+0000 (Coordinated Universal Time)"
 ---
 
-With Pinata there are a few ways you can pin files to IPFS
+With Pinata, there are a few ways you can pin files to IPFS!
 
 ## API & SDKs
 
-If you’re a developer that needs to build decentralized applications then you will likely want to use the [Pinata API](/api-reference/introduction) or [Pinata SDK](/sdks/pinata-sdk). These make it simple to upload files or raw JSON to IPFS!
+If you’re a developer that needs to build decentralized applications, then you will likely want to use the [Pinata API](/api-reference/introduction) or [Pinata SDK](/sdks/pinata-sdk). These make it simple to upload files or raw JSON to IPFS!
 
 ### Using the SDK
 
-The Pinata Node SDK is designed to work in a backend environment, so if you are trying to upload in a front end client please observe the API example.
+The Pinata Node SDK is designed to work in a backend environment, so if you are trying to upload in a front end client, please observe the API example.
 
 ```javascript
 const fs = require('fs');
@@ -41,11 +41,13 @@ const res = await pinata.pinFileToIPFS(stream)`
 
 ### Using the API
 
-The API is a bit more flexible as it can be used in multiple languages or environments, and is sometimes preferred for client side uploads. With that we should express warning in that client side applications will expose API keys.
+The API is a bit more flexible, as it can be used in multiple languages or environments, and is sometimes preferred for client side uploads. With that, we should express warning in that client side applications will expose API keys.
 
-<Warning>Using your API Keys in a client side application will expose them!!</Warning>
+<Warning>
+  Using your API Keys in a client side application will expose them!!
+</Warning>
 
-Here is an example of how you could upload with the API.
+Here is an example of how you could upload with the API:
 
 ```javascript
 const JWT = "YOUR_PINATA_JWT";
@@ -114,49 +116,57 @@ async function pinFileToIPFS() {
 Another example of this in action is turning a URL stream into an `arrayBuffer`, which then gets passed into a new `Blob` that can then be uploaded to Pinata.
 
 ```javascript Upload by URL
-const JWT = 'YOUR_PINATA_JWT';
+const JWT = "YOUR_PINATA_JWT";
 
-  export default async function uploadByURL(url){
-    try {
-      const urlStream = await fetch(url)
-      const arrayBuffer = await urlStream.arrayBuffer()
-      const blob = new Blob([arrayBuffer])
-  
-      const data = new FormData()
-      data.append("file", blob)
-      const upload = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
-        method: 'POST',
+export default async function uploadByURL(url) {
+  try {
+    const urlStream = await fetch(url);
+    const arrayBuffer = await urlStream.arrayBuffer();
+    const blob = new Blob([arrayBuffer]);
+
+    const data = new FormData();
+    data.append("file", blob);
+    const upload = await fetch(
+      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      {
+        method: "POST",
         headers: {
-          'Authorization': `Bearer ${JWT}`
+          Authorization: `Bearer ${JWT}`,
         },
-        body: data
-      })
-      const uploadRes = await upload.json()
-      console.log(uploadRes)
-    } catch (error){
-      console.log(error)
-    }
+        body: data,
+      }
+    );
+    const uploadRes = await upload.json();
+    console.log(uploadRes);
+  } catch (error) {
+    console.log(error);
   }
+}
 
-  uploadByURL("https://pocketcast.cloud/og.png")
+uploadByURL("https://pocketcast.cloud/og.png");
 ```
-
 
 We also have other tools like the [Pinata CLI](/sdks/pinata-cli) or [Next.js Starter](/sdks/nextjs-starter) which can be used to upload using [API Keys](/account-management/api-keys)/
 
 ## Web App
 
-If you’re non-technical you can use **[Pinata App]()** to upload files, perfect if you just want to get started with NFTs and IPFS! It’s as simple as clicking the “Add Files” button in the top right corner of the **[files page]()**, selecting your file, give it a name, then upload. Once its complete you’ll see it listed in the files page.
+If you’re non-technical, you can use **[Pinata App](https://app.pinata.cloud/)** to upload files, perfect if you just want to get started with NFTs and IPFS! It’s as simple as clicking the “Upload” button in the top right corner of the **[files page](https://app.pinata.cloud/pinmanager)**. Select your file, give it a name, then upload. Once it's complete you’ll see it listed in the files page.
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeieub2mj5ywdneuj44j5fkmty4i6twvu57qdnvsbrxofplqwld77vq" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmYJT6arJPenBacnqiQdVqVhK8vNWccsWJi9LD8wgXwh79"
+/>
 
 Start uploading by [signing up for a free account](https://app.pinata.cloud/register)!
 
 ## Pin by CID
 
-Another way you can upload content to Pinata is by transferring content that is already on IPFS. This could be CIDs that are on your own local IPFS node or another IPFS pinning service! You can do this with the “Add Files” button in the web app like so:
+Another way you can upload content to Pinata is by transferring content that is already on IPFS. This could be CIDs that are on your own local IPFS node or another IPFS pinning service! You can do this with the “Pin by CID” button in the web app, like so:
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeidjtt4zslkg74uc7tbyzjylrlqhyfksn5bn3iy6valhltxwt4hwgm" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmSFV8REjEZ3DuRAxcmLck5DNrGpqrGRJcSApGihUNXq5n"
+/>
 
 Or you can pin by CID with our API using the **[Pin By CID]()** endpoint:
 
@@ -212,14 +222,21 @@ async function pinByCID() {
 
 All possible filters are included in the API reference below, but these are the possible "status" filters:
 
-<ParamField query="status" type="string"  >
-  Filter by the status of the job in the pinning queue (see potential statuses below)
-  - `prechecking` Pinata is running preliminary validations on your pin request.
-  - `searching` Pinata is actively searching for your content on the IPFS network. This may take some time if your content is isolated.
-  - `retrieving` Pinata has located your content and is now in the process of retrieving it.
-  - `expired` Pinata wasn't able to find your content after a day of searching the IPFS network. Please make sure your content is hosted on the IPFS network before trying to pin again.
-  - `over_free_limit` Pinning this object would put you over the free tier limit. Please add a credit card to continue pinning content.
-  - `over_max_size` This object is too large of an item to pin. If you're seeing this, please contact us for a more custom solution.
-  - `invalid_object` The object you're attempting to pin isn't readable by IPFS nodes. Please contact us if you receive this, as we'd like to better understand what you're attempting to pin.
-  - `bad_host_node` You provided a host node that was either invalid or unreachable. Please make sure all provided host nodes are online and reachable.
+<ParamField query="status" type="string">
+  Filter by the status of the job in the pinning queue (see potential statuses
+  below) - `prechecking` Pinata is running preliminary validations on your pin
+  request. - `searching` Pinata is actively searching for your content on the
+  IPFS network. This may take some time if your content is isolated. -
+  `retrieving` Pinata has located your content and is now in the process of
+  retrieving it. - `expired` Pinata wasn't able to find your content after a day
+  of searching the IPFS network. Please make sure your content is hosted on the
+  IPFS network before trying to pin again. - `over_free_limit` Pinning this
+  object would put you over the free tier limit. Please add a credit card to
+  continue pinning content. - `over_max_size` This object is too large of an
+  item to pin. If you're seeing this, please contact us for a more custom
+  solution. - `invalid_object` The object you're attempting to pin isn't
+  readable by IPFS nodes. Please contact us if you receive this, as we'd like to
+  better understand what you're attempting to pin. - `bad_host_node` You
+  provided a host node that was either invalid or unreachable. Please make sure
+  all provided host nodes are online and reachable.
 </ParamField>
