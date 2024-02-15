@@ -5,6 +5,9 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
+  "metadata": {
+    "og:image": "https://docs.mypinata.cloud/ipfs/bafybeibj3a47gxdgkjfrfs6b2n3prsjbvk2lx3twp4lfahgcrfddkxukwu?filename=og.png"
+  },
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#6D6FEB",
