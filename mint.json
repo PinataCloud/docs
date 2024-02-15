@@ -160,7 +160,7 @@
     },
     {
       "group": "Get Started",
-      "pages": ["farcaster/introduction", "farcaster/hubs"]
+      "pages": ["farcaster/introduction", "farcaster/hubs", "farcaster/frames"]
     },
     {
       "group": "Dev Tools",
