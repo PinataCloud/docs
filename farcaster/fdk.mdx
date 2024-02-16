@@ -171,10 +171,28 @@ Scanning the QR code with your phone should prompt you to open Warpcast where yo
 In any of your POST endpoints for frames, you can send analytics like this: 
 
 ```javascript
+// This should be the raw payload from the frame action
+const frame_data = {
+  untrustedData: {
+    fid: 2,
+    url: "https://fcpolls.com/polls/1",
+    messageHash: "0xd2b1ddc6c88e865a33cb1a565e0058d757042974",
+    timestamp: 1706243218,
+    network: 1,
+    buttonIndex: 2,
+    inputText: "hello world", // "" if requested and no input, undefined if input not requested
+    castId: {
+      fid: 226,
+      hash: "0xa48dd46161d8e57725f5e26e34ec19c13ff7f3b9",
+    },
+  },
+  trustedData: {
+    messageBytes: "d2b1ddc6c88e865a33cb1a565e0058d757042974...",
+  },
+};
 const frame_id = "my-unique-frame-name"
-const frame_data = req.body // this should be the raw payload from the frame action
 
-await fdk.sendAnalytics(frame_data, frame_id)
+await fdk.sendAnalytics(frame_id, frame_data)
 ```
 
 After this is deployed you will see the analytics on the [Frame Analytics Page](https://app.pinata.cloud/frames-analytics). 
