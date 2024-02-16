@@ -6,7 +6,10 @@
     "light": "/logo/light.svg"
   },
   "metadata": {
-    "og:image": "https://docs.mypinata.cloud/ipfs/bafybeibj3a47gxdgkjfrfs6b2n3prsjbvk2lx3twp4lfahgcrfddkxukwu?filename=og.png"
+    "og:image": "https://docs.mypinata.cloud/ipfs/bafybeibj3a47gxdgkjfrfs6b2n3prsjbvk2lx3twp4lfahgcrfddkxukwu?filename=og.png",
+    "twitter:image": "https://docs.mypinata.cloud/ipfs/bafybeibj3a47gxdgkjfrfs6b2n3prsjbvk2lx3twp4lfahgcrfddkxukwu?filename=og.png",
+    "og:image:width": "1200",
+    "og:image:height": "630"
   },
   "favicon": "/favicon.svg",
   "colors": {
