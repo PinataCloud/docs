@@ -147,9 +147,26 @@ const frameMetadata = await fdk.getFrameMetadata({
 
 ## Frame Analytics
 
-If you'd like to track the interactions your frame(s) receive over time, you can send analytics data that is made available on a dashboard inside your Pinata account. 
+To get started visit the [Integrations page](https://app.pinata.cloud/integrations) by clicking on the profile button in the top right, then selecting Integrations.
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://azure-tiny-tahr-350.mypinata.cloud/ipfs/QmfNvYKNHLFut99TRmwVAhKa1ePUoeqpgB61rxfzdoM5zq" />
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafkreidagjp2i7gcnigg6z7n24w4rbpwbexk35fsftbzr6q3owmkvvu7pi
+" />
+
+Once there you can click on "Sign In" which will bring up a QR code you can scan with you phone. 
+
+<Note>You will need [Warpcast](https://warpcast.com) installed on your phone to sign in</Note>
+
+<video
+  autoPlay
+  muted
+  loop
+  playsinline
+  className="w-full aspect-video"
+  src="https://docs.mypinata.cloud/ipfs/bafybeige5sbw3t7scuey743hud5kp2ucsqav2fqkymylpp5ekoojwaw7pm
+"
+></video>
+
+Scanning the QR code with your phone should prompt you to open Warpcast where you can sign in and approve the integration. 
 
 In any of your POST endpoints for frames, you can send analytics like this: 
 
@@ -160,6 +177,9 @@ const frame_data = req.body // this should be the raw payload from the frame act
 await fdk.sendAnalytics(frame_data, frame_id)
 ```
 
+After this is deployed you will see the analytics on the [Frame Analytics Page](https://app.pinata.cloud/frames-analytics). 
+
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://azure-tiny-tahr-350.mypinata.cloud/ipfs/QmfNvYKNHLFut99TRmwVAhKa1ePUoeqpgB61rxfzdoM5zq" />
 
 ## validateFrameMessage()
 

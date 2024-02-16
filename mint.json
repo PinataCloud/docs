@@ -84,6 +84,7 @@
           "pages": [
             "account-management/api-keys",
             "account-management/workspaces",
+            "account-management/farcaster",
             "account-management/billing",
             "account-management/limits"
           ]
