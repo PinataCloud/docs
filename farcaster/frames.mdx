@@ -23,7 +23,9 @@ Frames introduce a groundbreaking approach to interactive applications within Fa
 
 If you are using the [FDK](/farcaster/fdk) and you have linked your Pinata account to your Farcaster account using the [Farcaster Integration](/account-management/farcaster), then you will be able to take advantage of Frame Analytics.
 
-When using the FDK make sure to use `fdk.sendAnalytics` method with your own made up `frame_id` and the `frame_data` send from the frame.
+When using the FDK make sure to use `fdk.sendAnalytics` method with your own made up `frame_id` and the `frame_data` sent from the frame. 
+
+You can also include an optional `custom_id` param to track and segment specific requests within the specified frame. 
 
 ```javascript
 // This should be the raw payload from the frame action
@@ -45,9 +47,11 @@ const frame_data = {
     messageBytes: "d2b1ddc6c88e865a33cb1a565e0058d757042974...",
   },
 };
-const frame_id = "my-unique-frame-name";
+const frame_id = "my-unique-frame-name"
+const custom_id = "my_custom_id"
 
-await fdk.sendAnalytics(frame_id, frame_data);
+
+await fdk.sendAnalytics(frame_id, frame_data, custom_id)
 ```
 
 After this is deployed you will see the analytics on the [Frame Analytics Page](https://app.pinata.cloud/frames-analytics).
