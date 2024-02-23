@@ -1,6 +1,5 @@
 # Pinata Documentation
 
-<br/>
 ![header](https://docs.mypinata.cloud/ipfs/bafybeiaaz3tkpucxjdjaq32ohf76vcfes2c2d5valri5sxlqusvziuzena)
 
 Welcome to the offical repository for [docs.pinata.cloud](https://docs.pinata.cloud)! Contributions and edits are welcome, please keep the following guidelies in mind:
