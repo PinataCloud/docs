@@ -173,6 +173,7 @@
     {
       "group": "Farcaster Api Reference",
       "pages": [
+        "farcaster/api-reference/getting-started",
         "farcaster/api-reference/endpoint/cast-by-hash",
         "farcaster/api-reference/endpoint/casts",
         "farcaster/api-reference/endpoint/channels-list",

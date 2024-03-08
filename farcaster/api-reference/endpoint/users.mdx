@@ -1,3 +1,21 @@
 ---
 openapi: get /users
 ---
+
+This endpoint is similar to `/casts` in that you can either fetch a specific user by FID or you can combine multiple query parameters to get specific lists of users.
+
+#### Users Following FID
+
+```
+/users?fid=6023&followers=true
+```
+
+Returns all the users following a specific FID
+
+#### Users FID Following
+
+```
+/users?fid=6023&following=true
+```
+
+Returns all the users a specific FID is following
