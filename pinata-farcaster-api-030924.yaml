@@ -3,7 +3,7 @@ info:
   title: Pinata Farcaster API
   version: 1.0.0
 servers:
-  - url: http://{{base_url}}
+  - url: https://api.pinata.cloud/v3/farcaster
 components:
   securitySchemes:
     bearerAuth:
