@@ -171,15 +171,15 @@
       "pages": ["farcaster/fdk"]
     },
     {
-      "group": "Farcaster Api Reference",
+      "group": "Farcaster Api",
       "pages": [
-        "farcaster/api-reference/getting-started",
-        "farcaster/api-reference/endpoint/cast-by-hash",
-        "farcaster/api-reference/endpoint/casts",
-        "farcaster/api-reference/endpoint/channels-list",
-        "farcaster/api-reference/endpoint/channel-by-name",
-        "farcaster/api-reference/endpoint/user-by-fid",
-        "farcaster/api-reference/endpoint/users"
+        "farcaster/farcaster-api/getting-started",
+        "farcaster/farcaster-api/endpoint/cast-by-hash",
+        "farcaster/farcaster-api/endpoint/casts",
+        "farcaster/farcaster-api/endpoint/channels-list",
+        "farcaster/farcaster-api/endpoint/channel-by-name",
+        "farcaster/farcaster-api/endpoint/user-by-fid",
+        "farcaster/farcaster-api/endpoint/users"
       ]
     },
     {
@@ -277,5 +277,12 @@
   },
   "feedback": {
     "suggestEdit": true
+  },
+  "redirects": [
+  {
+    "source": "/farcaster/api-reference/getting-started",
+    "destination": "/farcaster/farcaster-api/getting-started"
   }
+]
+
 }
