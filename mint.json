@@ -280,8 +280,8 @@
   },
   "redirects": [
   {
-    "source": "/farcaster/api-reference/getting-started",
-    "destination": "/farcaster/farcaster-api/getting-started"
+    "source": "/farcaster/api-reference/:slug*",
+    "destination": "/farcaster/farcaster-api/:slug*"
   }
 ]
 
