@@ -164,7 +164,12 @@
     },
     {
       "group": "Get Started",
-      "pages": ["farcaster/introduction", "farcaster/hubs", "farcaster/frames"]
+      "pages": [
+        "farcaster/introduction",
+        "farcaster/farcaster-API",
+        "farcaster/frames",
+        "farcaster/hubs"
+      ]
     },
     {
       "group": "Dev Tools",
@@ -272,10 +277,13 @@
     "suggestEdit": true
   },
   "redirects": [
-  {
-    "source": "/farcaster/api-reference/:slug*",
-    "destination": "/farcaster/farcaster-api/:slug*"
-  }
-]
-
+    {
+      "source": "/farcaster/api-reference/:slug*",
+      "destination": "/farcaster/farcaster-api/:slug*"
+    },
+    {
+      "source": "/farcaster/farcaster-API",
+      "destination": "/farcaster/farcaster-api"
+    }
+  ]
 }
