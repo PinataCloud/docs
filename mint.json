@@ -176,7 +176,7 @@
       "pages": ["farcaster/fdk"]
     },
     {
-      "group": "Farcaster Api",
+      "group": "Farcaster API",
       "pages": [
         "farcaster/farcaster-api/getting-started",
         "farcaster/farcaster-api/endpoint/cast-by-hash",
@@ -185,6 +185,15 @@
         "farcaster/farcaster-api/endpoint/channel-by-name",
         "farcaster/farcaster-api/endpoint/user-by-fid",
         "farcaster/farcaster-api/endpoint/users"
+      ]
+    },
+    {
+      "group": "Frame Analytics API",
+      "pages": [
+        "farcaster/frame-analytics-api/getting-started",
+        "farcaster/frame-analytics-api/send-analytics",
+        "farcaster/frame-analytics-api/get-interactions",
+        "farcaster/frame-analytics-api/get-top-interactions"
       ]
     },
     {

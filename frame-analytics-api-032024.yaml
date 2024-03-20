@@ -1,0 +1,317 @@
+openapi: 3.0.0
+info:
+  title: Frame Analytics
+  version: 1.0.0
+servers:
+  - url: https://api.pinata.cloud/farcaster/frames
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+paths:
+  /interactions:
+    post:
+      tags:
+        - default
+      summary: Send Analytics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                frame_id:
+                  type: string
+                custom_id:
+                  type: string
+                frame_data:
+                  type: object
+                  properties:
+                    untrustedData:
+                      type: object
+                      properties:
+                        fid:
+                          type: integer
+                        url:
+                          type: string
+                        messageHash:
+                          type: string
+                        timestamp:
+                          type: integer
+                        network:
+                          type: integer
+                        buttonIndex:
+                          type: integer
+                        inputText:
+                          type: string
+                        castId:
+                          type: object
+                          properties:
+                            fid:
+                              type: integer
+                            hash:
+                              type: string
+                    trustedData:
+                      type: object
+                      properties:
+                        messageBytes:
+                          type: string
+              required:
+                - frame_id
+                - frame_data
+              example:
+                frame_id: my-custom-frame
+                custom_id: user_123
+                frame_data:
+                  untrustedData:
+                    fid: 2
+                    url: https://fcpolls.com/polls/1
+                    messageHash: '0xd2b1ddc6c88e865a33cb1a565e0058d757042974'
+                    timestamp: 1706243218
+                    network: 1
+                    buttonIndex: 2
+                    inputText: hello world
+                    castId:
+                      fid: 226
+                      hash: '0xa48dd46161d8e57725f5e26e34ec19c13ff7f3b9'
+                  trustedData:
+                    messageBytes: d2b1ddc6c88e865a33cb1a565e0058d757042974...
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 20 Mar 2024 17:07:12 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '4'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: 'true'
+            ETag:
+              schema:
+                type: string
+                example: W/"4-P9ln0Jp0jh8rJtb+Vi5xVaqH6d4"
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+            X-Request-Id:
+              schema:
+                type: string
+                example: df427648df4cdc4abce5c1a746f91a98
+          content:
+            application/json:
+              schema:
+                type: object
+              example: OK
+    get:
+      tags:
+        - default
+      summary: Get Interactions
+      parameters:
+        - name: start_date
+          in: query
+          schema:
+            type: string
+          description: Date format of YYYY-MM-DD HH:MM:SS
+          example: '2024-03-15 00:00:00'
+        - name: end_date
+          in: query
+          schema:
+            type: string
+          description: Date format of YYYY-MM-DD HH:MM:SS
+          example: '2024-03-20 00:00:00'
+        - name: frame_id
+          in: query
+          schema:
+            type: string
+          description: Get interactions for a set frame_id
+          example: froggy
+        - name: button_index
+          in: query
+          schema:
+            type: integer
+          description: Get interactions by button_index
+          example: '1'
+        - name: url
+          in: query
+          schema:
+            type: string
+          description: Get interactions by frame url
+          example: https://frogger-frame.pinata-dev.workers.dev
+        - name: custom_id
+          in: query
+          schema:
+            type: string
+          description: Get interactions by custom_id
+          example: frog
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 20 Mar 2024 17:07:40 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '330'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: 'true'
+            ETag:
+              schema:
+                type: string
+                example: W/"14a-IDj35630JN9rxBlsAUPeGcEhOr0"
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+            X-Request-Id:
+              schema:
+                type: string
+                example: 8cd5f9e3adcbacf36ee15c38fb442334
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                total_interactions: 73
+                total_unique_interactions: 20
+                time_periods:
+                  - period_start_time: '2024-03-15 00:00:00'
+                    interactions: 71
+                    unique_interactions: 18
+                  - period_start_time: '2024-03-17 00:00:00'
+                    interactions: 1
+                    unique_interactions: 1
+                  - period_start_time: '2024-03-18 00:00:00'
+                    interactions: 1
+                    unique_interactions: 1
+  /interactions/top:
+    get:
+      tags:
+        - default
+      summary: Get Top Interactions
+      parameters:
+        - name: start_date
+          in: query
+          schema:
+            type: string
+          description: Date format of YYYY-MM-DD HH:MM:SS
+          example: '2024-03-15 00:00:00'
+        - name: end_date
+          in: query
+          schema:
+            type: string
+          description: Date format of YYYY-MM-DD HH:MM:SS
+          example: '2024-03-20 00:00:00'
+        - name: by
+          in: query
+          schema:
+            type: string
+          description: Filter by button_indes, cast_fid, cast_hash, frame_id, or url
+          example: button_index
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 20 Mar 2024 17:08:50 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '274'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: 'true'
+            ETag:
+              schema:
+                type: string
+                example: W/"112-gSCsogCSn6kstqdiMPmxRdmM2u0"
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+            X-Request-Id:
+              schema:
+                type: string
+                example: cab986bde1bae10a789d8de171c32f39
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - button_index: 1
+                  interaction_count: 832
+                  unique_interactions: 216
+                - button_index: 3
+                  interaction_count: 460
+                  unique_interactions: 84
+                - button_index: 2
+                  interaction_count: 391
+                  unique_interactions: 110
+                - button_index: 4
+                  interaction_count: 22
+                  unique_interactions: 15
