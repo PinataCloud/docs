@@ -53,7 +53,7 @@ If successful you should see something like this!
 
 ## Endpoints Overview
 
-### [/interactions](/farcaster/frame-analytics-api/send-analytics)
+### [`/interactions`](/farcaster/frame-analytics-api/send-analytics)
 
 This endpoint is used for both sending analytics and fetching them for a set of parameters
 
@@ -69,26 +69,27 @@ This endpoint is used for both sending analytics and fetching them for a set of 
 
 <ParamField body="frame_data" type="object" required>
   An object representing the raw payload of an action frame produced by Farcaster.
-```
+```json
 {
-  untrustedData: {
-    fid: 2,
-    url: "https://fcpolls.com/polls/1",
-    messageHash: "0xd2b1ddc6c88e865a33cb1a565e0058d757042974",
-    timestamp: 1706243218,
-    network: 1,
-    buttonIndex: 2,
-    inputText: "hello world", // "" if requested and no input, undefined if input not requested
-    castId: {
-      fid: 226,
-      hash: "0xa48dd46161d8e57725f5e26e34ec19c13ff7f3b9",
-    },
+  "untrustedData": {
+    "fid": 2,
+    "url": "https://fcpolls.com/polls/1",
+    "messageHash": "0xd2b1ddc6c88e865a33cb1a565e0058d757042974",
+    "timestamp": 1706243218,
+    "network": 1,
+    "buttonIndex": 2,
+    "inputText": "hello world",
+    "castId": {
+      "fid": 226,
+      "hash": "0xa48dd46161d8e57725f5e26e34ec19c13ff7f3b9"
+    }
   },
-  trustedData: {
-    messageBytes: "d2b1ddc6c88e865a33cb1a565e0058d757042974...",
-  },
-};
+  "trustedData": {
+    "messageBytes": "d2b1ddc6c88e865a33cb1a565e0058d757042974..."
+  }
+}
 ```
+
 </ParamField>
 
 #### Get Interactions
@@ -117,7 +118,7 @@ This endpoint is used for both sending analytics and fetching them for a set of 
   Filters results by a specified `custom_id` used in the initial post request
 </ParamField>
 
-### [/interactions/top](/farcaster/frame-analytics-api/get-top-interactions)
+### [`/interactions/top`](/farcaster/frame-analytics-api/get-top-interactions)
 
 Instead of fetching the interactions for a specific frame, get results for all frames with analytics in your Pinata account
 
