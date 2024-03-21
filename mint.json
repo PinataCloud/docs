@@ -293,6 +293,10 @@
     {
       "source": "/farcaster/farcaster-API",
       "destination": "/farcaster/farcaster-api"
+    },
+    {
+      "source": "/frameworks",
+      "destination": "/events/frameworks"
     }
   ]
 }
