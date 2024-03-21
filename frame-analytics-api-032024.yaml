@@ -27,7 +27,7 @@ paths:
                   type: string
                 custom_id:
                   type: string
-                frame_data:
+                data:
                   type: object
                   properties:
                     untrustedData:
@@ -61,11 +61,11 @@ paths:
                           type: string
               required:
                 - frame_id
-                - frame_data
+                - data
               example:
                 frame_id: my-custom-frame
                 custom_id: user_123
-                frame_data:
+                data:
                   untrustedData:
                     fid: 2
                     url: https://fcpolls.com/polls/1
