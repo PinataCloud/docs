@@ -188,6 +188,16 @@
       ]
     },
     {
+      "group": "Farcaster Auth",
+      "pages": [
+        "farcaster/farcaster-api/endpoint/signers",
+        "farcaster/farcaster-api/endpoint/sponsored-signers",
+        "farcaster/farcaster-api/endpoint/register-signer-with-warpcast",
+        "farcaster/farcaster-api/endpoint/poll-warpcast-signer",
+        "farcaster/farcaster-api/endpoint/get-signers"
+      ]
+    },
+    {
       "group": "Frame Analytics API",
       "pages": [
         "farcaster/frame-analytics-api/getting-started",
