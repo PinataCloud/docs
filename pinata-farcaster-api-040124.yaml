@@ -356,7 +356,7 @@ paths:
                   properties:
                     text:
                       type: string
-                    parent_url:
+                    parentUrl:
                       type: string
                     embeds:
                       type: array
@@ -376,11 +376,11 @@ paths:
                       type: array
                       items:
                         type: integer
-                    mention_positions:
+                    mentionsPositions:
                       type: array
                       items:
                         type: integer
-                    parent_cast_id:
+                    parentCastId:
                       type: object
                       properties:
                         fid:
@@ -389,13 +389,11 @@ paths:
                           type: string
                 signerId:
                   type: string
-              required:
-                - signerId
               x-examples:
                 Example 1:
                   castAddBody:
                     text: Hello World!
-                    parent_url: 'https://warpcast.com/~/channel/pinata'
+                    parentUrl: 'https://warpcast.com/~/channel/pinata'
                     embeds:
                       - url: 'https://dweb.mypinata.cloud/ipfs/QmYSzs7WczucVrPN2CZcZeEzyGRDrxrFEWGtYA32jz2L3U?filename=sendit.gif'
                       - castId:
@@ -403,9 +401,9 @@ paths:
                           hash: '0xb3668292af912397fad6b8457223e75c04221992'
                     mentions:
                       - 6023
-                    mention_positions:
+                    mentionsPositions:
                       - 2
-                    parent_cast_id:
+                    parentCastId:
                       fid: 6023
                       hash: '0xb3668292af912397fad6b8457223e75c04221992'
                   signerId: e5cf5d84-7671-4402-8df0-84b0efdc24cd
