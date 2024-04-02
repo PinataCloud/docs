@@ -3,7 +3,7 @@ info:
   version: 1.0.0
   title: Pinata Farcaster API
 servers:
-  - url: 'http://{{base_url}}'
+  - url: 'https://api.pinata.cloud/v3/farcaster'
 paths:
   '/casts/{hash}':
     get:
