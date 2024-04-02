@@ -1,0 +1,317 @@
+---
+title: "Getting Started"
+description: "Learn the basics of creating signers for your Farcaster App"
+---
+
+To get started with Farcaster Auth you will need to get a [Pinata API Key](/account-management/api-keys) on a paid Pinata account, which you can view pricing [here](https://pinata.cloud/pricing). 
+
+You will also need an App FID. Generally you would make a fresh Farcaster account for your app, like [@photocast](https://warpcast.com/photocast) which as an FID of `327481`. 
+
+<video
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="w-full aspect-video"
+  src="https://docs.mypinata.cloud/ipfs/bafybeidv3kx5vgzwv2mmn2cqjafciljlct6wshi3sczikfxnewata6cfce"
+></video>
+
+If you are using non-sponsored signers you will also need the mnemoic seed phrase for your app account. This is usually provided to you when creating the account for backup purposes. If you had an env file it might look something kike this:
+```
+FARCASTER_DEVELOPER_MNEMONIC=pinata confetti ipfs farcaster cloud developer send it
+```
+
+### Sponsored Signer Flow
+
+<Steps>
+
+<Step title="Setup ENV variables">
+As stated previously you will need to make sure you have your App FID somewhere secure where you can access them in the following steps. Doing in Javascript might look something like this. 
+
+<Info>
+The developer Farcaster account mnemonic is not needed for sponsored signers
+</Info>
+
+<CodeGroup>
+
+```plaintext .env
+FARCASTER_DEVELOPER_FID=12356
+```
+
+```typescript index.ts
+const appFid = process.env.FARCASTER_DEVELOPER_FID;
+```
+
+</CodeGroup>
+
+</Step>
+
+<Step title="Create Signer with `POST /sponsored_signers`">
+
+All we need to create a sponsored signer is our App FID and our Pinata JWT
+
+```typescript index.ts
+const appFid = process.env.FARCASTER_DEVELOPER_FID;
+
+async function createSponsoredSigner() {
+  const res = await fetch("https://api.pinata.cloud/v3/farcaster/sponsored_signers", {
+    method: "POST",
+    headers: {
+      'Content-Type': "application/json",
+      "Authorization": `Bearer YOUR_PINATA_JWT`
+    },
+    body: JSON.stringify({
+      app_fid: parseInt(appFid, 10)
+    })
+  });
+
+  const signerInfo: any = await res.json();
+  const { 
+    signer_id,
+    token,
+    deep_link_url,
+    status
+  } = signerInfo.data
+  return { signer_id, token, deep_link_url, status }
+}
+```
+
+</Step>
+
+<Step title="Poll Signer for Approval Status">
+
+At this point we should immediately start polling the signer, waiting for the user to approve the key. Once they do we'll get a response back from Warpcast that will register the key with that user's account and make it accessible via Farcaster Auth. To do that we'll use `poll_warpcast_signer` with a query parameter of `token` that's provided by the previous request to `sponsored_signers`. 
+
+```typescript index.ts
+async function pollSigner(fid: string){
+  const pollSigner = await fetch(`https://api.pinata.cloud/v3/farcaster/poll_warpcast_signer?token=${warpcastPayload.data.token}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': "application/json",
+      "Authorization": `Bearer YOUR_PINATA_JWT`
+    }
+  })
+  const pollSignerRes = awwait pollSigner.json()
+  return pollSignerRes.data.result
+}
+```
+
+If successful you should get a response with a `completed` state, at which point you can now use the `signer_id` returned in the Register Signer step.
+
+</Step>
+
+<Step title="Get Signers">
+
+After registering you can get the `signer_id` at any point using `GET /signers` endpoint with a query parameter of `fid` if you need to filter the results. 
+
+```typescript index.ts
+async function getSigners(fid?: number){
+  try {
+    const req = await fetch(`https://api.pinata.cloud/v3/farcaster/signers?fid=${fid}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer YOUR_PINATA_JWT`,
+      }
+    });
+    const res = await req.json();
+    const resultData = res.data
+    return resultData
+  } catch (error) {
+    throw error;
+  }
+};
+```
+
+With the `signer_id` you can then use it in other API calls like [`POST /casts`](/farcaster/farcaster-api/send-cast) to send a cast.
+
+</Step>
+</Steps>
+
+
+### Non-Sponsored Signer Flow
+
+<Steps>
+
+<Step title="Setup ENV variables">
+
+As stated previously you will need to make sure you have your App FID and App mnemomic phrase somewhere secure where you can access them in the following steps. Doing in Javascript might look something like this. 
+
+<CodeGroup>
+
+```plaintext .env
+FARCASTER_DEVELOPER_FID=12356
+FARCASTER_DEVELOPER_MNEMONIC=pinata confetti ipfs farcaster cloud developer send
+```
+
+```typescript index.ts
+const appFid = process.env.FARCASTER_DEVELOPER_FID;
+const account = mnemonicToAccount(
+  process.env.FARCASTER_DEVELOPER_MNEMONIC
+);
+```
+
+</CodeGroup>
+
+</Step>
+
+<Step title="Create Signer with `POST /signers`">
+After declaring some types and importing `viem/accounts` we can declare the constants and start the process of creating a signer.
+
+```typescript index.ts
+import { mnemonicToAccount } from "viem/accounts";
+
+const SIGNED_KEY_REQUEST_VALIDATOR_EIP_712_DOMAIN = {
+  name: "Farcaster SignedKeyRequestValidator",
+  version: "1",
+  chainId: 10,
+  verifyingContract: "0x00000000fc700472606ed4fa22623acf62c60553",
+} as const;
+
+const SIGNED_KEY_REQUEST_TYPE = [
+  { name: "requestFid", type: "uint256" },
+  { name: "key", type: "bytes" },
+  { name: "deadline", type: "uint256" },
+] as const;
+
+const appFid = process.env.FARCASTER_DEVELOPER_FID;
+const account = mnemonicToAccount(
+  process.env.FARCASTER_DEVELOPER_MNEMONIC
+);
+
+async function createSigner() {
+  const res = await fetch("https://api.pinata.cloud/v3/farcaster/signers", {
+    method: "POST",
+    headers: {
+      'Content-Type': "application/json",
+      "Authorization": `Bearer YOUR_PINATA_JWT`
+    },
+    body: JSON.stringify({
+      app_fid: parseInt(appFid, 10)
+    })
+  });
+
+  const signerInfo: any = await res.json();
+  console.log(signerInfo)
+  const { data }: { data: { signer_uuid: string, public_key: string, signer_approved: string } } = signerInfo;
+}
+```
+</Step>
+
+<Step title="Sign Key Provided by Farcaster Auth">
+
+Now that the key is created we will need to sign the key with our developer Farcaster account
+
+```typescript index.ts
+/// previous code
+const deadline = Math.floor(Date.now() / 1000) + 86400; // signature is valid for 1 day
+const requestFid = parseInt(appFid);
+const signature = await account.signTypedData({
+  domain: SIGNED_KEY_REQUEST_VALIDATOR_EIP_712_DOMAIN,
+  types: {
+    SignedKeyRequest: SIGNED_KEY_REQUEST_TYPE,
+  },
+  primaryType: "SignedKeyRequest",
+  message: {
+    requestFid: BigInt(appFid),
+    key: `0x${data.public_key}`,
+    deadline: BigInt(deadline),
+  }
+});
+```
+
+</Step>
+
+<Step title="Register Signer with Warpcast">
+
+Once the key is signed we can now make a request to Warpcast to register the key. This is where we will get a Farcaster deep link (`farcaster://`) that we can have the user either click on or scan with a QR code that will open the Warpcast app for them to approve the signer.
+
+<Info>
+Since this is non-sponsored managed signers the user will need to pay warps at least once. After that the key is linked to your Pinata account and remains active until the usere revokes it.
+</Info>
+
+```typescript index.ts
+// previous code
+
+const registerResponse = await fetch(`https://api.pinata.cloud/v3/farcaster/register_signer_with_warpcast`, {
+  method: "POST",
+  headers: {
+    'Content-Type': "application/json",
+    "Authorization": `Bearer YOUR_PINATA_JWT`
+  },
+  body: JSON.stringify({
+    signer_id: data.signer_uuid,
+    signature: signature,
+    deadline: deadline,
+    app_fid: requestFid,
+    app_address: account.address
+  })
+})
+
+const warpcastPayload = await registerResponse.json()
+```
+
+</Step>
+
+<Step title="Poll Signer for Approval Status">
+
+At this point we should immediately start polling the signer, waiting for the user to approve the key. Once they do we'll get a response back from Warpcast that will register the key with that user's account and make it accessible via Farcaster Auth. To do that we'll use `poll_warpcast_signer` with a query parameter of `token` that's provided by the previous `warpcastPayload`. 
+
+```typescript index.ts
+// Previous code...
+
+const pollSigner = await fetch(`https://api.pinata.cloud/v3/farcaster/poll_warpcast_signer?token=${warpcastPayload.data.token}`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': "application/json",
+    "Authorization": `Bearer YOUR_PINATA_JWT`
+  }
+})
+const pollSignerRes = awwait pollSigner.json()
+return pollSignerRes.data.result
+```
+
+If successful you should get a response with a `completed` state, at which point you can now use the `signer_id` returned in the Register Signer step.
+
+</Step>
+
+<Step title="Get Signers">
+
+After registering you can get the `signer_id` at any point using `GET /signers` endpoint with a query parameter of `fid` if you need to filter the results. 
+
+```typescript index.ts
+async function getSigners(fid?: number){
+  try {
+    const req = await fetch(`https://api.pinata.cloud/v3/farcaster/signers?fid=${fid}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer YOUR_PINATA_JWT`,
+      }
+    });
+    const res = await req.json();
+    const resultData = res.data
+    return resultData
+  } catch (error) {
+    throw error;
+  }
+};
+```
+
+With the `signer_id` you can then use it in other API calls like [`POST /casts`](/farcaster/farcaster-api/send-cast) to send a cast.
+
+```bash
+curl --location 'https://api.pinata.cloud/v3/farcaster/casts' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR_PINATA_JWT' \
+--data '{
+  "castAddBody": {
+    "text": "Hello World!",
+    "parentUrl": "https://warpcast.com/~/channel/pinata"
+  },
+  "signerId": "SIGNER_ID"
+}'
+```
+</Step>
+</Steps>
+
