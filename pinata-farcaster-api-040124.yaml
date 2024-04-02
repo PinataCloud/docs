@@ -3,7 +3,7 @@ info:
   version: 1.0.0
   title: Pinata Farcaster API
 servers:
-  - url: 'https://api.pinata.cloud/v3/farcaster'
+  - url: 'http://{{base_url}}'
 paths:
   '/casts/{hash}':
     get:
@@ -28,47 +28,6 @@ paths:
             application/json:
               schema:
                 type: object
-                x-examples:
-                  Example 1:
-                    data:
-                      author:
-                        bio: CryptoUsuario del Web3 y entusiasta DeFi.
-                        custody_address: '0x29b9603827ed446bd4e1d2dada0e5aa97e7a455b'
-                        display_name: "Villawolf \U0001F3A9"
-                        fid: 324525
-                        follower_count: 349
-                        following_count: 116
-                        pfp_url: 'https://i.imgur.com/bX5CFaN.jpg'
-                        recovery_address: '0x00000000fcb080a4d6c39a9354da9eb9bc104cd7'
-                        uid: 324523
-                        username: villawolf.eth
-                        verifications:
-                          - '0xa5d7897e2779f7e5c5be699d41a7b42f9ce0a5c2'
-                      content: "Si eres Ethereum love \U0001F60D como yo, esta web no debe faltar en tu cajita de herramientas  https://ultrasound.money ETH \U0001F680\U0001F680"
-                      embeds:
-                        - url: 'https://i.imgur.com/6CBzQaJ.png'
-                        - url: 'https://ultrasound.money'
-                      fid: 324525
-                      hash: '0xd3821c9019b42b40b5c173679093e7c19196e379'
-                      mentioned_profiles: []
-                      reactions:
-                        likes:
-                          - fid: 7415
-                            fname: franklynr
-                          - fid: 329015
-                            fname: manry
-                          - fid: 10981
-                            fname: xxtarhxx
-                        recasts:
-                          - fid: 7415
-                            fname: franklynr
-                          - fid: 329015
-                            fname: manry
-                      replies:
-                        count: 1
-                      root_parent_url: 'https://farcaster.group/spanish'
-                      short_hash: '0xd3821c90'
-                      timestamp: '2024-02-22T13:35:33Z'
               examples:
                 default:
                   value:
@@ -146,7 +105,89 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
+        - url: 'http://{{base_url}}'
+    delete:
+      tags:
+        - default
+      summary: Delete Cast
+      parameters:
+        - name: signerId
+          in: query
+          description: Signer ID for the author of the cast
+          schema:
+            type: string
+            example: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+          examples:
+            default:
+              value: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+        - name: hash
+          in: path
+          description: Hash for the cast to be deleted
+          required: true
+          schema:
+            type: string
+            example: '0xf4da10b7e1390d7b487ee6d343f51e9061212563'
+          examples:
+            default:
+              value: '0xf4da10b7e1390d7b487ee6d343f51e9061212563'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                default:
+                  value:
+                    data:
+                      data:
+                        type: MESSAGE_TYPE_CAST_REMOVE
+                        fid: 401191
+                        timestamp: 102563506
+                        network: FARCASTER_NETWORK_MAINNET
+                        castAddBody:
+                          embedsDeprecated: null
+                          mentions: null
+                      hash: '0x1ccade8ff46e21ddca30fdcbe0630265e2da9c7e'
+                      hashScheme: HASH_SCHEME_BLAKE3
+                      signature: 9byndiIE1CL62dYMhcsEQLxIKa1m4r+3Q3XZJpxFBwxn/CL+qHohD7ugFl3yru5ng3p08RJRbo+xzYYFtQqaDw==
+                      signatureScheme: SIGNATURE_SCHEME_ED25519
+                      signer: '0x86367a36c3c181c46acdc6027109dbaa75c5fbc97c500af23f1ea8c987f12375'
+                      dataBytes: CAIQp74YGLL98zAgATIWChT02hC34TkNe0h+5tND9R6QYSElYw==
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+                example: '*'
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+                example: 'GET, POST, PUT, PATCH, DELETE, OPTIONS'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            X-Request-Id:
+              schema:
+                type: string
+                example: 0c74d761-be9c-4436-bf38-b88830b19b2e
+            Date:
+              schema:
+                type: string
+                example: 'Tue, 02 Apr 2024 01:51:46 GMT'
+            Content-Length:
+              schema:
+                type: integer
+                example: 562
+      security:
+        - bearerAuth: []
+      servers:
+        - url: 'http://{{base_url}}'
   /casts:
     get:
       tags:
@@ -223,53 +264,6 @@ paths:
             application/json:
               schema:
                 type: object
-                x-examples:
-                  Example 1:
-                    data:
-                      casts:
-                        - author:
-                            bio: 'Writer. Building @pinatacloud. Tinkering with a Farcaster native alternative to GoodReads: https://readcast.xyz \ https://polluterofminds.com'
-                            custody_address: '0x7f9a6992a54dc2f23f1105921715bd61811e5b71'
-                            display_name: Justin Hunter
-                            fid: 4823
-                            follower_count: 13623
-                            following_count: 844
-                            pfp_url: 'https://i.seadn.io/gae/lhGgt7yK1JiBVYz_HBxcAmYLRtP03aw5xKX4FgmFT9Ai7kLD5egzlLvb0lkuRNl28shtjr07DC8IHzLUkTqlWUMndUzC9R5_MSxH3g?w=500&auto=format'
-                            recovery_address: '0x00000000fcb080a4d6c39a9354da9eb9bc104cd7'
-                            uid: 4823
-                            username: polluterofminds
-                            verifications:
-                              - '0x1612c6dff0eb5811108b709a30d8150495ce9cc5'
-                              - '0xcdcdc174901b12e87cc82471a2a2bd6181c89392'
-                          content: Noooooooooo
-                          embeds: []
-                          fid: 4823
-                          hash: '0x9733fce86e174d1b2d8ba614c7cc0e2ba5372a97'
-                          mentioned_profiles: []
-                          parent_author:
-                            bio: '@supercast'
-                            custody_address: '0x0b28a373fc8d92669aefb420499e74ce2dd5d356'
-                            display_name: ​woj — q/dau
-                            fid: 680
-                            follower_count: 62160
-                            following_count: 777
-                            pfp_url: 'https://peach-changing-limpet-80.mypinata.cloud/ipfs/QmZenqRfBERmodRVUHhLaYvYVsRasihVcMY2gqUP2tX7t2?filename=profile_picture.png'
-                            recovery_address: '0x00000000fcb080a4d6c39a9354da9eb9bc104cd7'
-                            uid: 680
-                            username: woj.eth
-                            verifications:
-                              - '0x1aa3096e2bbacae10c316e7282947f635d461e3c'
-                              - '0xf417ace7b13c0ef4fcb5548390a450a4b75d3eb3'
-                          parent_hash: '0x0ab851ba8524eedf9e164b55f6eeec751f74b539'
-                          parent_url: null
-                          reactions: {}
-                          replies:
-                            count: 1
-                          root_parent_url: 'https://warpcast.com/~/channel/frames'
-                          short_hash: '0x9733fce8'
-                          thread_hash: '0x317904d560a9acf1d25888322dd8c49afd78eb1f'
-                          timestamp: '2024-03-08T21:12:34Z'
-                      next_page_token: eyJvZmZzZXQiOiIwIn0
               examples:
                 default:
                   value:
@@ -346,7 +340,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
+        - url: 'http://{{base_url}}'
     post:
       tags:
         - default
@@ -364,21 +358,6 @@ paths:
                       type: string
                     parent_url:
                       type: string
-                    mentions:
-                      type: array
-                      items:
-                        type: integer
-                    parent_cast_id:
-                      type: object
-                      properties:
-                        fid:
-                          type: integer
-                        hash:
-                          type: string
-                    mentions_positions:
-                      type: array
-                      items:
-                        type: integer
                     embeds:
                       type: array
                       items:
@@ -393,6 +372,21 @@ paths:
                                 type: integer
                               hash:
                                 type: string
+                    mentions:
+                      type: array
+                      items:
+                        type: integer
+                    mention_positions:
+                      type: array
+                      items:
+                        type: integer
+                    parent_cast_id:
+                      type: object
+                      properties:
+                        fid:
+                          type: integer
+                        hash:
+                          type: string
                 signerId:
                   type: string
               required:
@@ -402,20 +396,18 @@ paths:
                   castAddBody:
                     text: Hello World!
                     parent_url: 'https://warpcast.com/~/channel/pinata'
-                    mentions:
-                      - 6023
-                      - 4835
-                    parent_cast_id:
-                      fid: 6023
-                      hash: '0xb3668292af912397fad6b8457223e75c04221992'
-                    mentions_positions:
-                      - 2
-                      - 5
                     embeds:
                       - url: 'https://dweb.mypinata.cloud/ipfs/QmYSzs7WczucVrPN2CZcZeEzyGRDrxrFEWGtYA32jz2L3U?filename=sendit.gif'
                       - castId:
                           fid: 6023
                           hash: '0xb3668292af912397fad6b8457223e75c04221992'
+                    mentions:
+                      - 6023
+                    mention_positions:
+                      - 2
+                    parent_cast_id:
+                      fid: 6023
+                      hash: '0xb3668292af912397fad6b8457223e75c04221992'
                   signerId: e5cf5d84-7671-4402-8df0-84b0efdc24cd
       responses:
         '200':
@@ -477,119 +469,43 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
-    put:
-      tags:
-        - default
-      summary: Delete Cast
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                hash:
-                  type: string
-                signerId:
-                  type: string
-              required:
-                - hash
-                - signerId
-              x-examples:
-                Example 1:
-                  hash: '0xb3668292af912397fad6b8457223e75c04221992'
-                  signerId: e5cf5d84-7671-4402-8df0-84b0efdc24cd
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-              examples:
-                default:
-                  value:
-                    data:
-                      data:
-                        type: MESSAGE_TYPE_CAST_REMOVE
-                        fid: 401191
-                        timestamp: 102506032
-                        network: FARCASTER_NETWORK_MAINNET
-                        castAddBody:
-                          embedsDeprecated: null
-                          mentions: null
-                      hash: '0xbbdc586741dbbd28fbea4edc52a3c759b2042f42'
-                      hashScheme: HASH_SCHEME_BLAKE3
-                      signature: RkxoDJAlD0pYfTYHgxG0V+ZNTosUREbtwHtGkSPjWFyxM+vnAxb0OF8NOCAx/7FN9eIK+ASWoc1uU+rgMO/nBw==
-                      signatureScheme: SIGNATURE_SCHEME_ED25519
-                      signer: '0x86367a36c3c181c46acdc6027109dbaa75c5fbc97c500af23f1ea8c987f12375'
-                      dataBytes: CAIQp74YGLC88DAgATIWChSzZoKSr5Ejl/rWuEVyI+dcBCIZkg==
-          headers:
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-                example: '*'
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-                example: 'GET, POST, PUT, PATCH, DELETE, OPTIONS'
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-                example: '*'
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            X-Request-Id:
-              schema:
-                type: string
-                example: 32211e24-4f42-408c-8860-86a7b0e5e518
-            Date:
-              schema:
-                type: string
-                example: 'Mon, 01 Apr 2024 09:53:52 GMT'
-            Content-Length:
-              schema:
-                type: integer
-                example: 562
-      security:
-        - bearerAuth: []
-      servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
-  /reactions:
+        - url: 'http://{{base_url}}'
+  '/casts/{hash}/reactions/{type}':
     post:
       tags:
         - default
       summary: Add Reaction to Cast
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                castId:
-                  type: object
-                  properties:
-                    hash:
-                      type: string
-                    fid:
-                      type: integer
-                reaction:
-                  type: string
-                signerId:
-                  type: string
-              required:
-                - castId
-                - reaction
-                - signerId
-              x-examples:
-                Example 1:
-                  castId:
-                    hash: '0x53c1ad51cc6ab0f3b7d51b1d8a4da0fb642cb3a8'
-                    fid: 6023
-                  reaction: like
-                  signerId: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+      parameters:
+        - name: signerId
+          in: query
+          description: Signer ID for the user that will react to the cast
+          required: true
+          schema:
+            type: string
+            example: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+          examples:
+            default:
+              value: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+        - name: hash
+          in: path
+          description: Hash for the target cast
+          required: true
+          schema:
+            type: string
+            example: '0x5e6116e836746bb0264b217435f6668d9c9259bd'
+          examples:
+            default:
+              value: '0x5e6116e836746bb0264b217435f6668d9c9259bd'
+        - name: type
+          in: path
+          description: 'The type of reaction, can be either "like" or "recast"'
+          required: true
+          schema:
+            type: string
+            example: like
+          examples:
+            default:
+              value: like
       responses:
         '200':
           description: OK
@@ -602,19 +518,19 @@ paths:
                   value:
                     data:
                       data:
-                        type: MESSAGE_TYPE_CAST_REMOVE
+                        type: MESSAGE_TYPE_REACTION_ADD
                         fid: 401191
-                        timestamp: 102506032
+                        timestamp: 102564007
                         network: FARCASTER_NETWORK_MAINNET
                         castAddBody:
                           embedsDeprecated: null
                           mentions: null
-                      hash: '0xbbdc586741dbbd28fbea4edc52a3c759b2042f42'
+                      hash: '0xe1d3327a7d00a23e76207bbf8ef6ca17b9c39d9c'
                       hashScheme: HASH_SCHEME_BLAKE3
-                      signature: RkxoDJAlD0pYfTYHgxG0V+ZNTosUREbtwHtGkSPjWFyxM+vnAxb0OF8NOCAx/7FN9eIK+ASWoc1uU+rgMO/nBw==
+                      signature: AYW+pBiRxszYDilJ2RUkeNarIgzUDFpuYc5cSlGk2lSgVa4yubiqfqArsqHxIXtzjRgHODN8E8qGClyuxMkbAg==
                       signatureScheme: SIGNATURE_SCHEME_ED25519
                       signer: '0x86367a36c3c181c46acdc6027109dbaa75c5fbc97c500af23f1ea8c987f12375'
-                      dataBytes: CAIQp74YGLC88DAgATIWChSzZoKSr5Ejl/rWuEVyI+dcBCIZkg==
+                      dataBytes: CAMQp74YGKeB9DAgATodCAESGQiHLxIUXmEW6DZ0a7AmSyF0NfZmjZySWb0=
           headers:
             Access-Control-Allow-Headers:
               schema:
@@ -635,51 +551,54 @@ paths:
             X-Request-Id:
               schema:
                 type: string
-                example: 32211e24-4f42-408c-8860-86a7b0e5e518
+                example: 5a725c5b-e124-4244-8854-2b35610fb2e4
             Date:
               schema:
                 type: string
-                example: 'Mon, 01 Apr 2024 09:53:52 GMT'
+                example: 'Tue, 02 Apr 2024 02:00:07 GMT'
             Content-Length:
               schema:
                 type: integer
-                example: 562
+                example: 571
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
-    put:
+        - url: 'http://{{base_url}}'
+    delete:
       tags:
         - default
       summary: Delete Reaction to Cast
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                castId:
-                  type: object
-                  properties:
-                    hash:
-                      type: string
-                    fid:
-                      type: integer
-                reaction:
-                  type: string
-                signerId:
-                  type: string
-              required:
-                - castId
-                - reaction
-                - signerId
-              x-examples:
-                Example 1:
-                  castId:
-                    hash: '0x53c1ad51cc6ab0f3b7d51b1d8a4da0fb642cb3a8'
-                    fid: 6023
-                  reaction: like
-                  signerId: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+      parameters:
+        - name: signerId
+          in: query
+          description: Signer ID for the user that will remove reaction to the cast
+          required: true
+          schema:
+            type: string
+            example: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+          examples:
+            default:
+              value: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+        - name: hash
+          in: path
+          description: Hash for the target cast
+          required: true
+          schema:
+            type: string
+            example: '0x5e6116e836746bb0264b217435f6668d9c9259bd'
+          examples:
+            default:
+              value: '0x5e6116e836746bb0264b217435f6668d9c9259bd'
+        - name: type
+          in: path
+          description: 'The type of reaction, can be either "like" or "recast"'
+          required: true
+          schema:
+            type: string
+            example: like
+          examples:
+            default:
+              value: like
       responses:
         '200':
           description: OK
@@ -694,14 +613,17 @@ paths:
                       data:
                         type: MESSAGE_TYPE_REACTION_REMOVE
                         fid: 401191
-                        timestamp: 102507772
+                        timestamp: 102564096
                         network: FARCASTER_NETWORK_MAINNET
-                      hash: '0x956c2673c43dfc4a495e2989bc64024417072e40'
+                        castAddBody:
+                          embedsDeprecated: null
+                          mentions: null
+                      hash: '0x6df38d410d8c63d3dd9514ffc463d0b7690194c5'
                       hashScheme: HASH_SCHEME_BLAKE3
-                      signature: ttMhgeUdyn7X/T0qMjPhsdo+73hkmE+3yuMDj3qx9FptDZCN6DYO1q6UCGJyDrV+me1M1kuEgyj/S0Iqy/mkBw==
+                      signature: CKC9iuQ2UbJDdiOF49ZuBkXuwaAZDyYjDBnPjuVrM9hnNP2jO3e19icwqh+kgCvxoTExahvYkBVBDA38pcwmBQ==
                       signatureScheme: SIGNATURE_SCHEME_ED25519
                       signer: '0x86367a36c3c181c46acdc6027109dbaa75c5fbc97c500af23f1ea8c987f12375'
-                      dataBytes: CAQQp74YGPzJ8DAgATodCAESGQiHLxIUU8GtUcxqsPO31Rsdik2g+2Qss6g=
+                      dataBytes: CAQQp74YGICC9DAgATodCAESGQiHLxIUXmEW6DZ0a7AmSyF0NfZmjZySWb0=
           headers:
             Access-Control-Allow-Headers:
               schema:
@@ -722,19 +644,19 @@ paths:
             X-Request-Id:
               schema:
                 type: string
-                example: be3132a5-fe35-4a8e-9e58-f4c870778498
+                example: 7e7f6589-7038-4348-b428-e3f80eecaed2
             Date:
               schema:
                 type: string
-                example: 'Mon, 01 Apr 2024 10:22:52 GMT'
+                example: 'Tue, 02 Apr 2024 02:01:36 GMT'
             Content-Length:
               schema:
                 type: integer
-                example: 518
+                example: 574
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
+        - url: 'http://{{base_url}}'
   /channels:
     get:
       tags:
@@ -807,7 +729,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
+        - url: 'http://{{base_url}}'
   '/channels/{name}':
     get:
       tags:
@@ -870,7 +792,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
+        - url: 'http://{{base_url}}'
   '/users/{fid}':
     get:
       tags:
@@ -938,7 +860,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
+        - url: 'http://{{base_url}}'
   /users:
     get:
       tags:
@@ -1049,29 +971,33 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
-  /follow:
+        - url: 'http://{{base_url}}'
+  '/follow/{fid}':
     post:
       tags:
         - default
       summary: Follow FID
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                fid:
-                  type: integer
-                signerId:
-                  type: string
-              required:
-                - fid
-                - signerId
-              x-examples:
-                Example 1:
-                  fid: 6023
-                  signerId: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+      parameters:
+        - name: signerId
+          in: query
+          description: Signer ID for the user following the target FID
+          required: true
+          schema:
+            type: string
+            example: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+          examples:
+            default:
+              value: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+        - name: fid
+          in: path
+          description: Target FID to follow
+          required: true
+          schema:
+            type: integer
+            example: 6023
+          examples:
+            default:
+              value: 6023
       responses:
         '200':
           description: OK
@@ -1086,14 +1012,14 @@ paths:
                       data:
                         type: MESSAGE_TYPE_LINK_ADD
                         fid: 401191
-                        timestamp: 102507912
+                        timestamp: 102564169
                         network: FARCASTER_NETWORK_MAINNET
-                      hash: '0x07bc8b44597c37617cc853aa50a81ced1a1bff69'
+                      hash: '0xc7c8f734f819f1572b4191e003409497a1e71467'
                       hashScheme: HASH_SCHEME_BLAKE3
-                      signature: b+Fsum0ZEAWSLDoh/wMkWJ53Vn06RCQP4RJZL04KFm2hjjw4MTeoXrfbsmCEtk5doPlUuWe6U22h40PDr/t+DQ==
+                      signature: 9ZnWcrrhNKvUbwR/oYnvKw4wnNoU2+LXyTnpQTJm3GChRN7FfIO5oN/u5QIPP7FIlaq8MwnoIU5EbXzWWij9DQ==
                       signatureScheme: SIGNATURE_SCHEME_ED25519
                       signer: '0x86367a36c3c181c46acdc6027109dbaa75c5fbc97c500af23f1ea8c987f12375'
-                      dataBytes: CAUQp74YGIjL8DAgAXIQCgZmb2xsb3cQiMvwMBiHLw==
+                      dataBytes: CAUQp74YGMmC9DAgAXIQCgZmb2xsb3cQyYL0MBiHLw==
           headers:
             Access-Control-Allow-Headers:
               schema:
@@ -1114,11 +1040,11 @@ paths:
             X-Request-Id:
               schema:
                 type: string
-                example: ede9dea0-c5c7-4421-8b9a-6147fd352e2e
+                example: 580e2592-a5bf-49dd-a3cb-96ed355f1389
             Date:
               schema:
                 type: string
-                example: 'Mon, 01 Apr 2024 10:25:12 GMT'
+                example: 'Tue, 02 Apr 2024 02:02:49 GMT'
             Content-Length:
               schema:
                 type: integer
@@ -1126,28 +1052,32 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
-    put:
+        - url: 'http://{{base_url}}'
+    delete:
       tags:
         - default
       summary: Unfollow FID
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                fid:
-                  type: integer
-                signerId:
-                  type: string
-              required:
-                - fid
-                - signerId
-              x-examples:
-                Example 1:
-                  fid: 6023
-                  signerId: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+      parameters:
+        - name: signerId
+          in: query
+          description: Signer ID for the user unfollowing the target FID
+          required: true
+          schema:
+            type: string
+            example: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+          examples:
+            default:
+              value: e5cf5d84-7671-4402-8df0-84b0efdc24cd
+        - name: fid
+          in: path
+          description: Target FID to unfollow
+          required: true
+          schema:
+            type: integer
+            example: 6023
+          examples:
+            default:
+              value: 6023
       responses:
         '200':
           description: OK
@@ -1162,14 +1092,14 @@ paths:
                       data:
                         type: MESSAGE_TYPE_LINK_REMOVE
                         fid: 401191
-                        timestamp: 102507949
+                        timestamp: 102564226
                         network: FARCASTER_NETWORK_MAINNET
-                      hash: '0xf89774bd734a42247ea46b8b46ffc08a56d20a1a'
+                      hash: '0x9d1828cb2e932eeec479882e65cc919872222781'
                       hashScheme: HASH_SCHEME_BLAKE3
-                      signature: qb+WdbjC9D5VlmyBiZ7YQFM5omOC1pCJS5nIhH4B5n+QHKSdhIFk+VUm9Gx5tgFMMmOOFG1Ov8c7M57DBAKUCg==
+                      signature: jubw/Q9LSRMSdyoHbZs4NGCsLsuELCovQG+WDu1ix3ZV6M2ItVYeyrG86r0V8O7yCcl9K5evickDhvz6kANsAA==
                       signatureScheme: SIGNATURE_SCHEME_ED25519
                       signer: '0x86367a36c3c181c46acdc6027109dbaa75c5fbc97c500af23f1ea8c987f12375'
-                      dataBytes: CAYQp74YGK3L8DAgAXISCgh1bmZvbGxvdxCty/AwGIcv
+                      dataBytes: CAYQp74YGIKD9DAgAXISCgh1bmZvbGxvdxCCg/QwGIcv
           headers:
             Access-Control-Allow-Headers:
               schema:
@@ -1190,11 +1120,11 @@ paths:
             X-Request-Id:
               schema:
                 type: string
-                example: db667f32-cc73-48c4-82a2-002d6793b165
+                example: 6847ad65-cf81-4d34-93a2-47b624dcf10d
             Date:
               schema:
                 type: string
-                example: 'Mon, 01 Apr 2024 10:25:49 GMT'
+                example: 'Tue, 02 Apr 2024 02:03:46 GMT'
             Content-Length:
               schema:
                 type: integer
@@ -1202,7 +1132,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
+        - url: 'http://{{base_url}}'
   /signers:
     post:
       tags:
@@ -1216,8 +1146,6 @@ paths:
               properties:
                 app_fid:
                   type: integer
-              required:
-                - app_fid
               x-examples:
                 Example 1:
                   app_fid: 6023
@@ -1275,7 +1203,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
+        - url: 'http://{{base_url}}'
     get:
       tags:
         - default
@@ -1349,7 +1277,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
+        - url: 'http://{{base_url}}'
   /register_signer_with_warpcast:
     post:
       tags:
@@ -1371,12 +1299,6 @@ paths:
                   type: integer
                 app_address:
                   type: string
-              required:
-                - signer_id
-                - signature
-                - deadline
-                - app_fid
-                - app_address
               x-examples:
                 Example 1:
                   signer_id: ea79206f-228e-4ca6-82e6-95e6acc76860
@@ -1439,7 +1361,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
+        - url: 'http://{{base_url}}'
   /sponsored_signers:
     post:
       tags:
@@ -1453,8 +1375,6 @@ paths:
               properties:
                 app_fid:
                   type: integer
-              required:
-                - app_fid
               x-examples:
                 Example 1:
                   app_fid: 6023
@@ -1513,7 +1433,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
+        - url: 'http://{{base_url}}'
   /poll_warpcast_signer:
     post:
       tags:
@@ -1592,7 +1512,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
+        - url: 'http://{{base_url}}'
 components:
   securitySchemes:
     bearerAuth:
