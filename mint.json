@@ -169,7 +169,8 @@
         "farcaster/farcaster-auth",
         "farcaster/farcaster-API",
         "farcaster/frames",
-        "farcaster/hubs"
+        "farcaster/hubs",
+        "farcaster/fc-dev-calls/index"
       ]
     },
     {
