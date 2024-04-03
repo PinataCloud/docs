@@ -182,8 +182,14 @@
         "farcaster/farcaster-api/getting-started",
         "farcaster/farcaster-api/endpoint/cast-by-hash",
         "farcaster/farcaster-api/endpoint/casts",
+        "farcaster/farcaster-api/endpoint/send-cast",
+        "farcaster/farcaster-api/endpoint/delete-cast",
+        "farcaster/farcaster-api/endpoint/add-reaction-to-cast",
+        "farcaster/farcaster-api/endpoint/delete-reaction-to-cast",
         "farcaster/farcaster-api/endpoint/channels-list",
         "farcaster/farcaster-api/endpoint/channel-by-name",
+        "farcaster/farcaster-api/endpoint/follow-fid",
+        "farcaster/farcaster-api/endpoint/unfollow-fid",
         "farcaster/farcaster-api/endpoint/user-by-fid",
         "farcaster/farcaster-api/endpoint/users"
       ]
