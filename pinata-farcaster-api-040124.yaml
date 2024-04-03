@@ -105,7 +105,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
     delete:
       tags:
         - default
@@ -187,7 +187,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
   /casts:
     get:
       tags:
@@ -340,7 +340,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
     post:
       tags:
         - default
@@ -467,7 +467,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
   '/casts/{hash}/reactions/{type}':
     post:
       tags:
@@ -561,7 +561,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
     delete:
       tags:
         - default
@@ -654,7 +654,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
   /channels:
     get:
       tags:
@@ -727,7 +727,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
   '/channels/{name}':
     get:
       tags:
@@ -790,7 +790,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
   '/users/{fid}':
     get:
       tags:
@@ -858,7 +858,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
   /users:
     get:
       tags:
@@ -969,7 +969,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
   '/follow/{fid}':
     post:
       tags:
@@ -1050,7 +1050,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
     delete:
       tags:
         - default
@@ -1130,7 +1130,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
   /signers:
     post:
       tags:
@@ -1201,7 +1201,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
     get:
       tags:
         - default
@@ -1275,7 +1275,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
   /register_signer_with_warpcast:
     post:
       tags:
@@ -1359,7 +1359,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
   /sponsored_signers:
     post:
       tags:
@@ -1431,7 +1431,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
   /poll_warpcast_signer:
     post:
       tags:
@@ -1510,7 +1510,7 @@ paths:
       security:
         - bearerAuth: []
       servers:
-        - url: 'http://{{base_url}}'
+        - url: 'https://api.pinata.cloud/v3/farcaster'
 components:
   securitySchemes:
     bearerAuth:
