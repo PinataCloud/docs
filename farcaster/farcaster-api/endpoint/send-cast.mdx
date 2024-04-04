@@ -1,3 +1,33 @@
 ---
 openapi: post /casts
 ---
+
+The body of sending a cast is made up of primarily two pieces. One is the `signerId` provided by using [Farcaster Auth](/farcaster/farcaster-auth). The other is the `castAddBody` object which follows the same pattern of Farcaster Hubs when submitting a cast.
+
+```typescript
+body = JSON.stringify({
+  castAddBody: {
+    text: "Hello World!", // Just a plain text cast
+    parent_url: "https://warpcast.com/~/channel/pinata", // What channel you want to cast in
+    embeds: [ // An array of embeds, including links or quote casting
+        { // URLs or links are just an object with the url
+            url: "https://dweb.mypinata.cloud/ipfs/QmYSzs7WczucVrPN2CZcZeEzyGRDrxrFEWGtYA32jz2L3U?filename=sendit.gif"
+        },
+        {// Quote casting includes a castId object with the hash of the cast and the FID of the user who sent it
+            castId: {
+                fid: 6023,
+                hash: "0xb3668292af912397fad6b8457223e75c04221992"
+            }
+        }
+    ],
+    mentions: [6023], // An array of FIDs to mention someone in a post 
+    mention_positions: [2], // An array of positions where the mentions should be placed in order of appearance
+    parent_cast_id: { // Used when replying to a cast, same casdId struct used in embeds
+        fid: 6023,
+        hash: "0xb3668292af912397fad6b8457223e75c04221992"
+    }
+  },
+  signerId: "e5cf5d84-7671-4402-8df0-84b0efdc24cd" // The signerId of the user sending a cast, already approved via Farcaster Auth
+})
+```
+
