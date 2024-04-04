@@ -1,47 +1,16 @@
 ---
-title: "Farcaster Development Kit"
-slug: "fdk"
+title: "Farcaster Frames"
+description: "Using the FDK to build frames"
 ---
-<Warning>This SDK is in active development and is still going through changes. [Please reach out to us with any questions!](mailto:team@pinata.cloud)</Warning>
 
-An SDK to easily create Farcaster Frames and pin images to IPFS using Pinata.
+The FDK can be used to not only create frames but also provide analytics through your Pinata account.
 
-<Card title="GitHub Repo" icon="github" href="https://github.com/PinataCloud/pinata-fdk"></Card>
-
-## Getting Started
-
-### Installation
-```javascript
-npm i pinata-fdk
-```
-```javascript
-yarn add pinata-fdk
-```
-
-### Initialization
-
-If you want to leverage IPFS pinning capabilities, you must enter your Pinata JWT and a Pinata gateway during intialization. 
-```javascript
-import { PinataFDK } from "pinata-fdk";
-const fdk = new PinataFDK({
-    pinata_jwt: "<YOUR_PINATA_JWT>",
-    pinata_gateway: "<YOUR_PINATA_GATEWAY>"}, 
-);
-```
-If you are only using the frame metadata functionality, you do not need to enter your credentials. 
-```javascript 
-import { PinataFDK } from "pinata-fdk";
-const fdk = new PinataFDK();
-```
-
-## Usage
-
-### `getFrameMetadata`
+## `getFrameMetadata`
 
 You can use this function to easily create the Farcaster specific metadata needed for your frame. 
 **The only required input is `cid` or `image`.**
 
-#### Params
+### Params
 
 - `buttons` - An array of button specifications (max 4). (Optional)
 - `image` - A string for a valid hosted image url. 
@@ -81,7 +50,7 @@ type FrameInputMetadata = {
 };
 ```
 
-#### Example Code
+### Example Code
 ```javascript
  const frameMetadata = fdk.getFrameMetadata({
     post_url: `<YOUR_DOMAIN>/api/test`,
@@ -97,7 +66,7 @@ type FrameInputMetadata = {
     state: {counter: 1}
   });
   ```
-#### Response 
+### Response 
 ```javascript
 <meta name="fc:frame" content="vNext">
 <meta name="og:image" content="https://<YOUR_GATEWAY>/ipfs/<YOUR_CID>">
@@ -116,7 +85,8 @@ type FrameInputMetadata = {
 <meta name="fc:frame:state" content="%7B%22counter%22%3A1%7D">
 ```
 
-#### Images for `getFrameMetadata`
+### Images for `getFrameMetadata`
+
 There are two different ways to set the images of your frame metadata. 
 
 ⚡️ Raw URL 
@@ -124,7 +94,8 @@ There are two different ways to set the images of your frame metadata.
 ⚡️ CID
 
 
-#### Raw URL
+### Raw URL
+
 Specify a hosted url image link. 
 
 ```javascript
@@ -144,14 +115,14 @@ const frameMetadata = fdk.getFrameMetadata({
 //Must insert Pinata credentials when intializing SDK.    
 ```
 
-### `convertUrlToIPFS`
+## `convertUrlToIPFS`
 
 Uploads an image to IPFS from a url. This url may be passed to the `getFrameMetadata` function.
 #### Params
 
 - `url` - A string for a valid hosted url image.
 
-#### Example Code
+### Example Code
 
 ```javascript 
  const ipfsUrl = await fdk.convertUrlToIPFS("https://example.com");
@@ -159,17 +130,17 @@ Uploads an image to IPFS from a url. This url may be passed to the `getFrameMeta
     image: { url: ipfsUrl}
   });
 ```
-#### Response
+### Response
 ```javascript
 https://<YOUR_GATEWAY>/ipfs/<YOUR_CID>
 ```
 
 
-### `validateFrameMessage`
+## `validateFrameMessage`
 
 Returns a Promise that indicates wether a message signature is valid by querying Pinata's Farcaster hub. 
 
-#### Params
+### Params
 
 - `body` - An object representing the raw payload of an action frame produced by Farcaster.
 ```
@@ -192,13 +163,13 @@ Returns a Promise that indicates wether a message signature is valid by querying
   },
 };
 ```
-#### Example Code
+### Example Code
 
 ```javascript 
 const { isValid, message } = await fdk.validateFrameMessage(body);
 ```
 
-#### Response
+### Response
 ``` javascript
 {
   isValid: true,
@@ -228,38 +199,39 @@ const { isValid, message } = await fdk.validateFrameMessage(body);
 }
 ```
 
-### `getAddressForFid`
+## `getAddressForFid`
 Returns the connected Ethereum address for an FID.
 
-#### Params
+### Params
 
 - `fid` - A number representing the fid of the user.
 
-#### Example Code
+### Example Code
 
 ```javascript 
 const address = await fdk.getAddressForFid(15974);
 ```
 
-#### Response
+### Response
 ```
 "0x9b7c18a71a98acd2f1271e2d1fe63750a70bc52b"
 ```
 
-### `getUserByFid`
+## `getUserByFid`
+
 Returns the user datadata for an FID.
 
-#### Params
+### Params
 
 - `fid` - A number representing the fid of the user.
 
-#### Example Code
+### Example Code
 
 ```javascript
 const userData = await fdk.getUserByFid(20591);
 ```
 
-#### Response
+### Response
 
 ```
 {
@@ -270,7 +242,7 @@ const userData = await fdk.getUserByFid(20591);
 }
 ```
 
-## Frame Analytics
+# Frame Analytics
 
 To get started visit the [Integrations page](https://app.pinata.cloud/integrations) by clicking on the profile button in the top right, then selecting Integrations.
 
@@ -295,16 +267,16 @@ Scanning the QR code with your phone should prompt you to open Warpcast where yo
 
 In any of your POST endpoints for frames, you can send analytics like this: 
 
-### `sendAnalytics`
+## `sendAnalytics`
 Sends data to Pinata analytics for a specific frame.
 
-#### Params
+### Params
 
 - `frame_data` - An object representing the raw payload of an action frame produced by Farcaster.
 - `frame_id` - A string representing the frame you want to track.
 - `custom_id`: A string representing a unique identifier to segment requests within the specified frame. (Optional)
 
-#### Example Code
+### Example Code
 
 ```javascript
 // This should be the raw payload from the frame action
@@ -361,8 +333,9 @@ const app = new Frog({
 app.use("/", fdk.analyticsMiddleware({ frameId: "frame_id", customId: "custom_id"}));
 ```
 
-## Pin Files from CLI
-### npx pin
+# Pin Files from CLI
+
+## npx pin
 
 Pin files directly from your `src` folder using the **pinata-fdk** `npx pin` command.
 

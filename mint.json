@@ -175,7 +175,17 @@
     },
     {
       "group": "Dev Tools",
-      "pages": ["farcaster/fdk"]
+      "pages": [
+        {
+          "group": "Farcaster Development Kit",
+          "pages": [
+            "farcaster/fdk/getting-started",
+            "farcaster/fdk/farcaster-auth",
+            "farcaster/fdk/farcaster-writes",
+            "farcaster/fdk/farcaster-frames"
+          ]
+        }
+      ]
     },
     {
       "group": "Farcaster API",
@@ -316,6 +326,10 @@
     {
       "source": "/frameworks",
       "destination": "/events/frameworks"
+    },
+    {
+      "source": "/farcaster/fdk",
+      "destination": "/farcaster/fdk/getting-started"
     }
   ]
 }
