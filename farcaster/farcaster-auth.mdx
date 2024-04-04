@@ -105,13 +105,22 @@ async function createSponsoredSigner() {
   } = signerInfo.data
   return { signer_id, token, deep_link_url, status }
 }
+
+//"data": {
+//  "signer_id": "ee5605a0-9833-4d30-8c22-7ac315061ee7",
+//  "token": "0x2ef159dc1e9f6a2sb0d2353f",
+//  "deep_link_url": "farcaster://signed-key-request?token=0x2efb59dv1e9f642fb07f353f",
+//  "status": "pending_approval"
+//}
 ```
 
 </Step>
 
 <Step title="Poll Signer for Approval Status">
 
-At this point we should immediately start polling the signer, waiting for the user to approve the key. Once they do we'll get a response back from Warpcast that will register the key with that user's account and make it accessible via Farcaster Auth. To do that we'll use `poll_warpcast_signer` with a query parameter of `token` that's provided by the previous request to `sponsored_signers`. 
+At this point we should immediately start polling the signer, waiting for the user to approve the key. You might have noticed in the response to `/sponsored_signers` is the `deep_link_url`. This is a special URL that when opened on a mobile device with Warpcast installed, will prompt the user to approve the signer/login. This can be given to the user in the form of a QR code or just a link that the user opens.
+
+Once they approve the signer we'll get a response back from Warpcast that will register the key with that user's account and make it accessible via Farcaster Auth. To do that we'll use `poll_warpcast_signer` with a query parameter of `token` that's provided by the previous request to `sponsored_signers`. 
 
 ```typescript index.ts
 async function pollSigner(fid: string){
@@ -125,6 +134,16 @@ async function pollSigner(fid: string){
   const pollSignerRes = awwait pollSigner.json()
   return pollSignerRes.data.result
 }
+
+//"signedKeyRequest": {
+//  "token": "0x2ef159dc1e9f6a2sb0d2353f",
+//  "deeplinkUrl": "farcaster://signed-key-request?token=0x2efb59dv1e9f642fb07f353f",
+//  "key": "0xe57c09c48b0ba27d95676309416134ad1409d3cg27ccb354b73eb819aa117f2f",
+//  "requestFid": 6023,
+//  "state": "completed",
+//  "isSponsored": false,
+//  "userFid": 6023
+//}
 ```
 
 If successful you should get a response with a `completed` state, at which point you can now use the `signer_id` returned in the Register Signer step.
@@ -152,9 +171,20 @@ async function getSigners(fid?: number){
     throw error;
   }
 };
+//"signers": [
+//    {
+//        "id": 25,
+//        "signer_uuid": "bd9cea0c-ab31-4c71-a46f-a169ba626192",
+//        "fid": 6023,
+//        "public_key": "e57c09c48b0ba27d95676309416134ad1409d3cg27ccb354b73eb819aa117f2f",
+//        "signer_approved": true,
+//        "revoked": false
+//    }
+//],
+//"next_page_token": "eyJvZmZzZXQiOiIyNSJ9"
 ```
 
-With the `signer_id` you can then use it in other API calls like [`POST /casts`](/farcaster/farcaster-api/send-cast) to send a cast.
+With the `signer_uuid` you can then use it in other API calls like [`POST /casts`](/farcaster/farcaster-api/send-cast) to send a cast.
 
 </Step>
 </Steps>
@@ -255,7 +285,7 @@ const signature = await account.signTypedData({
 
 <Step title="Register Signer with Warpcast">
 
-Once the key is signed we can now make a request to Warpcast to register the key. This is where we will get a Farcaster deep link (`farcaster://`) that we can have the user either click on or scan with a QR code that will open the Warpcast app for them to approve the signer.
+Once the key is signed we can now make a request to Warpcast to register the key.
 
 <Info>
 Since this is non-sponsored managed signers the user will need to pay warps at least once. After that the key is linked to your Pinata account and remains active until the usere revokes it.
@@ -280,13 +310,21 @@ const registerResponse = await fetch(`https://api.pinata.cloud/v3/farcaster/regi
 })
 
 const warpcastPayload = await registerResponse.json()
+
+//"data": {
+//  "signer_id": "ee5605a0-9833-4d30-8c22-7ac315061ee7",
+//  "token": "0x2ef159dc1e9f6a2sb0d2353f",
+//  "deep_link_url": "farcaster://signed-key-request?token=0x2efb59dv1e9f642fb07f353f",
+//  "status": "pending_approval"
+//}
 ```
 
 </Step>
 
 <Step title="Poll Signer for Approval Status">
+At this point we should immediately start polling the signer, waiting for the user to approve the key. You might have noticed in the response to `/register_signer_with_warpcast` is the `deep_link_url`. This is a special URL that when opened on a mobile device with Warpcast installed, will prompt the user to approve the signer/login. This can be given to the user in the form of a QR code or just a link that the user opens.
 
-At this point we should immediately start polling the signer, waiting for the user to approve the key. Once they do we'll get a response back from Warpcast that will register the key with that user's account and make it accessible via Farcaster Auth. To do that we'll use `poll_warpcast_signer` with a query parameter of `token` that's provided by the previous `warpcastPayload`. 
+Once they approve the signer we'll get a response back from Warpcast that will register the key with that user's account and make it accessible via Farcaster Auth. To do that we'll use `poll_warpcast_signer` with a query parameter of `token` that's provided by the previous request to `register_signer_with_warpcast`. 
 
 ```typescript index.ts
 // Previous code...
@@ -300,6 +338,17 @@ const pollSigner = await fetch(`https://api.pinata.cloud/v3/farcaster/poll_warpc
 })
 const pollSignerRes = awwait pollSigner.json()
 return pollSignerRes.data.result
+
+//"signedKeyRequest": {
+//  "token": "0x2ef159dc1e9f6a2sb0d2353f",
+//  "deeplinkUrl": "farcaster://signed-key-request?token=0x2efb59dv1e9f642fb07f353f",
+//  "key": "0xe57c09c48b0ba27d95676309416134ad1409d3cg27ccb354b73eb819aa117f2f",
+//  "requestFid": 6023,
+//  "state": "completed",
+//  "isSponsored": false,
+//  "userFid": 6023
+//}
+
 ```
 
 If successful you should get a response with a `completed` state, at which point you can now use the `signer_id` returned in the Register Signer step.
@@ -327,6 +376,19 @@ async function getSigners(fid?: number){
     throw error;
   }
 };
+
+//"signers": [
+//    {
+//        "id": 25,
+//        "signer_uuid": "bd9cea0c-ab31-4c71-a46f-a169ba626192",
+//        "fid": 6023,
+//        "public_key": "e57c09c48b0ba27d95676309416134ad1409d3cg27ccb354b73eb819aa117f2f",
+//        "signer_approved": true,
+//        "revoked": false
+//    }
+//],
+//"next_page_token": "eyJvZmZzZXQiOiIyNSJ9"
+
 ```
 
 With the `signer_id` you can then use it in other API calls like [`POST /casts`](/farcaster/farcaster-api/send-cast) to send a cast.
