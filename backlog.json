@@ -1,4 +1,192 @@
-
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Pinata Docs",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "metadata": {
+    "og:image": "https://docs.mypinata.cloud/ipfs/bafybeibj3a47gxdgkjfrfs6b2n3prsjbvk2lx3twp4lfahgcrfddkxukwu?filename=og.png",
+    "twitter:image": "https://docs.mypinata.cloud/ipfs/bafybeibj3a47gxdgkjfrfs6b2n3prsjbvk2lx3twp4lfahgcrfddkxukwu?filename=og.png",
+    "og:image:width": "1200",
+    "og:image:height": "630"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#6D6FEB",
+    "light": "#5F61EA",
+    "dark": "#6D6FEB",
+    "anchors": {
+      "from": "#6D6FEB",
+      "to": "#6D6FEB"
+    },
+    "background": {
+      "light": "#FFFFFF",
+      "dark": "#16141F"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:team@pinata.cloud"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Pinata App",
+    "url": "https://app.pinata.cloud"
+  },
+  "tabs": [
+    {
+      "name": "SDKs",
+      "url": "sdks"
+    },
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    },
+    {
+      "name": "Farcaster",
+      "url": "farcaster"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "API Keys",
+      "icon": "key-skeleton-left-right",
+      "url": "https://app.pinata.cloud/developers/api-keys"
+    },
+    {
+      "name": "Blog",
+      "icon": "newspaper",
+      "url": "https://pinata.cloud/blog"
+    },
+    {
+      "name": "Community",
+      "icon": "archway",
+      "url": "https://warpcast.com/~/channel/pinata"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "introduction",
+        {
+          "group": "Quickstart",
+          "pages": [
+            "quickstart/next-js",
+            "quickstart/react",
+            "quickstart/node-js"
+          ]
+        },
+        {
+          "group": "Account Management",
+          "pages": [
+            "account-management/api-keys",
+            "account-management/workspaces",
+            "account-management/farcaster",
+            "account-management/billing",
+            "account-management/limits"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "IPFS 101",
+      "pages": [
+        "ipfs-101/what-is-ipfs",
+        "ipfs-101/what-is-ipfs-pinning",
+        "ipfs-101/what-are-cids",
+        "ipfs-101/what-are-ipfs-gateways",
+        "ipfs-101/how-does-ipfs-work-with-nfts"
+      ]
+    },
+    {
+      "group": "Pinning",
+      "pages": [
+        "pinning/pinning-files",
+        "pinning/listing-files",
+        "pinning/pinata-metadata",
+        "pinning/deleting-files"
+      ]
+    },
+    {
+      "group": "Dedicated Gateways",
+      "pages": [
+        "gateways/dedicated-ipfs-gateways",
+        "gateways/gateway-access-controls",
+        "gateways/image-optimizations"
+      ]
+    },
+    {
+      "group": "API Documentation",
+      "pages": ["api-reference/introduction"]
+    },
+    {
+      "group": "Authentication",
+      "pages": ["api-reference/endpoint/test-authentication"]
+    },
+    {
+      "group": "Pinning",
+      "pages": [
+        "api-reference/endpoint/pin-file-to-ipfs",
+        "api-reference/endpoint/pin-json-to-ipfs",
+        "api-reference/endpoint/list-files",
+        "api-reference/endpoint/update-file-metadata",
+        "api-reference/endpoint/unpin-file"
+      ]
+    },
+    {
+      "group": "Pinning by CID",
+      "pages": [
+        "api-reference/endpoint/pin-by-cid",
+        "api-reference/endpoint/list-pin-by-cid-jobs",
+        "api-reference/pinning-service-api"
+      ]
+    },
+    {
+      "group": "Users",
+      "pages": [
+        "api-reference/endpoint/generate-pinata-api-key",
+        "api-reference/endpoint/list-api-keys",
+        "api-reference/endpoint/revoke-api-key"
+      ]
+    },
+    {
+      "group": "Pinata SDKs",
+      "pages": [
+        "sdks/pinata-sdk",
+        "sdks/nextjs-starter",
+        "sdks/pinata-cli",
+        "sdks/pinata-raycast-extension",
+        "sdks/community-sdks"
+      ]
+    },
+    {
+      "group": "Get Started",
+      "pages": [
+        "farcaster/introduction",
+        "farcaster/farcaster-auth",
+        "farcaster/farcaster-API",
+        "farcaster/frames",
+        "farcaster/hubs",
+        "farcaster/fc-dev-calls/index"
+      ]
+    },
+    {
+      "group": "Dev Tools",
+      "pages": [
+        {
+          "group": "Farcaster Development Kit",
+          "pages": [
+            "farcaster/fdk/getting-started",
+            "farcaster/fdk/farcaster-auth",
+            "farcaster/fdk/farcaster-writes",
+            "farcaster/fdk/farcaster-frames"
+          ]
+        }
+      ]
+    },
     {
       "group": "Farcaster API",
       "pages": [
@@ -17,3 +205,131 @@
         "farcaster/farcaster-api/endpoint/users"
       ]
     },
+    {
+      "group": "Farcaster Auth",
+      "pages": [
+        "farcaster/farcaster-api/auth-getting-started",
+        "farcaster/farcaster-api/endpoint/signers",
+        "farcaster/farcaster-api/endpoint/sponsored-signers",
+        "farcaster/farcaster-api/endpoint/register-signer-with-warpcast",
+        "farcaster/farcaster-api/endpoint/poll-warpcast-signer",
+        "farcaster/farcaster-api/endpoint/get-signers"
+      ]
+    },
+    {
+      "group": "Frame Analytics API",
+      "pages": [
+        "farcaster/frame-analytics-api/getting-started",
+        "farcaster/frame-analytics-api/send-analytics",
+        "farcaster/frame-analytics-api/get-interactions",
+        "farcaster/frame-analytics-api/get-top-interactions"
+      ]
+    },
+    {
+      "group": "Hub API Reference",
+      "pages": [
+        {
+          "group": "Info",
+          "pages": ["farcaster/hub-api-reference/endpoint/info/info"]
+        },
+        {
+          "group": "Casts",
+          "pages": [
+            "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-authored-by-an-fid",
+            "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-by-parent-casts-fid-and-hash-or-by-the-parents-url",
+            "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-that-mention-an-fid",
+            "farcaster/hub-api-reference/endpoint/casts/get-a-cast-by-its-fid-and-hash"
+          ]
+        },
+        {
+          "group": "Reactions",
+          "pages": [
+            "farcaster/hub-api-reference/endpoint/reactions/get-a-reaction-by-its-created-fid-and-target-cast",
+            "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-by-an-fid",
+            "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-cast",
+            "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-target-url"
+          ]
+        },
+        {
+          "group": "Links",
+          "pages": [
+            "farcaster/hub-api-reference/endpoint/links/get-a-link-by-its-fid-and-target-fid",
+            "farcaster/hub-api-reference/endpoint/links/get-all-links-to-a-target-fid",
+            "farcaster/hub-api-reference/endpoint/links/get-all-links-from-a-source-fid"
+          ]
+        },
+        {
+          "group": "User Data",
+          "pages": [
+            "farcaster/hub-api-reference/endpoint/userdata/get-userdata-for-a-fid"
+          ]
+        },
+        {
+          "group": "Username Proofs",
+          "pages": [
+            "farcaster/hub-api-reference/endpoint/usernames/get-a-list-of-proofs-provided-by-an-fid",
+            "farcaster/hub-api-reference/endpoint/usernames/get-an-proof-for-a-username-by-the-farcaster-username"
+          ]
+        },
+        {
+          "group": "Verifications",
+          "pages": [
+            "farcaster/hub-api-reference/endpoint/verifications/get-a-list-of-verifications-provided-by-an-fid"
+          ]
+        },
+        {
+          "group": "FIDs",
+          "pages": [
+            "farcaster/hub-api-reference/endpoint/fids/get-a-list-of-all-the-fids"
+          ]
+        },
+        {
+          "group": "Storage",
+          "pages": [
+            "farcaster/hub-api-reference/endpoint/storage/get-an-fids-storage-limits"
+          ]
+        },
+        {
+          "group": "Onchain API",
+          "pages": [
+            "farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-on-chain-events-provided-by-an-fid",
+            "farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-signers-provided-by-an-fid",
+            "farcaster/hub-api-reference/endpoint/onchainevents/get-an-on-chain-id-registry-event-for-a-given-address"
+          ]
+        }
+      ]
+    }
+  ],
+  "footerSocials": {
+    "website": "https://warpcast.com/~/channel/pinata",
+    "twitter": "https://twitter.com/pinatacloud",
+    "github": "https://github.com/PinataCloud",
+    "linkedin": "https://www.linkedin.com/company/pinatacloud"
+  },
+  "analytics": {
+    "ga4": {
+      "measurementId": "G-5RMPXG14TE"
+    }
+  },
+  "feedback": {
+    "suggestEdit": true
+  },
+  "redirects": [
+    {
+      "source": "/farcaster/api-reference/:slug*",
+      "destination": "/farcaster/farcaster-api/:slug*"
+    },
+    {
+      "source": "/farcaster/farcaster-API",
+      "destination": "/farcaster/farcaster-api"
+    },
+    {
+      "source": "/frameworks",
+      "destination": "/events/frameworks"
+    },
+    {
+      "source": "/farcaster/fdk",
+      "destination": "/farcaster/fdk/getting-started"
+    }
+  ]
+}

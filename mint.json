@@ -166,7 +166,6 @@
       "group": "Get Started",
       "pages": [
         "farcaster/introduction",
-        "farcaster/farcaster-auth",
         "farcaster/farcaster-API",
         "farcaster/frames",
         "farcaster/hubs",
@@ -180,7 +179,6 @@
           "group": "Farcaster Development Kit",
           "pages": [
             "farcaster/fdk/getting-started",
-            "farcaster/fdk/farcaster-auth",
             "farcaster/fdk/farcaster-writes",
             "farcaster/fdk/farcaster-frames"
           ]
@@ -203,17 +201,6 @@
         "farcaster/farcaster-api/endpoint/unfollow-fid",
         "farcaster/farcaster-api/endpoint/user-by-fid",
         "farcaster/farcaster-api/endpoint/users"
-      ]
-    },
-    {
-      "group": "Farcaster Auth",
-      "pages": [
-        "farcaster/farcaster-api/auth-getting-started",
-        "farcaster/farcaster-api/endpoint/signers",
-        "farcaster/farcaster-api/endpoint/sponsored-signers",
-        "farcaster/farcaster-api/endpoint/register-signer-with-warpcast",
-        "farcaster/farcaster-api/endpoint/poll-warpcast-signer",
-        "farcaster/farcaster-api/endpoint/get-signers"
       ]
     },
     {
