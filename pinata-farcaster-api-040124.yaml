@@ -114,6 +114,7 @@ paths:
         - name: signerId
           in: query
           description: Signer ID for the author of the cast
+          required: true
           schema:
             type: string
             example: e5cf5d84-7671-4402-8df0-84b0efdc24cd
