@@ -1304,6 +1304,13 @@ paths:
                   deadline: 1711744345
                   app_fid: 6023
                   app_address: '0x456131161f83C7D7fDA15b32a5f7C21FD4E27E96'
+      parameters:
+        - name: sponsored
+          in: query
+          schema:
+            type: boolean
+          description: Mark whether signer should be sponsored or not
+          example: 'true'
       responses:
         '200':
           description: OK
@@ -1352,78 +1359,6 @@ paths:
               schema:
                 type: string
                 example: 541193ed872f59542b29f579df7fe339
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=15724800; includeSubDomains
-      security:
-        - bearerAuth: []
-      servers:
-        - url: 'https://api.pinata.cloud/v3/farcaster'
-  /sponsored_signers:
-    post:
-      tags:
-        - default
-      summary: Sponsored Signers
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                app_fid:
-                  type: integer
-              x-examples:
-                Example 1:
-                  app_fid: 6023
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-              examples:
-                default:
-                  value:
-                    data:
-                      signer_id: 5923e306-201d-4656-876a-8e9ae7610cd0
-                      token: '0x2ef159d01e9f6a2fb072353f'
-                      deep_link_url: 'farcaster://signed-key-request?token=0x2ef159d01e9f6a2fb072353f'
-                      status: pending_approval
-          headers:
-            Date:
-              schema:
-                type: string
-                example: 'Mon, 01 Apr 2024 09:49:57 GMT'
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: 209
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-                example: '*'
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-                example: 'GET, POST, PUT, PATCH, DELETE, OPTIONS'
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-                example: '*'
-            X-Request-Id:
-              schema:
-                type: string
-                example: 9584e722f51ce253a60ec953614a8ad8
             Strict-Transport-Security:
               schema:
                 type: string
