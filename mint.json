@@ -182,6 +182,7 @@
             "farcaster/fdk/getting-started",
             "farcaster/fdk/farcaster-auth",
             "farcaster/fdk/farcaster-writes",
+            "farcaster/fdk/farcaster-Reads",
             "farcaster/fdk/farcaster-frames"
           ]
         }
