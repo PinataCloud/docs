@@ -17,7 +17,7 @@ With the `getCasts` method you can view a paginated list of casts on the Farcast
 ### Example
 
 ```typescript
-import { CastsResponse, PinataFDK } from "pinata-fdk";
+import { Casts, PinataFDK } from "pinata-fdk";
 
 const fdk = new PinataFDK({
   pinata_jwt: `${process.env.PINATA_JWT}`,
@@ -25,61 +25,59 @@ const fdk = new PinataFDK({
 });
 
 const pageToken = "eyJvZmZzZXQiOiIyODg3ODMzNTExNzY5NjcwOTk5In0"
-const res: CastsResponse = await fdk.getCasts(pageToken);
+const res: Casts = await fdk.getCasts(pageToken);
 ```
 
 ### Response
 
 ```typescript 
-{
-    "data": {
-        "casts": [
-            {
+{   
+    "casts": [
+        {
+            "fid": 192,
+            "hash": "0x27ec7197ace4365b6004ae4f729c7b46cbc569e2",
+            "short_hash": "0x27ec7197",
+            "thread_hash": null,
+            "parent_hash": null,
+            "parent_url": null,
+            "root_parent_url": null,
+            "parent_author": null,
+            "author": {
+                "uid": 192,
                 "fid": 192,
-                "hash": "0x27ec7197ace4365b6004ae4f729c7b46cbc569e2",
-                "short_hash": "0x27ec7197",
-                "thread_hash": null,
-                "parent_hash": null,
-                "parent_url": null,
-                "root_parent_url": null,
-                "parent_author": null,
-                "author": {
-                    "uid": 192,
-                    "fid": 192,
-                    "custody_address": "0xc2e7484fbd2322a9986bc49f2e87d7fcac019e26",
-                    "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
-                    "following_count": 4,
-                    "follower_count": 52,
-                    "verifications": [],
-                    "bio": "@bunches | product, design, quality",
-                    "display_name": "Tomer Ben-David",
-                    "pfp_url": "https://warpcast.com/avatar.png?t=1709148185820",
-                    "username": "tome",
-                    "power_badge_user": false
-                },
-                "content": "gm everybody, gm",
-                "timestamp": "2021-11-12T19:22:34Z",
-                "embeds": [],
-                "mentions": [],
-                "mentionPositions": [],
-                "reactions": {
-                    "likes": [
-                        {
-                            "fid": 192,
-                            "fname": "tome"
-                        }
-                    ]
-                },
-                "replies": {
-                    "count": 0
-                },
-                "mentioned_profiles": []
+                "custody_address": "0xc2e7484fbd2322a9986bc49f2e87d7fcac019e26",
+                "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
+                "following_count": 4,
+                "follower_count": 52,
+                "verifications": [],
+                "bio": "@bunches | product, design, quality",
+                "display_name": "Tomer Ben-David",
+                "pfp_url": "https://warpcast.com/avatar.png?t=1709148185820",
+                "username": "tome",
+                "power_badge_user": false
             },
-        ...
-        ],
-        "next_page_token": "eyJvZmZzZXQiOiIyODg3ODMzNTExNzY5NjcwOTk5In0"
-    }
-}
+            "content": "gm everybody, gm",
+            "timestamp": "2021-11-12T19:22:34Z",
+            "embeds": [],
+            "mentions": [],
+            "mentionPositions": [],
+            "reactions": {
+                "likes": [
+                    {
+                        "fid": 192,
+                        "fname": "tome"
+                    }
+                ]
+            },
+            "replies": {
+                "count": 0
+            },
+            "mentioned_profiles": []
+        },
+    ...
+    ],
+    "next_page_token": "eyJvZmZzZXQiOiIyODg3ODMzNTExNzY5NjcwOTk5In0"
+}   
 ```
 
 ## `getCastByHash`
@@ -93,7 +91,7 @@ With the `getCastByHash` method you can view a specific cast on the Farcaster Ne
 ### Example
 
 ```typescript
-import { CastByHashResponse, PinataFDK } from "pinata-fdk";
+import { Cast, PinataFDK } from "pinata-fdk";
 
 const fdk = new PinataFDK({
   pinata_jwt: `${process.env.PINATA_JWT}`,
@@ -101,55 +99,54 @@ const fdk = new PinataFDK({
 });
 
 const hash = "0x27ec7197ace4365b6004ae4f729c7b46cbc569e2"
-const res: CastByHashResponse = await fdk.getCastByHash(hash);
+const res: Cast = await fdk.getCastByHash(hash);
 ```
 
 ### Response 
 
 ```typescript 
 {
-    "data": {
+    "fid": 192,
+    "hash": "0x27ec7197ace4365b6004ae4f729c7b46cbc569e2",
+    "short_hash": "0x27ec7197",
+    "thread_hash": null,
+    "parent_hash": null,
+    "parent_url": null,
+    "root_parent_url": null,
+    "parent_author": null,
+    "author": {
+        "uid": 192,
         "fid": 192,
-        "hash": "0x27ec7197ace4365b6004ae4f729c7b46cbc569e2",
-        "short_hash": "0x27ec7197",
-        "thread_hash": null,
-        "parent_hash": null,
-        "parent_url": null,
-        "root_parent_url": null,
-        "parent_author": null,
-        "author": {
-            "uid": 192,
-            "fid": 192,
-            "custody_address": "0xc2e7484fbd2322a9986bc49f2e87d7fcac019e26",
-            "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
-            "following_count": 4,
-            "follower_count": 52,
-            "verifications": [],
-            "bio": "@bunches | product, design, quality",
-            "display_name": "Tomer Ben-David",
-            "pfp_url": "https://warpcast.com/avatar.png?t=1709148185820",
-            "username": "tome",
-            "power_badge_user": false
-        },
-        "content": "gm everybody, gm",
-        "timestamp": "2021-11-12T19:22:34Z",
-        "embeds": [],
-        "mentions": [],
-        "mentionPositions": [],
-        "reactions": {
-            "likes": [
-                {
-                    "fid": 192,
-                    "fname": "tome"
-                }
-            ]
-        },
-        "replies": {
-            "count": 0
-        },
-        "mentioned_profiles": []
-    }
-}
+        "custody_address": "0xc2e7484fbd2322a9986bc49f2e87d7fcac019e26",
+        "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
+        "following_count": 4,
+        "follower_count": 52,
+        "verifications": [],
+        "bio": "@bunches | product, design, quality",
+        "display_name": "Tomer Ben-David",
+        "pfp_url": "https://warpcast.com/avatar.png?t=1709148185820",
+        "username": "tome",
+        "power_badge_user": false
+    },
+    "content": "gm everybody, gm",
+    "timestamp": "2021-11-12T19:22:34Z",
+    "embeds": [],
+    "mentions": [],
+    "mentionPositions": [],
+    "reactions": {
+        "likes": [
+            {
+                "fid": 192,
+                "fname": "tome"
+            }
+        ]
+    },
+    "replies": {
+        "count": 0
+    },
+    "mentioned_profiles": []
+}   
+
 ```
 
 ## `getUsers`
@@ -163,7 +160,7 @@ With the `getUsers` method you can view a paginated list of users on the Farcast
 ### Example
 
 ```typescript
-import { UsersResponse, PinataFDK } from "pinata-fdk";
+import { Users, PinataFDK } from "pinata-fdk";
 
 const fdk = new PinataFDK({
   pinata_jwt: `${process.env.PINATA_JWT}`,
@@ -171,34 +168,32 @@ const fdk = new PinataFDK({
 });
 
 const pageToken = "eyJvZmZzZXQiOiIxMDAifQ"
-const res: UsersResponse = await fdk.getUsers(pageToken);
+const res: Users = await fdk.getUsers(pageToken);
 ```
 
 ### Response
 
 ```typescript 
 {
-    "data": {
-        "users": [
-            {
-                "fid": 1,
-                "custody_address": "0x8773442740c17c9d0f0b87022c722f9a136206ed",
-                "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
-                "following_count": 2,
-                "follower_count": 12991,
-                "verifications": [
-                    "0x86924c37a93734e8611eb081238928a9d18a63c0"
-                ],
-                "bio": "A sufficiently decentralized social network. farcaster.xyz",
-                "display_name": "Farcaster",
-                "pfp_url": "https://i.imgur.com/I2rEbPF.png",
-                "username": "farcaster",
-                "power_badge_user": true
-            },
-          ...
-        ],
-        "next_page_token": "eyJvZmZzZXQiOiIxMDAifQ"
-    }
+    "users": [
+        {
+            "fid": 1,
+            "custody_address": "0x8773442740c17c9d0f0b87022c722f9a136206ed",
+            "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
+            "following_count": 2,
+            "follower_count": 12991,
+            "verifications": [
+                "0x86924c37a93734e8611eb081238928a9d18a63c0"
+            ],
+            "bio": "A sufficiently decentralized social network. farcaster.xyz",
+            "display_name": "Farcaster",
+            "pfp_url": "https://i.imgur.com/I2rEbPF.png",
+            "username": "farcaster",
+            "power_badge_user": true
+        },
+      ...
+    ],
+    "next_page_token": "eyJvZmZzZXQiOiIxMDAifQ"
 }
 ```
 
@@ -213,7 +208,7 @@ With the `getUserByFid` method you can view a specific user on the Farcaster Net
 ### Example
 
 ```typescript
-import { UserByFidResponse, PinataFDK } from "pinata-fdk";
+import { User, PinataFDK } from "pinata-fdk";
 
 const fdk = new PinataFDK({
   pinata_jwt: `${process.env.PINATA_JWT}`,
@@ -221,29 +216,28 @@ const fdk = new PinataFDK({
 });
 
 const fid = 20591
-const res: UserByFidResponse = await fdk.getUserByFid(fid);
+const res: User = await fdk.getUserByFid(fid);
 ```
 
 ### Response 
 
 ```typescript 
 {
-    "data": {
-        "fid": 20591,
-        "custody_address": "0x62402434701e0ce0ae4ea4b3caf68230a6ddbe43",
-        "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
-        "following_count": 13,
-        "follower_count": 351,
-        "verifications": [
-            "0x5ba9355a10611ed4339526472a59befed3549bad"
-        ],
-        "bio": "Everyone is from somewhere. Cofounder and CEO of Pinata. https://www.pinata.cloud/farcaster",
-        "display_name": "Kyle Tut",
-        "pfp_url": "https://i.imgur.com/TLMFnH6.jpg",
-        "username": "kyletut",
-        "power_badge_user": true
-    }
+    "fid": 20591,
+    "custody_address": "0x62402434701e0ce0ae4ea4b3caf68230a6ddbe43",
+    "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
+    "following_count": 13,
+    "follower_count": 351,
+    "verifications": [
+        "0x5ba9355a10611ed4339526472a59befed3549bad"
+    ],
+    "bio": "Everyone is from somewhere. Cofounder and CEO of Pinata. https://www.pinata.cloud/farcaster",
+    "display_name": "Kyle Tut",
+    "pfp_url": "https://i.imgur.com/TLMFnH6.jpg",
+    "username": "kyletut",
+    "power_badge_user": true
 }
+
 ```
 
 ## `getChannelsFollowing`
@@ -258,7 +252,7 @@ With the `getChannelsFollowing` method you can view a paginated list of the chan
 ### Example
 
 ```typescript
-import { ChannelsFollowingResponse, PinataFDK } from "pinata-fdk";
+import { ChannelsFollowing, PinataFDK } from "pinata-fdk";
 
 const fdk = new PinataFDK({
   pinata_jwt: `${process.env.PINATA_JWT}`,
@@ -267,33 +261,31 @@ const fdk = new PinataFDK({
 
 const fid = 3
 const pageToken = "eyJwYWdlIjoxLCJsaW1pdCI6MjV9"
-const res: ChannelsFollowingResponse = await fdk.getChannelsFollowing(fid, pageToken);
+const res: ChannelsFollowing = await fdk.getChannelsFollowing(fid, pageToken);
 ```
 
 ### Response 
 
 ```typescript 
 {
-    "data": {
-        "channels": [
-            {
-                "id": "aoe2",
-                "name": "aoe2",
-                "url": "https://warpcast.com/~/channel/aoe2",
-                "description": "For fans of Age of Empires 2",
-                "image_url": "https://i.imgur.com/q7dolW5.png",
-                "lead_fid": 3,
-                "created_at": 1709398612,
-                "host_fids": [
-                    3
-                ],
-                "follower_count": 58,
-                "followed_at": 1709398613
-            },
-            ...
-        ],
-        "next_page_token": "eyJwYWdlIjoxLCJsaW1pdCI6MjV9"
-    }
+    "channels": [
+        {
+            "id": "aoe2",
+            "name": "aoe2",
+            "url": "https://warpcast.com/~/channel/aoe2",
+            "description": "For fans of Age of Empires 2",
+            "image_url": "https://i.imgur.com/q7dolW5.png",
+            "lead_fid": 3,
+            "created_at": 1709398612,
+            "host_fids": [
+                3
+            ],
+            "follower_count": 58,
+            "followed_at": 1709398613
+        },
+        ...
+    ],
+    "next_page_token": "eyJwYWdlIjoxLCJsaW1pdCI6MjV9"
 }
 ```
 
@@ -309,7 +301,7 @@ With the `getChannelFollowingStatus` method you can check if a specific user fol
 ### Example
 
 ```typescript
-import { ChannelFollowingStatusResponse, PinataFDK } from "pinata-fdk";
+import { ChannelFollowingStatus, PinataFDK } from "pinata-fdk";
 
 const fdk = new PinataFDK({
   pinata_jwt: `${process.env.PINATA_JWT}`,
@@ -318,19 +310,16 @@ const fdk = new PinataFDK({
 
 const fid = 20591
 const name = "pinata"
-const res: ChannelFollowingStatusResponse = await fdk.getChannelFollowingStatus(fid, pageToken);
+const res: ChannelFollowingStatus = await fdk.getChannelFollowingStatus(fid, pageToken);
 ```
 
 ### Response 
 
 ```typescript 
 {
-    "data": {
-        "following": true,
-        "followed_at": 1706890562
-    }
+    "following": true,
+    "followed_at": 1706890562
 }
-
 ```
 
 ## `getChannels`
@@ -344,7 +333,7 @@ With the `getChannels` method you can view a paginated list of channels on the F
 ### Example
 
 ```typescript
-import { ChannelsResponse, PinataFDK } from "pinata-fdk";
+import { Channels, PinataFDK } from "pinata-fdk";
 
 const fdk = new PinataFDK({
   pinata_jwt: `${process.env.PINATA_JWT}`,
@@ -352,34 +341,32 @@ const fdk = new PinataFDK({
 });
 
 const pageToken = "eyJvZmZzZXQiOiIxMDAifQ"
-const res: ChannelsResponse = await fdk.getChannels(pageToken);
+const res: Channels = await fdk.getChannels(pageToken);
 ```
 
 ### Response
 
 ```typescript 
 {
-    "data": {
-        "channels": [
-            {
-                "name": "pinata",
-                "url": "https://warpcast.com/~/channel/pinata",
-                "display_name": "pinata",
-                "description": "Build on IPFS and Farcaster at Scale | https://docs.pinata.cloud/farcaster/farcaster-api/getting-started",
-                "image_url": "https://i.imgur.com/u4mGk5b.gif",
-                "lead_fid": 20591,
-                "created_at": 1706890562,
-                "host_fids": [
-                    20591,
-                    4823,
-                    6023
-                ],
-                "follower_count": 494
-            },
-          ...
-        ],
-        "next_page_token": "eyJvZmZzZXQiOiIxMDAifQ"
-    }
+    "channels": [
+        {
+            "name": "pinata",
+            "url": "https://warpcast.com/~/channel/pinata",
+            "display_name": "pinata",
+            "description": "Build on IPFS and Farcaster at Scale | https://docs.pinata.cloud/farcaster/farcaster-api/getting-started",
+            "image_url": "https://i.imgur.com/u4mGk5b.gif",
+            "lead_fid": 20591,
+            "created_at": 1706890562,
+            "host_fids": [
+                20591,
+                4823,
+                6023
+            ],
+            "follower_count": 494
+        },
+      ...
+    ],
+    "next_page_token": "eyJvZmZzZXQiOiIxMDAifQ" 
 }
 ```
 
@@ -394,7 +381,7 @@ With the `getChannelByName` method you view a specific channel queried by name o
 ### Example
 
 ```typescript
-import { ChannelByNameResponse, PinataFDK } from "pinata-fdk";
+import { Channel, PinataFDK } from "pinata-fdk";
 
 const fdk = new PinataFDK({
   pinata_jwt: `${process.env.PINATA_JWT}`,
@@ -402,28 +389,26 @@ const fdk = new PinataFDK({
 });
 
 const name = "pinata"
-const res: ChannelByNameResponse = await fdk.getChannelByName(name);
+const res: Channel = await fdk.getChannelByName(name);
 ```
 
 ### Response
 
 ```typescript 
 {
-    "data": {
-        "name": "pinata",
-        "url": "https://warpcast.com/~/channel/pinata",
-        "display_name": "pinata",
-        "description": "Build on IPFS and Farcaster at Scale | https://docs.pinata.cloud/farcaster/farcaster-api/getting-started",
-        "image_url": "https://i.imgur.com/u4mGk5b.gif",
-        "lead_fid": 20591,
-        "created_at": 1706890562,
-        "host_fids": [
-            20591,
-            4823,
-            6023
-        ],
-        "follower_count": 494
-    }
+    "name": "pinata",
+    "url": "https://warpcast.com/~/channel/pinata",
+    "display_name": "pinata",
+    "description": "Build on IPFS and Farcaster at Scale | https://docs.pinata.cloud/farcaster/farcaster-api/getting-started",
+    "image_url": "https://i.imgur.com/u4mGk5b.gif",
+    "lead_fid": 20591,
+    "created_at": 1706890562,
+    "host_fids": [
+        20591,
+        4823,
+        6023
+    ],
+    "follower_count": 494
 }
 ```
 
@@ -439,7 +424,7 @@ With the `getChannelFollowers` method you can view a paginated list of a specifi
 ### Example
 
 ```typescript
-import { ChannelFollowersReponse, PinataFDK } from "pinata-fdk";
+import { ChannelFollowers, PinataFDK } from "pinata-fdk";
 
 const fdk = new PinataFDK({
   pinata_jwt: `${process.env.PINATA_JWT}`,
@@ -448,26 +433,24 @@ const fdk = new PinataFDK({
 
 const name = "pinata"
 const pageToken = "eyJwYWdlIjoxLCJsaW1pdCI6MTAwfQ"
-const res: ChannelFollowersReponse = await fdk.getChannelFollowers(name, pageToken);
+const res: ChannelFollowers = await fdk.getChannelFollowers(name, pageToken);
 ```
 
 ### Response
 
 ```typescript 
 {
-    "data": {
-        "followers": [
-            {
-                "fid": 269317,
-                "followed_at": 1710359017
-            },
-            {
-                "fid": 325467,
-                "followed_at": 1710357737
-            }
-            ...
-        ],
-        "next_page_token": "eyJwYWdlIjoyLCJsaW1pdCI6MTAwfQ"
-    }
+    "followers": [
+        {
+            "fid": 269317,
+            "followed_at": 1710359017
+        },
+        {
+            "fid": 325467,
+            "followed_at": 1710357737
+        }
+        ...
+    ],
+    "next_page_token": "eyJwYWdlIjoyLCJsaW1pdCI6MTAwfQ"
 }
 ```
