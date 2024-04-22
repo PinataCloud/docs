@@ -340,7 +340,7 @@
     },
     {
       "source": "/farhack",
-      "destination": "/events/farhack"
+      "destination": "/events/farhack-24"
     }
   ]
 }
