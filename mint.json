@@ -337,6 +337,10 @@
     {
       "source": "/farcaster/fdk",
       "destination": "/farcaster/fdk/getting-started"
+    },
+    {
+      "source": "/farhack",
+      "destination": "/events/farhack-24"
     }
   ]
 }
