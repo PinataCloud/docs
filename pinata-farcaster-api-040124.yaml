@@ -213,6 +213,15 @@ paths:
           examples:
             default:
               value: true
+        - name: reverse
+          in: query
+          description: 'Will reverse the results giving the most casts recent first'
+          schema:
+            type: boolean
+            example: true
+          examples:
+            default:
+              value: false
         - name: channel
           in: query
           description: Specify a channel to fetch casts from
