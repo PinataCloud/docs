@@ -671,6 +671,24 @@ paths:
         - default
       summary: Channels List
       parameters:
+        - name: leadFid
+          in: query
+          description: 'Fetch channels that are managed by a target FID'
+          schema:
+            type: integer
+            example: 1
+          examples:
+            default:
+              value: 6023
+        - name: channelUrl
+          in: query
+          description: 'Retrieve a channel by its URL'
+          schema:
+            type: string
+            example: 'https://warpcast.com/~/channel/pinata'
+          examples:
+            default:
+              value: 'https://warpcast.com/~/channel/pinata'
         - name: pageSize
           in: query
           description: 'Determine the number of results, if not specified default is 100'
