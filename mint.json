@@ -332,7 +332,7 @@
     },
     {
       "source": "/frameworks",
-      "destination": "/events/frameworks"
+      "destination": "/farcaster/events/frameworks"
     },
     {
       "source": "/farcaster/fdk",
@@ -340,7 +340,11 @@
     },
     {
       "source": "/farhack",
-      "destination": "/events/farhack-4"
+      "destination": "farcaster/events/farhack"
+    },
+    {
+      "source": "/events/frameworks",
+      "destination": "farcaster/events/frameworks"
     }
   ]
 }
