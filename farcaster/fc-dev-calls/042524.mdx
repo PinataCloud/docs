@@ -1,0 +1,64 @@
+---
+title: "Farcaster Dev Call Notes"
+description: "April 25th, 2024"
+---
+
+# Farcaster Topics
+
+---
+
+### FIP: Follow Link Defragmentation  — @adityapk
+
+- [Proposal](https://github.com/farcasterxyz/protocol/discussions/169)
+- When someone runs out of storage, it will clear oldest info for that user
+- Proposal will compress the store, defragment link follows
+- Lets you continue to follow link
+- Will help reduce traffic on the hubs
+- Any devs that actively handle link data should review
+- Hub owners should upgrade ASAP when this release comes out May 1st or the official release date
+- Clients who want to track unfollows can opt out, but the chances are the space is more valuable
+
+### Shuttle — @Sanjay
+
+*New releases and updates to sync data to Postres*
+
+- Been in beta for about a week
+- Still a work in progress, will have standalone example soon
+- [Group DC for alpha testers](https://warpcast.com/~/group/iII3sm5VlW3GYyCo_MZ-Xg)
+
+### Frames — @horsefacts, @deodad
+
+*Ephemeral frames*
+
+- [Spec](https://www.notion.so/f469054de8fb4ffc8b8e2649a41b6ad9?pvs=21)
+- Multi step actions, closing the loop between actions and frames
+- Should be ready in the next few days
+- Message @horsefacts or @deodad if you want to be in a group DC with alpha testers
+
+# Warpcast Updates
+
+---
+
+### Priority ordering — @Dan Romero
+
+*Reducing spam and increasing signal across the app* 
+
+- Precursor to a change coming to Warpcast called priority mode
+- Going to automatically put people into it as Warpcast team expects people will want it by default
+- Social graph based, you will not see casts that are not in your graph
+- Similar to how notifications works with priority mode
+- Will eventually carry to channels, will take longer to implement
+- In Dan’s opinion its easier to solve how to boost better new users vs fighting spam
+- Warpcast team is currently doing a split test with priority ordering and seems to be working really well
+- Will make it harder to get the power badge, will need to be adjusted. But as stated before, easier problem to solve
+
+### Direct messaging — @Goksu Toprak
+
+*Improving reliability and the user experience* 
+
+- DCs have been tough from an architecture perspective because it has to be real time unlike a feed
+- After DC has been improved, they want to focus on
+    - Programability - 4-6 weeks
+    - Interoperability - other clients can connect into DCs - end of the year
+    - Encryption - end to end, so messages are private - months after that
+- Focus is making something that will stick and has the consumer quality of apps like Whatsapp or Signal
