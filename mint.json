@@ -27,6 +27,10 @@
   },
   "topbarLinks": [
     {
+      "name": "Provide Feedback",
+      "url": "https://tally.so/r/mRz0ap"
+    },
+    {
       "name": "Support",
       "url": "mailto:team@pinata.cloud"
     }
