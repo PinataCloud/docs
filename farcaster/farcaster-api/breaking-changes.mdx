@@ -1,0 +1,718 @@
+---
+title: "Farcaster API Migration Breaking Changes"
+description: "Details on breaking changes to Farcaster API"
+---
+
+While Pinata strives to always have backwards compatible APIs, our infrastructure shift for Farcaster data changes did result in some breaking changes to the detailed endpoints below. The only changes will be in the responses of the endpoints, not the paths or query parameters themselves. Please compare the responses and make adjustments accordingly.
+
+## `/casts/:hash`
+
+Before
+
+```typescript
+{
+  "data": {
+    "fid": 324525,
+    "hash": "0xd3821c9019b42b40b5c173679093e7c19196e379",
+    "short_hash": "0xd3821c90",
+    "thread_hash": null,
+    "parent_hash": null,
+    "parent_url": null,
+    "root_parent_url": "https://farcaster.group/spanish",
+    "parent_author": null,
+    "author": {
+      "uid": 324523,
+      "fid": 324525,
+      "custody_address": "0x29b9603827ed446bd4e1d2dada0e5aa97e7a455b",
+      "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
+      "following_count": 116,
+      "follower_count": 349,
+      "verifications": [
+        "0xa5d7897e2779f7e5c5be699d41a7b42f9ce0a5c2"
+      ],
+      "bio": "CryptoUsuario del Web3 y entusiasta DeFi.\n\nhttps://villawolf.eth.limo",
+      "display_name": "Villawolf 🎩",
+      "pfp_url": "https://i.imgur.com/bX5CFaN.jpg",
+      "username": "villawolf.eth"
+    },
+    "content": "Si eres Ethereum love 😍 como yo, esta web no debe faltar en tu cajita de herramientas  https://ultrasound.money ETH 🚀🚀",
+    "timestamp": "2024-02-22T13:35:33Z",
+    "embeds": [
+      {
+        "url": "https://i.imgur.com/6CBzQaJ.png"
+      },
+      {
+        "url": "https://ultrasound.money"
+      }
+    ],
+    "reactions": {
+      "likes": [
+        {
+          "fid": 7415,
+          "fname": "franklynr"
+        },
+        {
+          "fid": 329015,
+          "fname": "manry"
+        },
+        {
+          "fid": 10981,
+          "fname": "xxtarhxx"
+        }
+      ],
+      "recasts": [
+        {
+          "fid": 7415,
+          "fname": "franklynr"
+        },
+        {
+          "fid": 329015,
+          "fname": "manry"
+        }
+      ]
+    },
+    "replies": {
+      "count": 1
+    },
+    "mentioned_profiles": []
+  }
+}
+```
+
+After
+
+```typescript
+{
+    "cast": {
+        "author": {
+            "active_status": "inactive",
+            "custody_address": "0x29b9603827ed446bd4e1d2dada0e5aa97e7a455b",
+            "display_name": "Villawolf 🎩",
+            "fid": 324525,
+            "follower_count": 794,
+            "following_count": 422,
+            "object": "user",
+            "pfp_url": "https://i.imgur.com/WqvQmJf.png",
+            "power_badge": false,
+            "profile": {
+                "bio": {
+                    "mentioned_profiles": [],
+                    "text": "CryptoUsuario del Web3 y entusiasta DeFi."
+                }
+            },
+            "username": "villawolf.eth",
+            "verifications": [
+                "0xa5d7897e2779f7e5c5be699d41a7b42f9ce0a5c2"
+            ],
+            "verified_addresses": {
+                "eth_addresses": [
+                    "0xa5d7897e2779f7e5c5be699d41a7b42f9ce0a5c2"
+                ],
+                "sol_addresses": []
+            }
+        },
+        "embeds": [
+            {
+                "url": "https://i.imgur.com/6CBzQaJ.png"
+            },
+            {
+                "url": "https://ultrasound.money"
+            }
+        ],
+        "hash": "0xd3821c9019b42b40b5c173679093e7c19196e379",
+        "mentioned_profiles": [],
+        "object": "cast",
+        "parent_author": {
+            "fid": null
+        },
+        "parent_hash": null,
+        "parent_url": "https://farcaster.group/spanish",
+        "reactions": {
+            "likes": [
+                {
+                    "fid": 10981,
+                    "fname": "nawashi.eth"
+                },
+                {
+                    "fid": 329015,
+                    "fname": "manry"
+                }
+            ],
+            "likes_count": 2,
+            "recasts": [
+                {
+                    "fid": 329015,
+                    "fname": "manry"
+                }
+            ],
+            "recasts_count": 1
+        },
+        "replies": {
+            "count": 1
+        },
+        "root_parent_url": "https://farcaster.group/spanish",
+        "text": "Si eres Ethereum love 😍 como yo, esta web no debe faltar en tu cajita de herramientas  https://ultrasound.money ETH 🚀🚀",
+        "thread_hash": "0xd3821c9019b42b40b5c173679093e7c19196e379",
+        "timestamp": "2024-02-22T13:35:33.000Z"
+    }
+}
+```
+
+## `/casts`
+
+Before
+
+```typescript
+{
+  "data": {
+    "casts": [
+      {
+        "fid": 4823,
+        "hash": "0x9733fce86e174d1b2d8ba614c7cc0e2ba5372a97",
+        "short_hash": "0x9733fce8",
+        "thread_hash": "0x317904d560a9acf1d25888322dd8c49afd78eb1f",
+        "parent_hash": "0x0ab851ba8524eedf9e164b55f6eeec751f74b539",
+        "parent_url": null,
+        "root_parent_url": "https://warpcast.com/~/channel/frames",
+        "parent_author": {
+          "uid": 680,
+          "fid": 680,
+          "custody_address": "0x0b28a373fc8d92669aefb420499e74ce2dd5d356",
+          "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
+          "following_count": 777,
+          "follower_count": 62160,
+          "verifications": [
+            "0x1aa3096e2bbacae10c316e7282947f635d461e3c",
+            "0xf417ace7b13c0ef4fcb5548390a450a4b75d3eb3"
+          ],
+          "bio": "@supercast",
+          "display_name": "woj — q/dau",
+          "pfp_url": "https://peach-changing-limpet-80.mypinata.cloud/ipfs/QmZenqRfBERmodRVUHhLaYvYVsRasihVcMY2gqUP2tX7t2?filename=profile_picture.png",
+          "username": "woj.eth"
+        },
+        "author": {
+          "uid": 4823,
+          "fid": 4823,
+          "custody_address": "0x7f9a6992a54dc2f23f1105921715bd61811e5b71",
+          "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
+          "following_count": 844,
+          "follower_count": 13623,
+          "verifications": [
+            "0x1612c6dff0eb5811108b709a30d8150495ce9cc5",
+            "0xcdcdc174901b12e87cc82471a2a2bd6181c89392"
+          ],
+          "bio": "Writer. Building @pinatacloud. Tinkering with a Farcaster native alternative to GoodReads: https://readcast.xyz \\ https://polluterofminds.com",
+          "display_name": "Justin Hunter",
+          "pfp_url": "https://i.seadn.io/gae/lhGgt7yK1JiBVYz_HBxcAmYLRtP03aw5xKX4FgmFT9Ai7kLD5egzlLvb0lkuRNl28shtjr07DC8IHzLUkTqlWUMndUzC9R5_MSxH3g?w=500&auto=format",
+          "username": "polluterofminds"
+        },
+        "content": "Noooooooooo",
+        "timestamp": "2024-03-08T21:12:34Z",
+        "embeds": [],
+        "reactions": {},
+        "replies": {
+          "count": 1
+        },
+        "mentioned_profiles": []
+      }
+    ],
+    "next_page_token": "eyJvZmZzZXQiOiIwIn0"
+  }
+}
+```
+
+After
+
+```typescript
+{
+    "casts": [
+        {
+            "author": {
+                "active_status": "inactive",
+                "custody_address": "0x7f9a6992a54dc2f23f1105921715bd61811e5b71",
+                "display_name": "Justin Hunter",
+                "fid": 4823,
+                "follower_count": 26787,
+                "following_count": 924,
+                "object": "user",
+                "pfp_url": "https://i.seadn.io/gae/lhGgt7yK1JiBVYz_HBxcAmYLRtP03aw5xKX4FgmFT9Ai7kLD5egzlLvb0lkuRNl28shtjr07DC8IHzLUkTqlWUMndUzC9R5_MSxH3g?w=500&auto=format",
+                "power_badge": true,
+                "profile": {
+                    "bio": {
+                        "mentioned_profiles": [],
+                        "text": "Writer. Building @pinatacloud. Tinkering with a Farcaster native alternative to GoodReads: https://readcast.xyz \\ https://polluterofminds.com"
+                    }
+                },
+                "username": "polluterofminds",
+                "verifications": [
+                    "0xcdcdc174901b12e87cc82471a2a2bd6181c89392",
+                    "0x1612c6dff0eb5811108b709a30d8150495ce9cc5"
+                ],
+                "verified_addresses": {
+                    "eth_addresses": [
+                        "0xcdcdc174901b12e87cc82471a2a2bd6181c89392",
+                        "0x1612c6dff0eb5811108b709a30d8150495ce9cc5"
+                    ],
+                    "sol_addresses": []
+                }
+            },
+            "embeds": [
+                {
+                    "url": "https://x.com/matthew_d_green/status/1789687898863792453?s=46"
+                }
+            ],
+            "hash": "0xddc971b2ae7188c739627cc3ff519f1a5ce0ffde",
+            "mentioned_profiles": [],
+            "object": "cast",
+            "parent_author": {
+                "fid": null
+            },
+            "parent_hash": null,
+            "parent_url": "https://warpcast.com/~/channel/privacy",
+            "reactions": {
+                "likes": [
+                    {
+                        "fid": 2777,
+                        "fname": "alexbruno.eth"
+                    },
+                    {
+                        "fid": 533877,
+                        "fname": "bura7501"
+                    },
+                    {
+                        "fid": 288646,
+                        "fname": "sebek"
+                    },
+                    {
+                        "fid": 5491,
+                        "fname": "pauldowman.eth"
+                    },
+                    {
+                        "fid": 5016,
+                        "fname": "stas"
+                    }
+                ],
+                "likes_count": 7,
+                "recasts": [
+                    {
+                        "fid": 533877,
+                        "fname": "bura7501"
+                    },
+                    {
+                        "fid": 5016,
+                        "fname": "stas"
+                    }
+                ],
+                "recasts_count": 2
+            },
+            "replies": {
+                "count": 2
+            },
+            "root_parent_url": "https://warpcast.com/~/channel/privacy",
+            "text": "Telegram has never made much sense to me. But I’ve largely resigned myself to having lost the battle in crypto and am forced to use it daily. https://x.com/matthew_d_green/status/1789687898863792453?s=46",
+            "thread_hash": "0xddc971b2ae7188c739627cc3ff519f1a5ce0ffde",
+            "timestamp": "2024-05-13T13:30:18.000Z"
+        }
+    ],
+    "next": {
+        "cursor": "eyJ0aW1lc3RhbXAiOiIyMDI0LTA1LTEzIDEzOjMwOjE4LjAwMDAwMDAifQ%3D%3D"
+    }
+}
+```
+
+## `/channels`
+
+Before
+
+```typescript
+{
+  "data": {
+    "channels": [
+      {
+        "name": "zorablob",
+        "url": "https://warpcast.com/~/channel/zorablob",
+        "display_name": "$ZORB",
+        "description": "Community channel for $ZORB on Zora",
+        "image_url": "https://i.imgur.com/GlH8TPF.png",
+        "lead_fid": 378922,
+        "created_at": 1709635092
+      }
+    ],
+    "next_page_token": "eyJvZmZzZXQiOiIxNCJ9"
+  }
+}
+```
+
+After
+
+```typescript
+{
+    "channels": [
+        {
+            "created_at": 1715609736,
+            "description": "a place for sharing and discussing longform stories online",
+            "follower_count": 1,
+            "hosts": [
+                {
+                    "active_status": "inactive",
+                    "custody_address": "0xb6620b05a422658688d57b5158d464dea912879d",
+                    "display_name": "Vinay Vasanji",
+                    "fid": 1082,
+                    "follower_count": 2800,
+                    "following_count": 1237,
+                    "notes": {
+                        "active_status": "Warpcast has transitioned from active badges to power badges, Neynar will deprecate this key in the user object in the next few weeks"
+                    },
+                    "object": "user",
+                    "pfp_url": "https://i.imgur.com/7y4JRTk.jpg",
+                    "power_badge": true,
+                    "profile": {
+                        "bio": {
+                            "text": "/cryptocandies founder everyname.xyz (acq.) cofounder humanetics.super.site"
+                        }
+                    },
+                    "username": "vinayvasanji.eth",
+                    "verifications": [
+                        "0x12c6920a4acc4dae6b3992903a48adcbffe5dc5e"
+                    ],
+                    "verified_addresses": {
+                        "eth_addresses": [
+                            "0x12c6920a4acc4dae6b3992903a48adcbffe5dc5e"
+                        ],
+                        "sol_addresses": [
+                            "BheMt83LxwReoARkU4Q4cE67ksZzA7Rf9E3ABdVZpUEy"
+                        ]
+                    }
+                }
+            ],
+            "id": "longreads",
+            "image_url": "https://i.imgur.com/AMxg3Jh.png",
+            "lead": {
+                "active_status": "inactive",
+                "custody_address": "0xb6620b05a422658688d57b5158d464dea912879d",
+                "display_name": "Vinay Vasanji",
+                "fid": 1082,
+                "follower_count": 2800,
+                "following_count": 1237,
+                "notes": {
+                    "active_status": "Warpcast has transitioned from active badges to power badges, Neynar will deprecate this key in the user object in the next few weeks"
+                },
+                "object": "user",
+                "pfp_url": "https://i.imgur.com/7y4JRTk.jpg",
+                "power_badge": true,
+                "profile": {
+                    "bio": {
+                        "text": "/cryptocandies founder everyname.xyz (acq.) cofounder humanetics.super.site"
+                    }
+                },
+                "username": "vinayvasanji.eth",
+                "verifications": [
+                    "0x12c6920a4acc4dae6b3992903a48adcbffe5dc5e"
+                ],
+                "verified_addresses": {
+                    "eth_addresses": [
+                        "0x12c6920a4acc4dae6b3992903a48adcbffe5dc5e"
+                    ],
+                    "sol_addresses": [
+                        "BheMt83LxwReoARkU4Q4cE67ksZzA7Rf9E3ABdVZpUEy"
+                    ]
+                }
+            },
+            "name": "longreads",
+            "object": "channel",
+            "parent_url": "https://warpcast.com/~/channel/longreads",
+            "url": "https://warpcast.com/~/channel/longreads"
+        }
+    ],
+    "next": {
+        "cursor": "eyJwYWdlIjoyfQ%3D%3D"
+    }
+}
+```
+## `/channels/:name`
+
+Before
+
+```typescript
+{
+  "data": {
+    "name": "pinata",
+    "url": "https://warpcast.com/~/channel/pinata",
+    "display_name": "pinata",
+    "description": "Build on IPFS and Farcaster at Scale | pinata.cloud",
+    "image_url": "https://i.imgur.com/u4mGk5b.gif",
+    "lead_fid": 20591,
+    "created_at": 1706890562
+  }
+}
+```
+
+After
+
+```typescript
+{
+    "channel": {
+        "created_at": 1706890562,
+        "description": "Build on IPFS and Farcaster at Scale | https://docs.pinata.cloud/farcaster/farcaster-api/getting-started",
+        "follower_count": 544,
+        "hosts": [
+            {
+                "active_status": "inactive",
+                "custody_address": "0x62402434701e0ce0ae4ea4b3caf68230a6ddbe43",
+                "display_name": "Kyle Tut",
+                "fid": 20591,
+                "follower_count": 473,
+                "following_count": 22,
+                "notes": {
+                    "active_status": "Warpcast has transitioned from active badges to power badges, Neynar will deprecate this key in the user object in the next few weeks"
+                },
+                "object": "user",
+                "pfp_url": "https://i.imgur.com/TLMFnH6.jpg",
+                "power_badge": true,
+                "profile": {
+                    "bio": {
+                        "text": "Everyone is from somewhere. Cofounder and CEO of Pinata. https://www.pinata.cloud/farcaster"
+                    }
+                },
+                "username": "kyletut",
+                "verifications": [
+                    "0x5ba9355a10611ed4339526472a59befed3549bad"
+                ],
+                "verified_addresses": {
+                    "eth_addresses": [
+                        "0x5ba9355a10611ed4339526472a59befed3549bad"
+                    ],
+                    "sol_addresses": []
+                }
+            },
+            {
+                "active_status": "inactive",
+                "custody_address": "0x7f9a6992a54dc2f23f1105921715bd61811e5b71",
+                "display_name": "Justin Hunter",
+                "fid": 4823,
+                "follower_count": 26787,
+                "following_count": 924,
+                "notes": {
+                    "active_status": "Warpcast has transitioned from active badges to power badges, Neynar will deprecate this key in the user object in the next few weeks"
+                },
+                "object": "user",
+                "pfp_url": "https://i.seadn.io/gae/lhGgt7yK1JiBVYz_HBxcAmYLRtP03aw5xKX4FgmFT9Ai7kLD5egzlLvb0lkuRNl28shtjr07DC8IHzLUkTqlWUMndUzC9R5_MSxH3g?w=500&auto=format",
+                "power_badge": true,
+                "profile": {
+                    "bio": {
+                        "text": "Writer. Building @pinatacloud. Tinkering with a Farcaster native alternative to GoodReads: https://readcast.xyz \\ https://polluterofminds.com"
+                    }
+                },
+                "username": "polluterofminds",
+                "verifications": [
+                    "0xcdcdc174901b12e87cc82471a2a2bd6181c89392",
+                    "0x1612c6dff0eb5811108b709a30d8150495ce9cc5"
+                ],
+                "verified_addresses": {
+                    "eth_addresses": [
+                        "0xcdcdc174901b12e87cc82471a2a2bd6181c89392",
+                        "0x1612c6dff0eb5811108b709a30d8150495ce9cc5"
+                    ],
+                    "sol_addresses": []
+                }
+            },
+            {
+                "active_status": "inactive",
+                "custody_address": "0x456131161f83c7d7fda15b32a5f7c21fd4e27e96",
+                "display_name": "Steve",
+                "fid": 6023,
+                "follower_count": 5095,
+                "following_count": 937,
+                "notes": {
+                    "active_status": "Warpcast has transitioned from active badges to power badges, Neynar will deprecate this key in the user object in the next few weeks"
+                },
+                "object": "user",
+                "pfp_url": "https://p765cpbvm0.execute-api.eu-central-1.amazonaws.com/p1/renderer/Minteeble/chain/base/collection/6e0b39a5-8569-4e67-b330-d352593c9629/image/176.png",
+                "power_badge": true,
+                "profile": {
+                    "bio": {
+                        "text": "Head of Developer Relations at /pinata | Technical Writer | Building honeythread.xyz | Tinkering Photocaster | stevedylan.dev/links"
+                    }
+                },
+                "username": "stevedylandev.eth",
+                "verifications": [
+                    "0xad73eafcac4f4c6755dfc61770875fb8b6bc8a25"
+                ],
+                "verified_addresses": {
+                    "eth_addresses": [
+                        "0xad73eafcac4f4c6755dfc61770875fb8b6bc8a25"
+                    ],
+                    "sol_addresses": []
+                }
+            }
+        ],
+        "id": "pinata",
+        "image_url": "https://i.imgur.com/u4mGk5b.gif",
+        "lead": {
+            "active_status": "inactive",
+            "custody_address": "0x62402434701e0ce0ae4ea4b3caf68230a6ddbe43",
+            "display_name": "Kyle Tut",
+            "fid": 20591,
+            "follower_count": 473,
+            "following_count": 22,
+            "notes": {
+                "active_status": "Warpcast has transitioned from active badges to power badges, Neynar will deprecate this key in the user object in the next few weeks"
+            },
+            "object": "user",
+            "pfp_url": "https://i.imgur.com/TLMFnH6.jpg",
+            "power_badge": true,
+            "profile": {
+                "bio": {
+                    "text": "Everyone is from somewhere. Cofounder and CEO of Pinata. https://www.pinata.cloud/farcaster"
+                }
+            },
+            "username": "kyletut",
+            "verifications": [
+                "0x5ba9355a10611ed4339526472a59befed3549bad"
+            ],
+            "verified_addresses": {
+                "eth_addresses": [
+                    "0x5ba9355a10611ed4339526472a59befed3549bad"
+                ],
+                "sol_addresses": []
+            }
+        },
+        "name": "pinata",
+        "object": "channel",
+        "parent_url": "https://warpcast.com/~/channel/pinata",
+        "url": "https://warpcast.com/~/channel/pinata"
+    }
+}
+```
+
+## `/users/:fid`
+
+Before
+
+```typescript
+{
+  "data": {
+    "fid": 4823,
+    "custody_address": "0x7f9a6992a54dc2f23f1105921715bd61811e5b71",
+    "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
+    "following_count": 811,
+    "follower_count": 11049,
+    "verifications": [
+      "0x1612c6dff0eb5811108b709a30d8150495ce9cc5",
+      "0xcdcdc174901b12e87cc82471a2a2bd6181c89392"
+    ],
+    "bio": "Writer. Building @pinatacloud. Tinkering with a Farcaster native alternative to GoodReads: https://readcast.xyz \\ https://polluterofminds.com",
+    "display_name": "Justin Hunter",
+    "pfp_url": "https://i.seadn.io/gae/lhGgt7yK1JiBVYz_HBxcAmYLRtP03aw5xKX4FgmFT9Ai7kLD5egzlLvb0lkuRNl28shtjr07DC8IHzLUkTqlWUMndUzC9R5_MSxH3g?w=500&auto=format",
+    "username": "polluterofminds"
+  }
+}
+```
+
+After
+
+```typescript
+{
+    "user": {
+        "active_status": "inactive",
+        "custody_address": "0x7f9a6992a54dc2f23f1105921715bd61811e5b71",
+        "display_name": "Justin Hunter",
+        "fid": 4823,
+        "follower_count": 26787,
+        "following_count": 924,
+        "object": "user",
+        "pfp_url": "https://i.seadn.io/gae/lhGgt7yK1JiBVYz_HBxcAmYLRtP03aw5xKX4FgmFT9Ai7kLD5egzlLvb0lkuRNl28shtjr07DC8IHzLUkTqlWUMndUzC9R5_MSxH3g?w=500&auto=format",
+        "power_badge": true,
+        "profile": {
+            "bio": {
+                "mentioned_profiles": [],
+                "text": "Writer. Building @pinatacloud. Tinkering with a Farcaster native alternative to GoodReads: https://readcast.xyz \\ https://polluterofminds.com"
+            }
+        },
+        "username": "polluterofminds",
+        "verifications": [
+            "0xcdcdc174901b12e87cc82471a2a2bd6181c89392",
+            "0x1612c6dff0eb5811108b709a30d8150495ce9cc5"
+        ],
+        "verified_addresses": {
+            "eth_addresses": [
+                "0xcdcdc174901b12e87cc82471a2a2bd6181c89392",
+                "0x1612c6dff0eb5811108b709a30d8150495ce9cc5"
+            ],
+            "sol_addresses": []
+        }
+    }
+}
+```
+
+## `/users`
+
+Before
+
+```typescript
+{
+  "data": {
+    "users": [
+      {
+        "fid": 2,
+        "custody_address": "0x4114e33eb831858649ea3702e1c9a2db3f626446",
+        "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
+        "following_count": 1138,
+        "follower_count": 150650,
+        "verifications": [
+          "0x182327170fc284caaa5b1bc3e3878233f529d741",
+          "0x83f7335253bfaf321de49f25f6fd67fa8f1d0665b4cab33f67f7e4341bfd91d0",
+          "0x91031dcfdea024b4d51e775486111d2b2a715871",
+          "0x91701714719f1388e7f5cf8156b7bcdf001e5dcd1354151488959fdf343caff5",
+          "0xf86a7a5b7c703b1fd8d93c500ac4cc75b67477f0"
+        ],
+        "bio": "Technowatermelon. Elder Millenial. Building Farcaster. \n\nnf.td/varun",
+        "display_name": "Varun Srinivasan",
+        "pfp_url": "https://i.seadn.io/gae/sYAr036bd0bRpj7OX6B-F-MqLGznVkK3--DSneL_BT5GX4NZJ3Zu91PgjpD9-xuVJtHq0qirJfPZeMKrahz8Us2Tj_X8qdNPYC-imqs?w=500&auto=format",
+        "username": "v"
+      }
+    ],
+    "next_page_token": "eyJvZmZzZXQiOiIyIn0"
+  }
+}
+```
+
+After
+
+```typescript
+{
+    "next": {
+        "cursor": "eyJ0aW1lc3RhbXAiOiIyMDI0LTA1LTEzIDEzOjMxOjQyLjAwMDAwMDAiLCJmaWQiOjUzNDUyMn0%3D"
+    },
+    "users": [
+        {
+            "object": "follow",
+            "user": {
+                "active_status": "inactive",
+                "custody_address": "0x780caf17677a6412b66f0645ed38da744a83d48c",
+                "display_name": "Mykola",
+                "fid": 534645,
+                "follower_count": 3,
+                "following_count": 66,
+                "notes": {
+                    "active_status": "Warpcast has transitioned from active badges to power badges, Neynar will deprecate this key in the user object in the next few weeks"
+                },
+                "object": "user",
+                "pfp_url": "https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/af7f4d95-8382-44bf-d0f2-a6333c88e400/rectcrop3",
+                "power_badge": false,
+                "profile": {
+                    "bio": {
+                        "text": ""
+                    }
+                },
+                "username": "!534645",
+                "verifications": [],
+                "verified_addresses": {
+                    "eth_addresses": [],
+                    "sol_addresses": []
+                }
+            }
+        }
+    ]
+}
+```
