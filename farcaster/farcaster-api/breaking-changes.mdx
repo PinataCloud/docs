@@ -3,11 +3,13 @@ title: "Farcaster API Migration Breaking Changes"
 description: "Details on breaking changes to Farcaster API"
 ---
 
+**Effective Date: May 20th, 2024**
+
 While Pinata strives to always have backwards compatible APIs, our infrastructure shift for Farcaster data changes did result in some breaking changes to the detailed endpoints below. The only changes will be in the responses of the endpoints, not the paths or query parameters themselves. Please compare the responses and make adjustments accordingly.
 
 ## `/casts/:hash`
 
-Before
+**Before**
 
 ```typescript
 {
@@ -79,7 +81,7 @@ Before
 }
 ```
 
-After
+**After**
 
 ```typescript
 {
@@ -160,7 +162,7 @@ After
 
 ## `/casts`
 
-Before
+**Before**
 
 ```typescript
 {
@@ -221,7 +223,7 @@ Before
 }
 ```
 
-After
+**After**
 
 ```typescript
 {
@@ -322,7 +324,7 @@ After
 
 ## `/channels`
 
-Before
+**Before**
 
 ```typescript
 {
@@ -343,7 +345,7 @@ Before
 }
 ```
 
-After
+**After**
 
 ```typescript
 {
@@ -431,7 +433,7 @@ After
 ```
 ## `/channels/:name`
 
-Before
+**Before**
 
 ```typescript
 {
@@ -447,7 +449,7 @@ Before
 }
 ```
 
-After
+**After**
 
 ```typescript
 {
@@ -587,7 +589,7 @@ After
 
 ## `/users/:fid`
 
-Before
+**Before**
 
 ```typescript
 {
@@ -609,7 +611,7 @@ Before
 }
 ```
 
-After
+**After**
 
 ```typescript
 {
@@ -647,7 +649,7 @@ After
 
 ## `/users`
 
-Before
+**Before**
 
 ```typescript
 {
@@ -677,7 +679,7 @@ Before
 }
 ```
 
-After
+**After**
 
 ```typescript
 {
@@ -716,3 +718,7 @@ After
     ]
 }
 ```
+
+## Questions?
+
+If you have any questions, thoughts, or concerns please [reach out to us!](mailto:team@pinata.cloud)
