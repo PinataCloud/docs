@@ -172,6 +172,7 @@
         "farcaster/introduction",
         "farcaster/farcaster-auth",
         "farcaster/farcaster-API",
+        "farcaster/image-uploads",
         "farcaster/frames",
         "farcaster/hubs",
         "farcaster/fc-dev-calls/index"
