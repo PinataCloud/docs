@@ -838,16 +838,74 @@ paths:
               examples:
                 default:
                   value:
-                    data:
-                      channels:
-                        - name: zorablob
-                          url: 'https://warpcast.com/~/channel/zorablob'
-                          display_name: $ZORB
-                          description: Community channel for $ZORB on Zora
-                          image_url: 'https://i.imgur.com/GlH8TPF.png'
-                          lead_fid: 378922
-                          created_at: 1709635092
-                      next_page_token: eyJvZmZzZXQiOiIxNCJ9
+                    channels:
+                      - created_at: 1715609736
+                        description: a place for sharing and discussing longform stories online
+                        follower_count: 1
+                        hosts:
+                          - active_status: inactive
+                            custody_address: '0xb6620b05a422658688d57b5158d464dea912879d'
+                            display_name: Vinay Vasanji
+                            fid: 1082
+                            follower_count: 2800
+                            following_count: 1237
+                            notes:
+                              active_status: >-
+                                Warpcast has transitioned from active badges to
+                                power badges, Neynar will deprecate this key in the
+                                user object in the next few weeks
+                            object: user
+                            pfp_url: https://i.imgur.com/7y4JRTk.jpg
+                            power_badge: true
+                            profile:
+                              bio:
+                                text: >-
+                                  /cryptocandies founder everyname.xyz (acq.)
+                                  cofounder humanetics.super.site
+                            username: vinayvasanji.eth
+                            verifications:
+                              - '0x12c6920a4acc4dae6b3992903a48adcbffe5dc5e'
+                            verified_addresses:
+                              eth_addresses:
+                                - '0x12c6920a4acc4dae6b3992903a48adcbffe5dc5e'
+                              sol_addresses:
+                                - BheMt83LxwReoARkU4Q4cE67ksZzA7Rf9E3ABdVZpUEy
+                        id: longreads
+                        image_url: https://i.imgur.com/AMxg3Jh.png
+                        lead:
+                          active_status: inactive
+                          custody_address: '0xb6620b05a422658688d57b5158d464dea912879d'
+                          display_name: Vinay Vasanji
+                          fid: 1082
+                          follower_count: 2800
+                          following_count: 1237
+                          notes:
+                            active_status: >-
+                              Warpcast has transitioned from active badges to power
+                              badges, Neynar will deprecate this key in the user
+                              object in the next few weeks
+                          object: user
+                          pfp_url: https://i.imgur.com/7y4JRTk.jpg
+                          power_badge: true
+                          profile:
+                            bio:
+                              text: >-
+                                /cryptocandies founder everyname.xyz (acq.)
+                                cofounder humanetics.super.site
+                          username: vinayvasanji.eth
+                          verifications:
+                            - '0x12c6920a4acc4dae6b3992903a48adcbffe5dc5e'
+                          verified_addresses:
+                            eth_addresses:
+                              - '0x12c6920a4acc4dae6b3992903a48adcbffe5dc5e'
+                            sol_addresses:
+                              - BheMt83LxwReoARkU4Q4cE67ksZzA7Rf9E3ABdVZpUEy
+                        name: longreads
+                        object: channel
+                        parent_url: https://warpcast.com/~/channel/longreads
+                        url: https://warpcast.com/~/channel/longreads
+                    next:
+                      cursor: eyJwYWdlIjoyfQ%3D%3D
           headers:
             Date:
               schema:
@@ -903,14 +961,130 @@ paths:
               examples:
                 default:
                   value:
-                    data:
-                      name: pinata
-                      url: 'https://warpcast.com/~/channel/pinata'
-                      display_name: pinata
-                      description: Build on IPFS and Farcaster at Scale | pinata.cloud
-                      image_url: 'https://i.imgur.com/u4mGk5b.gif'
-                      lead_fid: 20591
+                    channel:
                       created_at: 1706890562
+                      description: >-
+                        Build on IPFS and Farcaster at Scale |
+                        https://docs.pinata.cloud/farcaster/farcaster-api/getting-started
+                      follower_count: 544
+                      hosts:
+                        - active_status: inactive
+                          custody_address: '0x62402434701e0ce0ae4ea4b3caf68230a6ddbe43'
+                          display_name: Kyle Tut
+                          fid: 20591
+                          follower_count: 473
+                          following_count: 22
+                          notes:
+                            active_status: >-
+                              Warpcast has transitioned from active badges to power
+                              badges, Neynar will deprecate this key in the user
+                              object in the next few weeks
+                          object: user
+                          pfp_url: https://i.imgur.com/TLMFnH6.jpg
+                          power_badge: true
+                          profile:
+                            bio:
+                              text: >-
+                                Everyone is from somewhere. Cofounder and CEO of
+                                Pinata. https://www.pinata.cloud/farcaster
+                          username: kyletut
+                          verifications:
+                            - '0x5ba9355a10611ed4339526472a59befed3549bad'
+                          verified_addresses:
+                            eth_addresses:
+                              - '0x5ba9355a10611ed4339526472a59befed3549bad'
+                            sol_addresses: []
+                        - active_status: inactive
+                          custody_address: '0x7f9a6992a54dc2f23f1105921715bd61811e5b71'
+                          display_name: Justin Hunter
+                          fid: 4823
+                          follower_count: 26787
+                          following_count: 924
+                          notes:
+                            active_status: >-
+                              Warpcast has transitioned from active badges to power
+                              badges, Neynar will deprecate this key in the user
+                              object in the next few weeks
+                          object: user
+                          pfp_url: >-
+                            https://i.seadn.io/gae/lhGgt7yK1JiBVYz_HBxcAmYLRtP03aw5xKX4FgmFT9Ai7kLD5egzlLvb0lkuRNl28shtjr07DC8IHzLUkTqlWUMndUzC9R5_MSxH3g?w=500&auto=format
+                          power_badge: true
+                          profile:
+                            bio:
+                              text: >-
+                                Writer. Building @pinatacloud. Tinkering with a
+                                Farcaster native alternative to GoodReads:
+                                https://readcast.xyz \ https://polluterofminds.com
+                          username: polluterofminds
+                          verifications:
+                            - '0xcdcdc174901b12e87cc82471a2a2bd6181c89392'
+                            - '0x1612c6dff0eb5811108b709a30d8150495ce9cc5'
+                          verified_addresses:
+                            eth_addresses:
+                              - '0xcdcdc174901b12e87cc82471a2a2bd6181c89392'
+                              - '0x1612c6dff0eb5811108b709a30d8150495ce9cc5'
+                            sol_addresses: []
+                        - active_status: inactive
+                          custody_address: '0x456131161f83c7d7fda15b32a5f7c21fd4e27e96'
+                          display_name: Steve
+                          fid: 6023
+                          follower_count: 5095
+                          following_count: 937
+                          notes:
+                            active_status: >-
+                              Warpcast has transitioned from active badges to power
+                              badges, Neynar will deprecate this key in the user
+                              object in the next few weeks
+                          object: user
+                          pfp_url: >-
+                            https://p765cpbvm0.execute-api.eu-central-1.amazonaws.com/p1/renderer/Minteeble/chain/base/collection/6e0b39a5-8569-4e67-b330-d352593c9629/image/176.png
+                          power_badge: true
+                          profile:
+                            bio:
+                              text: >-
+                                Head of Developer Relations at /pinata | Technical
+                                Writer | Building honeythread.xyz | Tinkering
+                                Photocaster | stevedylan.dev/links
+                          username: stevedylandev.eth
+                          verifications:
+                            - '0xad73eafcac4f4c6755dfc61770875fb8b6bc8a25'
+                          verified_addresses:
+                            eth_addresses:
+                              - '0xad73eafcac4f4c6755dfc61770875fb8b6bc8a25'
+                            sol_addresses: []
+                      id: pinata
+                      image_url: https://i.imgur.com/u4mGk5b.gif
+                      lead:
+                        active_status: inactive
+                        custody_address: '0x62402434701e0ce0ae4ea4b3caf68230a6ddbe43'
+                        display_name: Kyle Tut
+                        fid: 20591
+                        follower_count: 473
+                        following_count: 22
+                        notes:
+                          active_status: >-
+                            Warpcast has transitioned from active badges to power
+                            badges, Neynar will deprecate this key in the user
+                            object in the next few weeks
+                        object: user
+                        pfp_url: https://i.imgur.com/TLMFnH6.jpg
+                        power_badge: true
+                        profile:
+                          bio:
+                            text: >-
+                              Everyone is from somewhere. Cofounder and CEO of
+                              Pinata. https://www.pinata.cloud/farcaster
+                        username: kyletut
+                        verifications:
+                          - '0x5ba9355a10611ed4339526472a59befed3549bad'
+                        verified_addresses:
+                          eth_addresses:
+                            - '0x5ba9355a10611ed4339526472a59befed3549bad'
+                          sol_addresses: []
+                      name: pinata
+                      object: channel
+                      parent_url: https://warpcast.com/~/channel/pinata
+                      url: https://warpcast.com/~/channel/pinata
           headers:
             Date:
               schema:
@@ -966,19 +1140,33 @@ paths:
               examples:
                 default:
                   value:
-                    data:
-                      fid: 4823
+                    user:
+                      active_status: inactive
                       custody_address: '0x7f9a6992a54dc2f23f1105921715bd61811e5b71'
-                      recovery_address: '0x00000000fcb080a4d6c39a9354da9eb9bc104cd7'
-                      following_count: 811
-                      follower_count: 11049
-                      verifications:
-                        - '0x1612c6dff0eb5811108b709a30d8150495ce9cc5'
-                        - '0xcdcdc174901b12e87cc82471a2a2bd6181c89392'
-                      bio: 'Writer. Building @pinatacloud. Tinkering with a Farcaster native alternative to GoodReads: https://readcast.xyz \ https://polluterofminds.com'
                       display_name: Justin Hunter
-                      pfp_url: 'https://i.seadn.io/gae/lhGgt7yK1JiBVYz_HBxcAmYLRtP03aw5xKX4FgmFT9Ai7kLD5egzlLvb0lkuRNl28shtjr07DC8IHzLUkTqlWUMndUzC9R5_MSxH3g?w=500&auto=format'
+                      fid: 4823
+                      follower_count: 26787
+                      following_count: 924
+                      object: user
+                      pfp_url: >-
+                        https://i.seadn.io/gae/lhGgt7yK1JiBVYz_HBxcAmYLRtP03aw5xKX4FgmFT9Ai7kLD5egzlLvb0lkuRNl28shtjr07DC8IHzLUkTqlWUMndUzC9R5_MSxH3g?w=500&auto=format
+                      power_badge: true
+                      profile:
+                        bio:
+                          mentioned_profiles: []
+                          text: >-
+                            Writer. Building @pinatacloud. Tinkering with a
+                            Farcaster native alternative to GoodReads:
+                            https://readcast.xyz \ https://polluterofminds.com
                       username: polluterofminds
+                      verifications:
+                        - '0xcdcdc174901b12e87cc82471a2a2bd6181c89392'
+                        - '0x1612c6dff0eb5811108b709a30d8150495ce9cc5'
+                      verified_addresses:
+                        eth_addresses:
+                          - '0xcdcdc174901b12e87cc82471a2a2bd6181c89392'
+                          - '0x1612c6dff0eb5811108b709a30d8150495ce9cc5'
+                        sol_addresses: []
           headers:
             Date:
               schema:
@@ -1067,29 +1255,78 @@ paths:
               schema:
                 type: object
               examples:
-                default:
+                example-0:
+                  summary: Users FID is Following
                   value:
-                    data:
-                      users:
-                        - fid: 2
-                          custody_address: '0x4114e33eb831858649ea3702e1c9a2db3f626446'
-                          recovery_address: '0x00000000fcb080a4d6c39a9354da9eb9bc104cd7'
-                          following_count: 1138
-                          follower_count: 150650
+                    next:
+                      cursor: >-
+                        eyJ0aW1lc3RhbXAiOiIyMDI0LTA1LTE0IDE2OjAyOjUzLjAwMDAwMDAiLCJmaWQiOjUzMDM1OH0%3D
+                    users:
+                      - object: follow
+                        user:
+                          active_status: inactive
+                          custody_address: '0x23cb10e59422eb93ababff06401eec0691cb95b8'
+                          display_name: Abimbola
+                          fid: 530358
+                          follower_count: 300
+                          following_count: 554
+                          notes:
+                            active_status: >-
+                              Warpcast has transitioned from active badges to
+                              power badges, Neynar will deprecate this key in
+                              the user object in the next few weeks
+                          object: user
+                          pfp_url: >-
+                            https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/0e1f6e5a-ae62-4548-0f42-197ec91d6500/rectcrop3
+                          power_badge: false
+                          profile:
+                            bio:
+                              text: >-
+                                I'm a sweet girl that love Jesus, An ambitious
+                                lady and a big purrrr
+                          username: '!530358'
                           verifications:
-                            - '0x182327170fc284caaa5b1bc3e3878233f529d741'
-                            - '0x83f7335253bfaf321de49f25f6fd67fa8f1d0665b4cab33f67f7e4341bfd91d0'
-                            - '0x91031dcfdea024b4d51e775486111d2b2a715871'
-                            - '0x91701714719f1388e7f5cf8156b7bcdf001e5dcd1354151488959fdf343caff5'
-                            - '0xf86a7a5b7c703b1fd8d93c500ac4cc75b67477f0'
-                          bio: |-
-                            Technowatermelon. Elder Millenial. Building Farcaster. 
-
-                            nf.td/varun
-                          display_name: Varun Srinivasan
-                          pfp_url: 'https://i.seadn.io/gae/sYAr036bd0bRpj7OX6B-F-MqLGznVkK3--DSneL_BT5GX4NZJ3Zu91PgjpD9-xuVJtHq0qirJfPZeMKrahz8Us2Tj_X8qdNPYC-imqs?w=500&auto=format'
-                          username: v
-                      next_page_token: eyJvZmZzZXQiOiIyIn0
+                            - '0x4e71e0f4216924c995d43465ac0bb3d5967e764e'
+                          verified_addresses:
+                            eth_addresses:
+                              - '0x4e71e0f4216924c995d43465ac0bb3d5967e764e'
+                            sol_addresses: []
+                example-1:
+                  summary: Users Following FID
+                  value:
+                    next:
+                      cursor: >-
+                        eyJ0aW1lc3RhbXAiOiIyMDI0LTA1LTEzIDIxOjE5OjA1LjAwMDAwMDAiLCJ0YXJnZXRfZmlkIjoiMzg2MjAzIn0%3D
+                    users:
+                      - object: follow
+                        user:
+                          active_status: inactive
+                          custody_address: '0x24ec13c7ea2fa85d8877ee02cde022027d8db50c'
+                          display_name: kree
+                          fid: 386203
+                          follower_count: 9
+                          following_count: 72
+                          notes:
+                            active_status: >-
+                              Warpcast has transitioned from active badges to
+                              power badges, Neynar will deprecate this key in
+                              the user object in the next few weeks
+                          object: user
+                          pfp_url: https://i.imgur.com/1Tq5MTE.jpg
+                          power_badge: false
+                          profile:
+                            bio:
+                              text: |-
+                                chris flattum 
+                                                @warpshop
+                                                                                      somewhere in europe coding on my laptop! 
+                          username: cflattum
+                          verifications:
+                            - '0x80c1b48220a72d7eaf6f7b170fbe6da96be8177b'
+                          verified_addresses:
+                            eth_addresses:
+                              - '0x80c1b48220a72d7eaf6f7b170fbe6da96be8177b'
+                            sol_addresses: []
           headers:
             Date:
               schema:
