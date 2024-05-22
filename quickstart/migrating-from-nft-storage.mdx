@@ -131,4 +131,30 @@ async function pinataMetadata() {
 
 ## Migrating Existing Pins
 
-TBD
+To get started, [make sure you’ve signed up for Pinata](https://pinata.cloud). Pinata makes it easy to move between IPFS services, but you’ll need a paid plan in order to migrate.
+
+Next, you’ll need to know how you access your old NFT.Storage content. Since the news broke, the old interface has been moved to `classic.nft.storage`. You’ll want to sign in there. Once you’re signed in, you’ll need to create an API key, if you haven’t previously created one. Click the API Keys button in the top navigation. 
+
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafkreiegnlsbmk4zuhkhb4wbybxe2in4q5qriz5trxyi6amil3gzkbw7l4" />
+
+
+Once on the API keys page, either create a new key or copy an existing key. Once you have that key, head back over to Pinata. Click the avatar dropdown in the top-right, then choose the Integrations option. 
+
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafkreiectx2562myxotpvtbh7mrtw7nskjtczigvjp4znbmvyalhfkqw54" />
+
+On the Integrations page, you’ll see a new integration for NFT.Storage. Click on that one and you’ll be prompted to enter your API key. 
+
+[IMAGE HERE]
+
+When you add your key and start the import, the process will work like this: 
+
+1. Pinata will make a `GET` request to find all the CIDs pinned to your [NFT.Storage](http://NFT.Storage) account
+2. Pinata will then import all of those CIDs into a queue
+3. Pinata will send you an email if we were able to add the CIDs to the queue or we’ll send you an error email if there was a problem
+4. Pinata will begin the process of searching the IPFS network and pinning these files to your account
+5. You can monitor the progress by going to the [Files Manager](https://app.pinata.cloud/pinmanager) and paying attention to the Pin By CID queue
+
+When everything is complete, your Pin By CID queue will be empty and you’ll be fully migrated over. 
+
+This integration should make the process of migrating from [NFT.Storage](http://NFT.Storage) to Pinata as easy as possible. Once complete, you won’t have to worry about the future of your files as they will be safely pinned to IPFS using Pinata. They will also be accessible through your own [Dedicated IPFS Gateway](https://www.pinata.cloud/blog/what-is-a-dedicated-ipfs-gateway). 
+
