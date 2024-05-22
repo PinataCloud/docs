@@ -1,0 +1,134 @@
+---
+title: "Migrating from NFT.Storage"
+description: "A comprehensive guide for migrating to Pinata from NFT.Storage for pinning files"
+---
+
+As of June 30th, 2024 NFT.Storage will be discontinuing their classic product that allows files uploads. This guide is written as a service to help anyone who still needs uploads to migrate to Pinata.
+
+## API/SDK Uploads
+
+Please refer to the code guides below showing how you can migrate your exising NFT.Storage code to using the [Pinata API](/api-reference/introduction).
+
+<Info>We are currently rewriting our SDK to make uploads outside of readable streams much easier, [please stay tunned](https://warpcast.com/~/channel/pinata)!</Info>
+
+### Uploading Blob or File Objects
+
+<CodeGroup>
+  
+```javascript NFT.Ntorage
+async function nftStorage() {
+  const text = "hello world!";
+  const blob = new Blob([text], { type: "text/plain" });
+  const cid = await client.storeBlob(blob);
+  console.log(cid);
+}
+```
+```javascript Pinata
+async function pinataBlob() {
+  const text = "Hello World!";
+  const blob = new Blob([text], { type: "text/plain" });
+  const file = new File([blob], "hello_world.txt");
+  const data = new FormData();
+  data.append("file", file);
+
+  const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+    },
+    body: data,
+  });
+  const resData = await res.json();
+  console.log(resData);
+}
+```
+
+</CodeGroup>
+
+### Uploading a Directory
+
+<CodeGroup>
+
+```javascript NFT.Storage
+async function nftStorageDirectory() {
+  const cid = await client.storeDirectory([
+    new File(["hello world"], "hello.txt"),
+    new File([JSON.stringify({ from: "incognito" }, null, 2)], "metadata.json"),
+  ]);
+  console.log(cid);
+}
+```
+
+```javascript Pinata
+async function pinataDirectory() {
+  const folder = "my_folder";
+  const files = [
+    new File(["hello world"], "hello.txt"),
+    new File([JSON.stringify({ from: "incognito" }, null, 2)], "metadata.json"),
+  ];
+  const data = new FormData();
+
+  Array.from(files).forEach((file) => {
+    data.append("file", file, `${folder}/${file.name}`);
+  });
+
+  const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+    },
+    body: data,
+  });
+  const resData = await res.json();
+  console.log(resData);
+}
+```
+
+</CodeGroup>
+
+### Uploading NFT Metadata
+
+<CodeGroup>
+
+```javascript NFT.Storage
+async function nftStorageMetadata() {
+  const metadata = await client.store({
+    name: "nft.storage store test",
+    description: "Test ERC-1155 compatible metadata.",
+    image: new File(["hello world"], "hello.txt", { type: "image/png" }),
+    properties: {
+      custom: "Custom data can appear here, files are auto uploaded.",
+      file: new File(["This is a readme"], "README.md", { type: "text/plain" }),
+    },
+  });
+
+  console.log("IPFS URL for the metadata:", metadata.url);
+}
+```
+
+```javascript Pinata
+async function pinataMetadata() {
+  const data = JSON.stringify({
+    name: "Pinnie",
+    description: "Pinnie the Pinata",
+    image: "ipfs://QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng",
+    external_url: "https://pinata.cloud",
+  });
+
+  const res = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${JWT}`,
+    },
+    body: data,
+  });
+  const resData = await res.json();
+  console.log(resData);
+}
+```
+</CodeGroup>
+
+## Migrating Existing Pins
+
+TBD
