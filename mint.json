@@ -153,7 +153,14 @@
       "pages": [
         "api-reference/endpoint/generate-pinata-api-key",
         "api-reference/endpoint/list-api-keys",
-        "api-reference/endpoint/revoke-api-key"
+        "api-reference/endpoint/revoke-api-key",
+        {
+          "group": "V3 (beta)",
+          "pages": [
+            "api-reference/endpoint/v3-list-api-keys",
+            "api-reference/endpoint/v3-revoke-api-key"
+          ]
+        }
       ]
     },
     {
