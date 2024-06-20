@@ -92,18 +92,18 @@ paths:
                     createdAt: "2024-06-12T15:34:50.324Z"
                     updatedAt: "2024-06-12T15:34:51.204Z"
                 count: 1
-  /pinata/keys/{id}:
+  /pinata/keys/{key}:
     put:
       tags:
         - default
       summary: Revoke API Key
       parameters:
-        - name: id
+        - name: key
           in: path
           schema:
             type: string
           required: true
-          example: 86566a29-8c5f-4d0c-860e-24b6dd1e6f04
+          example: 8624b6dd1e6f04
       responses:
         "200":
           description: OK
