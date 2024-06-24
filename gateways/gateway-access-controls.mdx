@@ -5,31 +5,64 @@ slug: "gateway-access-controls"
 
 Pinata's Dedicated Gateways make it possible to fetch and serve IPFS content quickly and reliably, however there can be security risks in exposing an open gateway to the world. That's why Pinata has created Gateway Access Controls. These controls will allow you to further limit your gateway, making sure only your platform is using it. This is accomplished with **Access Tokens, IP Address Restrictions,** and **Host Origin Restrictions.**
 
-## Open vs Restricted
+## Restricted vs Open
+
+When working with IPFS Gateways the behavior usually falls into two categories: Restricted and Open.
+
+### Restricted Gateway
+
+Restricted means the gateway can only load content that is pinned to that user's account. This is the default behavior for Pinata's Dedicated Gateway, as it provides the maximum level of security. Any requests made to a CID outside the user's account will be unauthorized.
+
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/Qmd4Z7GEkBo4VQUHpBQUxX9ud5wHSkAU3sPajJ73k33Rtc" />
+
+<Info>This check of whether or not a file is pinned or not using `/data/pinList` in the Pinata API, which means recursive CIDs in folders are considered unauthorized. Instead, use the folder CID in the path of the gateway followed by the file name.</Info>
+
+### Open Gateway
+
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/QmZAWTtEXeyGiTg6fjWmV4Chyrj7hZH59LMhUaB8AYJ3Er" />
+
+Open means the gateway can access any content on IPFS. An example might be a public gateway like `gateway.pinata.cloud` which are open to everyone, however might have rate limiting to keep them from crashing under heavy usage.
+
+### Why Access Controls?
+
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/QmcQP1ASKEJhFCF9HPZJBLdufaGD3kXZieexqpqUzje3vw" />
+
+If someone were to open their Dedicated Gateway without any permissions, anyone who found the domain could use it for themselves and abuse it, leaving the owner with a big bill of overages.
+
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/QmVB3vCkHGYmXYiBkQSZcE7nhSUkFHoq3L1MbS7cqnidrZ" />
 
 
+Because of this Pinata developed Gateway Access Controls to allow users to open their Gateways, but with restrictions that must be met first.
 
-## Access Tokens
 
-Adding an access token restriction means that content served through your gateway will only be served successfully if the access token is present with the request. **Importantly, content pinned to your account won't be accessible through your gateway if you've implemented an access token restriction and fail to include that token in content requests.**
+## Access Controls
 
-To create an access token, click on the button that says "Request Key."
+Pinata currently provides three primary methods for opening your gateway securely:
+- [Gateway Keys](#gateway-keys)
+- [IP Address](#ip-address)
+- [Host Origin](#host-origin)
+
+### Gateway Keys
+
+Adding a Gateway Key restriction means that content served through your gateway will only be served successfully if the key is present with the request. **Importantly, content pinned to your account won't be accessible through your gateway if you've implemented an access token restriction and fail to include that token in content requests.**
+
+To create a Gateway Key, click on the button that says "Request Key."
 
 <img
   style={{ width: "100%", borderRadius: "0.5rem" }}
   src="https://docs.mypinata.cloud/ipfs/QmbD4KujBsW7dX8wsdbG1rhsm4wZwpWMKad5nUJC19NJFW"
 />
 
-When you create an access token you will have the ability to preview the token by clicking the "eye" icon, or copy the token to your clipboard with the "copy" icon. At any point, you can delete an access token by clicking the "trash" icon.
+When you create a key you will have the ability to preview the token by clicking the "eye" icon, or copy the token to your clipboard with the "copy" icon. At any point, you can delete an access token by clicking the "trash" icon.
 
 <img
   style={{ width: "100%", borderRadius: "0.5rem" }}
   src="https://docs.mypinata.cloud/ipfs/QmQNP5P4Auwt7ARWyRQpC5ZRePVGraETrEATEc8YYAHKir"
 />
 
-Once you have the token, there are two ways you can use it in the gateway request.
+Once you have the key, there are two ways you can use it in the gateway request.
 
-### Query Parameter
+#### Query Parameter
 
 To use the query parameter method, simply add this to the end of a gateway request url:
 
@@ -37,7 +70,7 @@ To use the query parameter method, simply add this to the end of a gateway reque
 ?pinataGatewayToken=PASTE_IN_ACCESS_TOKEN
 ```
 
-### Header
+#### Header
 
 Another way to use the access token is in the request header. The Key Value would look like this:
 
@@ -47,7 +80,7 @@ Another way to use the access token is in the request header. The Key Value woul
 
 **Please keep in mind that using the access token in the request header may not work in a client side application, so consider using IP Address restriction instead for those use cases.**
 
-## IP Address
+### IP Address
 
 You can also restrict your gateway by IP Address. You can add up to 100 different IP addresses (individually). When you add this restriction, only content requested from an IP address that you've added will be served through your gateway.
 
@@ -65,7 +98,7 @@ You will get window asking for a valid IP Address which will allow any requests 
   src="https://docs.mypinata.cloud/ipfs/QmQwzGrzPHDGxScBkvkLjEKkUQc3ZXdYn63NHYH1Ccc1kq"
 />
 
-## Host Origin
+### Host Origin
 
 With the Host Origin restriction, you can make sure your gateway can only be used on a specific domain (for example, 'app.pinata.cloud'). To get started, click on "Add Host Origin."
 
@@ -105,6 +138,6 @@ Keep in mind, if you are rendering content on the client side using Host Origins
 
 For more info on `crossorigin` please read this article [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin)!
 
-## Multiple Restrictions
+### Multiple Restrictions
 
 You can add multiple Access Controls, and they will perform as an "OR" operator. This means that if you have Host Origins and Access Token set, you can use either one for content to go through.
