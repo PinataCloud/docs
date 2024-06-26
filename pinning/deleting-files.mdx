@@ -25,7 +25,7 @@ The Pinata API has a very simple `DELETE` endpoint that will allow you to unpin 
 If you find yourself in a place where you need to unpin a lot of files or perhaps all your files, you can use a script like this to create an array of CIDs and unpin them one by one. The example below uses the [`pinList`](/api-reference/endpoint/list-files) queries to target all pinned files and return 1000 for each request. This could easily be done with a different query to target different files, please check out the [listing files](/pinning/listing-files) doc for more info.
 
 ```javascript Unpin All Files
-const PINATA_JWT = "Bearer YOUR_JWT_HERE";
+const PINATA_JWT = "YOUR_JWT_HERE";
 const PIN_QUERY = `https://api.pinata.cloud/data/pinList?status=pinned&pageLimit=1000&includeCount=false`;
 const fetch = require("node-fetch");
 
@@ -48,7 +48,7 @@ const fetchPins = async () => {
           method: "GET",
           headers: {
             accept: "application/json",
-            Authorization: PINATA_JWT,
+            Authorization: `Bearer ${PINATA_JWT}`,
           },
         });
         const responseData = await response.json();
@@ -85,8 +85,7 @@ const deletePins = async () => {
           {
             method: "DELETE",
             headers: {
-              accept: "application/json",
-              Authorization: PINATA_JWT,
+              Authorization: `Bearer ${PINATA_JWT}`,
             },
           }
         );
