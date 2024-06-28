@@ -9,7 +9,10 @@ createdAt: "Tue Jul 18 2023 11:23:21 GMT+0000 (Coordinated Universal Time)"
 updatedAt: "Tue Sep 12 2023 17:08:02 GMT+0000 (Coordinated Universal Time)"
 ---
 
+
 With Pinata, there are a few ways you can pin files to IPFS!
+
+<Info>HTML uploads are currently only available on paid plans with granted access. If you are on a paid plan and wish to upload HTML please send a request through our support chat or send an email to [team@pinata.cloud](mailto:team@pinata.cloud)</Info>
 
 ## API & SDKs
 
@@ -103,7 +106,7 @@ async function pinFileToIPFS() {
     const data = new FormData();
     data.append("file", file);
 
-    const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", { 
+    const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${JWT}`,
@@ -140,7 +143,7 @@ async function pinJSONToIPFS() {
         name: "metadata.json"
       }
     })
-    const res = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", { 
+    const res = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -256,15 +259,15 @@ const pinDirectoryToPinata = async () => {
       data.append(`file`, fs.createReadStream(file), {
         filepath: basePathConverter(src, file),
       });
-    }    
-    
+    }
+
     const response = await got(url, {
       method: 'POST',
       headers: {
         "Authorization": "Bearer PINATA_API_JWT"
       },
       body: data
-  })		
+  })
 		.on('uploadProgress', progress => {
 			console.log(progress);
 		});
