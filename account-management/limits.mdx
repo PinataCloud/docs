@@ -8,9 +8,13 @@ updatedAt: "Thu Jan 25 2024 21:31:19 GMT+0000 (Coordinated Universal Time)"
 ---
 The Pinata platform currently has the following rate limits in place:
 
+## File Restrictions
+
+HTML uploads are currently only available on paid plans with granted access. If you are on a paid plan and wish to upload HTML please send a request through our support chat or send an email to [team@pinata.cloud](mailto:team@pinata.cloud)
+
 ## API Rate Limits
 
-The Pinata API currently has a rate limit of 180 requests per minute to our API. 
+The Pinata API currently has a rate limit of 180 requests per minute to our API.
 
 ### Exceptions
 
@@ -21,7 +25,7 @@ The following API calls have increased rate limits:
 
 ### Recommendations
 
-For users with traffic that can be burst-heavy, we recommend using a task scheduler or queue-based upload approach that limits requests to the allowed amount. 
+For users with traffic that can be burst-heavy, we recommend using a task scheduler or queue-based upload approach that limits requests to the allowed amount.
 
 For NodeJS users specifically, we recommend the [bottleneck library](https://www.npmjs.com/package/bottleneck) to help with this.
 
@@ -34,7 +38,7 @@ The Pinata public IPFS gateway (gateway.pinata.cloud) is meant for testing purpo
 
 ## Dedicated Gateway Rate Limits
 
-At this time there are currently no rate limits for users retrieving content from a dedicated gateway. 
+At this time there are currently no rate limits for users retrieving content from a dedicated gateway.
 
 ## Upload Size Limits
 
@@ -47,7 +51,3 @@ There is also a file limit size of **10MB** for the pinJSONToIPFS API endpoint.
 ## Pin by CID
 
 When using the [Pin By CID](/api-reference/endpoint/pin-by-cid) endpoint or using it in the [Files](/pinning/pinning-files) page in the app, there is a limit of 250 items that can be in the queue at once.
-
-## Free Plan Restrictions
-
-The free plan currently does not allow **HTML** files to be uploaded or allow them to go through the free plan Dedicated Gateway. If you wish to use such file types you can upgrade to a paid plan!
