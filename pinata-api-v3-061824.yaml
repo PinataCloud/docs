@@ -92,6 +92,96 @@ paths:
                     createdAt: "2024-06-12T15:34:50.324Z"
                     updatedAt: "2024-06-12T15:34:51.204Z"
                 count: 1
+    post:
+      tags:
+        - default
+      summary: Create API Key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                keyName:
+                  type: string
+                  description: Name of the API key
+                permissions:
+                  type: object
+                  properties:
+                    endpoints:
+                      type: object
+                      properties:
+                        data:
+                          type: object
+                          properties:
+                            pinList:
+                              type: boolean
+                            userPinnedDataTotal:
+                              type: boolean
+                        pinning:
+                          type: object
+                          properties:
+                            hashMetadata:
+                              type: boolean
+                            hashPinPolicy:
+                              type: boolean
+                            pinByHash:
+                              type: boolean
+                            pinFileToIPFS:
+                              type: boolean
+                            pinJSONToIPFS:
+                              type: boolean
+                            pinJobs:
+                              type: boolean
+                            unpin:
+                              type: boolean
+                            userPinPolicy:
+                              type: boolean
+                maxUses:
+                  type: integer
+                  description: Maximum number of uses for the API key
+              required:
+                - keyName
+                - permissions
+              example:
+                keyname: A test
+                permissions:
+                  admin: true
+                maxUses: 2
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 18 Jun 2024 18:52:56 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '818'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                JWT: >-
+                  JWT
+                pinata_api_key: key
+                pinata_api_secret: >-
+                  secret
   /pinata/keys/{key}:
     put:
       tags:
