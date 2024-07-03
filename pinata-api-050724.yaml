@@ -9,7 +9,7 @@ info:
     email: team@pinata.cloud
   version: 1.0.0
 servers:
-- url: https://api.pinata.cloud
+  - url: https://api.pinata.cloud
 paths:
   /data/testAuthentication:
     get:
@@ -24,11 +24,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                $ref: "#/components/schemas/inline_response_200"
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       servers:
-      - url: https://api.pinata.cloud
+        - url: https://api.pinata.cloud
   /pinning/pinFileToIPFS:
     post:
       summary: Pin File to IPFS
@@ -38,7 +38,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/pinning_pinFileToIPFS_body'
+              $ref: "#/components/schemas/pinning_pinFileToIPFS_body"
             examples:
               Example 1:
                 value:
@@ -58,11 +58,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: "#/components/schemas/inline_response_200_1"
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       servers:
-      - url: https://api.pinata.cloud
+        - url: https://api.pinata.cloud
   /pinning/pinJSONToIPFS:
     post:
       summary: Pin JSON
@@ -71,7 +71,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/pinning_pinJSONToIPFS_body'
+              $ref: "#/components/schemas/pinning_pinJSONToIPFS_body"
             examples:
               Example 1:
                 value:
@@ -92,11 +92,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: "#/components/schemas/inline_response_200_1"
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       servers:
-      - url: https://api.pinata.cloud
+        - url: https://api.pinata.cloud
   /pinning/pinByHash:
     post:
       summary: Pin By CID
@@ -105,7 +105,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/pinning_pinByHash_body'
+              $ref: "#/components/schemas/pinning_pinByHash_body"
       responses:
         "200":
           description: |-
@@ -118,84 +118,84 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_2'
+                $ref: "#/components/schemas/inline_response_200_2"
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       servers:
-      - url: https://api.pinata.cloud
+        - url: https://api.pinata.cloud
   /pinning/pinJobs:
     get:
       summary: List Pin By CID Jobs
       description: List all currently running pinByHash jobs
       parameters:
-      - name: sort
-        in: query
-        description: Values include ASC or DESC
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: ASC
-        examples:
-          default:
-            value: ASC
-      - name: status
-        in: query
-        description: Filter by the status of the job in the pinning queue
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: retrieving
-          enum:
-          - prechecking
-          - retrieving
-          - expired
-          - over_free_limit
-          - over_max_size
-          - invalid_object
-          - bad_host_node
-        examples:
-          default:
-            value: retrieving
-      - name: ipfs_pin_hash
-        in: query
-        description: CID of the file to be pinned
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: CID
-        examples:
-          default:
-            value: CID
-      - name: limit
-        in: query
-        description: Number of jobs to return. Default is 5 and 1000 is the maximum
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: integer
-          example: 5
-        examples:
-          default:
-            value: 5
-      - name: offset
-        in: query
-        description: Provide the record offset for records being returned. This is how you retrieve records on additional pages (default is 0)
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: integer
-          example: 0
-        examples:
-          default:
-            value: 0
+        - name: sort
+          in: query
+          description: Values include ASC or DESC
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: ASC
+          examples:
+            default:
+              value: ASC
+        - name: status
+          in: query
+          description: Filter by the status of the job in the pinning queue
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: retrieving
+            enum:
+              - prechecking
+              - retrieving
+              - expired
+              - over_free_limit
+              - over_max_size
+              - invalid_object
+              - bad_host_node
+          examples:
+            default:
+              value: retrieving
+        - name: ipfs_pin_hash
+          in: query
+          description: CID of the file to be pinned
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: CID
+          examples:
+            default:
+              value: CID
+        - name: limit
+          in: query
+          description: Number of jobs to return. Default is 5 and 1000 is the maximum
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 5
+          examples:
+            default:
+              value: 5
+        - name: offset
+          in: query
+          description: Provide the record offset for records being returned. This is how you retrieve records on additional pages (default is 0)
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            example: 0
+          examples:
+            default:
+              value: 0
       responses:
         "200":
           description: |-
@@ -223,11 +223,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_3'
+                $ref: "#/components/schemas/inline_response_200_3"
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       servers:
-      - url: https://api.pinata.cloud
+        - url: https://api.pinata.cloud
   /pinning/hashMetadata:
     put:
       summary: Update File Metadata
@@ -235,37 +235,37 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/pinning_hashMetadata_body'
+              $ref: "#/components/schemas/pinning_hashMetadata_body"
       responses:
         "200":
           description: OK
           content:
             application/json: {}
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       servers:
-      - url: https://api.pinata.cloud
+        - url: https://api.pinata.cloud
   /pinning/unpin/{CID}:
     delete:
       summary: Delete File (Unpin)
       description: Delete a file by CID
       parameters:
-      - name: CID
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: CID
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
         "200":
           description: OK
           content:
             application/json: {}
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       servers:
-      - url: https://api.pinata.cloud
+        - url: https://api.pinata.cloud
   /data/userPinnedDataTotal:
     get:
       summary: Data Usage
@@ -280,160 +280,182 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_4'
+                $ref: "#/components/schemas/inline_response_200_4"
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       servers:
-      - url: https://api.pinata.cloud
+        - url: https://api.pinata.cloud
   /data/pinList:
     get:
       summary: List Files
       description: List all the files on your Pinata account
       parameters:
-      - name: includeCount
-        in: query
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: boolean
-          example: false
-        examples:
-          default:
-            value: false
-      - name: cid
-        in: query
-        description: CID of file you are searching for
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: pinStart
-        in: query
-        description: ISO_8601 format date to filter by start date for when file was pinned
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: pinEnd
-        in: query
-        description: ISO_8601 format date to filter by end date for when file was pinned
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: unpinStart
-        in: query
-        description: ISO_8601 format date to filter by start date for when file was unpinned
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: unpinEnd
-        in: query
-        description: ISO_8601 format date to filter by end date for when file was unpinned
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: pinSizeMin
-        in: query
-        description: Minimum size in bytes of files to return
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: pinSizeMax
-        in: query
-        description: Maximum size in bytes of files to return
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: status
-        in: query
-        description: "Options are \"all\", \"pinned\", or \"unpinned\""
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: pageLimit
-        in: query
-        description: "Maximum number of files to return. Default is 10, max is 1000"
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: pageOffset
-        in: query
-        description: "Use to paginate through files, default is 0"
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-      - name: metadata
-        in: query
-        description: See metadata querying section below
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
+        - name: includeCount
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            example: false
+          examples:
+            default:
+              value: false
+        - name: cid
+          in: query
+          description: CID of file you are searching for
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: groupId
+          in: query
+          description: Filters by group id if applicable
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: pinStart
+          in: query
+          description: ISO_8601 format date to filter by start date for when file was pinned
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: pinEnd
+          in: query
+          description: ISO_8601 format date to filter by end date for when file was pinned
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: unpinStart
+          in: query
+          description: ISO_8601 format date to filter by start date for when file was unpinned
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: unpinEnd
+          in: query
+          description: ISO_8601 format date to filter by end date for when file was unpinned
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: pinSizeMin
+          in: query
+          description: Minimum size in bytes of files to return
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: pinSizeMax
+          in: query
+          description: Maximum size in bytes of files to return
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: 'Options are "all", "pinned", or "unpinned"'
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: pageLimit
+          in: query
+          description: "Maximum number of files to return. Default is 10, max is 1000"
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: pageOffset
+          in: query
+          description: "Use to paginate through files, default is 0"
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: metadata
+          in: query
+          description: See metadata querying section below
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
       responses:
-        "200":
-          description: |-
-            {
-                count: (this is the total number of pin records that exist for the query filters you passed in),
-                rows: [
-                    {
-                        id: (the id of your pin instance record),
-                        ipfs_pin_hash: (the IPFS multi-hash for the content you pinned),
-                        size: (this is how large (in bytes) the content pinned is),
-                        user_id: (this is your user id for Pinata),
-                        date_pinned: (This is the timestamp for when this content was pinned - represented in ISO 8601 format),
-                        date_unpinned: (This is the timestamp for when this content was unpinned (if null, then you still have the content pinned on Pinata),
-                        metadata: {
-                            name: (this will be the name of the file originally upuloaded, or the custom name you set),
-                            keyvalues: {
-                                exampleCustomKey: "exampleCustomValue",
-                                exampleCustomKey2: "exampleCustomValue2",
-                                ...
-                            }
-                        },
-                        regions: [
-                            {
-                                regionId: (region this content is expected to be pinned in),
-                                desiredReplicationCount: (the number of replications desired in this region for this content),
-                                currentReplicationCount: (the number of times this content has been replicated so far)
-                            }
-                        ]
-                    },
-                    {
-                        same record format as above
-                    }
-                    .
-                    .
-                    .
-                ]
-            }
+        200:
+          description: Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_5'
+                type: object
+                properties:
+                  rows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        ipfs_pin_hash:
+                          type: string
+                        size:
+                          type: integer
+                        user_id:
+                          type: string
+                          format: uuid
+                        date_pinned:
+                          type: string
+                          format: date-time
+                        date_unpinned:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        metadata:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            keyvalues:
+                              type: object
+                              additionalProperties:
+                                type: integer
+                        regions:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              regionId:
+                                type: string
+                              currentReplicationCount:
+                                type: integer
+                              desiredReplicationCount:
+                                type: integer
+                        mime_type:
+                          type: string
+                          nullable: true
+                        number_of_files:
+                          type: integer
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       servers:
-      - url: https://api.pinata.cloud
+        - url: https://api.pinata.cloud
   /users/generateApiKey:
     post:
       summary: Generate Pinata API Key
@@ -443,7 +465,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/users_generateApiKey_body'
+              $ref: "#/components/schemas/users_generateApiKey_body"
       responses:
         "200":
           description: |-
@@ -456,11 +478,11 @@ paths:
             application/json: {}
             application/xml:
               schema:
-                $ref: '#/components/schemas/inline_response_200_6'
+                $ref: "#/components/schemas/inline_response_200_6"
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       servers:
-      - url: https://api.pinata.cloud
+        - url: https://api.pinata.cloud
   /users/apiKeys:
     get:
       summary: List API Keys
@@ -491,11 +513,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_7'
+                $ref: "#/components/schemas/inline_response_200_7"
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       servers:
-      - url: https://api.pinata.cloud
+        - url: https://api.pinata.cloud
   /users/revokeApiKey:
     put:
       summary: Revoke API Key
@@ -503,16 +525,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/users_revokeApiKey_body'
+              $ref: "#/components/schemas/users_revokeApiKey_body"
       responses:
         "200":
           description: '"Revoked"'
           content:
             application/json: {}
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       servers:
-      - url: https://api.pinata.cloud
+        - url: https://api.pinata.cloud
 components:
   schemas:
     inline_response_200:
@@ -525,16 +547,16 @@ components:
           message: Congratulations! You are communicating with the Pinata API!
     pinning_pinFileToIPFS_body:
       required:
-      - file
+        - file
       type: object
       properties:
         file:
           type: string
           format: binary
         pinataMetadata:
-          $ref: '#/components/schemas/pinning_pinFileToIPFS_body_pinataMetadata'
+          $ref: "#/components/schemas/pinning_pinFileToIPFS_body_pinataMetadata"
         pinataOptions:
-          $ref: '#/components/schemas/pinning_pinFileToIPFS_body_pinataOptions'
+          $ref: "#/components/schemas/pinning_pinFileToIPFS_body_pinataOptions"
     inline_response_200_1:
       type: object
       properties:
@@ -554,19 +576,19 @@ components:
           isDuplicate: true
     pinning_pinJSONToIPFS_body:
       required:
-      - pinataContent
+        - pinataContent
       type: object
       properties:
         pinataContent:
           type: object
           description: The JSON content to pin
         pinataOptions:
-          $ref: '#/components/schemas/pinning_pinJSONToIPFS_body_pinataOptions'
+          $ref: "#/components/schemas/pinning_pinJSONToIPFS_body_pinataOptions"
         pinataMetadata:
-          $ref: '#/components/schemas/pinning_pinJSONToIPFS_body_pinataMetadata'
+          $ref: "#/components/schemas/pinning_pinJSONToIPFS_body_pinataMetadata"
     pinning_pinByHash_body:
       required:
-      - hashToPin
+        - hashToPin
       type: object
       properties:
         hashToPin:
@@ -574,11 +596,22 @@ components:
           description: The CID of the file you want to pin to Pinata
           example: CID
         pinataOptions:
-          type: string
-          description: Optional Pinata Options object
+          type: object
+          properties:
+            groupId:
+              type: string
+            hostNodes:
+              type: array
+              items:
+                type: string
         pinataMetadata:
-          type: string
-          description: Optiona Pinata Metadata object
+          type: object
+          properties:
+            name:
+              type: string
+            keyvalues:
+              type: object
+              additionalProperties: true
     inline_response_200_2:
       type: object
       properties:
@@ -604,59 +637,59 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_3_rows'
+            $ref: "#/components/schemas/inline_response_200_3_rows"
       x-examples:
         Example 1:
           count: 4
           rows:
-          - id: 08b7a1aa-52a0-4154-b0ff-3735988e4df7
-            ipfs_pin_hash: QmQiqjxxgwSEZzyUoWsSD8m5zEhFZdAWTM7QZv88iYQzNQ
-            date_queued: 2023-05-26T21:16:08.205Z
-            name: OG EQB ART API Upload
-            status: expired
-            host_nodes:
-            - /ip4/127.0.0.1/tcp/4001/p2p/12D3KooWJHeyQxbbJ4VzqLqa2ufo9KPWsjxPFzzRgheZtwiJe7gc
-            - /ip4/192.168.100.71/tcp/4001/p2p/12D3KooWJHeyQxbbJ4VzqLqa2ufo9KPWsjxPFzzRgheZtwiJe7gc
-            pin_policy:
-              regions:
-              - id: US-EAST-1
-                desiredReplicationCount: 1
-              version: 1
-          - id: 4927d14c-b4b3-4c6e-88ea-83f3afb1885b
-            ipfs_pin_hash: QmU2trVdrKBPsSZxCzzxDUa7HVTf8H2G8v5Ec7tMp7zdZF
-            date_queued: 2023-06-12T20:26:55.472Z
-            name: Pin by CID Test
-            status: expired
-            pin_policy:
-              regions:
-              - id: US-EAST-1
-                desiredReplicationCount: 1
-              version: 1
-          - id: 19d89d6a-6c7b-4156-bb6a-d37b30387e72
-            ipfs_pin_hash: QmNgrsbHv4kxwbp4zWvFVAJf1wJTL6YismJccZwi2MoiYc
-            date_queued: 2023-06-20T01:04:01.825Z
-            name: OG EQB ART API Upload
-            status: expired
-            host_nodes:
-            - /ip4/192.168.100.71/tcp/4001/p2p/12D3KooWJHeyQxbbJ4VzqLqa2ufo9KPWsjxPFzzRgheZtwiJe7gc
-            pin_policy:
-              regions:
-              - id: US-EAST-1
-                desiredReplicationCount: 1
-              version: 1
-          - id: c9e74c33-ce62-4b11-a3f4-bb5142d6ff3d
-            ipfs_pin_hash: bafybeiapgnfykc7dyfly3tagyqk3hctmrwibq5bevdwlnywo7dyfznbqaa
-            date_queued: 2023-07-07T19:31:37.485Z
-            name: MyCustomName
-            status: searching
-            keyvalues:
-              customKey: customValue
-              customKey2: customValue2
-            pin_policy:
-              regions:
-              - id: US-EAST-1
-                desiredReplicationCount: 1
-              version: 1
+            - id: 08b7a1aa-52a0-4154-b0ff-3735988e4df7
+              ipfs_pin_hash: QmQiqjxxgwSEZzyUoWsSD8m5zEhFZdAWTM7QZv88iYQzNQ
+              date_queued: 2023-05-26T21:16:08.205Z
+              name: OG EQB ART API Upload
+              status: expired
+              host_nodes:
+                - /ip4/127.0.0.1/tcp/4001/p2p/12D3KooWJHeyQxbbJ4VzqLqa2ufo9KPWsjxPFzzRgheZtwiJe7gc
+                - /ip4/192.168.100.71/tcp/4001/p2p/12D3KooWJHeyQxbbJ4VzqLqa2ufo9KPWsjxPFzzRgheZtwiJe7gc
+              pin_policy:
+                regions:
+                  - id: US-EAST-1
+                    desiredReplicationCount: 1
+                version: 1
+            - id: 4927d14c-b4b3-4c6e-88ea-83f3afb1885b
+              ipfs_pin_hash: QmU2trVdrKBPsSZxCzzxDUa7HVTf8H2G8v5Ec7tMp7zdZF
+              date_queued: 2023-06-12T20:26:55.472Z
+              name: Pin by CID Test
+              status: expired
+              pin_policy:
+                regions:
+                  - id: US-EAST-1
+                    desiredReplicationCount: 1
+                version: 1
+            - id: 19d89d6a-6c7b-4156-bb6a-d37b30387e72
+              ipfs_pin_hash: QmNgrsbHv4kxwbp4zWvFVAJf1wJTL6YismJccZwi2MoiYc
+              date_queued: 2023-06-20T01:04:01.825Z
+              name: OG EQB ART API Upload
+              status: expired
+              host_nodes:
+                - /ip4/192.168.100.71/tcp/4001/p2p/12D3KooWJHeyQxbbJ4VzqLqa2ufo9KPWsjxPFzzRgheZtwiJe7gc
+              pin_policy:
+                regions:
+                  - id: US-EAST-1
+                    desiredReplicationCount: 1
+                version: 1
+            - id: c9e74c33-ce62-4b11-a3f4-bb5142d6ff3d
+              ipfs_pin_hash: bafybeiapgnfykc7dyfly3tagyqk3hctmrwibq5bevdwlnywo7dyfznbqaa
+              date_queued: 2023-07-07T19:31:37.485Z
+              name: MyCustomName
+              status: searching
+              keyvalues:
+                customKey: customValue
+                customKey2: customValue2
+              pin_policy:
+                regions:
+                  - id: US-EAST-1
+                    desiredReplicationCount: 1
+                version: 1
     inline_response_200_3_rows:
       type: object
       properties:
@@ -678,14 +711,14 @@ components:
           items:
             type: string
         pin_policy:
-          $ref: '#/components/schemas/inline_response_200_3_pin_policy'
+          $ref: "#/components/schemas/inline_response_200_3_pin_policy"
     inline_response_200_3_pin_policy:
       type: object
       properties:
         regions:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_3_pin_policy_regions'
+            $ref: "#/components/schemas/inline_response_200_3_pin_policy_regions"
         version:
           type: integer
     inline_response_200_3_pin_policy_regions:
@@ -697,7 +730,7 @@ components:
           type: integer
     pinning_hashMetadata_body:
       required:
-      - ipfsPinHash
+        - ipfsPinHash
       type: object
       properties:
         ipfsPinHash:
@@ -731,123 +764,123 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_5_rows'
+            $ref: "#/components/schemas/inline_response_200_5_rows"
       x-examples:
         Example 1:
           rows:
-          - id: 3433373a-05c0-4bb4-8292-82da15269728
-            ipfs_pin_hash: bafkreidjj3s4c3hszh2uxhly767eomkudvjm26wk6efd5nael5uld53ela
-            size: 113605
-            user_id: ec50a085-a746-428d-b01d-167ac379fbd4
-            date_pinned: 2023-07-07T17:33:19.774Z
-            metadata:
-              name: Test file
-            regions:
-            - regionId: pinata
-              currentReplicationCount: 1
-              desiredReplicationCount: 1
-          - id: 5a5fd09c-25c9-4bcf-802c-88a7787567a0
-            ipfs_pin_hash: QmTYTVXrHeePozENTRMApK621NFdVac9vbp6k4BeiMFtwm
-            size: 113619
-            user_id: ec50a085-a746-428d-b01d-167ac379fbd4
-            date_pinned: 2023-07-07T17:32:38.607Z
-            metadata:
-              name: Test file
-            regions:
-            - regionId: pinata
-              currentReplicationCount: 1
-              desiredReplicationCount: 1
-          - id: 60dacaf1-d856-4596-b7af-6ba977f6bf2a
-            ipfs_pin_hash: QmUPNNYkHqxEtgGrT3FkwQSBNtqumP246amx39gqpsY36A
-            size: 126885272
-            user_id: ec50a085-a746-428d-b01d-167ac379fbd4
-            date_pinned: 2023-07-07T15:40:48.001Z
-            metadata:
-              name: Submarine Analytics.mp4
-            regions:
-            - regionId: pinata
-              currentReplicationCount: 1
-              desiredReplicationCount: 1
-          - id: 2e8e4dd5-824c-4cdc-9036-4b99b1e4b595
-            ipfs_pin_hash: QmUPNNYkHqxEtgGrT3FkwQSBNtqumP246amx39gqpsY36A
-            size: 126885272
-            user_id: ec50a085-a746-428d-b01d-167ac379fbd4
-            date_pinned: 2023-07-07T14:36:12.054Z
-            date_unpinned: 2023-07-07T14:37:41.352Z
-            metadata:
-              name: Submarine Analytics.mp4
-            regions:
-            - regionId: pinata
-              currentReplicationCount: 1
-              desiredReplicationCount: 1
-          - id: b0d9cec4-34bf-4ab1-95ff-602df06283d4
-            ipfs_pin_hash: QmR9fYg4aYk3Av89a4ZMucxzawFbesjdjtsNvDGMcCVkYD
-            size: 363
-            user_id: ec50a085-a746-428d-b01d-167ac379fbd4
-            date_pinned: 2023-07-05T17:35:49.021Z
-            metadata:
-              name: metadata.json - Generative Art Metadata
-            regions:
-            - regionId: pinata
-              currentReplicationCount: 1
-              desiredReplicationCount: 1
-          - id: 547107a8-22c4-4370-8422-331eb3d99216
-            ipfs_pin_hash: Qmb4mmUihw51hmzCJgFL5BuiUm4QdvBYeeUjKeDbn9pVxD
-            size: 1787358
-            user_id: ec50a085-a746-428d-b01d-167ac379fbd4
-            date_pinned: 2023-07-05T17:33:02.324Z
-            metadata:
-              name: Generative Art Image
-            regions:
-            - regionId: pinata
-              currentReplicationCount: 1
-              desiredReplicationCount: 1
-          - id: f26f6bda-d1e9-4a7d-b49d-87733d47828d
-            ipfs_pin_hash: Qma6sZ1NQUHNYj1fEc5ynrpzxHd2uPfqn8UUwHVD6Duogh
-            size: 1982
-            user_id: ec50a085-a746-428d-b01d-167ac379fbd4
-            date_pinned: 2023-07-05T17:32:13.605Z
-            metadata:
-              name: index.html - Generative Art
-            regions:
-            - regionId: pinata
-              currentReplicationCount: 1
-              desiredReplicationCount: 1
-          - id: 75b94103-5824-48e4-a662-3ccfcc50baa9
-            ipfs_pin_hash: QmYAxg2f6wPs2EVsXU619EdraTpNvcDh685b3hC7tp2s2f
-            size: 286624048
-            user_id: ec50a085-a746-428d-b01d-167ac379fbd4
-            date_pinned: 2023-07-05T15:14:25.588Z
-            metadata:
-              name: docs demo.mp4
-            regions:
-            - regionId: pinata
-              currentReplicationCount: 1
-              desiredReplicationCount: 1
-          - id: be0d10f3-f8ea-4a46-bb35-624c24a5e543
-            ipfs_pin_hash: QmXPVRxNxL1iPxpm82VHTAHgxQoDCoTYbMpsndTnmsXM3i
-            size: 509495389
-            user_id: ec50a085-a746-428d-b01d-167ac379fbd4
-            date_pinned: 2023-07-05T14:26:00.083Z
-            date_unpinned: 2023-07-05T15:15:45.940Z
-            metadata:
-              name: VSCodeVim.mp4
-            regions:
-            - regionId: pinata
-              currentReplicationCount: 1
-              desiredReplicationCount: 1
-          - id: 7bc673d8-ecc8-4943-905a-ac276fcbd092
-            ipfs_pin_hash: QmeqpNhh6fuvU2Guykivw49JLcyvPUVw4PoHc6RSCMGfB2
-            size: 1469677
-            user_id: ec50a085-a746-428d-b01d-167ac379fbd4
-            date_pinned: 2023-07-05T13:31:49.754Z
-            date_unpinned: 2023-07-05T15:24:46.957Z
-            metadata:
-              name: Barge Steve
-            regions:
-            - regionId: pinata
-              currentReplicationCount: 1
-              desiredReplicationCount: 1
+            - id: 3433373a-05c0-4bb4-8292-82da15269728
+              ipfs_pin_hash: bafkreidjj3s4c3hszh2uxhly767eomkudvjm26wk6efd5nael5uld53ela
+              size: 113605
+              user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+              date_pinned: 2023-07-07T17:33:19.774Z
+              metadata:
+                name: Test file
+              regions:
+                - regionId: pinata
+                  currentReplicationCount: 1
+                  desiredReplicationCount: 1
+            - id: 5a5fd09c-25c9-4bcf-802c-88a7787567a0
+              ipfs_pin_hash: QmTYTVXrHeePozENTRMApK621NFdVac9vbp6k4BeiMFtwm
+              size: 113619
+              user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+              date_pinned: 2023-07-07T17:32:38.607Z
+              metadata:
+                name: Test file
+              regions:
+                - regionId: pinata
+                  currentReplicationCount: 1
+                  desiredReplicationCount: 1
+            - id: 60dacaf1-d856-4596-b7af-6ba977f6bf2a
+              ipfs_pin_hash: QmUPNNYkHqxEtgGrT3FkwQSBNtqumP246amx39gqpsY36A
+              size: 126885272
+              user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+              date_pinned: 2023-07-07T15:40:48.001Z
+              metadata:
+                name: Submarine Analytics.mp4
+              regions:
+                - regionId: pinata
+                  currentReplicationCount: 1
+                  desiredReplicationCount: 1
+            - id: 2e8e4dd5-824c-4cdc-9036-4b99b1e4b595
+              ipfs_pin_hash: QmUPNNYkHqxEtgGrT3FkwQSBNtqumP246amx39gqpsY36A
+              size: 126885272
+              user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+              date_pinned: 2023-07-07T14:36:12.054Z
+              date_unpinned: 2023-07-07T14:37:41.352Z
+              metadata:
+                name: Submarine Analytics.mp4
+              regions:
+                - regionId: pinata
+                  currentReplicationCount: 1
+                  desiredReplicationCount: 1
+            - id: b0d9cec4-34bf-4ab1-95ff-602df06283d4
+              ipfs_pin_hash: QmR9fYg4aYk3Av89a4ZMucxzawFbesjdjtsNvDGMcCVkYD
+              size: 363
+              user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+              date_pinned: 2023-07-05T17:35:49.021Z
+              metadata:
+                name: metadata.json - Generative Art Metadata
+              regions:
+                - regionId: pinata
+                  currentReplicationCount: 1
+                  desiredReplicationCount: 1
+            - id: 547107a8-22c4-4370-8422-331eb3d99216
+              ipfs_pin_hash: Qmb4mmUihw51hmzCJgFL5BuiUm4QdvBYeeUjKeDbn9pVxD
+              size: 1787358
+              user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+              date_pinned: 2023-07-05T17:33:02.324Z
+              metadata:
+                name: Generative Art Image
+              regions:
+                - regionId: pinata
+                  currentReplicationCount: 1
+                  desiredReplicationCount: 1
+            - id: f26f6bda-d1e9-4a7d-b49d-87733d47828d
+              ipfs_pin_hash: Qma6sZ1NQUHNYj1fEc5ynrpzxHd2uPfqn8UUwHVD6Duogh
+              size: 1982
+              user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+              date_pinned: 2023-07-05T17:32:13.605Z
+              metadata:
+                name: index.html - Generative Art
+              regions:
+                - regionId: pinata
+                  currentReplicationCount: 1
+                  desiredReplicationCount: 1
+            - id: 75b94103-5824-48e4-a662-3ccfcc50baa9
+              ipfs_pin_hash: QmYAxg2f6wPs2EVsXU619EdraTpNvcDh685b3hC7tp2s2f
+              size: 286624048
+              user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+              date_pinned: 2023-07-05T15:14:25.588Z
+              metadata:
+                name: docs demo.mp4
+              regions:
+                - regionId: pinata
+                  currentReplicationCount: 1
+                  desiredReplicationCount: 1
+            - id: be0d10f3-f8ea-4a46-bb35-624c24a5e543
+              ipfs_pin_hash: QmXPVRxNxL1iPxpm82VHTAHgxQoDCoTYbMpsndTnmsXM3i
+              size: 509495389
+              user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+              date_pinned: 2023-07-05T14:26:00.083Z
+              date_unpinned: 2023-07-05T15:15:45.940Z
+              metadata:
+                name: VSCodeVim.mp4
+              regions:
+                - regionId: pinata
+                  currentReplicationCount: 1
+                  desiredReplicationCount: 1
+            - id: 7bc673d8-ecc8-4943-905a-ac276fcbd092
+              ipfs_pin_hash: QmeqpNhh6fuvU2Guykivw49JLcyvPUVw4PoHc6RSCMGfB2
+              size: 1469677
+              user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+              date_pinned: 2023-07-05T13:31:49.754Z
+              date_unpinned: 2023-07-05T15:24:46.957Z
+              metadata:
+                name: Barge Steve
+              regions:
+                - regionId: pinata
+                  currentReplicationCount: 1
+                  desiredReplicationCount: 1
     inline_response_200_5_rows:
       type: object
       properties:
@@ -865,11 +898,11 @@ components:
           type: string
           nullable: true
         metadata:
-          $ref: '#/components/schemas/inline_response_200_5_metadata'
+          $ref: "#/components/schemas/inline_response_200_5_metadata"
         regions:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_5_regions'
+            $ref: "#/components/schemas/inline_response_200_5_regions"
     inline_response_200_5_metadata:
       type: object
       properties:
@@ -888,14 +921,14 @@ components:
           type: integer
     users_generateApiKey_body:
       required:
-      - keyName
-      - permissions
+        - keyName
+        - permissions
       type: object
       properties:
         keyName:
           type: string
         permissions:
-          $ref: '#/components/schemas/usersgenerateApiKey_permissions'
+          $ref: "#/components/schemas/usersgenerateApiKey_permissions"
         maxUses:
           type: integer
       x-examples:
@@ -923,14 +956,14 @@ components:
         admin:
           type: boolean
         endpoints:
-          $ref: '#/components/schemas/usersgenerateApiKey_permissions_endpoints'
+          $ref: "#/components/schemas/usersgenerateApiKey_permissions_endpoints"
     usersgenerateApiKey_permissions_endpoints:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/usersgenerateApiKey_permissions_endpoints_data'
+          $ref: "#/components/schemas/usersgenerateApiKey_permissions_endpoints_data"
         pinning:
-          $ref: '#/components/schemas/usersgenerateApiKey_permissions_endpoints_pinning'
+          $ref: "#/components/schemas/usersgenerateApiKey_permissions_endpoints_pinning"
     usersgenerateApiKey_permissions_endpoints_data:
       type: object
       properties:
@@ -977,24 +1010,24 @@ components:
         keys:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_7_keys'
+            $ref: "#/components/schemas/inline_response_200_7_keys"
         count:
           type: integer
       x-examples:
         Example 1:
           keys:
-          - id: string
-            name: string
-            key: string
-            secret: string
-            max_uses: 0
-            uses: 1
-            user_id: string
-            scopes:
-              admin: true
-            revoked: false
-            createdAt: 2022-06-01T16:25:08.473Z
-            updatedAt: 2022-06-01T16:25:08.473Z
+            - id: string
+              name: string
+              key: string
+              secret: string
+              max_uses: 0
+              uses: 1
+              user_id: string
+              scopes:
+                admin: true
+              revoked: false
+              createdAt: 2022-06-01T16:25:08.473Z
+              updatedAt: 2022-06-01T16:25:08.473Z
           count: 1
     inline_response_200_7_keys:
       type: object
@@ -1014,7 +1047,7 @@ components:
         user_id:
           type: string
         scopes:
-          $ref: '#/components/schemas/inline_response_200_7_scopes'
+          $ref: "#/components/schemas/inline_response_200_7_scopes"
         revoked:
           type: boolean
         createdAt:
@@ -1028,7 +1061,7 @@ components:
           type: boolean
     users_revokeApiKey_body:
       required:
-      - apiKey
+        - apiKey
       type: object
       properties:
         apiKey:
@@ -1044,17 +1077,21 @@ components:
         keyvalues:
           type: object
       description: Optional stringified object
-      example: "{\"name\":\"Test file\"}"
+      example: '{"name":"Test file"}'
     pinning_pinFileToIPFS_body_pinataOptions:
       type: object
       properties:
         cidVersion:
           type: number
+        groupId:
+          type: string
       description: Optional stringified object
-      example: "{\"cidVersion\":0}"
+      example: '{"cidVersion":0}'
     pinning_pinJSONToIPFS_body_pinataOptions:
       type: object
       properties:
+        groupId:
+          type: string
         cidVersion:
           type: number
       description: Optional Pinata Options Object
