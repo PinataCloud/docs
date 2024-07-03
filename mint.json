@@ -142,6 +142,18 @@
       ]
     },
     {
+      "group": "Groups",
+      "pages": [
+        "api-reference/endpoint/create-group",
+        "api-reference/endpoint/get-a-group",
+        "api-reference/endpoint/list-groups",
+        "api-reference/endpoint/update-group",
+        "api-reference/endpoint/add-cids-to-group",
+        "api-reference/endpoint/remove-cids-from-a-group",
+        "api-reference/endpoint/delete-group"
+      ]
+    },
+    {
       "group": "Pinning by CID",
       "pages": [
         "api-reference/endpoint/pin-by-cid",

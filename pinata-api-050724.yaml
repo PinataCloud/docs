@@ -11,6 +11,586 @@ info:
 servers:
   - url: https://api.pinata.cloud
 paths:
+  /groups:
+    post:
+      tags:
+        - default
+      summary: Create Group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              example:
+                name: NFT-Project
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 03 Jul 2024 18:09:33 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "193"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "180"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "179"
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+                example: "1720030234"
+            ETag:
+              schema:
+                type: string
+                example: W/"c1-uUp+M9dQQ5nQUI1atDruyCBkWlA"
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+            X-Request-Id:
+              schema:
+                type: string
+                example: b8b4c15015682e6e7984b9f31608e668
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                id: 61a4a882-1591-462e-bcb7-fa0eee5f3c51
+                user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+                name: NFT-Project
+                updatedAt: "2024-07-03T18:09:33.610Z"
+                createdAt: "2024-07-03T18:09:33.610Z"
+    get:
+      tags:
+        - default
+      summary: List Groups
+      parameters:
+        - name: nameContains
+          in: query
+          schema:
+            type: string
+          description: Filter by name of the group
+          example: Project
+        - name: offset
+          in: query
+          schema:
+            type: integer
+          description: Paginate through next series of groups
+          example: "10"
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Limit the number of results
+          example: "10"
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 03 Jul 2024 18:39:35 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "203"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "180"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "176"
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+                example: "1720031993"
+            ETag:
+              schema:
+                type: string
+                example: W/"cb-XW74NkGUnfDSInaF+GaEbIAZ4wA"
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+            X-Request-Id:
+              schema:
+                type: string
+                example: 8a844c92e837e5e36a36b57f3a7570c3
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 61a4a882-1591-462e-bcb7-fa0eee5f3c51
+                  name: NFT-Project-updated
+                  user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+                  createdAt: "2024-07-03T18:09:33.610Z"
+                  updatedAt: "2024-07-03T18:15:17.440Z"
+  /groups/{id}:
+    put:
+      tags:
+        - default
+      summary: Update Group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              example:
+                name: NFT-Project-updated
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 61a4a882-1591-462e-bcb7-fa0eee5f3c51
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 03 Jul 2024 18:12:46 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "201"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "180"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "179"
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+                example: "1720030427"
+            ETag:
+              schema:
+                type: string
+                example: W/"c9-jevqvnylaR5INoN/XPGZNvVf1fE"
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+            X-Request-Id:
+              schema:
+                type: string
+                example: 3a9b0a9afc9000ee2e34da46c89e2aee
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                id: 61a4a882-1591-462e-bcb7-fa0eee5f3c51
+                name: NFT-Project-updated
+                user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+                createdAt: "2024-07-03T18:09:33.610Z"
+                updatedAt: "2024-07-03T18:12:46.930Z"
+    delete:
+      tags:
+        - default
+      summary: Delete Group
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: eaa137d2-fc36-43dd-80c1-cba1fd6c798e
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 03 Jul 2024 19:31:24 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: text/plain; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "2"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "180"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "175"
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+                example: "1720035092"
+            ETag:
+              schema:
+                type: string
+                example: W/"2-nOO9QiTIwXgNtWtBJezz8kv3SLc"
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+            X-Request-Id:
+              schema:
+                type: string
+                example: ea9b8709c6860c08f53bd77c96dc4bdf
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: OK
+    get:
+      tags:
+        - default
+      summary: Get a Group
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 61a4a882-1591-462e-bcb7-fa0eee5f3c51
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 03 Jul 2024 18:39:35 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "203"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "180"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "176"
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+                example: "1720031993"
+            ETag:
+              schema:
+                type: string
+                example: W/"cb-XW74NkGUnfDSInaF+GaEbIAZ4wA"
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+            X-Request-Id:
+              schema:
+                type: string
+                example: 8a844c92e837e5e36a36b57f3a7570c3
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: 61a4a882-1591-462e-bcb7-fa0eee5f3c51
+                  name: NFT-Project-updated
+                  user_id: ec50a085-a746-428d-b01d-167ac379fbd4
+                  createdAt: "2024-07-03T18:09:33.610Z"
+                  updatedAt: "2024-07-03T18:15:17.440Z"
+  /groups/{id}/cids:
+    put:
+      tags:
+        - default
+      summary: Add CIDs to Group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cids:
+                  type: array
+                  items:
+                    type: string
+              example:
+                cids:
+                  - QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng
+                  - bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: eaa137d2-fc36-43dd-80c1-cba1fd6c798e
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 03 Jul 2024 18:17:02 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: text/plain; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "2"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "180"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "179"
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+                example: "1720030683"
+            ETag:
+              schema:
+                type: string
+                example: W/"2-nOO9QiTIwXgNtWtBJezz8kv3SLc"
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+            X-Request-Id:
+              schema:
+                type: string
+                example: 00f3215befab568ca4c88123ba81b037
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: OK
+    delete:
+      tags:
+        - default
+      summary: Remove CIDs from a Group
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: eaa137d2-fc36-43dd-80c1-cba1fd6c798e
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cids:
+                  type: array
+                  items:
+                    type: string
+              example:
+                cids:
+                  - QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng
+                  - bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 03 Jul 2024 18:18:07 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: text/plain; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "2"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+                example: "180"
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "179"
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+                example: "1720030748"
+            ETag:
+              schema:
+                type: string
+                example: W/"2-nOO9QiTIwXgNtWtBJezz8kv3SLc"
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+            X-Request-Id:
+              schema:
+                type: string
+                example: 9e9c8f2f5564cea2688298bd47d484fc
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: OK
   /data/testAuthentication:
     get:
       summary: Test Authentication
