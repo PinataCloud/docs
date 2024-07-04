@@ -322,13 +322,6 @@
             "farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-signers-provided-by-an-fid",
             "farcaster/hub-api-reference/endpoint/onchainevents/get-an-on-chain-id-registry-event-for-a-given-address"
           ]
-        },
-        {
-          "group": "Events",
-          "pages": [
-            "farcaster/hub-api-reference/endpoint/hubevents/get-a-page-of-hub-events",
-            "farcaster/hub-api-reference/endpoint/hubevents/get-an-event-by-its-id"
-          ]
         }
       ]
     }
