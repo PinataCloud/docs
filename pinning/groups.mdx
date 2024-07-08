@@ -1,0 +1,142 @@
+---
+title: "Groups"
+slug: "groups"
+---
+
+Groups allow you to organize your Pinata content through the Pinata App or through the Pinata API, giving your a clearer picture of what your files are being used for.
+
+## Pinata API
+
+With the Pinata API you can create groups, add files to groups, list details about a group, and more! For the full reference check out our Pinata API Reference for [Groups](/api-reference/endpoint/create-group).
+
+### Create a Group
+
+To create a group you can send a `POST` request to `/groups` with the following JSON body that contains the name of the group:
+
+```json
+{
+  "name": "my-group"
+}
+```
+
+This will return the Group info
+
+```json
+{
+  "id": "61a4a882-1591-462e-bcb7-fa0eee5f3c51",
+  "user_id": "ec50a085-a746-428d-b01d-167ac379fbd4",
+  "name": "NFT-Project",
+  "updatedAt": "2024-07-03T18:09:33.610Z",
+  "createdAt": "2024-07-03T18:09:33.610Z"
+}
+```
+
+### Get a Group
+
+To fetch details of an already existing group make a `GET` request with the `id` of the group as the path paramter: `/group/:id`. This will return the Group info:
+
+```json
+[
+  {
+    "id": "61a4a882-1591-462e-bcb7-fa0eee5f3c51",
+    "name": "NFT-Project-updated",
+    "user_id": "ec50a085-a746-428d-b01d-167ac379fbd4",
+    "createdAt": "2024-07-03T18:09:33.610Z",
+    "updatedAt": "2024-07-03T18:15:17.440Z"
+  }
+]
+```
+
+### List All Groups
+
+If you want to get all Groups or filter through them you can make a `GET` request to `/group`. This endpoint accepts the following query params:
+
+<ParamField query="nameContains" type="string" default="none">
+Filter by name of the group
+</ParamField>
+
+<ParamField query="offset" type="integer" default="none">
+Paginate through next series of groups
+</ParamField>
+
+<ParamField query="limit" type="integer" default="none">
+Limit the number of results
+</ParamField>
+
+This will return an array of Groups and their respective info:
+
+```json
+[
+  {
+    "id": "61a4a882-1591-462e-bcb7-fa0eee5f3c51",
+    "name": "NFT-Project-updated",
+    "user_id": "ec50a085-a746-428d-b01d-167ac379fbd4",
+    "createdAt": "2024-07-03T18:09:33.610Z",
+    "updatedAt": "2024-07-03T18:15:17.440Z"
+  }
+]
+```
+
+### Updating the Name of a Group
+
+Updating the name of a group is done by sending a `PUT` request to `/groups/:id` where the Group ID is  a path param, as well as the JSON body with the new name:
+
+```json
+{
+  "name": "NFT-Project-updated"
+}
+```
+
+This will return the updated Group info.
+
+```json
+{
+  "id": "61a4a882-1591-462e-bcb7-fa0eee5f3c51",
+  "name": "NFT-Project-updated",
+  "user_id": "ec50a085-a746-428d-b01d-167ac379fbd4",
+  "createdAt": "2024-07-03T18:09:33.610Z",
+  "updatedAt": "2024-07-03T18:12:46.930Z"
+}
+```
+
+### Add CIDs to a Group
+
+Once a Group is created you can then add files to that Group by sending a `PUT` request to `/groups/:id/cids` which takes the Group ID as a path parameter, as well as a JSON body with an array of CIDs:
+
+```json
+{
+  "cids": [
+    "QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng",
+    "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
+  ]
+}
+```
+
+If successful the endpoint will return an `OK` response.
+
+<Info>At this time CIDs can only belong to one group at a time. If a CID is added to a Group while already being part of another, it will move the CID to the latest requested Group.</Info>
+
+### Removing CIDs from a Group
+
+To remove CIDs from a Group you would follow the same pattern as adding except with a `DELETE` request instead.
+
+```json
+{
+  "cids": [
+    "QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng",
+    "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
+  ]
+}
+```
+
+If successful the endpoint will return an `OK` response.
+
+### Delete a Group
+
+To delete a Group you can send a `DELETE` request to `/groups/:id` which takes the Group ID as a path parameter.
+
+If successful the endpoint will return an `OK` response.
+
+<Info>Deleting a Group that has CIDs inside of it will not unpin/delete the CIDs. Please use [/pinning/unpin](/api-reference/endpoint/unpin-file) to actually delete a file from your account</Info>
+
+## Pinata App

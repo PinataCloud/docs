@@ -83,17 +83,17 @@
             "quickstart/react",
             "quickstart/node-js"
           ]
-        },
-        {
-          "group": "Account Management",
-          "pages": [
-            "account-management/api-keys",
-            "account-management/workspaces",
-            "account-management/farcaster",
-            "account-management/billing",
-            "account-management/limits"
-          ]
         }
+      ]
+    },
+    {
+      "group": "Account Management",
+      "pages": [
+        "account-management/api-keys",
+        "account-management/workspaces",
+        "account-management/farcaster",
+        "account-management/billing",
+        "account-management/limits"
       ]
     },
     {
@@ -110,6 +110,7 @@
       "group": "Pinning",
       "pages": [
         "pinning/pinning-files",
+        "pinning/groups",
         "pinning/listing-files",
         "pinning/pinata-metadata",
         "pinning/deleting-files"
