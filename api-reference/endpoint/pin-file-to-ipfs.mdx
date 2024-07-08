@@ -3,3 +3,272 @@ openapi: post /pinning/pinFileToIPFS
 ---
 
 <Info>HTML uploads are currently only available on paid plans with granted access. If you are on a paid plan and wish to upload HTML please send a request through our support chat or send an email to [team@pinata.cloud](mailto:team@pinata.cloud)</Info>
+
+### Guides
+
+<Accordion title="Blobs">
+
+Usually you can pass a Blob directly into the request but to help guarantee success we recommend passing it into a `File` object.
+
+```javascript Pin Blob
+const JWT = 'YOUR_PINATA_JWT';
+
+async function pinFileToIPFS() {
+  try {
+    const text = "Hello World!";
+    const blob = new Blob([text], { type: "text/plain" });
+    const file = new File([blob], "hello-world.txt")
+    const data = new FormData();
+    data.append("file", file);
+
+    const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: data,
+    });
+    const resData = await res.json();
+    console.log(resData);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+await pinFileToIPFS()
+```
+</Accordion>
+
+<Accordion title="URL">
+
+To upload a file from an external URL you can stream the contents into an `arrayBuffer`, which then gets passed into a new `Blob` that can then be uploaded to Pinata.
+
+```javascript Upload by URL
+const JWT = "YOUR_PINATA_JWT";
+
+async function uploadByURL(url) {
+  try {
+    const urlStream = await fetch(url);
+    const arrayBuffer = await urlStream.arrayBuffer();
+    const blob = new Blob([arrayBuffer]);
+    const file = new File([blob], "file")
+    const data = new FormData();
+    data.append("file", file);
+
+    const upload = await fetch(
+      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${JWT}`,
+        },
+        body: data,
+      }
+    );
+    const uploadRes = await upload.json();
+    console.log(uploadRes);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+await uploadByURL("https://pocketcast.cloud/og.png");
+```
+</Accordion>
+
+<Accordion title="base64">
+
+To upload a file in base64 simply turn the contents into a `buffer` that is passed into a `Blob`.
+
+```javascript Upload base64
+const JWT = "YOUR_PINATA_JWT";
+
+async function uploadBase64(base64String) {
+  try {
+    const buffer = Buffer.from(base64String, "base64");
+    const blob = new Blob([buffer]);
+    const file = new File([blob], "file");
+    const data = new FormData();
+    data.append("file", file);
+
+    const upload = await fetch(
+      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${JWT}`,
+        },
+        body: data,
+      },
+    );
+    const uploadRes = await upload.json();
+    console.log(uploadRes);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+await uploadBase64("SGVsbG8gZnJvbSBQaW5hdGEhIDop");
+```
+</Accordion>
+
+<Accordion title="Folders">
+
+Folders can also be uploaded via the API by creating an array of files and mapping over them to add them to the form data. This is different then having a single `file` entry and having multiple files for that one entry, which does not work.
+
+<CodeGroup>
+
+```javascript Node.js
+import fs from "fs"
+import FormData from "form-data"
+import rfs from "recursive-fs"
+import basePathConverter from "base-path-converter"
+import got from 'got'
+
+const pinDirectoryToPinata = async () => {
+  const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
+  const src = "PATH_TO_FOLDER";
+  var status = 0;
+  try {
+
+    const { dirs, files } = await rfs.read(src);
+
+    let data = new FormData();
+
+    for (const file of files) {
+      data.append(`file`, fs.createReadStream(file), {
+        filepath: basePathConverter(src, file),
+      });
+    }
+
+    const response = await got(url, {
+      method: 'POST',
+      headers: {
+        "Authorization": "Bearer PINATA_API_JWT"
+      },
+      body: data
+  })
+		.on('uploadProgress', progress => {
+			console.log(progress);
+		});
+
+	console.log(JSON.parse(response.body));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+pinDirectoryToPinata()
+```
+
+```javascript React
+import { useState } from "react";
+
+function App() {
+  const [selectedFile, setSelectedFile]: any = useState();
+  const changeHandler = (event: any) => {
+    setSelectedFile(event.target.files);
+  };
+
+  const handleSubmission = async () => {
+    try {
+      const formData = new FormData();
+      Array.from(selectedFile).forEach((file) => {
+        formData.append("file", file);
+      });
+      const metadata = JSON.stringify({
+        name: "File name",
+      });
+      formData.append("pinataMetadata", metadata);
+
+      const options = JSON.stringify({
+        cidVersion: 0,
+      });
+      formData.append("pinataOptions", options);
+
+      const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+          },
+          body: formData,
+        }
+      );
+      const resData = await res.json();
+      console.log(resData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <label className="form-label"> Choose File</label>
+      <input
+        directory=""
+        webkitdirectory=""
+        type="file"
+        onChange={changeHandler}
+      />
+      <button onClick={handleSubmission}>Submit</button>
+    </>
+  );
+}
+
+export default App;
+```
+
+```javascript Javascript
+import FormData from "form-data"
+
+const pinDirectoryToIPFS = async () => {
+  try {
+    const folder = "json";
+    const json1 = { hello: "world" };
+    const json2 = { hello: "world2" };
+    const blob1 = new Blob([JSON.stringify(json1, null, 2)], {
+      type: "application/json",
+    });
+    const blob2 = new Blob([JSON.stringify(json2, null, 2)], {
+      type: "application/json",
+    });
+
+    const files = [
+      new File([blob1], "hello.json", { type: "application/json" }),
+      new File([blob2], "hello2.json", { type: "application/json" }),
+    ];
+
+    const data = new FormData();
+
+    Array.from(files).forEach((file) => {
+      // If you are not using `fs` you might need to specify the folder path along with the filename
+      data.append("file", file, `${folder}/${file.name}`);
+    });
+
+    const pinataMetadata = JSON.stringify({
+      name: `${folder}`,
+    });
+    data.append("pinataMetadata", pinataMetadata);
+
+    const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${PINATA_JWT}`,
+      },
+      body: data,
+    });
+    const resData = await res.json();
+    console.log(resData);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+pinDirectoryToIPFS();
+```
+
+</CodeGroup>
+
+</Accordion>
