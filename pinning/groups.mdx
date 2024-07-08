@@ -101,6 +101,8 @@ This will return the updated Group info.
 
 ### Add CIDs to a Group
 
+<Note>At this time CIDs can only belong to one group at a time. If a CID is added to a Group while already being part of another, it will move the CID to the latest requested Group.</Note>
+
 Once a Group is created you can then add files to that Group by sending a `PUT` request to `/groups/:id/cids` which takes the Group ID as a path parameter, as well as a JSON body with an array of CIDs:
 
 ```json
@@ -114,7 +116,6 @@ Once a Group is created you can then add files to that Group by sending a `PUT` 
 
 If successful the endpoint will return an `OK` response.
 
-<Info>At this time CIDs can only belong to one group at a time. If a CID is added to a Group while already being part of another, it will move the CID to the latest requested Group.</Info>
 
 ### Removing CIDs from a Group
 
@@ -133,10 +134,90 @@ If successful the endpoint will return an `OK` response.
 
 ### Delete a Group
 
+<Note>Deleting a Group that has CIDs inside of it will not unpin/delete the CIDs. Please use [/pinning/unpin](/api-reference/endpoint/unpin-file) to actually delete a file from your account</Note>
+
 To delete a Group you can send a `DELETE` request to `/groups/:id` which takes the Group ID as a path parameter.
 
 If successful the endpoint will return an `OK` response.
 
-<Info>Deleting a Group that has CIDs inside of it will not unpin/delete the CIDs. Please use [/pinning/unpin](/api-reference/endpoint/unpin-file) to actually delete a file from your account</Info>
-
 ## Pinata App
+
+If you just need to organize your files through a web interface then the Pinata App an do just that!
+
+### Create a Group
+
+Navigate to the Groups tab, then click "New" in the top right corner, give it a name, then click "Create."
+
+<video
+  autoPlay
+  muted
+  loop
+  playsinline
+  className="w-full aspect-video"
+  src="https://docs.mypinata.cloud/ipfs/bafybeic42gzphbbgnlpenvnaxfjvyohoj7p5nuhpjbfgep6xzxevnigety"
+></video>
+
+### Add Files to Groups
+
+<Note>At this time CIDs can only belong to one group at a time. If a CID is added to a Group while already being part of another, it will move the CID to the latest requested Group.</Note>
+
+There are a few ways you can add files to a Group after you have created one.
+
+#### Upload Directly
+
+After creating a group you can click on it, then click the "Add" button in the top right to add files directly to the group
+
+<video
+  autoPlay
+  muted
+  loop
+  playsinline
+  className="w-full aspect-video"
+  src="https://docs.mypinata.cloud/ipfs/bafybeiateld4izmgvjo27hnmq5n6y6zxc576qifww32pe22awuoqibubky"
+></video>
+
+#### File Details
+
+If you already have files upload and you just need to add it to a group, you can click on the file details button on the far right and select "Add to Group"
+
+<video
+  autoPlay
+  muted
+  loop
+  playsinline
+  className="w-full aspect-video"
+  src="https://docs.mypinata.cloud/ipfs/bafybeifqkibs5htg56dtkjcwf2tmqvqst2wxomqvmlyxrln3vzur3km6nm"
+></video>
+
+#### Bulk Add
+
+To add lots of files at once, you can select multiple files from the Files page then click the "Add to Group" button from the toolbar.
+
+
+<video
+  autoPlay
+  muted
+  loop
+  playsinline
+  className="w-full aspect-video"
+  src="https://docs.mypinata.cloud/ipfs/bafybeiert2udnwy7ze3vrgaydqmprpjenbp5fpcbv7hyofovpitmcbtrzi"
+></video>
+
+### Remove Files from Group
+
+While inside the Group view, you can remove files from a group by either clicking on the file detail for a single file or by using the multi-select tool.
+
+### Deleting Groups
+
+<Note>Deleting a Group that has CIDs inside of it will not unpin/delete the CIDs. Please follow the [unpin guide](pinning/deleting-files) to actually delete a file from your account</Note>
+
+To delete a Group, navigate to the Groups page, click on the details of the Group and then select the "Delete Group" from the dropdown.
+
+<video
+  autoPlay
+  muted
+  loop
+  playsinline
+  className="w-full aspect-video"
+  src="https://docs.mypinata.cloud/ipfs/bafybeidkxgiup4rmv5jhyra5g5tfoscutknifsuzsbbmgyqabzmmzsdt34"
+></video>
