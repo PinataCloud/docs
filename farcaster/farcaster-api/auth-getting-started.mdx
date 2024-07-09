@@ -167,7 +167,7 @@ const pollSigner = await fetch(`https://api.pinata.cloud/v3/farcaster/poll_warpc
     "Authorization": `Bearer YOUR_PINATA_JWT`
   }
 })
-const pollSignerRes = awwait pollSigner.json()
+const pollSignerRes = await pollSigner.json()
 return pollSignerRes.data.result
 ```
 
