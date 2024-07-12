@@ -163,6 +163,40 @@
       ]
     },
     {
+      "group": "Gateways",
+      "pages": [
+        {
+          "group": "General",
+          "pages": [
+            "api-reference/endpoint/list-gateways",
+            "api-reference/endpoint/gateway-details",
+            "api-reference/endpoint/gateway-domain-available",
+            "api-reference/endpoint/create-gateway",
+            "api-reference/endpoint/delete-gateway"
+          ]
+        },
+        {
+          "group": "Custom Domains",
+          "pages": [
+            "api-reference/endpoint/gateway-custom-domain-details",
+            "api-reference/endpoint/create-custom-domain-for-gateway",
+            "api-reference/endpoint/delete-gateway-custom-domain"
+          ]
+        },
+        {
+          "group": "Access Controls",
+          "pages": [
+            "api-reference/endpoint/create-gateway-key-restriction",
+            "api-reference/endpoint/create-gateway-ip-address-restriction",
+            "api-reference/endpoint/create-gateway-host-origin-restriction",
+            "api-reference/endpoint/revoke-gateway-key",
+            "api-reference/endpoint/revoke-ip-address-restricton",
+            "api-reference/endpoint/revoke-host-origin-restriction"
+          ]
+        }
+      ]
+    },
+    {
       "group": "Users",
       "pages": [
         "api-reference/endpoint/generate-pinata-api-key",
