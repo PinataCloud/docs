@@ -75,9 +75,10 @@
     {
       "group": "Get Started",
       "pages": [
+        "quickstart",
         "introduction",
         {
-          "group": "Quickstart",
+          "group": "Frameworks",
           "pages": [
             "quickstart/next-js",
             "quickstart/react",

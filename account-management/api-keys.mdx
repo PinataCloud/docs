@@ -3,44 +3,44 @@ title: "API Keys"
 slug: "api-keys"
 excerpt: ""
 hidden: false
-metadata: 
+metadata:
   image: []
   robots: "index"
 createdAt: "Wed Aug 09 2023 15:39:34 GMT+0000 (Coordinated Universal Time)"
 updatedAt: "Tue Sep 12 2023 17:19:16 GMT+0000 (Coordinated Universal Time)"
 ---
-This page is where you can create, record, and delete API keys for the [Pinata API](/api-reference/introduction). Creating an API is very simple! Just visit the page to start by click on the API Keys button in the left sidebar, then click "New Key" in the top right. 
+This page is where you can create, record, and delete API keys for the [Pinata API](/api-reference/introduction). Creating an API is very simple! Just visit the page to start by click on the API Keys button in the left sidebar, then click "New Key" in the top right.
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeics3mmzqr2qf27wczrf2r47qojlgfaiahbq277kilr4ykkdgoydqa" />
 
-In the New Key modal you can choose if you want the key to be an Admin key and have full access over every endpoint, or scope the keys by selecting which endpoints you want to use. You can also give it a limited number of uses, and be sure to give it a name to keep track of it. Once you have that filled out click "Create Key" and it will show you the `pinata_api_key`, `pinata_api_secret_key`, and the `JWT`. It's best to click "Copy All" and keep the API key data safe and secure. 
+In the New Key modal you can choose if you want the key to be an Admin key and have full access over every endpoint, or scope the keys by selecting which endpoints you want to use. You can also give it a limited number of uses, and be sure to give it a name to keep track of it. Once you have that filled out click "Create Key" and it will show you the `pinata_api_key`, `pinata_api_secret_key`, and the `JWT`. It's best to click "Copy All" and keep the API key data safe and secure.
 
 <Warning>Once API keys have been created, you will not be able to see the secret or JWT again</Warning>
 
 
 Once you have created your keys you can go ahead and try testing them! You can even use them in our [API Reference section](/api-reference/endpoint/test-authentication) :eyes: Or feel free to paste this into your terminal with your `JWT`
 
-```curl cURL
+```bash cURL
 curl --request GET \
      --url https://api.pinata.cloud/data/testAuthentication \
      --header 'accept: application/json' \
      --header 'authorization: Bearer YOUR_PINATA_JWT'
 ```
 
-If successful you should see this! 
+If successful you should see this!
 
 ```shell bash
-{  
-  "message": "Congratulations! You are communicating with the Pinata API!"  
+{
+  "message": "Congratulations! You are communicating with the Pinata API!"
 }
 ```
 
 ## Managing Keys
 
-From the Keys Page you can see the name of a key, the public key, when it was issues, how many max uses it has, and what permissions it was given. 
+From the Keys Page you can see the name of a key, the public key, when it was issues, how many max uses it has, and what permissions it was given.
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://files.readme.io/7330306-Screenshot-Arc-09-08-2023-20-072x.png" />
 
-At any point you can delete an API key by clicking on the Revoke button 
+At any point you can delete an API key by clicking on the Revoke button
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeidi5ngdd3tp7awmx3apx5wrvudedwa25t3iiwssojsgowl327yby4" />
