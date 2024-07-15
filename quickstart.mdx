@@ -6,7 +6,10 @@ excerpt: "Start uploading to IPFS with Pinata"
 hidden: false
 ---
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeicpfp5m4oepo6yaojoloonyh4nlifqiynn2as76cgg2ulzrosxiza" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/bafybeicpfp5m4oepo6yaojoloonyh4nlifqiynn2as76cgg2ulzrosxiza"
+/>
 
 ## Getting Started with Pinata
 
@@ -14,42 +17,48 @@ Whether you're brand new to IPFS or a seasoned developer, Pinata makes it simple
 
 ### 1. Get API key and Gateway URL
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeics3mmzqr2qf27wczrf2r47qojlgfaiahbq277kilr4ykkdgoydqa" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/bafybeics3mmzqr2qf27wczrf2r47qojlgfaiahbq277kilr4ykkdgoydqa"
+/>
 
 Inside the [Pinata App](https://app.pinata.cloud) select "API Keys" from the sidebar, then click "New Key" in the top right. We would recommend starting with Admin privileges and unlimited uses to start. You will receive a `pinata_api_key`, `pinata_api_secret`, and a `JWT`. The JWT is the most common authentication method and what we'll be using below.
 
 Next you will want to grab your Dedicated Gateway domain by clicking the Gateways tab in the sidebar. You should see it listed in the format `fun-llama-300.mypinata.cloud` and you will want to copy it exactly like that.
 
-
 ### 2. Upload a File
+
 Copy this code into your Typescript or JavaScript program and make sure to supplement your API JWT key
 
 ```tsx
-const JWT = 'PINATA_JWT';
+const JWT = "PINATA_JWT";
 
 async function pinFileToIPFS() {
   try {
     const text = "Hello World!";
     const blob = new Blob([text], { type: "text/plain" });
-    const file = new File([blob], "hello-world.txt")
+    const file = new File([blob], "hello-world.txt");
     const data = new FormData();
     data.append("file", file);
 
-    const request = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-      body: data,
-    });
+    const request = await fetch(
+      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${JWT}`,
+        },
+        body: data,
+      }
+    );
     const response = await request.json();
     console.log(response);
   } catch (error) {
     console.log(error);
   }
-};
+}
 
-await pinFileToIPFS()
+await pinFileToIPFS();
 ```
 
 You should get a response object like the one below
@@ -89,3 +98,5 @@ await fetchFileFromIPFS();
 ```
 
 ## Whats Next
+
+hello
