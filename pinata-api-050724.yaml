@@ -88,6 +88,22 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the created Group
+                  user_id:
+                    type: string
+                    description: ID of the user who created the Group
+                  name:
+                    type: string
+                    description: Name of the Group
+                  updatedAt:
+                    type: string
+                    description: ISO 8601 format date of the last time Group was updated
+                  createdAt:
+                    type: string
+                    description: ISO 8601 format date of Group creation
               example:
                 id: 61a4a882-1591-462e-bcb7-fa0eee5f3c51
                 user_id: ec50a085-a746-428d-b01d-167ac379fbd4
@@ -176,7 +192,25 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: ID of the created Group
+                    user_id:
+                      type: string
+                      description: ID of the user who created the Group
+                    name:
+                      type: string
+                      description: Name of the Group
+                    updatedAt:
+                      type: string
+                      description: ISO 8601 format date of the last time Group was updated
+                    createdAt:
+                      type: string
+                      description: ISO 8601 format date of Group creation
               example:
                 - id: 61a4a882-1591-462e-bcb7-fa0eee5f3c51
                   name: NFT-Project-updated
@@ -265,6 +299,22 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the created Group
+                  user_id:
+                    type: string
+                    description: ID of the user who created the Group
+                  name:
+                    type: string
+                    description: Name of the Group
+                  updatedAt:
+                    type: string
+                    description: ISO 8601 format date of the last time Group was updated
+                  createdAt:
+                    type: string
+                    description: ISO 8601 format date of Group creation
               example:
                 id: 61a4a882-1591-462e-bcb7-fa0eee5f3c51
                 name: NFT-Project-updated
@@ -414,6 +464,22 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the created Group
+                  user_id:
+                    type: string
+                    description: ID of the user who created the Group
+                  name:
+                    type: string
+                    description: Name of the Group
+                  updatedAt:
+                    type: string
+                    description: ISO 8601 format date of the last time Group was updated
+                  createdAt:
+                    type: string
+                    description: ISO 8601 format date of Group creation
               example:
                 - id: 61a4a882-1591-462e-bcb7-fa0eee5f3c51
                   name: NFT-Project-updated

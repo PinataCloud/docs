@@ -44,6 +44,12 @@ paths:
             type: string
           description: Returns API keys that match ilike on the API keys name column
           example: 70707d38-d683-4cc5-9e46-162d6f57d320
+        - name: offset
+          in: query
+          schema:
+            type: number
+          description: Paginate through list of keys by offsetting number of results
+          example: 10
       responses:
         "200":
           description: OK
@@ -108,6 +114,9 @@ paths:
                 permissions:
                   type: object
                   properties:
+                    admin:
+                      type: boolean
+                      description: Provides full access to permissions
                     endpoints:
                       type: object
                       properties:
@@ -223,3 +232,799 @@ paths:
               schema:
                 type: object
               example: Revoked
+  /ipfs/gateways:
+    get:
+      tags:
+        - default
+      summary: List Gateways
+      parameters:
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+          description: Limits the number of results
+          example: '1'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          description: Paginates through results by offsetting the results
+          example: '2'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 15:10:48 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '919'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: e321b967c4f4ba6a43947bc195b12bbc
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  count: 5
+                  rows:
+                    - id: 01dae16b-699c-472a-a61e-975a7b9777bd
+                      created_at: '2023-01-24T19:51:17.493Z'
+                      domain: restricted-example
+                      restrict: false
+                      custom_domains:
+                        - domain: ipfs.pinata.cloud
+                          domain_validation_status: pending
+                          custom_domain_id: 87980e39-fe71-4dba-9b05-3dfc66593539
+                          ssl_validation_status: initializing
+    post:
+      tags:
+        - default
+      summary: Create Gateway
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                domain:
+                  type: string
+                  description: Desired name for Gateway subdomain
+              example:
+                domain: dweb5
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 15:21:49 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '250'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 1c734bcad3dce59b9164d1088045a5be
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 5eb8b151-77b3-4e46-8243-5b6282131a9e
+                  created_at: '2024-07-12T15:21:47.966866Z'
+                  domain: dweb3
+                  restrict: false
+                  custom_domains: []
+                  settings:
+                    restriction_policies:
+                      accessTokens: []
+                      allowedHosts: []
+                      allowedIPAddresses: []
+  /ipfs/gateways/{id}:
+    get:
+      tags:
+        - default
+      summary: Gateway Details
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Gateway
+          example: 01dae16b-699c-472a-a61e-975a7b9777bd
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 15:10:18 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '823'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 5f66a3d6dca358f8351f5840160cd956
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 01dae16b-699c-472a-a61e-975a7b9777bd
+                  created_at: '2023-01-24T19:51:17.493Z'
+                  domain: restricted-example
+                  restrict: false
+                  custom_domains:
+                    - domain: ipfs.pinata.cloud
+                      domain_validation_status: pending
+                      custom_domain_id: 87980e39-fe71-4dba-9b05-3dfc66593539
+                      ssl_validation_status: initializing
+                  settings:
+                    restriction_policies:
+                      accessTokens:
+                        - id: d199be6a-3bee-461b-b7fb-e1225eafe28e
+                          value: >-
+                            key
+                          createdAt: '2024-07-12T15:09:47.564042199Z'
+                      allowedHosts:
+                        - id: 8934893a-093c-4d3a-9cd8-2c034a7f4fb8
+                          value: https://ipfs.pinata.cloud
+                          createdAt: '2024-07-12T15:10:03.192988915Z'
+                      allowedIPAddresses:
+                        - id: e7d98003-d2b3-46ff-901e-2c666022004a
+                          value: 1.1.1.1
+                          createdAt: '2024-07-12T15:09:53.879274435Z'
+    delete:
+      tags:
+        - default
+      summary: Delete Gateway
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Gateway
+          example: 50b7716a-3279-4b2e-a5c4-34a4af704823
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 18:41:32 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '14'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 7e72fbb08a915e444b858a45ed31307c
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: null
+  /ipfs/gateways/{id}/custom_domain/{custom_domain_id}:
+    get:
+      tags:
+        - default
+      summary: Gateway Custom Domain Details
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Gateway
+          example: 92c4666c-f9ec-4c72-ad47-7cef48440eaf
+        - name: custom_domain_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: Custom domain ID of the target Gateway
+          example: 87980e39-fe71-4dba-9b05-3dfc66593539
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 15:09:12 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '174'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 4ffa207d6f5bcd430acb6e04c3346ab3
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  domain: ipfs.pinata.cloud
+                  domain_validation_status: pending
+                  custom_domain_id: 87980e39-fe71-4dba-9b05-3dfc66593539
+                  ssl_validation_status: initializing
+    delete:
+      tags:
+        - default
+      summary: Delete Gateway Custom Domain
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Gateway
+          example: 5eb8b151-77b3-4e46-8243-5b6282131a9e
+        - name: custom_domain_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Custom Domain
+          example: 81bc0135-346d-4d81-ad81-1e313297702f
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 18:48:59 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '14'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: b5cab9febddabadf19b0d03ed2fe2de0
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: null
+  /ipfs/gateways/exists/{domain}:
+    get:
+      tags:
+        - default
+      summary: Gateway Domain Available
+      parameters:
+        - name: domain
+          in: path
+          schema:
+            type: string
+          required: true
+          example: dweb
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 15:12:23 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '25'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: ef5b3faec6d43df9556a0d3d697d9a31
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  exists: true
+  /ipfs/gateways/{id}/custom_domain:
+    post:
+      tags:
+        - default
+      summary: Create Custom Domain for Gateway
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                domain:
+                  type: string
+                  description: Custom domain for the target Gateway
+              example:
+                domain: ipfs2.pinata.cloud
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Gateway
+          example: 5eb8b151-77b3-4e46-8243-5b6282131a9e
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 15:31:13 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '175'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: ce0d865f56e8178bec28c0609ae7a9fc
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  domain: ipfs2.pinata.cloud
+                  domain_validation_status: pending
+                  custom_domain_id: 81bc0135-346d-4d81-ad81-1e313297702f
+                  ssl_validation_status: initializing
+  /ipfs/gateways/{id}/access_tokens:
+    post:
+      tags:
+        - default
+      summary: Create Gateway Key Restriction
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Gateway
+          example: 5eb8b151-77b3-4e46-8243-5b6282131a9e
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 15:35:04 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '175'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 1d0a98a992503275b20c1998eb17ea0a
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: e8fe078b-38e8-4472-94e7-9023205232d2
+                  value: >-
+                    key
+                  createdAt: '2024-07-12T15:34:59.786198063Z'
+  /ipfs/gateways/{id}/ips:
+    post:
+      tags:
+        - default
+      summary: Create Gateway IP Address Restriction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ip:
+                  type: string
+                  description: IP for the target Gateway
+              example:
+                ip: 1.1.1.1
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Gateway
+          example: 5eb8b151-77b3-4e46-8243-5b6282131a9e
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 15:37:05 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '118'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: e51cd4cebe7349e410218d80f18650d3
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 66b6f3c5-2733-442b-a558-960be4b5a921
+                  value: 1.1.1.1
+                  createdAt: '2024-07-12T15:37:04.871996078Z'
+  /ipfs/gateways/{id}/hosts:
+    post:
+      tags:
+        - default
+      summary: Create Gateway Host Origin Restriction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                host:
+                  type: string
+                  description: Host for target Gateway
+              example:
+                host: https://ipfs.pinata.cloud
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Gateway
+          example: 5eb8b151-77b3-4e46-8243-5b6282131a9e
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 15:40:41 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '136'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 2084338cd283435cb925529798cf8f83
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: b0165cb6-59e2-476e-aa60-b63b9326bcc6
+                  value: https://ipfs.pinata.cloud
+                  createdAt: '2024-07-12T15:40:40.258353687Z'
+  /ipfs/gateways/{id}/access_tokens/{access_token_id}:
+    delete:
+      tags:
+        - default
+      summary: Revoke Gateway Key
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Gateway
+          example: 5eb8b151-77b3-4e46-8243-5b6282131a9e
+        - name: access_token_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Gateway Key
+          example: 5cfe30af-1de5-409e-be09-f261445a2df6
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 18:52:08 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '14'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: bef4599a5d0de8322fff20dda15c82f9
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: null
+  /ipfs/gateways/{id}/ips/{ip_id}:
+    delete:
+      tags:
+        - default
+      summary: Revoke IP Address Restricton
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Gateway
+          example: 5eb8b151-77b3-4e46-8243-5b6282131a9e
+        - name: ip_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the IP address entry
+          example: 66b6f3c5-2733-442b-a558-960be4b5a921
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 18:54:46 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '14'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: c70075fc6823ef5234b62d35551be106
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: null
+  /ipfs/gateways/{id}/hosts/{host_id}:
+    delete:
+      tags:
+        - default
+      summary: Revoke Host Origin Restriction
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target Gateway
+          example: 5eb8b151-77b3-4e46-8243-5b6282131a9e
+        - name: host_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of the target host restriction
+          example: b0165cb6-59e2-476e-aa60-b63b9326bcc6
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 12 Jul 2024 18:59:34 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '14'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 366233a5fc2376b21620a1059e82be38
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: null
+
+
