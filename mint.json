@@ -46,6 +46,10 @@
       "url": "sdk"
     },
     {
+      "name": "Tools",
+      "url": "tools"
+    },
+    {
       "name": "API Reference",
       "url": "api-reference"
     },
@@ -215,6 +219,61 @@
     {
       "group": "Pinata SDK",
       "pages": ["sdk/getting-started"]
+    },
+    {
+      "group": "Data",
+      "pages": [
+        "sdk/data/test-authentication",
+        "sdk/data/list-files",
+        "sdk/data/pin-jobs",
+        "sdk/data/unpin",
+        "sdk/data/update-metadata"
+      ]
+    },
+    {
+      "group": "Upload",
+      "pages": [
+        "sdk/upload/file",
+        "sdk/upload/file-array",
+        "sdk/upload/json",
+        "sdk/upload/base64",
+        "sdk/upload/url",
+        "sdk/upload/cid"
+      ]
+    },
+    {
+      "group": "Gateways",
+      "pages": ["sdk/gateways/get", "sdk/gateways/convert"]
+    },
+    {
+      "group": "Groups",
+      "pages": [
+        "sdk/groups/create",
+        "sdk/groups/add-cids",
+        "sdk/groups/remove-cids",
+        "sdk/groups/get",
+        "sdk/groups/list",
+        "sdk/groups/update",
+        "sdk/groups/delete"
+      ]
+    },
+    {
+      "group": "Keys",
+      "pages": ["sdk/keys/create", "sdk/keys/list", "sdk/keys/revoke"]
+    },
+    {
+      "group": "Usage",
+      "pages": ["sdk/usage/pinned-file-count", "sdk/usage/total-storage-size"]
+    },
+    {
+      "group": "Tools",
+      "pages": [
+        "tools/pinata-sdk",
+        "tools/nextjs-starter",
+        "tools/pinata-cli",
+        "tools/pinata-raycast-extension",
+        "tools/community-sdks"
+      ]
     },
     {
       "group": "Get Started",
