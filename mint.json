@@ -52,6 +52,10 @@
     {
       "name": "Farcaster",
       "url": "farcaster"
+    },
+    {
+      "name": "­­­",
+      "url": "sdk-beta"
     }
   ],
   "anchors": [
@@ -220,6 +224,62 @@
         "sdks/pinata-cli",
         "sdks/pinata-raycast-extension",
         "sdks/community-sdks"
+      ]
+    },
+    {
+      "group": "Pinata SDK",
+      "pages": ["sdk-beta/getting-started"]
+    },
+    {
+      "group": "Data",
+      "pages": [
+        "sdk-beta/data/test-authentication",
+        "sdk-beta/data/list-files",
+        "sdk-beta/data/pin-jobs",
+        "sdk-beta/data/unpin",
+        "sdk-beta/data/update-metadata"
+      ]
+    },
+    {
+      "group": "Upload",
+      "pages": [
+        "sdk-beta/upload/file",
+        "sdk-beta/upload/file-array",
+        "sdk-beta/upload/json",
+        "sdk-beta/upload/base64",
+        "sdk-beta/upload/url",
+        "sdk-beta/upload/cid"
+      ]
+    },
+    {
+      "group": "Gateways",
+      "pages": ["sdk-beta/gateways/get", "sdk-beta/gateways/convert"]
+    },
+    {
+      "group": "Groups",
+      "pages": [
+        "sdk-beta/groups/create",
+        "sdk-beta/groups/add-cids",
+        "sdk-beta/groups/remove-cids",
+        "sdk-beta/groups/get",
+        "sdk-beta/groups/list",
+        "sdk-beta/groups/update",
+        "sdk-beta/groups/delete"
+      ]
+    },
+    {
+      "group": "Keys",
+      "pages": [
+        "sdk-beta/keys/create",
+        "sdk-beta/keys/list",
+        "sdk-beta/keys/revoke"
+      ]
+    },
+    {
+      "group": "Usage",
+      "pages": [
+        "sdk-beta/usage/pinned-file-count",
+        "sdk-beta/usage/total-storage-size"
       ]
     },
     {
