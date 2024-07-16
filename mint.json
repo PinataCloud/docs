@@ -42,8 +42,8 @@
   },
   "tabs": [
     {
-      "name": "SDKs",
-      "url": "sdks"
+      "name": "SDK",
+      "url": "sdk"
     },
     {
       "name": "API Reference",
@@ -213,14 +213,8 @@
       ]
     },
     {
-      "group": "Pinata SDKs",
-      "pages": [
-        "sdks/pinata-sdk",
-        "sdks/nextjs-starter",
-        "sdks/pinata-cli",
-        "sdks/pinata-raycast-extension",
-        "sdks/community-sdks"
-      ]
+      "group": "Pinata SDK",
+      "pages": ["sdk/getting-started"]
     },
     {
       "group": "Get Started",
@@ -376,6 +370,10 @@
     "suggestEdit": true
   },
   "redirects": [
+    {
+      "source": "/sdks/:slug*",
+      "destination": "/tools/:slug*"
+    },
     {
       "source": "/farcaster/api-reference/:slug*",
       "destination": "/farcaster/farcaster-api/:slug*"
