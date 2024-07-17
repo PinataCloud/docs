@@ -1,0 +1,78 @@
+---
+title: "Types"
+---
+
+## `AuthTestResponse`
+
+```typescript
+type AuthTestResponse = {
+  message: string;
+};
+```
+
+## `PinListItem`
+
+```typescript
+type PinListItem = {
+  id: string;
+  ipfs_pin_hash: string;
+  size: number;
+  user_id: string;
+  date_pinned: string;
+  date_unpinned: string | null;
+  metadata: {
+    name: string | null;
+    keyvalues: {
+      [key: string]: any;
+    } | null;
+  };
+  regions: {
+    regionId: string;
+    currentReplicationCount: number;
+    desiredReplicationCount: number;
+  }[];
+  mime_type: string;
+  number_of_files: number;
+};
+```
+
+## `PinJobItem`
+
+```typescript
+type PinJobItem = {
+  id: string;
+  ipfs_pin_hash: string;
+  date_queued: string;
+  name: string;
+  status: string;
+  keyvalues: any;
+  host_nodes: string[];
+  pin_policy: {
+    regions: {
+      id: string;
+      desiredReplicationCount: number;
+    }[];
+    version: number;
+  };
+};
+```
+
+
+
+## `PinataMetadata`
+
+```typescript
+type PinataMetadata = {
+  name?: string;
+  keyValues?: Record<string, string | number>;
+};
+```
+
+## `UnpinResponse`
+
+```typescript
+type UnpinResponse = {
+  hash: string;
+  status: string;
+};
+```

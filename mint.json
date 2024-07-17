@@ -283,6 +283,10 @@
       ]
     },
     {
+      "group": "Glossary",
+      "pages": ["sdk-beta/types"]
+    },
+    {
       "group": "Get Started",
       "pages": [
         "farcaster/introduction",
