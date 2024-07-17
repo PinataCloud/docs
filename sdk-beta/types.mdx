@@ -68,6 +68,29 @@ type PinataMetadata = {
 };
 ```
 
+## `PinResponse`
+
+```typescript
+type PinResponse = {
+  IpfsHash: string;
+  PinSize: number;
+  Timestamp: string;
+  isDuplicate?: boolean;
+};
+```
+
+## `PinByCIDResponse`
+
+```typescript
+type PinByCIDResponse = {
+  id: string;
+  ipfsHash: string;
+  status: "prechecking" | "retrieving";
+  name: string;
+  updated?: boolean;
+};
+```
+
 ## `UnpinResponse`
 
 ```typescript
