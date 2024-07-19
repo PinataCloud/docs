@@ -2,6 +2,55 @@
 title: "addCids"
 ---
 
-<Frame>
-<Icon icon="triangle-exclamation" size={128} />
-</Frame>
+Add CIDs to a Group
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const group = await pinata.groups.addCids({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+	cids: ["QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng"],
+});
+```
+
+## Returns
+
+```typescript
+OK
+```
+
+## Parameters
+
+### groupId
+
+- Type: `string`
+
+ID of the target Group to add files to
+
+```typescript
+const group = await pinata.groups.addCids({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+});
+```
+
+### cids
+
+- Type: `string[]`
+
+An array of CIDs as strings that you want to add to the group
+
+```typescript
+const group = await pinata.groups.addCids({
+	cids: [
+  	"QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng",
+    "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
+	],
+});
+```

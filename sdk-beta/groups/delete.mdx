@@ -2,6 +2,39 @@
 title: "delete"
 ---
 
-<Frame>
-<Icon icon="triangle-exclamation" size={128} />
-</Frame>
+Delete a Group
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const groups = await pinata.groups.delete({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+});
+```
+
+## Returns
+
+```typescript
+OK
+```
+
+## Parameters
+
+### groupId
+
+- Type: `string`
+
+ID for the target Group
+
+```typescript
+const groups = await pinata.groups.delete({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+});
+```
