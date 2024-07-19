@@ -57,7 +57,47 @@ type PinJobItem = {
 };
 ```
 
+## `KeyPermissions`
 
+```typescript
+type KeyPermissions = {
+  admin?: boolean;
+  endpoints?: Endpoints;
+};
+```
+
+## `Endpoints`
+
+```typescript
+type Endpoints = {
+  data?: DataEndponts;
+  pinning?: PinningEndpoints;
+};
+```
+
+## `DataEndpoints`
+
+```typescript
+type DataEndponts = {
+  pinList?: boolean;
+  userPinnedDataTotal?: boolean;
+};
+```
+
+## `PinningEndpoints`
+
+```typescript
+type PinningEndpoints = {
+  hashMetadata?: boolean;
+  hashPinPolicy?: boolean;
+  pinByHash?: boolean;
+  pinFileToIPFS?: boolean;
+  pinJSONToIPFS?: boolean;
+  pinJobs?: boolean;
+  unpin?: boolean;
+  userPinPolicy?: boolean;
+};
+```
 
 ## `PinataMetadata`
 
