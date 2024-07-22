@@ -1,0 +1,46 @@
+---
+title: "Config"
+---
+
+Overview of the Pinata SDK Config
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+```
+
+## Parameters
+
+### pinataJwt
+
+- Type: `string`
+
+The Pinata API JWT key that authorizes the SDK. [Read more about API Keys](/account-management/api-keys).
+
+### pinataGateway
+
+- Type: `string`
+
+The domain of the Dedicated Gateway included with your account. [Read more about Dedicated Gateways](/gateways/dedicated-ipfs-gateways).
+
+### pinataGatewayKey
+
+- Type: `string`
+
+If you are using a [Gateway Access Control Key](/gateways/gateway-access-controls#gateway-keys) you can list it to be used automatically in any of the [gateway methods](/sdk-beta/gateways).
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+  pinataGatewayKey: "<GATEWAY KEY>"
+});
+```

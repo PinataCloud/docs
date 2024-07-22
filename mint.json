@@ -228,7 +228,7 @@
     },
     {
       "group": "Pinata SDK",
-      "pages": ["sdk-beta/getting-started"]
+      "pages": ["sdk-beta/getting-started", "sdk-beta/config"]
     },
     {
       "group": "Data",
