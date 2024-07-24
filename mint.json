@@ -84,9 +84,9 @@
         {
           "group": "Frameworks",
           "pages": [
-            "quickstart/next-js",
-            "quickstart/react",
-            "quickstart/node-js"
+            "frameworks/next-js",
+            "frameworks/react",
+            "frameworks/node-js"
           ]
         }
       ]
@@ -441,6 +441,10 @@
     "suggestEdit": true
   },
   "redirects": [
+    {
+      "source": "/quickstart/:slug*",
+      "destination": "/frameworks/:slug*"
+    },
     {
       "source": "/farcaster/api-reference/:slug*",
       "destination": "/farcaster/farcaster-api/:slug*"
