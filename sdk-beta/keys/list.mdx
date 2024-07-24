@@ -1,0 +1,102 @@
+---
+title: "list"
+---
+
+List and filter through Keys
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const keys = await pinata.keys
+  .list()
+  .name("Admin")
+  .revoked(false)
+```
+
+## Returns
+
+```typescript
+type KeyListItem = {
+  id: string;
+  name: string;
+  key: string;
+  secret: string;
+  max_uses: number;
+  uses: number;
+  user_id: string;
+  scopes: KeyScopes;
+  revoked: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+## Parameters
+
+Filter response with the following additional methods
+
+### name
+
+- Type: `string`
+
+Filter by name, uses "contains" matching
+
+```typescript
+const keys = await pinata.keys
+  .list()
+  .name("Greetings");
+```
+
+### revoked
+
+- Type: `boolean`
+
+Filter keys by whether or not they have been revoked
+
+```typescript
+const keys = await pinata.keys
+  .list()
+  .revoked(false);
+```
+
+### exhausted
+
+- Type: `boolean`
+
+Filter keys based on whether they had limited uses that were exhuasted
+
+```typescript
+const keys = await pinata.keys
+  .list()
+  .exhausted(false);
+```
+
+### offset
+
+- Type: `number`
+
+Offset the number of keys returned to paginate
+
+```typescript
+const keys = await pinata.keys
+  .list()
+  .offset(5);
+```
+
+
+## Auto Paginate
+
+The `list` method has an auto pagination feature that is triggered when used inside a `for await` iterator
+
+```typescript
+for await (const item of pinata.keys.list()) {
+  console.log(item.name);
+}
+```

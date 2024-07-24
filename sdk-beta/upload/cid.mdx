@@ -1,0 +1,98 @@
+---
+title: "cid"
+---
+
+Pin an existing CID on IPFS to your Pinata account
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const pin = await pinata.upload.cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+```
+
+## Returns
+
+```typescript
+type PinByCIDResponse = {
+  id: string;
+  ipfsHash: string;
+  status: "prechecking" | "retrieving";
+  name: string;
+  updated?: boolean;
+};
+```
+
+## Parameters
+
+### cid
+
+- Type: `string`
+
+Target CID already on IPFS
+
+```typescript
+const pin = await pinata.upload.cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+```
+
+### addMetadata
+
+- Type: [PinataMetadata](../types#pinatametadata)
+
+Add optional metadata to file
+
+```typescript
+const pin = await pinata.upload
+  .cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+  .addMetadata({
+    name: "hello.txt",
+    keyValues: {
+      whimsey: 100
+    }
+  })
+```
+
+### group
+
+- Type: `string`
+
+Upload to a specific group by passing in the `groupId`
+
+```typescript
+const pin = await pinata.upload
+  .cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+  .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
+```
+
+### key
+
+- Type: `string`
+
+Upload a file using a secondary API key generated through `keys.create()`
+
+```typescript
+const pin = await pinata.upload
+  .cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+  .key("GENERATED_API_JWT")
+```
+
+### peerAddress
+
+- Type: `string[]`
+
+Accepts an array of host node IDs to peer with
+
+```typescript
+const pin = await pinata.upload
+  .cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+  .peerAddress([
+    "/ip4/hostNode1ExternalIP/tcp/4001/ipfs/hostNode1PeerId",
+    "/ip4/hostNode2ExternalIP/tcp/4001/ipfs/hostNode2PeerId"
+  ])
+```

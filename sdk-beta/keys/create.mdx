@@ -1,0 +1,105 @@
+---
+title: "create"
+---
+
+Create an API key
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const key = await pinata.keys.create({
+  keyName: "user 1",
+  permissions: {
+    admin: true,
+  },
+  maxUses: 1,
+});
+```
+
+## Returns
+
+```typescript
+type KeyResponse = {
+  JWT: string;
+  pinata_api_key: string;
+  pinata_api_secret: string;
+};
+```
+
+## Parameters
+
+### keyName
+
+- Type: `string`
+
+Name for the API key
+
+```typescript
+const key = await pinata.keys.create({
+  keyName: "user 1"
+});
+```
+
+### maxUses
+
+- Type: `number`
+
+Limit the number of uses a key is valid for
+
+```typescript
+const key = await pinata.keys.create({
+  maxUses: 2
+});
+```
+
+### permissions
+
+- Type: [KeyPermissions](../types#keypermissions)
+
+#### admin
+
+- Type: `boolean`
+
+Grants the key admin access to all endpoints
+
+```typescript
+const key = await pinata.keys.create({
+  keyName: "user 1",
+  permissions: {
+    admin: true,
+  }
+});
+```
+
+#### endpoints
+
+- Type [Endpoints](../types#endpoints)
+
+```typescript
+const key = await pinata.keys.create({
+  keyName: "user 1",
+  permissions: {
+    data: {
+      pinList: true,
+      userPinnedDataTotal: false
+    },
+    pinning: {
+      hashMetadata: true,
+      hashPinPolicy: false,
+      pinByHash: true,
+      pinFileToIPFS: true,
+      pinJSONToIPFS: true,
+      pinJobs: false,
+      unpin: false,
+      userPinPolicy: false
+    }
+  }
+});
+```

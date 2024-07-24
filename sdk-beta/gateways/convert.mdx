@@ -1,0 +1,48 @@
+---
+title: "convert"
+---
+
+Convert an IPFS link into one that uses your Dedicated Gateway
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const url = pinata.gateways.convert(
+  "ipfs://QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng"
+);
+```
+
+## Returns
+
+```typescript
+string
+```
+
+## Parameters
+
+### IPFS URL
+
+- Type: `string`
+
+Accepts CID or IPFS gateway link.
+
+```typescript
+const url = await pinata.gateways.get(
+	"bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi/hello-1.txt",
+);
+
+const url = await pinata.gateways.get(
+	"https://ipfs.io/ipfs/bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi/hello-1.txt",
+);
+
+const url = await pinata.gateways.get(
+	"https://bafyreibroegmxohcbvvs3rziqsp3osyn7t5rzot34y6pn5xtewffhtsl4e.ipfs.nftstorage.link/metadata.json",
+);
+```

@@ -1,0 +1,94 @@
+---
+title: "base64"
+---
+
+Upload a base64 string to Pinata
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const upload = await pinata.upload.base64("SGVsbG8gV29ybGQh")
+```
+
+## Returns
+
+```typescript
+type PinResponse = {
+  IpfsHash: string;
+  PinSize: number;
+  Timestamp: string;
+  isDuplicate?: boolean;
+};
+```
+
+## Parameters
+
+### base64
+
+- Type: `string`
+
+Accepts a string encoded in base64
+
+```typescript
+const upload = await pinata.upload.base64("SGVsbG8gV29ybGQh")
+```
+
+### addMetadata
+
+- Type: [PinataMetadata](../types#pinatametadata)
+
+Add optional metadata to file
+
+```typescript
+const upload = await pinata.upload
+  .base64("SGVsbG8gV29ybGQh")
+  .addMetadata({
+    name: "hello.txt",
+    keyValues: {
+      whimsey: 100
+    }
+  })
+```
+
+### group
+
+- Type: `string`
+
+Upload to a specific group by passing in the `groupId`
+
+```typescript
+const upload = await pinata.upload
+  .base64("SGVsbG8gV29ybGQh")
+  .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
+```
+
+### key
+
+- Type: `string`
+
+Upload a file using a secondary API key generated through `keys.create()`
+
+```typescript
+const upload = await pinata.upload
+  .base64("SGVsbG8gV29ybGQh")
+  .key("GENERATED_API_JWT")
+```
+
+### cidVersion
+
+- Type: `0 | 1`
+
+Specificy CID version for upload
+
+```typescript
+const upload = await pinata.upload
+  .base64("SGVsbG8gV29ybGQh")
+  .cidVersion(0)
+```
