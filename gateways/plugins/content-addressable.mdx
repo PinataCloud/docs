@@ -2,3 +2,29 @@
 title: "Content Addressable"
 description: "Use the Content Addressable plugin to include CID signatures"
 ---
+
+The Content Addressable plugin works in tandem with the Signatures API, allowing users to get a signature field in the headers of a Dedicated Gateway request. This can be very useful to help verify content ownership when retrieving files from IPFS.
+
+<Note>
+For more information about adding signatures to CIDs on IPFS please read the [Signatures Guide](/pinning/signatures)
+</Note>
+
+## Installation
+
+Follow the steps in the [Getting Started](/gateways/plugins/getting-started) guide to install the Content Addressable Plugin.
+
+## Usage
+
+Once the plugin is installed the rest is quite simple. If a CID as a signature attached to it, then there will be a `pinata-signature` field in the headers.
+
+```typescript
+const signatureReq = await fetch(
+  `https://<YOUR_GATEWAY_DOMAIN>.mypinata.cloud/ipfs/<CID>`,
+  {
+    method: "HEAD",
+  }
+);
+const signature = signatureReq.headers.get("pinata-signature");
+
+//0xbe92f9747e1712f2673ff0de6c7058968b869ce14ed6e0949fa3c485e420a27c66695401f56d3d3158fcbb6a5a7809e91acb9660dc00f31673d7efe6f77665b31c
+```
