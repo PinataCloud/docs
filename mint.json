@@ -114,7 +114,8 @@
         "pinning/groups",
         "pinning/listing-files",
         "pinning/pinata-metadata",
-        "pinning/deleting-files"
+        "pinning/deleting-files",
+        "pinning/signatures"
       ]
     },
     {
