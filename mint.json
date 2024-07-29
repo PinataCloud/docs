@@ -83,11 +83,7 @@
         "introduction",
         {
           "group": "Frameworks",
-          "pages": [
-            "frameworks/next-js",
-            "frameworks/react",
-            "frameworks/node-js"
-          ]
+          "pages": ["frameworks/next-js", "frameworks/react", "frameworks/node-js"]
         }
       ]
     },
@@ -126,7 +122,14 @@
       "pages": [
         "gateways/dedicated-ipfs-gateways",
         "gateways/gateway-access-controls",
-        "gateways/image-optimizations"
+        "gateways/image-optimizations",
+        {
+          "group": "Plugins",
+          "pages": [
+            "gateways/plugins/getting-started",
+            "gateways/plugins/content-addressable"
+          ]
+        }
       ]
     },
     {
@@ -270,18 +273,11 @@
     },
     {
       "group": "Keys",
-      "pages": [
-        "sdk-beta/keys/create",
-        "sdk-beta/keys/list",
-        "sdk-beta/keys/revoke"
-      ]
+      "pages": ["sdk-beta/keys/create", "sdk-beta/keys/list", "sdk-beta/keys/revoke"]
     },
     {
       "group": "Usage",
-      "pages": [
-        "sdk-beta/usage/pinned-file-count",
-        "sdk-beta/usage/total-storage-size"
-      ]
+      "pages": ["sdk-beta/usage/pinned-file-count", "sdk-beta/usage/total-storage-size"]
     },
     {
       "group": "Glossary",
