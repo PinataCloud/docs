@@ -105,7 +105,8 @@ You can confirm the plugin is installed by using [/ipfs/gateway_plugins/:gateway
 
 <CodeGroup>
 ```typescript Get Plugins for Gateway
-const installPlugin = await fetch("https://api.pinata.cloud/v3/ipfs/gateway_plugins/8673cd80-bf53-4bca-b684-bec1d6bdf004", {
+const gatewayId = "8673cd80-bf53-4bca-b684-bec1d6bdf004"
+const installPlugin = await fetch(`https://api.pinata.cloud/v3/ipfs/gateway_plugins/${gatewayId}`, {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
@@ -153,7 +154,9 @@ Then locate the target gateway and plugin, then click the action item on the rig
 To uninstall a plug from the API you can use the [/ipfs/gateway_plugins/:gateway_id/plugin/:plugin_id](/api-reference/endpoint/uninstall-gateway-plugin) endpoint, where the `gateway_id` is the target gateway and the `plugin_id` is the target plugin to uninstall.
 
 ```typescript Install Plugin
-const uninstallPlugin = await fetch("https://api.pinata.cloud/v3/ipfs/gateway_plugins/8673cd80-bf53-4bca-b684-bec1d6bdf004/plugin/1", {
+const gatewayId = "8673cd80-bf53-4bca-b684-bec1d6bdf004"
+const pluginId = 1
+const uninstallPlugin = await fetch(`https://api.pinata.cloud/v3/ipfs/gateway_plugins/${gatewayId}/plugin/${pluginId}`, {
   method: "DELETE",
   headers: {
     "Content-Type": "application/json",
