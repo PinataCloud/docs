@@ -201,7 +201,26 @@
             "api-reference/endpoint/revoke-ip-address-restricton",
             "api-reference/endpoint/revoke-host-origin-restriction"
           ]
+        },
+        {
+          "group": "Gateway Plugins",
+          "pages": [
+            "api-reference/endpoint/list-marketplace-plugins",
+            "api-reference/endpoint/get-marketplace-plugin-details",
+            "api-reference/endpoint/list-installed-plugins-for-gateway",
+            "api-reference/endpoint/install-gateway-plugin",
+            "api-reference/endpoint/list-gateway-plugins",
+            "api-reference/endpoint/uninstall-gateway-plugin"
+          ]
         }
+      ]
+    },
+    {
+      "group": "Signatures",
+      "pages": [
+        "api-reference/endpoint/get-signature-for-a-cid",
+        "api-reference/endpoint/add-signature-to-cid",
+        "api-reference/endpoint/remove-signature-from-cid"
       ]
     },
     {

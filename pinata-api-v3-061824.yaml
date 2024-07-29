@@ -158,7 +158,7 @@ paths:
                   admin: true
                 maxUses: 2
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -172,7 +172,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '818'
+                example: "818"
             Connection:
               schema:
                 type: string
@@ -243,15 +243,15 @@ paths:
           schema:
             type: integer
           description: Limits the number of results
-          example: '1'
+          example: "1"
         - name: page
           in: query
           schema:
             type: integer
           description: Paginates through results by offsetting the results
-          example: '2'
+          example: "2"
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -265,7 +265,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '919'
+                example: "919"
             Connection:
               schema:
                 type: string
@@ -287,7 +287,7 @@ paths:
                   count: 5
                   rows:
                     - id: 01dae16b-699c-472a-a61e-975a7b9777bd
-                      created_at: '2023-01-24T19:51:17.493Z'
+                      created_at: "2023-01-24T19:51:17.493Z"
                       domain: restricted-example
                       restrict: false
                       custom_domains:
@@ -311,7 +311,7 @@ paths:
               example:
                 domain: dweb5
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -325,7 +325,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '250'
+                example: "250"
             Connection:
               schema:
                 type: string
@@ -345,7 +345,7 @@ paths:
               example:
                 data:
                   id: 5eb8b151-77b3-4e46-8243-5b6282131a9e
-                  created_at: '2024-07-12T15:21:47.966866Z'
+                  created_at: "2024-07-12T15:21:47.966866Z"
                   domain: dweb3
                   restrict: false
                   custom_domains: []
@@ -368,7 +368,7 @@ paths:
           description: ID of the target Gateway
           example: 01dae16b-699c-472a-a61e-975a7b9777bd
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -382,7 +382,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '823'
+                example: "823"
             Connection:
               schema:
                 type: string
@@ -402,7 +402,7 @@ paths:
               example:
                 data:
                   id: 01dae16b-699c-472a-a61e-975a7b9777bd
-                  created_at: '2023-01-24T19:51:17.493Z'
+                  created_at: "2023-01-24T19:51:17.493Z"
                   domain: restricted-example
                   restrict: false
                   custom_domains:
@@ -416,15 +416,15 @@ paths:
                         - id: d199be6a-3bee-461b-b7fb-e1225eafe28e
                           value: >-
                             key
-                          createdAt: '2024-07-12T15:09:47.564042199Z'
+                          createdAt: "2024-07-12T15:09:47.564042199Z"
                       allowedHosts:
                         - id: 8934893a-093c-4d3a-9cd8-2c034a7f4fb8
                           value: https://ipfs.pinata.cloud
-                          createdAt: '2024-07-12T15:10:03.192988915Z'
+                          createdAt: "2024-07-12T15:10:03.192988915Z"
                       allowedIPAddresses:
                         - id: e7d98003-d2b3-46ff-901e-2c666022004a
                           value: 1.1.1.1
-                          createdAt: '2024-07-12T15:09:53.879274435Z'
+                          createdAt: "2024-07-12T15:09:53.879274435Z"
     delete:
       tags:
         - default
@@ -438,7 +438,7 @@ paths:
           description: ID of the target Gateway
           example: 50b7716a-3279-4b2e-a5c4-34a4af704823
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -452,7 +452,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '14'
+                example: "14"
             Connection:
               schema:
                 type: string
@@ -492,7 +492,7 @@ paths:
           description: Custom domain ID of the target Gateway
           example: 87980e39-fe71-4dba-9b05-3dfc66593539
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -506,7 +506,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '174'
+                example: "174"
             Connection:
               schema:
                 type: string
@@ -549,7 +549,7 @@ paths:
           description: ID of the target Custom Domain
           example: 81bc0135-346d-4d81-ad81-1e313297702f
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -563,7 +563,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '14'
+                example: "14"
             Connection:
               schema:
                 type: string
@@ -595,7 +595,7 @@ paths:
           required: true
           example: dweb
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -609,7 +609,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '25'
+                example: "25"
             Connection:
               schema:
                 type: string
@@ -654,7 +654,7 @@ paths:
           description: ID of the target Gateway
           example: 5eb8b151-77b3-4e46-8243-5b6282131a9e
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -668,7 +668,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '175'
+                example: "175"
             Connection:
               schema:
                 type: string
@@ -705,7 +705,7 @@ paths:
           description: ID of the target Gateway
           example: 5eb8b151-77b3-4e46-8243-5b6282131a9e
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -719,7 +719,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '175'
+                example: "175"
             Connection:
               schema:
                 type: string
@@ -741,7 +741,7 @@ paths:
                   id: e8fe078b-38e8-4472-94e7-9023205232d2
                   value: >-
                     key
-                  createdAt: '2024-07-12T15:34:59.786198063Z'
+                  createdAt: "2024-07-12T15:34:59.786198063Z"
   /ipfs/gateways/{id}/ips:
     post:
       tags:
@@ -767,7 +767,7 @@ paths:
           description: ID of the target Gateway
           example: 5eb8b151-77b3-4e46-8243-5b6282131a9e
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -781,7 +781,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '118'
+                example: "118"
             Connection:
               schema:
                 type: string
@@ -802,7 +802,7 @@ paths:
                 data:
                   id: 66b6f3c5-2733-442b-a558-960be4b5a921
                   value: 1.1.1.1
-                  createdAt: '2024-07-12T15:37:04.871996078Z'
+                  createdAt: "2024-07-12T15:37:04.871996078Z"
   /ipfs/gateways/{id}/hosts:
     post:
       tags:
@@ -828,7 +828,7 @@ paths:
           description: ID of the target Gateway
           example: 5eb8b151-77b3-4e46-8243-5b6282131a9e
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -842,7 +842,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '136'
+                example: "136"
             Connection:
               schema:
                 type: string
@@ -863,7 +863,7 @@ paths:
                 data:
                   id: b0165cb6-59e2-476e-aa60-b63b9326bcc6
                   value: https://ipfs.pinata.cloud
-                  createdAt: '2024-07-12T15:40:40.258353687Z'
+                  createdAt: "2024-07-12T15:40:40.258353687Z"
   /ipfs/gateways/{id}/access_tokens/{access_token_id}:
     delete:
       tags:
@@ -885,7 +885,7 @@ paths:
           description: ID of the target Gateway Key
           example: 5cfe30af-1de5-409e-be09-f261445a2df6
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -899,7 +899,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '14'
+                example: "14"
             Connection:
               schema:
                 type: string
@@ -939,7 +939,7 @@ paths:
           description: ID of the IP address entry
           example: 66b6f3c5-2733-442b-a558-960be4b5a921
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -953,7 +953,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '14'
+                example: "14"
             Connection:
               schema:
                 type: string
@@ -993,7 +993,7 @@ paths:
           description: ID of the target host restriction
           example: b0165cb6-59e2-476e-aa60-b63b9326bcc6
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -1007,7 +1007,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '14'
+                example: "14"
             Connection:
               schema:
                 type: string
@@ -1026,5 +1026,556 @@ paths:
                 type: object
               example:
                 data: null
-
-
+  /ipfs/signature/{cid}:
+    get:
+      tags:
+        - default
+      summary: Get Signature for a CID
+      parameters:
+        - name: cid
+          in: path
+          schema:
+            type: string
+          required: true
+          example: bafkreigbicehros5mydclprafp7jxkcxprzkmthdz5aldofqnir4s24efa
+          description: Target CID
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 22 Jul 2024 17:44:19 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "213"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 46a59cd880c3dff15201d19a25102c48
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      cid:
+                        type: string
+                      signature:
+                        type: string
+              example:
+                data:
+                  cid: QmXGeVy9dVwfuFJmvbzz8y4dYK1TdxXbDGzwbNuyZ5xXSU
+                  signature: >-
+                    0x1ba6c2a8412dc9b0be37b013ea5bddd97251dab4d435cc9c4c7bcf331d4017ca2de07485ad6a15ce60d3700cee802787bc7ede0c112c7843f702bb1e71b750911b
+    post:
+      tags:
+        - default
+      summary: Add Signature to CId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                signature:
+                  type: string
+                  description: Signature for the target CID
+              example:
+                signature: >-
+                  0x1ba6c2a8412dc9b0be37b013ea5bddd97251dab4d435cc9c4c7bcf331d4017ca2de07485ad6a15ce60d3700cee802787bc7ede0c112c7843f702bb1e71b750911b
+      parameters:
+        - name: cid
+          in: path
+          schema:
+            type: string
+          required: true
+          example: QmXGeVy9dVwfuFJmvbzz8y4dYK1TdxXbDGzwbNuyZ5xXSU
+          description: Target CID to add a signature to
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 22 Jul 2024 17:42:36 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "213"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 0c7bec7ab64236237a9eabef91645733
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      cid:
+                        type: string
+                      signature:
+                        type: string
+              example:
+                data:
+                  cid: QmXGeVy9dVwfuFJmvbzz8y4dYK1TdxXbDGzwbNuyZ5xXSU
+                  signature: >-
+                    0x1ba6c2a8412dc9b0be37b013ea5bddd97251dab4d435cc9c4c7bcf331d4017ca2de07485ad6a15ce60d3700cee802787bc7ede0c112c7843f702bb1e71b750911b
+    delete:
+      tags:
+        - default
+      summary: Remove Signature from CID
+      parameters:
+        - name: cid
+          in: path
+          schema:
+            type: string
+          required: true
+          example: bafybeidzbfkjjz3ksfvxn7mcj3nuyprx4mhna5jsnfwrncoqbtppi45spe
+          description: Target CID
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 22 Jul 2024 17:54:20 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "14"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 96e62eee654b71b0fc4dc66eefb6e999
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: null
+  /ipfs/plugins_marketplace:
+    get:
+      tags:
+        - default
+      summary: List Marketplace Plugins
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 22 Jul 2024 17:45:26 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "533"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: ce0dff9549abcb756b0a44af221d6feb
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        name:
+                          type: string
+                        description:
+                          type: string
+                        image:
+                          type: string
+                        tags:
+                          type: array
+                          items:
+                            type: string
+              example:
+                data:
+                  - id: 1
+                    name: Content Addressable Attestation
+                    description: >-
+                      Verify the authenticity and ownership of files added to
+                      the IPFS network by signing them with your Ethereum
+                      wallet.
+                    image: >-
+                      https://mktg.mypinata.cloud/ipfs/QmVm3jRZ7S2KMmYEvkmkwncRCmBSUEuzNKfm2AgJkfBGKZ
+                    tags:
+                      - verifiability
+                      - security
+                  - id: 2
+                    name: Hot Swaps
+                    description: >-
+                      Make IPFS mutable by pointing your original CID to a new
+                      file.
+                    image: >-
+                      https://mktg.mypinata.cloud/ipfs/QmVpy6v7YASWUQjmqgUxKwbn6zgzuVSRudzdZMynpBjSJo
+                    tags:
+                      - files
+  /ipfs/plugins_marketplace/{id}:
+    get:
+      tags:
+        - default
+      summary: Get Marketplace Plugin Details
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+          example: "1"
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 22 Jul 2024 17:46:25 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "317"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: ef76dca037942684c6b4fb5280867057
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      image:
+                        type: string
+                      tags:
+                        type: array
+                        items:
+                          type: string
+              example:
+                data:
+                  id: 1
+                  name: Content Addressable Attestation
+                  description: >-
+                    Verify the authenticity and ownership of files added to the
+                    IPFS network by signing them with your Ethereum wallet.
+                  image: >-
+                    https://mktg.mypinata.cloud/ipfs/QmVm3jRZ7S2KMmYEvkmkwncRCmBSUEuzNKfm2AgJkfBGKZ
+                  tags:
+                    - verifiability
+                    - security
+  /ipfs/gateway_plugins/{gateway_id}:
+    post:
+      tags:
+        - default
+      summary: Install Gateway Plugin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                plugin_id:
+                  type: number
+                  description: ID of the plugin to install to target gateway
+              example:
+                plugin_id: 1
+      parameters:
+        - name: gateway_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 58516d3b-a882-438c-8951-aef528ab7114
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 22 Jul 2024 17:49:07 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "77"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 4d535ee9329b744a929edb4bcaf33bc4
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      gateway_id:
+                        type: string
+                      plugin_id:
+                        type: number
+              example:
+                data:
+                  gateway_id: 3ced949f-2013-47a0-8f4a-f8d8e8ee14ac
+                  plugin_id: 1
+    get:
+      tags:
+        - default
+      summary: List Installed Plugins for Gateway
+      parameters:
+        - name: gateway_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 2bfaa2ae-b590-4cb4-bb9c-5af43c2c9541
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 22 Jul 2024 17:53:24 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "147"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 81ee012022a1ae7dccdff5cbf8e10d9a
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        gateway_id:
+                          type: string
+                        plugin_id:
+                          type: number
+              example:
+                data:
+                  - gateway_id: 2bfaa2ae-b590-4cb4-bb9c-5af43c2c9541
+                    plugin_id: 1
+                  - gateway_id: 2bfaa2ae-b590-4cb4-bb9c-5af43c2c9541
+                    plugin_id: 2
+  /ipfs/gateway_plugins:
+    get:
+      tags:
+        - default
+      summary: List Gateway Plugins
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 22 Jul 2024 17:52:06 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "147"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 80440a326a0a048fc0008c519ddd2e61
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        gateway_id:
+                          type: string
+                        plugin_id:
+                          type: number
+              example:
+                data:
+                  - gateway_id: 2bfaa2ae-b590-4cb4-bb9c-5af43c2c9541
+                    plugin_id: 1
+                  - gateway_id: 2bfaa2ae-b590-4cb4-bb9c-5af43c2c9541
+                    plugin_id: 2
+  /ipfs/gateway_plugins/{gateway_id}/plugin/{plugin_id}:
+    delete:
+      tags:
+        - default
+      summary: Uninstall Gateway Plugin
+      parameters:
+        - name: gateway_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 3ced949f-2013-47a0-8f4a-f8d8e8ee14ac
+        - name: plugin_id
+          in: path
+          schema:
+            type: integer
+          required: true
+          example: "1"
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 22 Jul 2024 17:51:21 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "14"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: eed30883b20f63ef34936ae933bd64bd
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: null
