@@ -2,11 +2,271 @@
 title: "Types"
 ---
 
+# Organized TypeScript Types
+
 ## `AuthTestResponse`
 
 ```typescript
 type AuthTestResponse = {
   message: string;
+};
+```
+
+## `ContentType`
+
+```typescript
+type ContentType =
+  | "application/json"
+  | "application/xml"
+  | "text/plain"
+  | "text/html"
+  | "text/css"
+  | "text/javascript"
+  | "application/javascript"
+  | "image/jpeg"
+  | "image/png"
+  | "image/gif"
+  | "image/svg+xml"
+  | "audio/mpeg"
+  | "audio/ogg"
+  | "video/mp4"
+  | "application/pdf"
+  | "application/octet-stream"
+  | string
+  | null;
+```
+
+## `DataEndponts`
+
+```typescript
+type DataEndponts = {
+  pinList?: boolean;
+  userPinnedDataTotal?: boolean;
+};
+```
+
+## `Endpoints`
+
+```typescript
+type Endpoints = {
+  data?: DataEndponts;
+  pinning?: PinningEndpoints;
+};
+```
+
+## `FileObject`
+
+```typescript
+type FileObject = {
+  name: string;
+  size: number;
+  type: string;
+  lastModified: number;
+  arrayBuffer: () => Promise<ArrayBuffer>;
+};
+```
+
+## `GetCIDResponse`
+
+```typescript
+type GetCIDResponse = {
+  data?: JSON | string | Blob | null;
+  contentType: ContentType;
+};
+```
+
+## `GetGroupOptions`
+
+```typescript
+type GetGroupOptions = {
+  groupId: string;
+};
+```
+
+## `GroupCIDOptions`
+
+```typescript
+type GroupCIDOptions = {
+  groupId: string;
+  cids: string[];
+};
+```
+
+## `GroupOptions`
+
+```typescript
+type GroupOptions = {
+  name: string;
+};
+```
+
+## `GroupQueryOptions`
+
+```typescript
+type GroupQueryOptions = {
+  nameContains?: string;
+  offset?: number;
+  limit?: number;
+};
+```
+
+## `GroupResponseItem`
+
+```typescript
+type GroupResponseItem = {
+  id: string;
+  user_id: string;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+};
+```
+
+## `JsonBody`
+
+```typescript
+type JsonBody = Record<string, unknown>;
+```
+
+## `KeyListItem`
+
+```typescript
+type KeyListItem = {
+  id: string;
+  name: string;
+  key: string;
+  secret: string;
+  max_uses: number;
+  uses: number;
+  user_id: string;
+  scopes: KeyScopes;
+  revoked: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+## `KeyListQuery`
+
+```typescript
+type KeyListQuery = {
+  revoked?: boolean;
+  limitedUse?: boolean;
+  exhausted?: boolean;
+  name?: string;
+  offset?: number;
+};
+```
+
+## `KeyListResponse`
+
+```typescript
+type KeyListResponse = {
+  keys: KeyListItem[];
+  count: number;
+};
+```
+
+## `KeyOptions`
+
+```typescript
+type KeyOptions = {
+  keyName: string;
+  permissions: KeyPermissions;
+  maxUses?: number;
+};
+```
+
+## `KeyPermissions`
+
+```typescript
+type KeyPermissions = {
+  admin?: boolean;
+  endpoints?: Endpoints;
+};
+```
+
+## `KeyResponse`
+
+```typescript
+type KeyResponse = {
+  JWT: string;
+  pinata_api_key: string;
+  pinata_api_secret: string;
+};
+```
+
+## `KeyScopes`
+
+```typescript
+type KeyScopes = {
+  endpoints: {
+    pinning: {
+      pinFileToIPFS: boolean;
+      pinJSONToIPFS: boolean;
+    };
+  };
+  admin: boolean;
+};
+```
+
+## `PinByCIDResponse`
+
+```typescript
+type PinByCIDResponse = {
+  id: string;
+  ipfsHash: string;
+  status: "prechecking" | "retrieving";
+  name: string;
+  updated?: boolean;
+};
+```
+
+## `PinJobItem`
+
+```typescript
+type PinJobItem = {
+  id: string;
+  ipfs_pin_hash: string;
+  date_queued: string;
+  name: string;
+  status: string;
+  keyvalues: any;
+  host_nodes: string[];
+  pin_policy: {
+    regions: {
+      id: string;
+      desiredReplicationCount: number;
+    }[];
+    version: number;
+  };
+};
+```
+
+## `PinJobQuery`
+
+```typescript
+type PinJobQuery = {
+  sort?: "ASC" | "DSC";
+  status?:
+    | "prechecking"
+    | "retrieving"
+    | "expired"
+    | "over_free_limit"
+    | "over_max_size"
+    | "invalid_object"
+    | "bad_host_node";
+  ipfs_pin_hash?: string;
+  limit?: number;
+  offset?: number;
+};
+```
+
+## `PinJobResponse`
+
+```typescript
+type PinJobResponse = {
+  rows: PinJobItem[];
 };
 ```
 
@@ -36,51 +296,73 @@ type PinListItem = {
 };
 ```
 
-## `PinJobItem`
+## `PinListQuery`
 
 ```typescript
-type PinJobItem = {
-  id: string;
-  ipfs_pin_hash: string;
-  date_queued: string;
-  name: string;
-  status: string;
-  keyvalues: any;
-  host_nodes: string[];
-  pin_policy: {
-    regions: {
-      id: string;
-      desiredReplicationCount: number;
-    }[];
-    version: number;
-  };
+type PinListQuery = {
+  cid?: string;
+  pinStart?: string;
+  pinEnd?: string;
+  pinSizeMin?: number;
+  pinSizeMax?: number;
+  pageLimit?: number;
+  pageOffset?: number;
+  name?: string;
+  groupId?: string;
+  key?: string;
+  value?: string | number;
+  operator?:
+    | "gt"
+    | "gte"
+    | "lt"
+    | "lte"
+    | "ne"
+    | "eq"
+    | "between"
+    | "notBetween"
+    | "like"
+    | "notLike"
+    | "iLike"
+    | "notILike"
+    | "regexp"
+    | "iRegexp";
 };
 ```
 
-## `KeyPermissions`
+## `PinListResponse`
 
 ```typescript
-type KeyPermissions = {
-  admin?: boolean;
-  endpoints?: Endpoints;
+type PinListResponse = {
+  rows: PinListItem[];
 };
 ```
 
-## `Endpoints`
+## `PinataConfig`
 
 ```typescript
-type Endpoints = {
-  data?: DataEndponts;
-  pinning?: PinningEndpoints;
+type PinataConfig = {
+  pinataJwt: string;
+  pinataGateway?: string;
+  pinataGatewayKey?: string;
 };
 ```
 
-## `DataEndpoints`
+## `PinataMetadata`
 
 ```typescript
-type DataEndponts = {
-  pinList?: boolean;
-  userPinnedDataTotal?: boolean;
+type PinataMetadata = {
+  name?: string;
+  keyValues?: Record<string, string | number>;
+};
+```
+
+## `PinataMetadataUpdate`
+
+```typescript
+type PinataMetadataUpdate = {
+  cid: string;
+  name?: string;
+  keyValues?: Record<string, string | number>;
 };
 ```
 
@@ -99,15 +381,6 @@ type PinningEndpoints = {
 };
 ```
 
-## `PinataMetadata`
-
-```typescript
-type PinataMetadata = {
-  name?: string;
-  keyValues?: Record<string, string | number>;
-};
-```
-
 ## `PinResponse`
 
 ```typescript
@@ -119,15 +392,12 @@ type PinResponse = {
 };
 ```
 
-## `PinByCIDResponse`
+## `RevokeKeyResponse`
 
 ```typescript
-type PinByCIDResponse = {
-  id: string;
-  ipfsHash: string;
-  status: "prechecking" | "retrieving";
-  name: string;
-  updated?: boolean;
+type RevokeKeyResponse = {
+  key: string;
+  status: string;
 };
 ```
 
@@ -137,5 +407,47 @@ type PinByCIDResponse = {
 type UnpinResponse = {
   hash: string;
   status: string;
+};
+```
+
+## `UpdateGroupOptions`
+
+```typescript
+type UpdateGroupOptions = {
+  name: string;
+  groupId: string;
+};
+```
+
+## `UploadCIDOptions`
+
+```typescript
+type UploadCIDOptions = {
+  metadata?: PinataMetadata;
+  peerAddresses?: string[];
+  keys?: string;
+  groupId?: string;
+};
+```
+
+## `UploadOptions`
+
+```typescript
+type UploadOptions = {
+  metadata?: PinataMetadata;
+  pinType?: "async" | "sync" | "cidOnly";
+  keys?: string;
+  groupId?: string;
+  cidVersion?: 0 | 1;
+};
+```
+
+## `UserPinnedDataResponse`
+
+```typescript
+type UserPinnedDataResponse = {
+  pin_count: number;
+  pin_size_total: number;
+  pin_size_with_replications_total: number;
 };
 ```
