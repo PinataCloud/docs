@@ -883,12 +883,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/pinning_hashMetadata_body"
+              type: object
+              properties:
+                name:
+                  type: string
+                keyvalues:
+                  type: object
+                  additionalProperties: true
       responses:
         "200":
           description: OK
           content:
-            application/json: {}
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
       security:
         - bearerAuth: []
       servers:
@@ -909,7 +918,10 @@ paths:
         "200":
           description: OK
           content:
-            application/json: {}
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
       security:
         - bearerAuth: []
       servers:

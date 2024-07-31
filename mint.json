@@ -42,8 +42,8 @@
   },
   "tabs": [
     {
-      "name": "SDKs",
-      "url": "sdks"
+      "name": "Tools",
+      "url": "tools"
     },
     {
       "name": "API Reference",
@@ -241,13 +241,13 @@
       ]
     },
     {
-      "group": "Pinata SDKs",
+      "group": "Pinata Tools",
       "pages": [
-        "sdks/pinata-sdk",
-        "sdks/nextjs-starter",
-        "sdks/pinata-cli",
-        "sdks/pinata-raycast-extension",
-        "sdks/community-sdks"
+        "tools/pinata-sdk",
+        "tools/nextjs-starter",
+        "tools/pinata-cli",
+        "tools/pinata-raycast-extension",
+        "tools/community-sdks"
       ]
     },
     {
@@ -457,6 +457,10 @@
     "suggestEdit": true
   },
   "redirects": [
+    {
+      "source": "/sdks/:slug*",
+      "destination": "/tools/:slug*"
+    },
     {
       "source": "/sdk-beta/:slug*",
       "destination": "/ipfs-sdk/:slug*"
