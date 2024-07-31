@@ -280,6 +280,14 @@
       "pages": ["ipfs-sdk/gateways/get", "ipfs-sdk/gateways/convert"]
     },
     {
+      "group": "Signatures",
+      "pages": [
+        "ipfs-sdk/signatures/add",
+        "ipfs-sdk/signatures/get",
+        "ipfs-sdk/signatures/delete"
+      ]
+    },
+    {
       "group": "Groups",
       "pages": [
         "ipfs-sdk/groups/create",
