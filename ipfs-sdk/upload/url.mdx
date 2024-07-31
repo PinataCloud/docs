@@ -40,7 +40,7 @@ Accepts a URL in the form of a string. The mimetype of the URL body provided in 
 const upload = await pinata.upload.url("https://i.imgur.com/u4mGk5b.gif")
 ```
 
-### addMetadata
+### addMetadata (Optional)
 
 - Type: [PinataMetadata](../types#pinatametadata)
 
@@ -57,7 +57,7 @@ const upload = await pinata.upload
   })
 ```
 
-### group
+### group (Optional)
 
 - Type: `string`
 
@@ -69,7 +69,7 @@ const upload = await pinata.upload
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
 
-### key
+### key (Optional)
 
 - Type: `string`
 
@@ -81,7 +81,7 @@ const upload = await pinata.upload
   .key("GENERATED_API_JWT")
 ```
 
-### cidVersion
+### cidVersion (Optional)
 
 - Type: `0 | 1`
 

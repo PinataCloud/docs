@@ -50,7 +50,7 @@ const blob = new Blob(["hello world!"], { type: "text/plain" })
 const upload = await pinata.upload.file(blob)
 ```
 
-### addMetadata
+### addMetadata (Optional)
 
 - Type: [PinataMetadata](../types#pinatametadata)
 
@@ -67,7 +67,7 @@ const upload = await pinata.upload
   })
 ```
 
-### group
+### group (Optional)
 
 - Type: `string`
 
@@ -79,7 +79,7 @@ const upload = await pinata.upload
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
 
-### key
+### key (Optional)
 
 - Type: `string`
 
@@ -91,7 +91,7 @@ const upload = await pinata.upload
   .key("GENERATED_API_JWT")
 ```
 
-### cidVersion
+### cidVersion (Optional)
 
 - Type: `0 | 1`
 
