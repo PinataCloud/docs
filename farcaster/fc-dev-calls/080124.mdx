@@ -1,0 +1,64 @@
+---
+title: "Farcaster Dev Call Notes"
+description: "August 1st, 2024"
+---
+
+# Farcaster Topics
+
+---
+
+### Hubble
+
+- Upgrading libp2p, viem, core dependencies.
+    - Might have some instability, will be doing testing before publishing version
+- Incident this AM with hub broadcast, investigating.
+    - Data flowing now
+    - Root cause had something to do with a hub stopping libp2p broadcasting. Will make an update when fully identified.
+    - Everything should be back now, please report if you are experiencing problems
+
+### Composer Actions — @horsefacts
+
+- Now live on web, with new selection flow
+    - Might look into adding image aspects for mobile and possibly a mobile debugger
+    - Be sure to follow design patterns and test things like light and dark mode
+
+### SWIF — @horsefacts
+
+- Investigating QR sign in issues
+    - Some people are having problems using QR codes
+    - Working with Privy on some of the QR codes that their platform has generated
+    - If you have any problems with QR codes please let the team know
+
+### Channels
+
+- Decentralization work on pause, rethinking implementation
+    - Somethings are working really well, people are creating channels and unique content is coming in
+    - On the other hand its not bringing the most high quality content into your main feed if brought in
+    - Moderation has been a challenge to get down and make a dent, not easy for channel owners to implement
+    - Before decentralization the team wants to rethink on the protocol level and solve some of these problems in creating cozy corners before committing to it
+    - Definitely a challenge for other clients that cannot do follow intents
+- [https://warpcast.com/dwr.eth/0x4ff3fc2d](https://warpcast.com/dwr.eth/0x4ff3fc2d)
+
+# Warpcast Updates
+
+---
+
+### NUX Improvements — @akshaan, @cmlad.eth, @blockheim
+
+- Algo new user experience has shipped, along with signup improvements.
+    - Instead of a default list of people to auto-follow there is now a list of people you can pick
+    - If you have any friends or family that went through this experience feedback would be appreciated
+
+### Feed Improvements — @akshaan
+
+- Power badge on pause, planning to support via Neynar and dev APIs
+    - Already been not using PB in multiple initiatives inside warpcast
+    - PB is pretty necessary for other devs out there. Right now the Warpcast team will keep the API running through the month of August but encourage other devs to come up with their own algorithms.
+    - Hopefully API providers like Airstack or Neynar will help push their own algos
+- Increasing content delivery via channel content
+    - Found smart ways to determine what could be good to have in the feed from channels
+
+### DC Improvements — @gt, @gabrielayuso.eth
+
+- Performance and feature improvements
+    - Please let the team know if you are experiencing slowness in DCs
