@@ -77,6 +77,38 @@ This will return an array of Groups and their respective info:
 ]
 ```
 
+### Listing Files in a Group
+
+To list all the files that are part of a group you can send a `GET` request to `/data/pinList` with the query parameter of `groupId`. This will return the `pinList` object.
+
+```json
+{
+  "rows": [
+    {
+      "id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+      "ipfs_pin_hash": "<string>",
+      "size": 123,
+      "user_id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+      "date_pinned": "2023-11-07T05:31:56Z",
+      "date_unpinned": "2023-11-07T05:31:56Z",
+      "metadata": {
+        "name": "<string>",
+        "keyvalues": {}
+      },
+      "regions": [
+        {
+          "regionId": "<string>",
+          "currentReplicationCount": 123,
+          "desiredReplicationCount": 123
+        }
+      ],
+      "mime_type": "<string>",
+      "number_of_files": 123
+    }
+  ]
+}
+```
+
 ### Updating the Name of a Group
 
 Updating the name of a Group is done by sending a `PUT` request to `/groups/:id` where the Group ID is a path param, as well as the JSON body with the new name:
