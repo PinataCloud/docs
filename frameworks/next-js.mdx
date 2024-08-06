@@ -18,9 +18,7 @@ This guide will walk you through setting up Pinata in a Next.js app. If you don'
   style={{ width: "100%", borderRadius: "0.5rem" }}
 ></iframe>
 
-## Manual Setup
-
-### Create an API Key and get Gateway URL
+## Create an API Key and get Gateway URL
 
 To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key.
 
@@ -53,6 +51,13 @@ The gateway domains are randomly generated and might look something like this:
 aquamarine-casual-tarantula-177.mypinata.cloud
 ```
 
+## Server-side Setup
+
+<Warning>
+Next.js has a limit of how large a file can be passed through the built in API routes, if you need to enable larger uploads follow the client side setup guide
+</Warning>
+
+
 ### Start up Next.js Project
 
 As with any Next.js project we can start one up with the following command
@@ -61,7 +66,11 @@ As with any Next.js project we can start one up with the following command
 npx create-next-app@latest
 ```
 
-You shouldn't need any other dependencies for this project as we'll use the Pinata API and included Next.js libraries like `node-fetch`.
+After the project is created `cd` into the repo and install `pinata`
+
+```bash
+npm i pinata
+```
 
 After making the project, create a `.env.local` file in the root of the project and put in the following variables:
 
@@ -70,7 +79,20 @@ PINATA_JWT=
 NEXT_PUBLIC_GATEWAY_URL=
 ```
 
-Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `https://mydomain.mypinata.cloud`.
+Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `mydomain.mypinata.cloud`.
+
+### Setup Pinata
+
+Create a directory called `utils` in the root of the project and then make a file called `config.ts` inside of it. In that file we'll export an instance of the Pinata SDK that we can use throughout the rest of the app.
+
+```typescript utils/config.ts
+import { PinataSDK } from "pinata"
+
+export const pinata = new PinataSDK({
+  pinataJwt: `${process.env.PINATA_JWT}`,
+  pinataGateway: `${process.env.NEXT_PUBLIC_GATEWAY_URL}`
+})
+```
 
 ### Create Client Side Form
 
@@ -87,20 +109,19 @@ export default function Home() {
   const [file, setFile] = useState("");
   const [cid, setCid] = useState("");
   const [uploading, setUploading] = useState(false);
-
   const inputFile = useRef(null);
 
-  const uploadFile = async (fileToUpload) => {
+  const uploadFile = async () => {
     try {
       setUploading(true);
       const data = new FormData();
-      data.set("file", fileToUpload);
-      const res = await fetch("/api/files", {
+      data.set("file", file);
+      const uploadRequest = await fetch("/api/files", {
         method: "POST",
         body: data,
       });
-      const resData = await res.json();
-      setCid(resData.IpfsHash);
+      const uploadData = await uploadRequest.json();
+      setCid(uploadData.IpfsHash);
       setUploading(false);
     } catch (e) {
       console.log(e);
@@ -111,13 +132,12 @@ export default function Home() {
 
   const handleChange = (e) => {
     setFile(e.target.files[0]);
-    uploadFile(e.target.files[0]);
   };
 
   return (
     <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
       <input type="file" id="file" ref={inputFile} onChange={handleChange} />
-      <button disabled={uploading} onClick={() => inputFile.current.click()}>
+      <button disabled={uploading} onClick={uploadFile}>
         {uploading ? "Uploading..." : "Upload"}
       </button>
     </main>
@@ -142,6 +162,7 @@ Once you have created that file you can paste in the following code.
 
 ```typescript app/api/files/route.ts
 import { NextResponse, NextRequest } from "next/server";
+import { pinata } from "@/utils/config"
 
 export const config = {
   api: {
@@ -153,19 +174,8 @@ export async function POST(request: NextRequest) {
   try {
     const data = await request.formData();
     const file: File | null = data.get("file") as unknown as File;
-    data.append("file", file);
-    data.append("pinataMetadata", JSON.stringify({ name: "File to upload" }));
-    const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.PINATA_JWT}`,
-      },
-      body: data,
-    });
-    const { IpfsHash } = await res.json();
-    console.log(IpfsHash);
-
-    return NextResponse.json({ IpfsHash }, { status: 200 });
+    const uploadData = await pinata.upload.file(file)
+    return NextResponse.json(uploadData, { status: 200 });
   } catch (e) {
     console.log(e);
     return NextResponse.json(
@@ -190,23 +200,23 @@ Back in `app/page.ts` we can add the following code.
 import { useState, useRef } from "react";
 
 export default function Home() {
-  const [file, setFile] = useState("");
+  const [file, setFile]: any = useState();
   const [cid, setCid] = useState("");
   const [uploading, setUploading] = useState(false);
 
   const inputFile = useRef(null);
 
-  const uploadFile = async (fileToUpload) => {
+  const uploadFile = async () => {
     try {
       setUploading(true);
       const data = new FormData();
-      data.set("file", fileToUpload);
-      const res = await fetch("/api/files", {
+      data.set("file", file);
+      const uploadRequest = await fetch("/api/files", {
         method: "POST",
         body: data,
       });
-      const resData = await res.json();
-      setCid(resData.IpfsHash);
+      const uploadData = await uploadRequest.json();
+      setCid(uploadData.IpfsHash);
       setUploading(false);
     } catch (e) {
       console.log(e);
@@ -217,18 +227,17 @@ export default function Home() {
 
   const handleChange = (e) => {
     setFile(e.target.files[0]);
-    uploadFile(e.target.files[0]);
   };
 
   return (
     <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
       <input type="file" id="file" ref={inputFile} onChange={handleChange} />
-      <button disabled={uploading} onClick={() => inputFile.current.click()}>
+      <button disabled={uploading} onClick={uploadFile}>
         {uploading ? "Uploading..." : "Upload"}
       </button>
       {cid && (
         <img
-          src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`}
+          src={`https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`}
           alt="Image from IPFS"
         />
       )}
@@ -238,6 +247,200 @@ export default function Home() {
 ```
 
 This will check to make sure the CID has been set, then pass it through our Dedicated Gateway to render it in our `img` tag.
+
+## Client Side Setup
+
+Next.js has a file size limit as to what can be pass through API routes, so another workaround is to upload the file on the client side. To do this securely you can make an API route that generates a temporary Pinata JWT that is used in the upload.
+
+### Start up Next.js Project
+
+As with any Next.js project we can start one up with the following command
+
+```bash
+npx create-next-app@latest
+```
+
+After the project is created `cd` into the repo and install `pinata`
+
+```bash
+npm i pinata uuid
+```
+
+After making the project, create a `.env.local` file in the root of the project and put in the following variables:
+
+```
+PINATA_JWT=
+NEXT_PUBLIC_GATEWAY_URL=
+```
+
+Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `mydomain.mypinata.cloud`.
+
+### Setup Pinata
+
+Create a directory called `utils` in the root of the project and then make a file called `config.ts` inside of it. In that file we'll export an instance of the Pinata SDK that we can use throughout the rest of the app.
+
+```typescript utils/config.ts
+import { PinataSDK } from "pinata"
+
+export const pinata = new PinataSDK({
+  pinataJwt: `${process.env.PINATA_JWT}`,
+  pinataGateway: `${process.env.NEXT_PUBLIC_GATEWAY_URL}`
+})
+```
+
+### Create API Route
+
+In order to upload on the client side we need an API key, but we don't want to expose our primary admin key. To avoid this we'll make an API route in our Next project under `app/api/key/route.ts`.
+
+Once you have created that file you can paste in the following code.
+
+```typescript app/api/key/route.ts
+import { type NextRequest, NextResponse } from "next/server";
+const { v4: uuidv4 } = require("uuid");
+import { pinata } from "@/utils/config"
+
+export const dynamic = "force-dynamic";
+
+export async function GET(req: NextRequest, res: NextResponse) {
+  try {
+    const uuid = uuidv4();
+    const keyData = await pinata.keys.create({
+      keyName: uuid.toString(),
+      permissions: {
+        endpoints: {
+          pinning: {
+            pinFileToIPFS: true,
+          },
+        },
+      },
+      maxUses: 1,
+    })
+    return NextResponse.json(keyData, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ text: "Error creating API Key:" }, { status: 500 });
+  }
+}
+```
+
+When the client makes a `GET` request to `/api/key` it will return a temporary API key that is only valid for `pinFileToIPFS` and one single use (`maxUses: 1`).
+
+### Create Client Side Form
+
+Next we'll want to make an upload form on the client side that will allow someone to select a file and upload it with a temporary key
+
+In the `/app/page.tsx` file take out the boiler plate code and use the following.
+
+```typescript app/page.tsx
+"use client";
+
+import { useState, useRef } from "react";
+import { pinata } from "@/utils/config"
+
+export default function Home() {
+  const [file, setFile]: any = useState();
+  const [cid, setCid] = useState("");
+  const [uploading, setUploading] = useState(false);
+
+  const inputFile = useRef(null);
+
+  const uploadFile = async () => {
+    try {
+      setUploading(true);
+      const keyRequest = await fetch("/api/key", {
+        method: "GET",
+      });
+      const keyData = await keyRequest.json();
+      const upload = await pinata.upload
+        .file(file)
+        .key(keyData.JWT)
+      setCid(upload.IpfsHash);
+      setUploading(false);
+    } catch (e) {
+      console.log(e);
+      setUploading(false);
+      alert("Trouble uploading file");
+    }
+  };
+
+  const handleChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  return (
+    <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
+      <input type="file" id="file" ref={inputFile} onChange={handleChange} />
+      <button disabled={uploading} onClick={uploadFile}>
+        {uploading ? "Uploading..." : "Upload"}
+      </button>
+    </main>
+  );
+}
+```
+
+The main thing to understand here is that we are able to use the `key()` method in combination with our upload methods which passes in the temporary key instead of trying to access the admin key.
+
+### Pull Content from IPFS
+
+After we have uploaded the file and get the CID back we can pass it through our [Dedicatd Gateway](/gateways/dedicated-ipfs-gateways) to either download it or render it in our app. For this example we will assume the file is an image, but IPFS supports any kind of file type.
+
+Back in `app/page.ts` we can add the following code.
+
+```typescript app/page.tsx
+"use client";
+
+import { useState, useRef } from "react";
+import { pinata } from "@/utils/config"
+
+export default function Home() {
+  const [file, setFile]: any = useState();
+  const [cid, setCid] = useState("");
+  const [uploading, setUploading] = useState(false);
+
+  const inputFile = useRef(null);
+
+  const uploadFile = async () => {
+    try {
+      setUploading(true);
+      const keyRequest = await fetch("/api/key", {
+        method: "GET",
+      });
+      const keyData = await keyRequest.json();
+      const upload = await pinata.upload
+        .file(file)
+        .key(keyData.JWT)
+      setCid(upload.IpfsHash);
+      setUploading(false);
+    } catch (e) {
+      console.log(e);
+      setUploading(false);
+      alert("Trouble uploading file");
+    }
+  };
+
+  const handleChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  return (
+    <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
+      <input type="file" id="file" ref={inputFile} onChange={handleChange} />
+      <button disabled={uploading} onClick={uploadFile}>
+        {uploading ? "Uploading..." : "Upload"}
+      </button>
+      {cid && (
+        <img
+          src={`https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`}
+          alt="Image from IPFS"
+        />
+      )}
+    </main>
+  );
+}
+```
+
+This will check to make sure the CID has been set, then pass it through our Dedicated Gateway to render it in our `img` tag.
+
 
 ## Next Steps
 
