@@ -34,8 +34,23 @@ Once you have created the keys you will be shown your API Key Info. This will co
 To start you can go to your terminal and put in the following code
 
 ```bash
-mkdir pinata && cd pinata && npm init -y
+mkdir pinata-starter && cd pinata-starter && npm init -y
 ```
+
+Then install the [Pinata SDK](/ipfs-sdk) as well as `dotenv`
+
+```bash
+npm i pinata dotenv
+```
+
+In the root of the directory make a `.env` file where we're pull the following variables.
+
+```
+PINATA_JWT=
+GATEWAY_URL=
+```
+
+Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `mydomain.mypinata.cloud`.
 
 Now we'll make two files, `index.js` and `hello-world.txt`.
 
@@ -49,58 +64,38 @@ Inside the `hello-world.txt` you can put whatever you'd like such as `Hello from
 
 Once we have our initial project setup we can put the following code into our `index.js` file.
 
-<Note>
-  For simplicity use the Pinata JWT you received when creating your API keys!
-</Note>
-
 ```javascript index.js
-const axios = require("axios");
-const FormData = require("form-data");
-const fs = require("fs");
-const JWT = "PASTE_YOUR_PINATA_JWT";
+const { PinataSDK } = require("pinata")
+const fs = require("fs")
+const { Blob } = require("buffer")
+require("dotenv").config()
 
-async function main() {
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT,
+  pinataGateway: process.env.GATEWAY_URL
+})
+
+async function upload(){
   try {
-    const formData = new FormData();
-
-    const file = fs.createReadStream("./hello.txt");
-    formData.append("file", file);
-
-    const pinataMetadata = JSON.stringify({
-      name: "File name",
-    });
-    formData.append("pinataMetadata", pinataMetadata);
-
-    const pinataOptions = JSON.stringify({
-      cidVersion: 1,
-    });
-    formData.append("pinataOptions", pinataOptions);
-
-    const res = await axios.post(
-      "https://api.pinata.cloud/pinning/pinFileToIPFS",
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${JWT}`,
-        },
-      }
-    );
-    console.log(res.data);
+    const blob = new Blob([fs.readFileSync("./hello-world.txt")]);
+    const file = new File([blob], "hello-world.txt", { type: "text/plain"})
+    const upload = await pinata.upload.file(file);
+    console.log(upload)
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
-main();
+upload()
 ```
 
-After uploading a file you should get a response that looks like this
+You can run this by using `node index.js` in the terminal. After uploading a file you should get a response that looks like this
 
 ```json
 {
-  "IpfsHash": "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4",
-  "PinSize": 32942,
-  "Timestamp": "2023-06-16T17:24:37.998Z"
+  IpfsHash: "bafkreiac3t35fklpiwqonav2vj4x2dh6x2zugkdu7dsh6zkaq5jr33lcwy",
+  PinSize: 17,
+  Timestamp: "2024-08-06T20:53:49.603Z"
 }
 ```
 
@@ -109,19 +104,24 @@ After uploading a file you should get a response that looks like this
 With the `IpfsHash` you can view the file or fetch the data using an IPFS Gateway, which acts as a bridge between the IPFS protocol and the HTTP protocol. Lets make a new file called `fetch.js` and put in the following code.
 
 ```javascript fetch.js
+const { PinataSDK } = require("pinata")
+require("dotenv").config()
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT,
+  pinataGateway: process.env.GATEWAY_URL
+})
+
 async function main() {
   try {
-    const res = await fetch(
-      "https://mygateway.mypinata.cloud/ipfs/bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
-    );
-    const resData = await res.text();
-    console.log(resData);
+    const file = await pinata.gateways.get("bafkreiac3t35fklpiwqonav2vj4x2dh6x2zugkdu7dsh6zkaq5jr33lcwy")
+    console.log(file.data)
   } catch (error) {
     console.log(error);
   }
 }
 
-main();
+main()
 ```
 
 ## Next Steps
