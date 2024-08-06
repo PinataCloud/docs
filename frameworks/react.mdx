@@ -21,8 +21,7 @@ It is still highly recommend using the [Next.js Quickstart](/quickstart/next-js)
 To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key.
 
 <Note>
-  If you are just getting started, we recommend using Admin privileges, then
-  move to scope keys as you better understand your needs
+We highly encourage scoping keys if you are planning to expose them in a client side environment
 </Note>
 
 <img
@@ -57,7 +56,11 @@ Run the command below to make a new React project:
 npm create vite@latest
 ```
 
-Give the project a name and select the React framework. Then `cd` into the project and run `npm install` and `npm run dev`.
+Give the project a name and select the React framework. Then `cd` into the project and install `pinata`.
+
+```bash
+npm i pinata
+```
 
 After making the project, create a `.env.local` file in the root of the project and put in the following variables:
 
@@ -66,7 +69,20 @@ VITE_PINATA_JWT=
 VITE_GATEWAY_URL=
 ```
 
-Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `https://mydomain.mypinata.cloud`.
+Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `mydomain.mypinata.cloud`.
+
+### Setup Pinata
+
+Create a directory called `utils` in the `src` folder of the project and then make a file called `config.ts` inside of it. In that file we'll export an instance of the Pinata SDK that we can use throughout the rest of the app.
+
+```typescript src/utils/config.ts
+import { PinataSDK } from "pinata"
+
+export const pinata = new PinataSDK({
+  pinataJwt: `${import.meta.env.VITE_PINATA_JWT}`,
+  pinataGateway: `${import.meta.env.VITE_GATEWAY_URL}`
+})
+```
 
 ### Create Upload Form
 
@@ -80,6 +96,7 @@ In the `src/App.tsx` file take out the boiler plate code and use the following. 
 
 ```typescript src/App.tsx - Single File
 import { useState } from "react";
+import { pinata } from "./utils/config"
 
 function App() {
   const [selectedFile, setSelectedFile]: any = useState();
@@ -89,30 +106,8 @@ function App() {
 
   const handleSubmission = async () => {
     try {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-      const metadata = JSON.stringify({
-        name: "File name",
-      });
-      formData.append("pinataMetadata", metadata);
-
-      const options = JSON.stringify({
-        cidVersion: 0,
-      });
-      formData.append("pinataOptions", options);
-
-      const res = await fetch(
-        "https://api.pinata.cloud/pinning/pinFileToIPFS",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
-          },
-          body: formData,
-        }
-      );
-      const resData = await res.json();
-      console.log(resData);
+      const upload = await pinata.upload.file(selectedFile)
+      console.log(upload);
     } catch (error) {
       console.log(error);
     }
@@ -132,41 +127,18 @@ export default App;
 
 ```typescript src/App.tsx - Folder
 import { useState } from "react";
+import { pinata } from "./utils/config"
 
 function App() {
-  const [selectedFile, setSelectedFile]: any = useState();
+  const [selectedFiles, setSelectedFiles]: any = useState();
   const changeHandler = (event: any) => {
-    setSelectedFile(event.target.files);
+    setSelectedFiles(event.target.files);
   };
 
   const handleSubmission = async () => {
     try {
-      const formData = new FormData();
-      Array.from(selectedFile).forEach((file) => {
-        formData.append("file", file);
-      });
-      const metadata = JSON.stringify({
-        name: "File name",
-      });
-      formData.append("pinataMetadata", metadata);
-
-      const options = JSON.stringify({
-        cidVersion: 0,
-      });
-      formData.append("pinataOptions", options);
-
-      const res = await fetch(
-        "https://api.pinata.cloud/pinning/pinFileToIPFS",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
-          },
-          body: formData,
-        }
-      );
-      const resData = await res.json();
-      console.log(resData);
+      const upload = await pinata.upload.fileArray(selectedFiles)
+      console.log(upload);
     } catch (error) {
       console.log(error);
     }
@@ -199,41 +171,21 @@ We can do this by adding the following code to our `App.tsx` file.
 
 ```typescript src/App.tsx
 import { useState } from "react";
+import { pinata } from "./utils/config"
 
 function App() {
   const [selectedFile, setSelectedFile]: any = useState();
   const [cid, setCid]: any = useState();
+
   const changeHandler = (event: any) => {
     setSelectedFile(event.target.files[0]);
   };
 
   const handleSubmission = async () => {
     try {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-      const metadata = JSON.stringify({
-        name: "File name",
-      });
-      formData.append("pinataMetadata", metadata);
-
-      const options = JSON.stringify({
-        cidVersion: 0,
-      });
-      formData.append("pinataOptions", options);
-
-      const res = await fetch(
-        "https://api.pinata.cloud/pinning/pinFileToIPFS",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
-          },
-          body: formData,
-        }
-      );
-      const resData = await res.json();
-      setCid(resData.IpfsHash);
-      console.log(resData);
+      const upload = await pinata.upload.file(selectedFile)
+      console.log(upload);
+      setCid(upload.IpfsHash)
     } catch (error) {
       console.log(error);
     }
@@ -242,11 +194,14 @@ function App() {
   return (
     <>
       <label className="form-label"> Choose File</label>
-      <input type="file" onChange={changeHandler} />
+      <input
+        type="file"
+        onChange={changeHandler}
+      />
       <button onClick={handleSubmission}>Submit</button>
       {cid && (
         <img
-          src={`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}
+          src={`https://${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}
           alt="ipfs image"
         />
       )}
