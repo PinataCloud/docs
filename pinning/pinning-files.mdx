@@ -135,6 +135,25 @@ const upload = await pinata.upload.json({
 })
 ```
 
+#### Local Files
+
+If you need to upload files from a local file source you can use `fs` to feed a file into a `blob`, then turn that `blob` into a `File`.
+
+```typescript
+const { PinataSDK } = require("pinata")
+const fs = require("fs")
+const { Blob } = require("buffer")
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud"
+})
+
+const blob = new Blob([fs.readFileSync("./hello-world.txt")]);
+const file = new File([blob], "hello-world.txt", { type: "text/plain"})
+const upload = await pinata.upload.file(file);
+```
+
 #### URL
 
 To upload a file from an external URL you can stream the contents into an `arrayBuffer`, which then gets passed into a new `Blob` that can then be uploaded to Pinata. This has been abstracted in the SDK using the [url](/ipfs-sdk/upload/url) method.
