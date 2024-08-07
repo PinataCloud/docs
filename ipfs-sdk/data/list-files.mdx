@@ -92,7 +92,34 @@ Filter files by `keyValue` objects used in Pinata Metadata
 ```typescript
 const files = await pinata
   .listFiles()
-  .keyValues("whimsey", "100")
+  .keyValues("whimsey", 100)
+```
+
+This also includes an optional `operator` for even more fine tuned data
+
+Type:
+```typescript
+operator?:
+		| "gt" // Greater than
+		| "gte" // Greater or equal to
+		| "lt" // Less than
+		| "lte" // Less than or equal to
+		| "ne" // Not equal
+		| "eq" // Equal
+		| "between"
+		| "notBetween"
+		| "like"
+		| "notLike"
+		| "iLike"
+		| "notILike"
+		| "regexp"
+		| "iRegexp";
+```
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .keyValues("whimsey", 400, "lt")
 ```
 
 ### pageLimit

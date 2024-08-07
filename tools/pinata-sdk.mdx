@@ -1,14 +1,17 @@
 ---
-title: "Pinata SDK"
-slug: "pinata-sdk"
-excerpt: "Official NodeJS SDK for Pinata"
-hidden: false
-metadata: 
-  image: []
-  robots: "index"
-createdAt: "Mon Aug 07 2023 13:11:27 GMT+0000 (Coordinated Universal Time)"
-updatedAt: "Tue Aug 22 2023 00:45:51 GMT+0000 (Coordinated Universal Time)"
+title: "Pinata SDK  (Archived)"
 ---
+
+# ATTENTION
+
+This is the old Node.js Pinata SDK that is no longer being maintained. Please check out our new IPFS SDK
+
+<Card href="/ipfs-sdk" title="Take me to the New SDK">
+
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/QmWJyo6D9oBrFcNJh58qMZ8JZWkVaFN4fJAZzCgd168FR3?filename=image.png
+"/>
+</Card>
+
 ## Overview
 
 The Pinata NodeJS SDK provides the quickest / easiest path for interacting with the [Pinata API](/api-reference/introduction).
@@ -34,20 +37,20 @@ npm install --save @pinata/sdk
 
 Pinata offers developer keys for various scenarios. The most common scenario is normal IPFS actions (pinning content, unpinning, listing content, etc). These actions happen through the core Pinata API, and are documented in the [Pinata API Reference](/api-reference/introduction).
 
-To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key. 
+To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key.
 
 <Note>If you are just getting started we recommend using Admin privileges, then move to scope keys as you better understand your needs</Note>
 
 <img style={{ borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeiagb7ld573mjoz54urwul5qpohrfrc6o6m6nrgrgqpd6enakg6qx4" />
 
-Once you have created the keys you will be shown your API Key Info. This will contain your **Api Key**, **API Secret**, and your **JWT**. Click "Copy All" and save them somewhere safe! 
+Once you have created the keys you will be shown your API Key Info. This will contain your **Api Key**, **API Secret**, and your **JWT**. Click "Copy All" and save them somewhere safe!
 
 <Note>The API keys are only shown once, be sure to copy them somewhere safe!</Note>
 
 In the example below we provided with 3 ways to call the pinata SDK.
 
 ```javascript
-// Use the api keys by providing the strings directly 
+// Use the api keys by providing the strings directly
 const pinataSDK = require('@pinata/sdk');
 const pinata = new pinataSDK('yourPinataApiKey', 'yourPinataSecretApiKey');
 ```
@@ -79,7 +82,7 @@ Once you've set up your instance, using the Pinata SDK is easy. Simply call your
 
 ### `hashMetadata`
 
-Allows the user to change the name and keyvalues associated with content pinned to Pinata.  
+Allows the user to change the name and keyvalues associated with content pinned to Pinata.
 Changes made via this endpoint only affect the metadata for the hash passed in. [Metadata](/pinning/pinata-metadata) is specific to Pinata and does not modify the actual content stored on IPFS in any way. It is simply a convenient way of keeping track of what content you have stored.
 
 ##### `pinata.hashMetadata(ipfsPinHash, metadata)`
@@ -88,7 +91,7 @@ Changes made via this endpoint only affect the metadata for the hash passed in. 
 
 - `ipfsPinHash` - A string for a valid IPFS Hash that you have pinned on Pinata.
 - `metadata` A JSON object containing the following:
-  - `name` (optional) - A new name that Pinata will associate with this particular hash. 
+  - `name` (optional) - A new name that Pinata will associate with this particular hash.
   - `keyvalues` (optional) - A JSON object with the updated keyvalues you want associated with the hash provided (see more below)
 
 ###### Adding or modifying keyvalues
@@ -186,7 +189,7 @@ Send a file to Pinata for direct pinning to IPFS.
 
 ##### Params
 
-- `readableStream` - A [readableStream](https://nodejs.org/api/stream.html) of the file to be added 
+- `readableStream` - A [readableStream](https://nodejs.org/api/stream.html) of the file to be added
 - `options` (optional): A JSON object that can contain the following keyvalues:
   - `pinataMetadata` (optional): A JSON object with [metadata](/pinning/pinata-metadata) for the file being pinned
   - `pinataOptions` (optional): A JSON object with additional [options](pinning/pinata-metadata#pinataoptions) for the file being pinned
@@ -232,7 +235,7 @@ Both individual files, as well as directories can be read from.
 
 ##### Params
 
-- `sourcePath` - The location on your local filesystem that should be read from. 
+- `sourcePath` - The location on your local filesystem that should be read from.
 - `options` (optional): A JSON object that can contain the following keyvalues:
   - `pinataMetadata` (optional): A JSON object with [metadata](/pinning/pinata-metadata) for the file being pinned
   - `pinataOptions` (optional): A JSON object with additional [options](/pinning/pinata-metadata#pinataoptions) for the file being pinned
@@ -291,7 +294,7 @@ This endpoint allows users to search for the status of all hashes that are curre
     - `invalid_object` - The object you're attempting to pin isn't readable by IPFS nodes. Please contact us if you receive this, as we'd like to better understand what you're attempting to pin.
     - `bad_host_node` - The provided host node(s) were either invalid or unreachable. Please make sure all provided host nodes are online and reachable.
 
-  - `ipfs_pin_hash` (optional): A string for a valid IPFS hash (also known as a CID) to search for 
+  - `ipfs_pin_hash` (optional): A string for a valid IPFS hash (also known as a CID) to search for
 
   - `limit` (optional): Limit the amount of results returned per page of results (default is 5, and max is also 1000)
 
@@ -435,10 +438,10 @@ Retrieve pin records for your Pinata account. In order to get the next page you 
 
 - `filters` (optional): An object that can consist of the following optional query parameters:
   - `hashContains` (optional): A string of alphanumeric characters that desires hashes must contain
-  - `pinStart` (optional): The earliest date the content is allowed to have been pinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date. 
-  - `pinEnd` (optional): The earliest date the content is allowed to have been pinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date. 
-  - `unpinStart` (optional): The earlist date the content is allowed to have been unpinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date. 
-  - `unpinEnd` (optional): The latest date the content is allowed to have been unpinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date. 
+  - `pinStart` (optional): The earliest date the content is allowed to have been pinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date.
+  - `pinEnd` (optional): The earliest date the content is allowed to have been pinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date.
+  - `unpinStart` (optional): The earlist date the content is allowed to have been unpinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date.
+  - `unpinEnd` (optional): The latest date the content is allowed to have been unpinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date.
   - `pinSizeMin` (optional): The minimum byte size that pin record you're looking for can have
   - `pinSizeMax` (optional): The maximum byte size that pin record you're looking for can have
   - `status` (optional): Filter pins using one of the following options
@@ -521,16 +524,16 @@ This method support auto-pagination. This feature easily handles fetching large 
 
 - `filters` (optional): An object that can consist of the following optional query parameters:
   - `hashContains` (optional): A string of alphanumeric characters that desires hashes must contain
-  - `pinStart` (optional): The earliest date the content is allowed to have been pinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date. 
-  - `pinEnd` (optional): The earliest date the content is allowed to have been pinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date. 
-  - `unpinStart` (optional): The earlist date the content is allowed to have been unpinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date. 
-  - `unpinEnd` (optional): The latest date the content is allowed to have been unpinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date. 
+  - `pinStart` (optional): The earliest date the content is allowed to have been pinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date.
+  - `pinEnd` (optional): The earliest date the content is allowed to have been pinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date.
+  - `unpinStart` (optional): The earlist date the content is allowed to have been unpinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date.
+  - `unpinEnd` (optional): The latest date the content is allowed to have been unpinned. Must be a valid [ISO_8601](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) date.
   - `pinSizeMin` (optional): The minimum byte size that pin record you're looking for can have
   - `pinSizeMax` (optional): The maximum byte size that pin record you're looking for can have
   - `status` (optional): Filter pins using one of the following options
     - `'all'` (Records for both pinned and unpinned content will be returned)
     - `'pinned'` (Only records for pinned content will be returned)
-    - `'unpinned'` (Only records for unpinned content will be returned)  
+    - `'unpinned'` (Only records for unpinned content will be returned)
   - `metadata` (optional): A JSON object that can be used to find records for content that had optional metadata included when it was added to Pinata. The metadata object is formatted as follows:
 - `count` (optional): A Number that specifies how many pins you want. if no number is provided then it will pull all the pins based on your filter
 
@@ -576,23 +579,23 @@ Filter explanations:
 #### Response
 
 ```
-[ 
-  { 
-    id: (the id of your pin instance record), 
-    ipfs_pin_hash: (the IPFS multi-hash for the content you pinned), 
-    size: (this is how large (in bytes) the content pinned is), 
-    user_id: (this is your user id for Pinata), 
-    date_pinned: (This is the timestamp for when this content was pinned - represented in ISO 8601 format), 
-    date_unpinned: (This is the timestamp for when this content was unpinned (if null, then you still have the content pinned on Pinata), 
-    metadata: { 
+[
+  {
+    id: (the id of your pin instance record),
+    ipfs_pin_hash: (the IPFS multi-hash for the content you pinned),
+    size: (this is how large (in bytes) the content pinned is),
+    user_id: (this is your user id for Pinata),
+    date_pinned: (This is the timestamp for when this content was pinned - represented in ISO 8601 format),
+    date_unpinned: (This is the timestamp for when this content was unpinned (if null, then you still have the content pinned on Pinata),
+    metadata: {
       name: (this will be the name of the file originally uploaded, or the custom name you set),
-      keyvalues: { 
-        exampleCustomKey: "exampleCustomValue", 
-        exampleCustomKey2: "exampleCustomValue2", ... 
-      } 
-    } 
-  }, 
-  { same record format as above } . . . 
+      keyvalues: {
+        exampleCustomKey: "exampleCustomValue",
+        exampleCustomKey2: "exampleCustomValue2", ...
+      }
+    }
+  },
+  { same record format as above } . . .
 ]
 ```
 
@@ -645,7 +648,7 @@ None
 
 #### Response
 
-The response for this call will the total combined size of everything you currently have pinned on pinata.  
+The response for this call will the total combined size of everything you currently have pinned on pinata.
 This value will be expressed in bytes
 
 ##### Example Code
@@ -706,6 +709,6 @@ The ids of currently available public regions are:
 
 ## Questions? Issues? Suggestions?
 
-Feel free to file a Github issue or email us at [team@pinata.cloud](mailto:team@pinata.cloud) 
+Feel free to file a Github issue or email us at [team@pinata.cloud](mailto:team@pinata.cloud)
 
 We'd love to hear from you!

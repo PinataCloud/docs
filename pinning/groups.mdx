@@ -7,16 +7,23 @@ Groups allow you to organize your Pinata content through the Pinata App or throu
 
 ## Pinata API
 
-With the Pinata API, you can create groups, add files to groups, list details about a group, and more! For the full reference, check out our Pinata API Reference for [Groups](/api-reference/endpoint/create-group).
+With the [SDK](/ipfs-sdk/groups), you can create groups, add files to groups, list details about a group, and more! You can also mange groups using the [Pinata API](/api-reference/endpoint/create-group).
 
 ### Create a Group
 
-To create a group you can send a `POST` request to `/groups` with the following JSON body that contains the name of the group:
+To create a group you can use the [create](/ipfs-sdk/groups/create) method and passing in the `name` you want to give a group.
 
-```json
-{
-  "name": "my-group"
-}
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const group = await pinata.groups.create({
+	name: "My New Group",
+});
 ```
 
 This will return the Group info
@@ -33,7 +40,22 @@ This will return the Group info
 
 ### Get a Group
 
-To fetch details of an already existing group, make a `GET` request with the `id` of the group as the path paramter: `/group/:id`. This will return the Group info:
+To fetch details of an already existing group you can use the [get](/ipfs-sdk/groups/get) and pass in the `groupId`.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const groups = await pinata.groups.get({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+});
+```
+
+This will return the same group info received upon creation.
 
 ```json
 [
@@ -49,9 +71,24 @@ To fetch details of an already existing group, make a `GET` request with the `id
 
 ### List All Groups
 
-If you want to get all Groups or filter through them, you can make a `GET` request to `/group`. This endpoint accepts the following query params:
+If you want to get all Groups or filter through them, you can use the [list](/ipfs-sdk/groups/list) method.
 
-<ParamField query="nameContains" type="string" default="none">
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const groups = await pinata.groups
+  .list()
+  .name("Greetings");
+```
+
+Results can be filtered with the following queries.
+
+<ParamField query="name" type="string" default="none">
   Filter by name of the group
 </ParamField>
 
@@ -79,7 +116,23 @@ This will return an array of Groups and their respective info:
 
 ### Listing Files in a Group
 
-To list all the files that are part of a group you can send a `GET` request to `/data/pinList` with the query parameter of `groupId`. This will return the `pinList` object.
+To list all the files that are part of a group you can use the [listFiles](/ipfs-sdk/data/list-files) method and the `group` filter.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const files = await pinata
+  .listFiles()
+  .group('648767d5-0a80-4b3a-9669-93693e4a0519')
+```
+
+
+This will return an array of [PinListItem](/ipfs-sdk/types#pinlistitem) objects.
 
 ```json
 {
@@ -111,20 +164,28 @@ To list all the files that are part of a group you can send a `GET` request to `
 
 ### Updating the Name of a Group
 
-Updating the name of a Group is done by sending a `PUT` request to `/groups/:id` where the Group ID is a path param, as well as the JSON body with the new name:
+You can update the name of a group using the [update](/ipfs-sdk/groups/update) method and passing in the `groupId` and the new `name` you want to use.
 
-```json
-{
-  "name": "NFT-Project-updated"
-}
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const groups = await pinata.groups.update({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+	name: "My New Group 2"
+});
 ```
 
 This will return the updated Group info.
 
 ```json
 {
-  "id": "61a4a882-1591-462e-bcb7-fa0eee5f3c51",
-  "name": "NFT-Project-updated",
+  "id": "3778c10d-452e-4def-8299-ee6bc548bdb0",
+  "name": "My New Group 2",
   "user_id": "ec50a085-a746-428d-b01d-167ac379fbd4",
   "createdAt": "2024-07-03T18:09:33.610Z",
   "updatedAt": "2024-07-03T18:12:46.930Z"
@@ -139,30 +200,40 @@ This will return the updated Group info.
   latest requested Group.
 </Note>
 
-Once a Group is created, you can then add files to that Group by sending a `PUT` request to `/groups/:id/cids` which takes the Group ID as a path parameter, as well as a JSON body with an array of CIDs:
+After a Group is created you can add CIDs to it using the [addCids](/ipfs-sdk/groups/add-cids) method. Just pass in the `groupId` and an array of `cids`.
 
-```json
-{
-  "cids": [
-    "QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng",
-    "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
-  ]
-}
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const group = await pinata.groups.addCids({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+	cids: ["QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng"],
+});
 ```
 
 If successful, the endpoint will return an `OK` response.
 
 ### Removing CIDs from a Group
 
-To remove CIDs from a Group, you would follow the same pattern as adding except with a `DELETE` request instead.
+To remove CIDs from a Group, you would follow the same pattern as `addCids` except using the [removeCids](/ipfs-sdk/groups/remove-files) method instead.
 
-```json
-{
-  "cids": [
-    "QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng",
-    "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
-  ]
-}
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const group = await pinata.groups.removeCids({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+	cids: ["QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng"],
+});
 ```
 
 If successful, the endpoint will return an `OK` response.
@@ -170,12 +241,23 @@ If successful, the endpoint will return an `OK` response.
 ### Delete a Group
 
 <Note>
-  Deleting a Group that has CIDs inside of it will not unpin/delete the CIDs.
-  Please use [/pinning/unpin](/api-reference/endpoint/unpin-file) to actually
-  delete a file from your account
+  Deleting a Group that has CIDs inside of it will not unpin/delete the CIDs. Please use the [unpin](/ipfs-sdk/data/unpin) method to actually delete a file from your account
 </Note>
 
-To delete a Group, you can send a `DELETE` request to `/groups/:id` which takes the Group ID as a path parameter.
+To delete a Group you can use the [delete](/ipfs-sdk/groups/delete) method and pass in the `groupId`.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const groups = await pinata.groups.delete({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+});
+```
 
 If successful, the endpoint will return an `OK` response.
 

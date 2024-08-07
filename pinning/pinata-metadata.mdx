@@ -1,15 +1,19 @@
 ---
-title: "Pinata Metadata & Options"
+title: "Metadata & Options"
 slug: "pinata-metadata"
 excerpt: ""
 hidden: false
-metadata: 
+metadata:
   robots: "index"
 createdAt: "Tue Jul 18 2023 11:23:21 GMT+0000 (Coordinated Universal Time)"
 updatedAt: "Tue Sep 12 2023 17:08:02 GMT+0000 (Coordinated Universal Time)"
 ---
 
-For all operations that result in a file being uploaded or added to an account, there are optional pieces of data that can be included. 
+For all operations that result in a file being uploaded or added to an account, there are optional pieces of data that can be included.
+
+<Note>
+This primarily applies to the [Pinata API](/api-reference/introduction) as these attributes have been abstracted in the [SDK](/ipfs-sdk).
+</Note>
 
 ## `pinataMetadata`
 
@@ -23,10 +27,10 @@ The optional metadata object takes the following form:
 
 ```json
 {
-    name: "A custom name. If you don't provide this value, it will automatically be populated by the original name of the file you've uploaded",
-    keyvalues: {
-        customKey: "customValue",
-        customKey2: "customValue2"
+    "name": "A custom name. If you don't provide this value, it will automatically be populated by the original name of the file you've uploaded",
+    "keyvalues": {
+      "customKey": "customValue",
+      "customKey2": "customValue2"
     }
 }
 ```
@@ -35,14 +39,16 @@ The optional metadata object takes the following form:
 
 Pinata supports adding additional options when pinning a file. The following options are currently supported for this endpoint:
 
-- cidVersion - The CID Version IPFS will use when creating a hash for your content. Valid options are: "0" (CIDv0) or "1" (CIDv1)
-- wrapWithDirectory - Wrap your content inside of a directory when adding to IPFS. This allows users to retrieve content via a filename instead of just a hash. For a more detailed explanation, see [this informative blogpost](https://flyingzumwalt.gitbooks.io/decentralized-web-primer/content/files-on-ipfs/lessons/wrap-directories-around-content.html). Valid options are: true or false
+- `cidVersion` - The CID Version IPFS will use when creating a hash for your content. Valid options are: "0" (CIDv0) or "1" (CIDv1)
+- `wrapWithDirectory` - Wrap your content inside of a directory when adding to IPFS. This allows users to retrieve content via a filename instead of just a hash. For a more detailed explanation, see [this informative blogpost](https://flyingzumwalt.gitbooks.io/decentralized-web-primer/content/files-on-ipfs/lessons/wrap-directories-around-content.html). Valid options are: true or false
+- `groupId` - Used to upload a file to an existing [Group](/pinning/groups).
 
 Here is an example of the object to create `pinataOptions`:
 
 ```json
-pinataOptions: {
-    cidVersion: 0, 
-    wrapWithDirectory: false
+"pinataOptions": {
+    "cidVersion": 0,
+    "wrapWithDirectory": false,
+    "groupId": "ID of the group you want to upload a CID to"
 }
 ```

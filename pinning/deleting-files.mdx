@@ -16,11 +16,25 @@ The process of removing files from IPFS is called unpinning. When you unpin some
   remain available even if you delete your files!
 </Warning>
 
-## Deleting by API
+## Deleting Programatically
 
-The Pinata API has a very simple `DELETE` endpoint that will allow you to unpin a file by `CID`.
+The SDK has a very simple [unpin](/ipfs-sdk/data/unpin) method that will allow you to delete an array of `cids`.
 
-`https://api.pinata.cloud/pinning/unpin/{CID}`
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const unpin = await pinata.unpin([
+  "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4",
+  "QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng"
+])
+```
+
+### Deleting All Files
 
 If you find yourself in a place where you need to unpin a lot of files or perhaps all your files, you can use a script like this to create an array of CIDs and unpin them one by one. The example below uses the [`pinList`](/api-reference/endpoint/list-files) queries to target all pinned files and return 1000 for each request. This could easily be done with a different query to target different files, please check out the [listing files](/pinning/listing-files) doc for more info.
 

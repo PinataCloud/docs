@@ -26,11 +26,71 @@ Inside the [Pinata App](https://app.pinata.cloud) select "API Keys" from the sid
 
 Next you will want to grab your Dedicated Gateway domain by clicking the Gateways tab in the sidebar. You should see it listed in the format `fun-llama-300.mypinata.cloud` and you will want to copy it exactly like that.
 
+### 2. Install and Setup SDK
+
+In the root of your project run the install command with your package manager of choice.
+
+<CodeGroup>
+
+```bash npm
+npm i pinata
+```
+
+```bash pnpm
+pnpm i pinata
+```
+
+```bash yarn
+yarn add pinata
+```
+
+```bash bun
+bun i pinata
+```
+
+</CodeGroup>
+
+Import and initialize the SDK in your codebase with the API key and Gateway from the previous step
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: "PINATA_JWT",
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+```
+
+<Note>The `PINATA_JWT` is a secret key, be sure to initialize the SDK in a secure environment and practice basic variable security practices. If you need to upload from a client environment, consider using signed JWTs</Note>
+
+
 ### 2. Upload a File
 
-Copy this code into your Typescript or JavaScript program and make sure to supplement your API JWT key
+Use the `upload` method to upload a File object.
 
-```tsx
+<CodeGroup>
+```typescript SDK
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+async function main() {
+  try {
+    const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
+    const upload = await pinata.upload.file(file);
+    console.log(upload);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+await main();
+```
+
+```typescript API
 const JWT = "PINATA_JWT";
 
 async function pinFileToIPFS() {
@@ -60,12 +120,13 @@ async function pinFileToIPFS() {
 
 await pinFileToIPFS();
 ```
+</CodeGroup>
 
 You should get a response object like the one below
 
 ```typescript
 {
-  IpfsHash: "Qmf1rtki74jvYmGeqaaV51hzeiaa6DyWc98fzDiuPatzyy",
+  IpfsHash: "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq",
   PinSize: 20,
   Timestamp: "2024-02-03T18:42:14.989Z"
 }
@@ -75,11 +136,32 @@ The `IpfsHash` is more commonly recognized as the `CID`, both a hash verifying t
 
 ### 3. Retrieve a File from IPFS
 
-Now that your file is on IPFS it can be fetched through your Gateway
+Use the CID or `IpfsHash` from the upload to fetch a file
 
-```typescript
+<CodeGroup>
+```typescript SDK
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+async function main() {
+  try {
+    const data = await pinata.gateways.get("bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq");
+    console.log(data)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+main();
+```
+
+```typescript API
 const GATEWAY = "my-example.mypinata.cloud";
-const CID = "Qmf1rtki74jvYmGeqaaV51hzeiaa6DyWc98fzDiuPatzyy";
+const CID = "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq";
 
 async function fetchFileFromIPFS() {
   const url = `https://${GATEWAY}/ipfs/${CID}`;
@@ -95,6 +177,7 @@ async function fetchFileFromIPFS() {
 await fetchFileFromIPFS();
 // Hello World!
 ```
+</CodeGroup>
 
 ## What's Next?
 
