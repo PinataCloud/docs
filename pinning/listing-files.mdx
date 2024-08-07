@@ -1,76 +1,173 @@
 ---
 title: "Listing Files"
+description: "Learn how to list files inside your Pinata account"
 slug: "listing-files"
-excerpt: ""
-hidden: false
-metadata: 
-  robots: "index"
-createdAt: "Tue Jul 18 2023 11:23:21 GMT+0000 (Coordinated Universal Time)"
-updatedAt: "Tue Sep 12 2023 17:08:02 GMT+0000 (Coordinated Universal Time)"
 ---
 
-List all the files on your Pinata account!
+To list the files on your account you can either use the [SDK](/ipfs-sdk/data/list-files) or the [Pinata API](/api-reference/endpoint/list-files) to fetch file data programatically.
 
-`https://api.pinata.cloud/data/pinList` 
+```typescript
+import { PinataSDK } from "pinata";
 
-This endpoint returns data on what content the sender has pinned to IPFS through Pinata.
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
 
-The purpose of this endpoint is to provide insight into what is being pinned, and how long it has been pinned. The results of this call can be filtered using multiple query parameters that will be discussed below:
+const files = await pinata.listFiles().name("pinnie")
+```
 
-## `pinList` Query Params
+## Filters
 
-<ParamField query="includeCount" type="boolean"  >
-  Determines if the number of files pinned is returned or not
-</ParamField>
+### name
 
-<ParamField query="hashContains" type="string">
-  CID of file you are searching for
-</ParamField>
+- Type: `string`
 
-<ParamField query="pinStart" type="string" >
-  ISO_8601 format date to filter by start date for when file was pinned
-</ParamField>
+Name of the file
 
-<ParamField query="pinEnd" type="string" >
-  ISO_8601 format date to filter by end date for when file was pinned
-</ParamField>
+```typescript
+const files = await pinata
+  .listFiles()
+  .name('pinnie')
+```
 
-<ParamField query="unpinStart" type="string" >
-  ISO_8601 format date to filter by start date for when file was unpinned
-</ParamField>
+### cid
 
-<ParamField query="unpinEnd" type="string" >
-  ISO_8601 format date to filter by end date for when file was unpinned
-</ParamField>
+- Type: `string`
 
-<ParamField query="pinSizeMin" type="string" >
-  Minimum size in bytes of files to return
-</ParamField>
+CID of the file
 
-<ParamField query="pinSizeMax" type="string" >
-  Maximum size in bytes of files to return
-</ParamField>
+```typescript
+const files = await pinata
+  .listFiles()
+  .cid('rbafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4r')
+```
 
-<ParamField query="status" type="string" default="all">
-  Returns files of selected status, options are `all`, `pinned`, or `unpinned`
-</ParamField>
+### group
 
-<ParamField query="pageLimit" type="string" default="10">
-  Maximum number of files to return. Default is 10, max is 1000
-</ParamField>
+- Type: `string`
 
-<ParamField query="pageOffset" type="string" default="0">
-  Use to paginate through files, default is 0
-</ParamField>
+Filter by `groupId`
 
-<ParamField query="metadata" type="string" >
-  See metadata querying section below
-</ParamField>
+```typescript
+const files = await pinata
+  .listFiles()
+  .group('648767d5-0a80-4b3a-9669-93693e4a0519')
+```
 
+### keyValue
 
-## Metadata Querying
+- Type: `object`
 
-You also have the option to query your content on the associated metadata that may have been included with the content when it was uploaded through either the `PinFileToIPFS` or `PinJSONToIPFS` endpoints.
+Filter files by `keyValue` objects used in Pinata Metadata
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .keyValues("whimsey", 100)
+```
+
+This also includes an optional `operator` for even more fine tuned data
+
+Type:
+```typescript
+operator?:
+		| "gt" // Greater than
+		| "gte" // Greater or equal to
+		| "lt" // Less than
+		| "lte" // Less than or equal to
+		| "ne" // Not equal
+		| "eq" // Equal
+		| "between"
+		| "notBetween"
+		| "like"
+		| "notLike"
+		| "iLike"
+		| "notILike"
+		| "regexp"
+		| "iRegexp";
+```
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .keyValues("whimsey", 400, "lt")
+```
+
+### pageLimit
+
+- Type: `number`
+
+Determine the number of results, default is `10`, max is `1000`
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .pageLimit(100)
+```
+### pageOffset
+
+- Type: `number`
+
+Offset the number of files returned to paginate
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .pageOffset(100)
+```
+
+### pinStart
+
+- Type: `string`
+
+Filter by start date in ISO8601 format
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .pinStart('2024-07-16T11:41:19Z')
+```
+
+### pinEnd
+
+- Type: `string`
+
+Filter by end date in ISO8601 format
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .pinEnd('2024-07-16T11:41:19Z')
+```
+
+### pinSizeMin
+
+- Type: `number`
+
+Filter by minimum file size in bytes
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .pinSizeMin('100000')
+```
+
+### pinSizeMax
+
+- Type: `number`
+
+Filter by maximum file size in bytes
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .pinSizeMax('1000000')
+```
+
+## Advance Querying with the API
+
+You also have the option to query your content on the associated metadata that may have been included with the content when it was uploaded.
 
 These queries look very similar to the default parameters but are slightly more complex. Here are few simple examples, with added explanation afterward:
 
