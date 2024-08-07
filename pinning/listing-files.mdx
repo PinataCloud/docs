@@ -165,6 +165,18 @@ const files = await pinata
   .pinSizeMax('1000000')
 ```
 
+## Auto Paginate
+
+The `listFiles` method has an auto pagination feature that is triggered when used inside a `for await` iterator
+
+```typescript
+for await (const item of pinata.listFiles().name("pinnie") {
+  console.log(item.ipfs_pin_hash);
+}
+```
+
+Works like magic ✨
+
 ## Advance Querying with the API
 
 You also have the option to query your content on the associated metadata that may have been included with the content when it was uploaded.
