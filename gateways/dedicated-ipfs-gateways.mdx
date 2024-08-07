@@ -33,6 +33,19 @@ To view content through your gateway, grab the CID of the file you'd like to vie
 
 Simple as that!
 
+You can also fetch the data programatically using the [get](/ipfs-sdk/gateways/get) method in the [IPFS SDK](/ipfs-sdk).
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const file = await pinata.gateways.get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+```
+
 ## Restricted vs Open
 
 All Pinata Dedicated Gateways are restricted by default. This mean they will only serve CIDs that are pinned to your account, which keeps your gateway safe from abuse by outside actors who may want to use it for themselves.

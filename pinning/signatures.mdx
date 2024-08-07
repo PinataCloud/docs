@@ -3,7 +3,7 @@ title: "Signatures"
 description: "Learn how to use Pinata to cryptographically sign CIDs"
 ---
 
-In a post-AI world it will become more and more evident that every piece of content will need a cryptographic signature to verify it's authenticity. Pinata is taking steps in this direction with the [Signature API](/api-reference/endpoint/add-signature-to-cid) and the [Content Addressable Gateway Plugin](/gateways/plugins/content-addressable).
+In a post-AI world it will become more and more evident that every piece of content will need a cryptographic signature to verify it's authenticity. Pinata is taking steps in this direction with the [Signatures API](/ipfs-sdk/signatures) and the [Content Addressable Gateway Plugin](/gateways/plugins/content-addressable).
 
 ## Signature Standard
 
@@ -145,28 +145,25 @@ In order to attach a signature to a CID the following requirements must be met:
 - The CID being signed was first uploaded by the signer
 - The CID must not already have an existing signature with Pinata
 
-After creating the signature with the previous step you can add it to the CID with the [Signature API](/api-reference/endpoint/add-signature-to-cid).
+After creating the signature with the previous step you can add it to the CID with the [add](/ipfs-sdk/signatures/add) method in the SDK.
 
 ```typescript
-const data = JSON.stringify({
-  signature: "0xbe92f9747e1712f2673ff0de6c7058968b869ce14ed6e0949fa3c485e420a27c66695401f56d3d3158fcbb6a5a7809e91acb9660dc00f31673d7efe6f77665b31c"
-})
+import { PinataSDK } from "pinata";
 
-const CID = "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
 
-const addSignature = await fetch(`https://api.pinata.cloud/v3/ipfs/signature/${CID}`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${PINATA_JWT}`
-  },
-  body: data
-})
+const signature = await pinata.signatures.add({
+  cid: "QmXGeVy9dVwfuFJmvbzz8y4dYK1TdxXbDGzwbNuyZ5xXSU",
+  signature: "0x1b...911b"
+});
 ```
 
 ## Getting a Signature for a CID
 
-There are two ways you can an existing signature for a CID: the [Signatures API](/api-reference/endpoint/get-signature-for-a-cid) or the [Content Addressable Gateway Plugin](/gateways/plugins/content-addressable).
+There are two ways you can an existing signature for a CID: the [get](/ipfs-sdk/signatures/get) method in the SDK or the [Content Addressable Gateway Plugin](/gateways/plugins/content-addressable).
 
 ### Content Addressable Gateway Plugin
 
@@ -182,24 +179,25 @@ const signatureReq = await fetch(
 const signature = signatureReq.headers.get("pinata-signature");
 ```
 
-### Signature API
+### SDK
 
-You can also use the [/ipfs/signature/:cid](/api-reference/endpoint/get-signature-for-a-cid) endpoint to get a signature for a given CID.
+You can also use the [get](/ipfs-sdk/signatures/get) method to get a signature for a given CID.
 
 <Note>
-This API endpoint will check all CIDs on Pinata and will return a signature if it exists
+This method will check all CIDs on Pinata and will return a signature if it exists
 </Note>
 
 ```typescript
-const CID = "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
+import { PinataSDK } from "pinata";
 
-const signature = await fetch(`https://api.pinata.cloud/v3/ipfs/signature/${CID}`, {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${PINATA_JWT}`
-  }
-})
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const signature = await pinata.signatures.get(
+  "QmXGeVy9dVwfuFJmvbzz8y4dYK1TdxXbDGzwbNuyZ5xXSU"
+);
 ```
 
 ## Verifying a Signature
@@ -285,16 +283,17 @@ export const [account] = await walletClient.getAddresses()
 
 ## Removing a Signature for a CID
 
-To delete an existing signautre for a given CID you can use the [/ipfs/signature/:cid](/api-reference/endpoint/remove-signature-from-cid) endpoint with the `DELETE` method.
+To delete an existing signautre for a given CID you can use the [delete](/ipfs-sdk/signatures/delete) method.
 
 ```typescript
-const CID = "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
+import { PinataSDK } from "pinata";
 
-const signature = await fetch(`https://api.pinata.cloud/v3/ipfs/signature/${CID}`, {
-  method: "DELETE",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${PINATA_JWT}`
-  }
-})
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const signature = await pinata.signatures.delete(
+  "QmXGeVy9dVwfuFJmvbzz8y4dYK1TdxXbDGzwbNuyZ5xXSU"
+);
 ```
