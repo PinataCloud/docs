@@ -3,19 +3,19 @@ title: "How does IPFS work with NFTs?"
 slug: "hows-does-ipfs-work-with-nfts"
 excerpt: ""
 hidden: false
-metadata: 
+metadata:
   image: []
   robots: "index"
 createdAt: "Tue Sep 12 2023 19:54:56 GMT+0000 (Coordinated Universal Time)"
 updatedAt: "Tue Sep 12 2023 21:05:43 GMT+0000 (Coordinated Universal Time)"
 ---
-Pinata has been empowering the NFT space since 2018 and there's a good reason for that. IPFS is the perfect pairing for NFTs for several reasons. 
+Pinata has been empowering the NFT space since 2018 and there's a good reason for that. IPFS is the perfect pairing for NFTs for several reasons.
 
 - **IPFS is Immutable** - Anything that is uploaded to IPFS cannot change, which helps preserve the value of an NFT.
 - **IPFS is Decentralized** - Instead of using a centralized server where one person can control the content, IPFS is distributed and makes sure anyone can pin the content and keep it persisted.
 - **IPFS is Portable** - Since the [CID](/ipfs-101/what-are-cids) for content will be constant, and IPFS pinning works in a decentralized manner, anyone can take a CID and pin it themselves. This allows content to be "transferred" and kept up on the network as people value it. (read more about that concept [here](https://medium.com/pinata/who-is-responsible-for-nft-data-99fb4e8147e4))
 
-One of the biggest reasons you want to use IPFS for NFTs is to prevent tampering or "rug pulls" where someone can just delete the data for an NFT and make it worthless. NFTs are tokens on the blockchain that have a "Token URI" which is simply a link pointing to data about that NFT off-chain, because putting data on-chain is far too expensive. If this link is a centralized server, like `https://server.com/pinnie.png`, then whoever has control of the server can simply upload totally different content and keep the same name, thus keeping the same link. Or they could just delete it and it would be empty! 
+One of the biggest reasons you want to use IPFS for NFTs is to prevent tampering or "rug pulls" where someone can just delete the data for an NFT and make it worthless. NFTs are tokens on the blockchain that have a "Token URI" which is simply a link pointing to data about that NFT off-chain, because putting data on-chain is far too expensive. If this link is a centralized server, like `https://server.com/pinnie.png`, then whoever has control of the server can simply upload totally different content and keep the same name, thus keeping the same link. Or they could just delete it and it would be empty!
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeibcggc5ngxahj7k5pv3csn3owh27gejgfd5uv2sw5t6jyk262eide" />
 
@@ -23,51 +23,38 @@ This is where IPFS becomes necessary. Since the address or link to the content o
 
 ## How to Make an NFT with Pinata
 
-It's important to note that Pinata is currently not providing any minting services. This means you would use Pinata to host the media content and the metadata for the NFT, and then another service or self-deployed smart contract to actually mint the NFT. But don't worry, we'll show you a few different ways you could do that! 
+It's important to note that Pinata is currently not providing any minting services. This means you would use Pinata to host the media content and the metadata for the NFT, and then another service or self-deployed smart contract to actually mint the NFT. But don't worry, we'll show you a few different ways you could do that!
 
 ### Step 1: Upload the Content
 
-The first thing you need to do is upload the content to Pinata. Since IPFS supports any kind of file, the truth is any kind of file can be an NFT. How that file is referenced in the metadata is a bit of a different story, so be sure to check [metadata standards](https://docs.opensea.io/docs/metadata-standards) to make sure you content will be seen on marketplaces or wallets. 
+The first thing you need to do is upload the content to Pinata. Since IPFS supports any kind of file, the truth is any kind of file can be an NFT. How that file is referenced in the metadata is a bit of a different story, so be sure to check [metadata standards](https://docs.opensea.io/docs/metadata-standards) to make sure you content will be seen on marketplaces or wallets.
 
 To upload the content you can either do a simple upload through the Pinata App by navigating to the [files page](https://app.pinata.cloud/pinmanager) and uploading through the UI like so:
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeieub2mj5ywdneuj44j5fkmty4i6twvu57qdnvsbrxofplqwld77vq" />
 
-Or you can upload through the [API](/quickstart/node-js) using a script like this:
+Or you can upload through the [SDK](/ipfs-sdk) using a script like this:
 
-```javascript pinFileToIPFS.js
-const axios = require('axios')
-const FormData = require('form-data')
-const fs = require('fs')
-const JWT = 'Bearer PASTE_YOUR_PINATA_JWT'
+```typescript
+const { PinataSDK } = require("pinata")
+const fs = require("fs")
+const { Blob } = require("buffer")
 
-const pinFileToIPFS = async () => {
-    const formData = new FormData();
-    const src = "path/to/file.png";
-    
-    const file = fs.createReadStream(src)
-    formData.append('file', file)
-    
-    const pinataMetadata = JSON.stringify({
-      name: 'File name',
-    });
-    formData.append('pinataMetadata', pinataMetadata);
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud"
+})
 
-    try{
-      const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
-        maxBodyLength: "Infinity",
-        headers: {
-          'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-          Authorization: JWT
-        }
-      });
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
+async function upload(){
+  try {
+    const blob = new Blob([fs.readFileSync("./path/to/image.png")]);
+    const file = new File([blob], "image.png", { type: "image/png"})
+    const upload = await pinata.upload.file(file);
+    console.log(upload)
+  } catch (error) {
+    console.log(error)
+  }
 }
-
-pinFileToIPFS()
 ```
 
 In each case you will want to grab the CID for that file, which will look something like this:
@@ -87,66 +74,46 @@ Now that we have the CID for our content on IPFS, we need to create a metadata f
 }
 ```
 
-- `name` - This will be the name of this particular NFT, not the collection. 
+- `name` - This will be the name of this particular NFT, not the collection.
 - `description` - Describes the NFT.
 - `external_url` - A link to the website of the NFT project or creator.
-- `image` - This would be the link to the image, if it was a video or gif then you would want to follow metadata standards and have a backup image, and also add an `animation_url` for the video. 
+- `image` - This would be the link to the image, if it was a video or gif then you would want to follow metadata standards and have a backup image, and also add an `animation_url` for the video.
 
-You'll notice that we are using the IPFS protocol URL for the image link. There are other ways to reference CIDs in NFT metadata which you can read about more [here]().  
+You'll notice that we are using the IPFS protocol URL for the image link. There are other ways to reference CIDs in NFT metadata which you can read about more [here]().
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeigooboyucupcfkiii6xc76nscv6rpo5v4vh4u5optsbbmddyx6or4" />
 
 Once you have that file filled out you will want to save it as something like `metadata.json` (this might be different if you are making a large project using folders). Then you can upload the metadata file to Pinata using the app like before, or if you are using the API we have a [JSON endpoint](/api-reference/endpoint/pin-json-to-ipfs) you can use to simplify the process, like so:
 
-```javascript pinJSONToIPFS
-const axios = require('axios')
-const FormData = require('form-data')
-const fs = require('fs')
-const JWT = 'Bearer PASTE_YOUR_PINATA_JWT'
+```typescript
+import { PinataSDK } from "pinata";
 
-const pinJSONToIPFS = async () => {
-  
-  const data = JSON.stringify({
-    pinataContent: {
-      name: "Pinnie NFT",
-      description: "A nice NFT of Pinnie the Pinata",
-      external_url: "https://pinata.cloud",
-      image: "ipfs://bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
-    },
-    pinataMetadata: {
-      name: "metadata.json"
-    }
-  })
-  
-    try{
-      const res = await axios.post("https://api.pinata.cloud/pinning/pinJSONToIPFS", data, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: JWT
-        }
-      });
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-}
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
 
-pinJSONToIPFS()
+const upload = await pinata.upload.json({
+  name: "Pinnie NFT",
+  description: "A Pinnie NFT from Pinata",
+  image: "ipfs://bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4",
+  external_url: "https://pinata.cloud"
+})
 ```
 
 After the metadata is uploaded you should now have a CID for that metadata file; this will be the core identity of your NFT and will act as the **Token URI**.
 
 ### Step 3: Mint the NFT
 
-Now that you have the all important Token URI metadata CID, you can mint an NFT! How you go about doing this will depend on multiple factors. 
+Now that you have the all important Token URI metadata CID, you can mint an NFT! How you go about doing this will depend on multiple factors.
 
 #### Starting an NFT Project
 
-If you are non-technical and you're just looking for the easy way to create an NFT project, you will likely want to use a minting service like [Bueno](https://bueno.art), [Mintplex.xyz](https://mintplex.xzy), or [Manifold](https://manifold.xyz). There are a lot of complexities with smart contracts and making sure the content is setup properly, and using a service like this will make things much easier!  
+If you are non-technical and you're just looking for the easy way to create an NFT project, you will likely want to use a minting service like [Bueno](https://bueno.art), [Mintplex.xyz](https://mintplex.xzy), or [Manifold](https://manifold.xyz). There are a lot of complexities with smart contracts and making sure the content is setup properly, and using a service like this will make things much easier!
 
 #### Just Exploring NFTs
 
-If you want to get your feet wet with smart contracts you could follow the video below! It covers the Base layer 2 blockchain in particular, but the method will work on other EVM chains. 
+If you want to get your feet wet with smart contracts you could follow the video below! It covers the Base layer 2 blockchain in particular, but the method will work on other EVM chains.
 
 <iframe
   width="600"
@@ -161,7 +128,7 @@ If you want to get your feet wet with smart contracts you could follow the video
 
 #### Implementing into an Decentralized App
 
-If you are a developer that is trying to do NFT minting on a larger scale, you could use an NFT minting API like [Crossmint](https://crossmint.com). Lucky for you we have some tutorials on how to do just that! 
+If you are a developer that is trying to do NFT minting on a larger scale, you could use an NFT minting API like [Crossmint](https://crossmint.com). Lucky for you we have some tutorials on how to do just that!
 
 <iframe
   width="600"
@@ -173,4 +140,3 @@ If you are a developer that is trying to do NFT minting on a larger scale, you c
   allowFullScreen
   style={{ width: '100%', borderRadius: '0.5rem' }}
 ></iframe>
-
