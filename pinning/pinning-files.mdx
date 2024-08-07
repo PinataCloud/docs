@@ -16,30 +16,37 @@ With Pinata, there are a few ways you can pin files to IPFS!
 
 ## API & SDKs
 
-If you’re a developer that needs to build decentralized applications, then you will likely want to use the [Pinata API](/api-reference/introduction) or [Pinata SDK](/sdks/pinata-sdk). These make it simple to upload files or raw JSON to IPFS!
+If you’re a developer that needs to build decentralized applications, then you will likely want to use the [SDK](/ipfs-sdk) or the [Pinata API](/api-reference/introduction). These make it simple to integrate IPFS uploads into your App!
 
 ### Using the SDK
 
-The Pinata Node SDK is designed to work in a backend environment, so if you are trying to upload in a front end client, please observe the API example.
+The Pinata SDK is able to handle mutliple kinds of uploads, whether its file objects, base64 strings, or even content from remote URLs.
 
-```javascript
-const fs = require('fs');
-const pinataSDK = require('@pinata/sdk');
-const pinata = new pinataSDK({ pinataJWTKey: 'yourPinataJWTKey'});
+```typescript
+import { PinataSDK } from "pinata";
 
-const stream = fs.createReadStream('./yourfile.png');
-const res = await pinata.pinFileToIPFS(stream)`
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
+const upload = await pinata.upload.file(file);
 ```
 
-The SDK is also equipped to handle folders as well as files, so you can pass a directory into the file path to upload it.
+The SDK is also equipped to handle an array of file objects.
 
-```javascript
-const fs = require('fs');
-const pinataSDK = require('@pinata/sdk');
-const pinata = new pinataSDK({ pinataJWTKey: 'yourPinataJWTKey'});
+```typescript
+import { PinataSDK } from "pinata";
 
-const stream = fs.createReadStream('./some-directory');
-const res = await pinata.pinFileToIPFS(stream)`
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const file1 = new File(["hello world!"], "hello.txt", { type: "text/plain" })
+const file2 = new File(["hello world again!"], "hello2.txt", { type: "text/plain" })
+const upload = await pinata.upload.fileArray([file1, file2])
 ```
 
 ### Using the API
@@ -50,18 +57,16 @@ The API is a bit more flexible, as it can be used in multiple languages or envir
   Using your API Keys in a client side application will expose them! Consider using a [signed JWT approach](https://www.pinata.cloud/blog/how-to-upload-to-ipfs-from-the-frontend-with-signed-jwts).
 </Warning>
 
-The API accepts `File` objects (and blobs in the right environment) through a multipart form data request, where the object has a key of `file`. Additionally you can add `pinataMetadat` and `pinataOptions` to the request. Here is an example of how you could upload with the API:
+The API accepts `File` objects (and blobs in the right environment) through a multipart form data request, where the object has a key of `file`. Additionally you can add [pinataMetadata](/pinning/pinata-metadata) and [pinataOptions](/pinning/pinata-metadata) to the request. Here is an example of how you could upload with the API:
 
 ```javascript
 const JWT = "YOUR_PINATA_JWT";
-const fs = require("fs");
 
 async function pinFileToIPFS() {
   try {
     const formData = new FormData();
-    const src = "path/to/file.png";
 
-    const file = fs.createReadStream(src);
+    const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
     formData.append("file", file);
 
     const pinataMetadata = JSON.stringify({
@@ -70,19 +75,19 @@ async function pinFileToIPFS() {
     formData.append("pinataMetadata", pinataMetadata);
 
     const pinataOptions = JSON.stringify({
-      cidVersion: 0,
+      cidVersion: 1,
     });
     formData.append("pinataOptions", pinataOptions);
 
-    const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+    const request = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
       method: "POST",
       headers: {
-        Authorization: `Bearer YOUR_PINATA_JWT`,
+        Authorization: `Bearer ${JWT}`
       },
       body: formData,
     });
-    const resData = await res.json();
-    console.log(resData);
+    const response = await request.json();
+    console.log(response);
   } catch (error) {
     console.log(error);
   }
@@ -95,148 +100,87 @@ Below are some common recipes for uploading a file.
 
 Usually you can pass a Blob directly into the request but to help guarantee success we recommend passing it into a `File` object.
 
-```javascript Pin Blob
-const JWT = 'YOUR_PINATA_JWT';
+```typescript Blob
+import { PinataSDK } from "pinata";
 
-async function pinFileToIPFS() {
-  try {
-    const text = "Hello World!";
-    const blob = new Blob([text], { type: "text/plain" });
-    const file = new File([blob], "hello-world.txt")
-    const data = new FormData();
-    data.append("file", file);
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
 
-    const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-      body: data,
-    });
-    const resData = await res.json();
-    console.log(resData);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-await pinFileToIPFS()
+const text = "Hello World!";
+const blob = new Blob([text], { type: "text/plain" });
+const file = new File(["hello world!"], "hello.txt", { type: "text/plain" })
+const upload = await pinata.upload.file(file)
 ```
 
 #### JSON
 
-Pinata makes it easy to upload JSON objects using the `pinJSONToIPFS` endpoint.
+Pinata makes it easy to upload JSON objects using the [json](/ipfs-sdk/upload/json) method.
 
-```javascript Pin JSON
-const JWT = 'YOUR_PINATA_JWT';
+```typescript JSON
+import { PinataSDK } from "pinata";
 
-async function pinJSONToIPFS() {
-  try {
-    const data = JSON.stringify({
-      pinataContent: {
-        name: "Pinnie",
-        description: "A really sweet NFT of Pinnie the Pinata",
-        image: "ipfs://bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4",
-        external_url: "https://pinata.cloud"
-      },
-      pinataMetadata: {
-        name: "metadata.json"
-      }
-    })
-    const res = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${JWT}`,
-      },
-      body: data,
-    });
-    const resData = await res.json();
-    console.log(resData);
-  } catch (error) {
-    console.log(error);
-  }
-};
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
 
-await pinJSONToIPFS()
+const upload = await pinata.upload.json({
+  name: "Pinnie NFT",
+  description: "A Pinnie NFT from Pinata",
+  image: "ipfs://bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
+})
 ```
 
 #### URL
 
-To upload a file from an external URL you can stream the contents into an `arrayBuffer`, which then gets passed into a new `Blob` that can then be uploaded to Pinata.
+To upload a file from an external URL you can stream the contents into an `arrayBuffer`, which then gets passed into a new `Blob` that can then be uploaded to Pinata. This has been abstracted in the SDK using the [url](/ipfs-sdk/upload/url) method.
 
-```javascript Upload by URL
-const JWT = "YOUR_PINATA_JWT";
+```typescript URL
+import { PinataSDK } from "pinata";
 
-async function uploadByURL(url) {
-  try {
-    const urlStream = await fetch(url);
-    const arrayBuffer = await urlStream.arrayBuffer();
-    const blob = new Blob([arrayBuffer]);
-    const file = new File([blob], "file")
-    const data = new FormData();
-    data.append("file", file);
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
 
-    const upload = await fetch(
-      "https://api.pinata.cloud/pinning/pinFileToIPFS",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${JWT}`,
-        },
-        body: data,
-      }
-    );
-    const uploadRes = await upload.json();
-    console.log(uploadRes);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-await uploadByURL("https://pocketcast.cloud/og.png");
+const upload = await pinata.upload.url("https://i.imgur.com/u4mGk5b.gif")
 ```
 
 #### base64
 
-To upload a file in base64 simply turn the contents into a `buffer` that is passed into a `Blob`.
+To upload a file in base64 simply turn the contents into a `buffer` that is passed into a `Blob`. Alternatively you can use the SDK for this as well using the [base64](/ipfs-sdk/upload/base64) method.
 
-```javascript Upload base64
-const JWT = "YOUR_PINATA_JWT";
+```typescript base64
+import { PinataSDK } from "pinata";
 
-async function uploadBase64(base64String) {
-  try {
-    const buffer = Buffer.from(base64String, "base64");
-    const blob = new Blob([buffer]);
-    const file = new File([blob], "file");
-    const data = new FormData();
-    data.append("file", file);
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
 
-    const upload = await fetch(
-      "https://api.pinata.cloud/pinning/pinFileToIPFS",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${JWT}`,
-        },
-        body: data,
-      },
-    );
-    const uploadRes = await upload.json();
-    console.log(uploadRes);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-await uploadBase64("SGVsbG8gZnJvbSBQaW5hdGEhIDop");
+const upload = await pinata.upload.base64("SGVsbG8gV29ybGQh")
 ```
 
 #### Folders
 
-Folders can also be uploaded via the API by creating an array of files and mapping over them to add them to the form data. This is different then having a single `file` entry and having multiple files for that one entry, which does not work.
+The SDK can accept an array of files using the [fileArray](/ipfs-sdk/upload/file-array) method. Folders can also be uploaded via the API by creating an array of files and mapping over them to add them to the form data. This is different then having a single `file` entry and having multiple files for that one entry, which does not work.
 
 <CodeGroup>
+
+```typescript SDK
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const file1 = new File(["hello world!"], "hello.txt", { type: "text/plain" })
+const file2 = new File(["hello world again!"], "hello2.txt", { type: "text/plain" })
+const upload = await pinata.upload.fileArray([file1, file2])
+```
 
 ```javascript Node.js
 import fs from "fs"
@@ -416,77 +360,45 @@ Another way you can upload content to Pinata is by transferring content that is 
   src="https://docs.mypinata.cloud/ipfs/QmSFV8REjEZ3DuRAxcmLck5DNrGpqrGRJcSApGihUNXq5n"
 />
 
-Or you can pin by CID with our API using the **[Pin By CID]()** endpoint:
+Or you can pin by CID with the SDK using the [cid](/ipfs-sdk/upload/cid) method.
 
-```javascript Pin by CID
-const JWT = 'YOUR_PINATA_JWT';
+```typescript
+import { PinataSDK } from "pinata";
 
-async function pinByCID() {
-  try {
-    const data = JSON.stringify({
-      hashToPin: 'bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4'
-    })
-    const res = await fetch("https://api.pinata.cloud/pinning/pinByHash",
-      method: "POST",
-      headers: {
-        contentType: 'application/json',
-        Authorization: `Bearer ${JWT}`,
-      },
-      body: data,
-    );
-    const resData = await res.json();
-    console.log(resData);
-  } catch (error) {
-    console.log(error);
-  }
-};
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const pin = await pinata.upload.cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
 ```
 
-This will result in a `request_id` and Pinata will start looking for the file. Progress can be checked by using the [list pinning jobs](/api-reference/endpoint/list-pin-by-cid-jobs) endpoint.
+This will result in a `request_id` and Pinata will start looking for the file. Progress can be checked by using the [pinJobs](/ipfs-sdk/data/pin-jobs) method.
 
-```javascript
-const JWT = 'YOUR_PINATA_JWT';
+```typescript
+import { PinataSDK } from "pinata";
 
-async function pinByCID() {
-  try {
-    const data = JSON.stringify({
-      hashToPin: 'bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4'
-    })
-    const res = await fetch("https://api.pinata.cloud/pinning/pinJobs",
-      method: "GET",
-      headers: {
-        contentType: 'application/json',
-        Authorization: `Bearer ${JWT}`,
-      },
-      body: data,
-    );
-    const resData = await res.json();
-    console.log(resData);
-  } catch (error) {
-    console.log(error);
-  }
-};
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const jobs = await pinata.pinJobs().status("prechecking")
 ```
 
 All possible filters are included in the API reference below, but these are the possible "status" filters:
 
 <ParamField query="status" type="string">
   Filter by the status of the job in the pinning queue (see potential statuses
-  below) - `prechecking` Pinata is running preliminary validations on your pin
-  request. - `searching` Pinata is actively searching for your content on the
-  IPFS network. This may take some time if your content is isolated. -
-  `retrieving` Pinata has located your content and is now in the process of
-  retrieving it. - `expired` Pinata wasn't able to find your content after a day
-  of searching the IPFS network. Please make sure your content is hosted on the
-  IPFS network before trying to pin again. - `over_free_limit` Pinning this
-  object would put you over the free tier limit. Please add a credit card to
-  continue pinning content. - `over_max_size` This object is too large of an
-  item to pin. If you're seeing this, please contact us for a more custom
-  solution. - `invalid_object` The object you're attempting to pin isn't
-  readable by IPFS nodes. Please contact us if you receive this, as we'd like to
-  better understand what you're attempting to pin. - `bad_host_node` You
-  provided a host node that was either invalid or unreachable. Please make sure
-  all provided host nodes are online and reachable.
+  below)
+  - `prechecking` Pinata is running preliminary validations on your pin request.
+  - `searching` Pinata is actively searching for your content on the IPFS network. This may take some time if your content is isolated.
+  - `retrieving` Pinata has located your content and is now in the process of retrieving it.
+  - `expired` Pinata wasn't able to find your content after a day of searching the IPFS network. Please make sure your content is hosted on the IPFS network before trying to pin again.
+  - `over_free_limit` Pinning this object would put you over the free tier limit. Please add a credit card to continue pinning content.
+  - `over_max_size` This object is too large of an item to pin. If you're seeing this, please contact us for a more custom solution.
+  - `invalid_object` The object you're attempting to pin isn't readable by IPFS nodes. Please contact us if you receive this, as we'd like to better understand what you're attempting to pin.
+  - `bad_host_node` You provided a host node that was either invalid or unreachable. Please make sure all provided host nodes are online and reachable.
 </ParamField>
 
 ## Predetermining the CID
