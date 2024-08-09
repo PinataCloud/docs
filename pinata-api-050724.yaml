@@ -885,8 +885,12 @@ paths:
             schema:
               type: object
               properties:
+                ipfsPinHash:
+                  type: string
+                  description: CID for the file to be updated
                 name:
                   type: string
+                  description: Updated name for file
                 keyvalues:
                   type: object
                   additionalProperties: true
