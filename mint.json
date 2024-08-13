@@ -42,8 +42,8 @@
 	},
 	"tabs": [
 		{
-			"name": "IPFS SDK",
-			"url": "ipfs-sdk"
+			"name": "SDK",
+			"url": "sdk"
 		},
 		{
 			"name": "API Reference",
@@ -256,71 +256,64 @@
 		},
 		{
 			"group": "Pinata SDK",
-			"pages": ["ipfs-sdk/getting-started", "ipfs-sdk/config"]
+			"pages": ["sdk/getting-started", "sdk/config"]
 		},
 		{
 			"group": "Data",
 			"pages": [
-				"ipfs-sdk/data/test-authentication",
-				"ipfs-sdk/data/list-files",
-				"ipfs-sdk/data/pin-jobs",
-				"ipfs-sdk/data/unpin",
-				"ipfs-sdk/data/update-metadata"
+				"sdk/data/test-authentication",
+				"sdk/data/list-files",
+				"sdk/data/pin-jobs",
+				"sdk/data/unpin",
+				"sdk/data/update-metadata"
 			]
 		},
 		{
 			"group": "Upload",
 			"pages": [
-				"ipfs-sdk/upload/file",
-				"ipfs-sdk/upload/file-array",
-				"ipfs-sdk/upload/json",
-				"ipfs-sdk/upload/base64",
-				"ipfs-sdk/upload/url",
-				"ipfs-sdk/upload/cid"
+				"sdk/upload/file",
+				"sdk/upload/file-array",
+				"sdk/upload/json",
+				"sdk/upload/base64",
+				"sdk/upload/url",
+				"sdk/upload/cid"
 			]
 		},
 		{
 			"group": "Gateways",
-			"pages": ["ipfs-sdk/gateways/get", "ipfs-sdk/gateways/convert"]
+			"pages": ["sdk/gateways/get", "sdk/gateways/convert"]
 		},
 		{
 			"group": "Signatures",
 			"pages": [
-				"ipfs-sdk/signatures/add",
-				"ipfs-sdk/signatures/get",
-				"ipfs-sdk/signatures/delete"
+				"sdk/signatures/add",
+				"sdk/signatures/get",
+				"sdk/signatures/delete"
 			]
 		},
 		{
 			"group": "Groups",
 			"pages": [
-				"ipfs-sdk/groups/create",
-				"ipfs-sdk/groups/add-cids",
-				"ipfs-sdk/groups/remove-cids",
-				"ipfs-sdk/groups/get",
-				"ipfs-sdk/groups/list",
-				"ipfs-sdk/groups/update",
-				"ipfs-sdk/groups/delete"
+				"sdk/groups/create",
+				"sdk/groups/add-cids",
+				"sdk/groups/remove-cids",
+				"sdk/groups/get",
+				"sdk/groups/list",
+				"sdk/groups/update",
+				"sdk/groups/delete"
 			]
 		},
 		{
 			"group": "Keys",
-			"pages": [
-				"ipfs-sdk/keys/create",
-				"ipfs-sdk/keys/list",
-				"ipfs-sdk/keys/revoke"
-			]
+			"pages": ["sdk/keys/create", "sdk/keys/list", "sdk/keys/revoke"]
 		},
 		{
 			"group": "Usage",
-			"pages": [
-				"ipfs-sdk/usage/pinned-file-count",
-				"ipfs-sdk/usage/total-storage-size"
-			]
+			"pages": ["sdk/usage/pinned-file-count", "sdk/usage/total-storage-size"]
 		},
 		{
 			"group": "Glossary",
-			"pages": ["ipfs-sdk/types"]
+			"pages": ["sdk/types"]
 		},
 		{
 			"group": "Get Started",
@@ -481,8 +474,8 @@
 			"destination": "/tools/:slug*"
 		},
 		{
-			"source": "/sdk-beta/:slug*",
-			"destination": "/ipfs-sdk/:slug*"
+			"source": "/ipfs-sdk/:slug*",
+			"destination": "/sdk/:slug*"
 		},
 		{
 			"source": "/quickstart/:slug*",
