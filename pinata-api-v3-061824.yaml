@@ -1067,6 +1067,7 @@ paths:
           schema:
             type: string
           description: Sort data by either `requests` or `bandwidth`
+          required: true
           example: requests
         - name: cid
           in: query
