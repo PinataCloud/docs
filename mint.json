@@ -288,7 +288,12 @@
     },
     {
       "group": "Gateways",
-      "pages": ["sdk/gateways/get", "sdk/gateways/convert"]
+      "pages": [
+        "sdk/gateways/get",
+        "sdk/gateways/convert",
+        "sdk/gateways/topUsageAnalytics",
+        "sdk/gateways/dateIntervalAnalytics"
+      ]
     },
     {
       "group": "Signatures",
