@@ -1878,3 +1878,187 @@ paths:
                 type: object
               example:
                 data: null
+  /ipfs/swap/{cid}:
+    put:
+      tags:
+        - Swaps
+      summary: Add Swap
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - swapCid
+              properties:
+                swapCid:
+                  type: string
+                  description: The CID you want to redirect to
+              example:
+                swapCid: QmXog19G7QvqHQUMH4R6aCaq8J9qfKAU9ethr51PUjtKjM
+      parameters:
+        - name: cid
+          in: path
+          schema:
+            type: string
+          required: true
+          description: The target original CID
+          example: QmV66MtU6PHNAooavATGJyYrAgAeRDaHN4UvRwVN2Lsrp6
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Sun, 18 Aug 2024 19:36:29 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '114'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 576d0cc3a1b66e3b8938c90e0f45f3a7
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      mappedCid:
+                        type: string
+                        description: The current CID that is being pointed to from the original
+                      createdAt:
+                        type: string
+                        description: The date this CID was updated
+              example:
+                data:
+                  mappedCid: QmXog19G7QvqHQUMH4R6aCaq8J9qfKAU9ethr51PUjtKjM
+                  createdAt: '2024-08-18T19:36:29.442559Z'
+    get:
+      tags:
+        - Swaps
+      summary: Get Swap History
+      parameters:
+        - name: domain
+          in: query
+          schema:
+            type: string
+            description: The domain of the gateway that has the Hot Swaps plugin installed
+          example: discordpinnie.mypinata.cloud
+        - name: cid
+          in: path
+          schema:
+            type: string
+            description: The original CID that is in the Gateway path
+          required: true
+          example: QmV66MtU6PHNAooavATGJyYrAgAeRDaHN4UvRwVN2Lsrp6
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Sun, 18 Aug 2024 19:44:14 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '116'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 32947ddd9c147410acebab6b9221f523
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        mappedCid:
+                          type: string
+                          description: The current CID that is being pointed to from the original
+                        createdAt:
+                          type: string
+                          description: The date this CID was updated
+              example:
+                data:
+                  - mappedCid: QmXog19G7QvqHQUMH4R6aCaq8J9qfKAU9ethr51PUjtKjM
+                    createdAt: '2024-08-18T19:36:29.442559Z'
+    delete:
+      tags:
+        - Swaps
+      summary: Remove Swap
+      parameters:
+        - name: cid
+          in: path
+          schema:
+            type: string
+          required: true
+          description: Target CID to remove swap
+          example: QmV66MtU6PHNAooavATGJyYrAgAeRDaHN4UvRwVN2Lsrp6
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Sun, 18 Aug 2024 19:45:11 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '14'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: cb4721118316fe9ac2e7ec44a2e25133
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: null
