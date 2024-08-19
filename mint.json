@@ -132,7 +132,8 @@
 					"group": "Plugins",
 					"pages": [
 						"gateways/plugins/getting-started",
-						"gateways/plugins/content-addressable"
+						"gateways/plugins/content-addressable",
+						"gateways/plugins/hot-swaps"
 					]
 				}
 			]
@@ -299,6 +300,9 @@
 			"pages": [
 				"sdk/gateways/get",
 				"sdk/gateways/convert",
+				"sdk/gateways/swap-cid",
+				"sdk/gateways/swap-history",
+				"sdk/gateways/delete-swap",
 				"sdk/gateways/topUsageAnalytics",
 				"sdk/gateways/dateIntervalAnalytics"
 			]

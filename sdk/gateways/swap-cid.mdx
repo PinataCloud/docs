@@ -1,0 +1,58 @@
+---
+title: "swapCid"
+---
+
+Swap a CID for another using the [Hot Swaps](/gateways/plugins/hot-swaps) gateway plugin
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const swap = await pinata.gateways.swapCid({
+  cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
+  swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
+})
+```
+
+## Returns
+
+```typescript
+export type SwapCidResponse = {
+	mappedCid: string;
+	createdAt: string;
+};
+```
+
+## Parameters
+
+Pass in the required parameters below to swap a CID
+
+### cid
+
+- Type: `string`
+
+This would be the original CID that would be visted
+
+```typescript
+const swap = await pinata.gateways.swapCid({
+  cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
+})
+```
+
+### swapCid
+
+- Type: `string`
+
+This would be the CID you would want the old CID to point to
+
+```typescript
+const swap = await pinata.gateways.swapCid({
+  swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
+})
+```
