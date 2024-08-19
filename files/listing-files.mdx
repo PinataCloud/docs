@@ -1,0 +1,269 @@
+---
+title: "Listing Files"
+description: "Learn how to list files inside your Pinata account"
+---
+
+To list the files on your account you can either use the [SDK](/ipfs-sdk/data/list-files) or the [Pinata API](/api-reference/endpoint/list-files) to fetch file data programatically.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const files = await pinata.listFiles().name("pinnie")
+```
+
+## Filters
+
+### name
+
+- Type: `string`
+
+Name of the file
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .name('pinnie')
+```
+
+### cid
+
+- Type: `string`
+
+CID of the file
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .cid('rbafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4r')
+```
+
+### group
+
+- Type: `string`
+
+Filter by `groupId`
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .group('648767d5-0a80-4b3a-9669-93693e4a0519')
+```
+
+### keyValue
+
+- Type: `object`
+
+Filter files by `keyValue` objects used in Pinata Metadata
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .keyValues("whimsey", 100)
+```
+
+This also includes an optional `operator` for even more fine tuned data
+
+Type:
+```typescript
+operator?:
+		| "gt" // Greater than
+		| "gte" // Greater or equal to
+		| "lt" // Less than
+		| "lte" // Less than or equal to
+		| "ne" // Not equal
+		| "eq" // Equal
+		| "between"
+		| "notBetween"
+		| "like"
+		| "notLike"
+		| "iLike"
+		| "notILike"
+		| "regexp"
+		| "iRegexp";
+```
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .keyValues("whimsey", 400, "lt")
+```
+
+### pageLimit
+
+- Type: `number`
+
+Determine the number of results, default is `10`, max is `1000`
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .pageLimit(100)
+```
+### pageOffset
+
+- Type: `number`
+
+Offset the number of files returned to paginate
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .pageOffset(100)
+```
+
+### pinStart
+
+- Type: `string`
+
+Filter by start date in ISO8601 format
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .pinStart('2024-07-16T11:41:19Z')
+```
+
+### pinEnd
+
+- Type: `string`
+
+Filter by end date in ISO8601 format
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .pinEnd('2024-07-16T11:41:19Z')
+```
+
+### pinSizeMin
+
+- Type: `number`
+
+Filter by minimum file size in bytes
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .pinSizeMin('100000')
+```
+
+### pinSizeMax
+
+- Type: `number`
+
+Filter by maximum file size in bytes
+
+```typescript
+const files = await pinata
+  .listFiles()
+  .pinSizeMax('1000000')
+```
+
+## Auto Paginate
+
+The `listFiles` method has an auto pagination feature that is triggered when used inside a `for await` iterator
+
+```typescript
+for await (const item of pinata.listFiles().name("pinnie") {
+  console.log(item.ipfs_pin_hash);
+}
+```
+
+Works like magic ✨
+
+## Advance Querying with the API
+
+You also have the option to query your content on the associated metadata that may have been included with the content when it was uploaded.
+
+These queries look very similar to the default parameters but are slightly more complex. Here are few simple examples, with added explanation afterward:
+
+To query on the name you provided for your pin, your query would take this form:
+
+```
+?metadata[name]=exampleName
+```
+
+(This will match on names that contain the string of characters provided as a value. For added specificity, please include the full name you're trying to find).
+
+To query on the metadata key-value attributes:
+
+```
+?metadata[keyvalues]={"exampleKey":{"value":"exampleValue","op":"exampleOp"}}
+```
+
+OR
+
+```
+?metadata[keyvalues][exampleKey]={"value":"exampleValue","op":"exampleOp"}
+```
+
+To query on both the metadata name and multiple key-value attributes:
+
+```
+?metadata[name]=exampleName&metadata[keyvalues]={"exampleKey":{"value":"exampleValue","op":"exampleOp"},"exampleKey2":{"value":"exampleValue2","op":"exampleOp2"}}
+```
+
+### Explaining the "value" and "op" key / values
+
+As seen above, each query on custom values takes the form of an object with a "value" key and an "op" key.
+
+The "value" is fairly straightforward. This is simply the value that you wish your query operation to be applied to. These values can be:
+
+### Strings
+
+Numbers (integers or decimals)
+
+Dates (Provided in ISO_8601 format)
+
+The `op` is what query operation will be applied to the value you provided. The following opcodes are available to query with:
+
+`gt` - (greater than)
+
+`gte` - (greater than or equal)
+
+`lt` - (less than)
+
+`lte` - (less than or equal)
+
+`ne` - (not equal to)
+
+`eq` - (equal to)
+
+`between` - (When querying with the 'between' operation, you need to supply a 'secondValue' to be consumed by the query operation)
+
+For Example:
+
+```
+?metadata[keyvalues]={"exampleKey":{"value":"2018-01-01 00:00:00.000+00","secondValue":"2018-02-01 00:00:00.000+00","op":"between"}}
+```
+
+`notBetween` - (When querying with the `notBetween` operation, you need to supply a `secondValue` to be consumed by the query operation)
+
+For Example:
+
+```
+?metadata[keyvalues]={"exampleKey":{"value":4.00,"secondValue":5.50,"op":"notBetween"}}
+```
+
+`like` - (you can use this to find values that are similar to what you've passed in)
+
+For example, this query would find all entries that begin with "testValue". A % before your value means anything can come before it, and a % sign after means any characters can come after it. So %testValue% would contain all entries containing the characters "testValue".
+
+```
+?metadata[keyvalues]={"exampleKey":{"value":"testValue%","op":"like"}}
+```
+
+`notLike` - (you can use this to find values that do not contain the character string you've passed in)
+
+`iLike` - (The case insensitive version of the "like" opcode)
+
+`notILike` - (The case insensitive version of the "notLike" opcode)
+
+`regexp` - (Regular expression matching)
+
+`iRegexp` - (Case insensitive regular expression matching)

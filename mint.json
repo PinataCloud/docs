@@ -54,8 +54,8 @@
 			"url": "tools"
 		},
 		{
-			"name": "Farcaster",
-			"url": "farcaster"
+			"name": "Web3",
+			"url": "web3"
 		}
 	],
 	"anchors": [
@@ -96,7 +96,7 @@
 			"pages": [
 				"account-management/api-keys",
 				"account-management/workspaces",
-				"account-management/farcaster",
+				"web3/account-management/farcaster",
 				"account-management/billing",
 				"account-management/limits"
 			]
@@ -104,22 +104,33 @@
 		{
 			"group": "IPFS 101",
 			"pages": [
-				"ipfs-101/what-is-ipfs",
-				"ipfs-101/what-is-ipfs-pinning",
-				"ipfs-101/what-are-cids",
-				"ipfs-101/what-are-ipfs-gateways",
-				"ipfs-101/how-does-ipfs-work-with-nfts"
+				"web3/ipfs-101/what-is-ipfs",
+				"web3/ipfs-101/what-is-ipfs-pinning",
+				"web3/ipfs-101/what-are-cids",
+				"web3/ipfs-101/what-are-ipfs-gateways",
+				"web3/ipfs-101/how-does-ipfs-work-with-nfts"
 			]
 		},
 		{
 			"group": "Pinning",
 			"pages": [
-				"pinning/pinning-files",
-				"pinning/groups",
-				"pinning/listing-files",
-				"pinning/pinata-metadata",
-				"pinning/deleting-files",
-				"pinning/signatures"
+				"web3/pinning/pinning-files",
+				"web3/pinning/groups",
+				"web3/pinning/listing-files",
+				"web3/pinning/pinata-metadata",
+				"web3/pinning/deleting-files",
+				"web3/pinning/signatures"
+			]
+		},
+		{
+			"group": "Files",
+			"pages": [
+				"files/uploading-files",
+				"files/file-groups",
+				"files/listing-files",
+				"files/file-metadata",
+				"files/deleting-files",
+				"files/file-signatures"
 			]
 		},
 		{
@@ -340,139 +351,144 @@
 			"pages": ["sdk/types"]
 		},
 		{
-			"group": "Get Started",
-			"pages": [
-				"farcaster/introduction",
-				"farcaster/farcaster-auth",
-				"farcaster/farcaster-API",
-				"farcaster/image-uploads",
-				"farcaster/frames",
-				"farcaster/hubs",
-				"farcaster/fc-dev-calls/index"
-			]
-		},
-		{
-			"group": "Dev Tools",
+			"group": "Farcaster",
 			"pages": [
 				{
-					"group": "Farcaster Development Kit",
+					"group": "Getting Started",
 					"pages": [
-						"farcaster/fdk/getting-started",
-						"farcaster/fdk/farcaster-auth",
-						"farcaster/fdk/farcaster-writes",
-						"farcaster/fdk/farcaster-reads",
-						"farcaster/fdk/farcaster-frames"
-					]
-				}
-			]
-		},
-		{
-			"group": "Farcaster API",
-			"pages": [
-				"farcaster/farcaster-api/getting-started",
-				"farcaster/farcaster-api/endpoint/cast-by-hash",
-				"farcaster/farcaster-api/endpoint/casts",
-				"farcaster/farcaster-api/endpoint/send-cast",
-				"farcaster/farcaster-api/endpoint/delete-cast",
-				"farcaster/farcaster-api/endpoint/add-reaction-to-cast",
-				"farcaster/farcaster-api/endpoint/delete-reaction-to-cast",
-				"farcaster/farcaster-api/endpoint/channels-list",
-				"farcaster/farcaster-api/endpoint/channel-by-name",
-				"farcaster/farcaster-api/endpoint/follow-fid",
-				"farcaster/farcaster-api/endpoint/unfollow-fid",
-				"farcaster/farcaster-api/endpoint/user-by-fid",
-				"farcaster/farcaster-api/endpoint/users"
-			]
-		},
-		{
-			"group": "Farcaster Auth",
-			"pages": [
-				"farcaster/farcaster-api/auth-getting-started",
-				"farcaster/farcaster-api/endpoint/signers",
-				"farcaster/farcaster-api/endpoint/register-signer-with-warpcast",
-				"farcaster/farcaster-api/endpoint/poll-warpcast-signer",
-				"farcaster/farcaster-api/endpoint/get-signers"
-			]
-		},
-		{
-			"group": "Frame Analytics API",
-			"pages": [
-				"farcaster/frame-analytics-api/getting-started",
-				"farcaster/frame-analytics-api/send-analytics",
-				"farcaster/frame-analytics-api/get-interactions",
-				"farcaster/frame-analytics-api/get-top-interactions"
-			]
-		},
-		{
-			"group": "Hub API Reference",
-			"pages": [
-				{
-					"group": "Info",
-					"pages": ["farcaster/hub-api-reference/endpoint/info/info"]
-				},
-				{
-					"group": "Casts",
-					"pages": [
-						"farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-authored-by-an-fid",
-						"farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-by-parent-casts-fid-and-hash-or-by-the-parents-url",
-						"farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-that-mention-an-fid",
-						"farcaster/hub-api-reference/endpoint/casts/get-a-cast-by-its-fid-and-hash"
+						"web3/farcaster/introduction",
+						"web3/farcaster/farcaster-auth",
+						"web3/farcaster/farcaster-API",
+						"web3/farcaster/image-uploads",
+						"web3/farcaster/frames",
+						"web3/farcaster/hubs",
+						"web3/farcaster/fc-dev-calls/index"
 					]
 				},
 				{
-					"group": "Reactions",
+					"group": "Dev Tools",
 					"pages": [
-						"farcaster/hub-api-reference/endpoint/reactions/get-a-reaction-by-its-created-fid-and-target-cast",
-						"farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-by-an-fid",
-						"farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-cast",
-						"farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-target-url"
+						{
+							"group": "Farcaster Development Kit",
+							"pages": [
+								"web3/farcaster/fdk/getting-started",
+								"web3/farcaster/fdk/farcaster-auth",
+								"web3/farcaster/fdk/farcaster-writes",
+								"web3/farcaster/fdk/farcaster-reads",
+								"web3/farcaster/fdk/farcaster-frames"
+							]
+						}
 					]
 				},
 				{
-					"group": "Links",
+					"group": "Farcaster API",
 					"pages": [
-						"farcaster/hub-api-reference/endpoint/links/get-a-link-by-its-fid-and-target-fid",
-						"farcaster/hub-api-reference/endpoint/links/get-all-links-to-a-target-fid",
-						"farcaster/hub-api-reference/endpoint/links/get-all-links-from-a-source-fid"
+						"web3/farcaster/farcaster-api/getting-started",
+						"web3/farcaster/farcaster-api/endpoint/cast-by-hash",
+						"web3/farcaster/farcaster-api/endpoint/casts",
+						"web3/farcaster/farcaster-api/endpoint/send-cast",
+						"web3/farcaster/farcaster-api/endpoint/delete-cast",
+						"web3/farcaster/farcaster-api/endpoint/add-reaction-to-cast",
+						"web3/farcaster/farcaster-api/endpoint/delete-reaction-to-cast",
+						"web3/farcaster/farcaster-api/endpoint/channels-list",
+						"web3/farcaster/farcaster-api/endpoint/channel-by-name",
+						"web3/farcaster/farcaster-api/endpoint/follow-fid",
+						"web3/farcaster/farcaster-api/endpoint/unfollow-fid",
+						"web3/farcaster/farcaster-api/endpoint/user-by-fid",
+						"web3/farcaster/farcaster-api/endpoint/users"
 					]
 				},
 				{
-					"group": "User Data",
+					"group": "Farcaster Auth",
 					"pages": [
-						"farcaster/hub-api-reference/endpoint/userdata/get-userdata-for-a-fid"
+						"web3/farcaster/farcaster-api/auth-getting-started",
+						"web3/farcaster/farcaster-api/endpoint/signers",
+						"web3/farcaster/farcaster-api/endpoint/register-signer-with-warpcast",
+						"web3/farcaster/farcaster-api/endpoint/poll-warpcast-signer",
+						"web3/farcaster/farcaster-api/endpoint/get-signers"
 					]
 				},
 				{
-					"group": "Username Proofs",
+					"group": "Frame Analytics API",
 					"pages": [
-						"farcaster/hub-api-reference/endpoint/usernames/get-a-list-of-proofs-provided-by-an-fid",
-						"farcaster/hub-api-reference/endpoint/usernames/get-an-proof-for-a-username-by-the-farcaster-username"
+						"web3/farcaster/frame-analytics-api/getting-started",
+						"web3/farcaster/frame-analytics-api/send-analytics",
+						"web3/farcaster/frame-analytics-api/get-interactions",
+						"web3/farcaster/frame-analytics-api/get-top-interactions"
 					]
 				},
 				{
-					"group": "Verifications",
+					"group": "Hub API Reference",
 					"pages": [
-						"farcaster/hub-api-reference/endpoint/verifications/get-a-list-of-verifications-provided-by-an-fid"
-					]
-				},
-				{
-					"group": "FIDs",
-					"pages": [
-						"farcaster/hub-api-reference/endpoint/fids/get-a-list-of-all-the-fids"
-					]
-				},
-				{
-					"group": "Storage",
-					"pages": [
-						"farcaster/hub-api-reference/endpoint/storage/get-an-fids-storage-limits"
-					]
-				},
-				{
-					"group": "Onchain API",
-					"pages": [
-						"farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-on-chain-events-provided-by-an-fid",
-						"farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-signers-provided-by-an-fid",
-						"farcaster/hub-api-reference/endpoint/onchainevents/get-an-on-chain-id-registry-event-for-a-given-address"
+						{
+							"group": "Info",
+							"pages": ["web3/farcaster/hub-api-reference/endpoint/info/info"]
+						},
+						{
+							"group": "Casts",
+							"pages": [
+								"web3/farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-authored-by-an-fid",
+								"web3/farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-by-parent-casts-fid-and-hash-or-by-the-parents-url",
+								"web3/farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-that-mention-an-fid",
+								"web3/farcaster/hub-api-reference/endpoint/casts/get-a-cast-by-its-fid-and-hash"
+							]
+						},
+						{
+							"group": "Reactions",
+							"pages": [
+								"web3/farcaster/hub-api-reference/endpoint/reactions/get-a-reaction-by-its-created-fid-and-target-cast",
+								"web3/farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-by-an-fid",
+								"web3/farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-cast",
+								"web3/farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-target-url"
+							]
+						},
+						{
+							"group": "Links",
+							"pages": [
+								"web3/farcaster/hub-api-reference/endpoint/links/get-a-link-by-its-fid-and-target-fid",
+								"web3/farcaster/hub-api-reference/endpoint/links/get-all-links-to-a-target-fid",
+								"web3/farcaster/hub-api-reference/endpoint/links/get-all-links-from-a-source-fid"
+							]
+						},
+						{
+							"group": "User Data",
+							"pages": [
+								"web3/farcaster/hub-api-reference/endpoint/userdata/get-userdata-for-a-fid"
+							]
+						},
+						{
+							"group": "Username Proofs",
+							"pages": [
+								"web3/farcaster/hub-api-reference/endpoint/usernames/get-a-list-of-proofs-provided-by-an-fid",
+								"web3/farcaster/hub-api-reference/endpoint/usernames/get-an-proof-for-a-username-by-the-farcaster-username"
+							]
+						},
+						{
+							"group": "Verifications",
+							"pages": [
+								"web3/farcaster/hub-api-reference/endpoint/verifications/get-a-list-of-verifications-provided-by-an-fid"
+							]
+						},
+						{
+							"group": "FIDs",
+							"pages": [
+								"web3/farcaster/hub-api-reference/endpoint/fids/get-a-list-of-all-the-fids"
+							]
+						},
+						{
+							"group": "Storage",
+							"pages": [
+								"web3/farcaster/hub-api-reference/endpoint/storage/get-an-fids-storage-limits"
+							]
+						},
+						{
+							"group": "Onchain API",
+							"pages": [
+								"web3/farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-on-chain-events-provided-by-an-fid",
+								"web3/farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-signers-provided-by-an-fid",
+								"web3/farcaster/hub-api-reference/endpoint/onchainevents/get-an-on-chain-id-registry-event-for-a-given-address"
+							]
+						}
 					]
 				}
 			]
