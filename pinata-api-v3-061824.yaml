@@ -1960,6 +1960,7 @@ paths:
           schema:
             type: string
             description: The domain of the gateway that has the Hot Swaps plugin installed
+          required: true
           example: discordpinnie.mypinata.cloud
         - name: cid
           in: path
