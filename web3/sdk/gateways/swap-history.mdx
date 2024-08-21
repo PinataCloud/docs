@@ -1,0 +1,60 @@
+---
+title: "swapHistory"
+---
+
+See the history of [Hot Swaps](/gateways/plugins/hot-swaps) on a Gateway domain for a specified CID. This can be called by any Pinata user for any Gateway domain and CID.
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const history = await pinata.gateways.swapHistory({
+  cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
+  domain: "discordpinnie.mypinata.cloud"
+})
+```
+
+## Returns
+
+```typescript
+SwapCidResponse[]
+
+export type SwapCidResponse = {
+	mappedCid: string;
+	createdAt: string;
+};
+```
+
+## Parameters
+
+Pass in the required parameters to get a swap history
+
+### cid
+
+- Type: `string`
+
+The target CID for swap history
+
+```typescript
+const history = await pinata.gateways.swapHistory({
+  cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
+})
+```
+
+### domain
+
+- Type: `string`
+
+The Gateway domain that has the Hot Swaps plugin installed
+
+```typescript
+const history = await pinata.gateways.swapHistory({
+  domain: "discordpinnie.mypinata.cloud"
+})
+```
