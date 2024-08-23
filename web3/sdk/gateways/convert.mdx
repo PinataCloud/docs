@@ -27,7 +27,7 @@ string
 
 ## Parameters
 
-### IPFS URL
+### url
 
 - Type: `string`
 
@@ -44,5 +44,18 @@ const url = await pinata.gateways.convert(
 
 const url = await pinata.gateways.convert(
 	"https://bafyreibroegmxohcbvvs3rziqsp3osyn7t5rzot34y6pn5xtewffhtsl4e.ipfs.nftstorage.link/metadata.json",
+);
+```
+
+### prefix (Optional)
+
+- Type: `string`
+
+Use a different gateway prefix than the config default
+
+```typescript
+const url = await pinata.gateways.convert(
+	"QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng",
+	"https://ipfs.io"
 );
 ```

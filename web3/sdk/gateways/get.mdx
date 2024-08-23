@@ -68,3 +68,37 @@ const data = await pinata.gateways.get(
 	"https://bafyreibroegmxohcbvvs3rziqsp3osyn7t5rzot34y6pn5xtewffhtsl4e.ipfs.nftstorage.link/metadata.json",
 );
 ```
+
+## Methods
+
+### optimizeImage (Optional)
+
+- Type: [OptimizeImageOptions](/sdk/types#optimizeimageoptions)
+
+```typescript
+type OptimizeImageOptions = {
+  width?: number;
+  height?: number;
+  dpr?: number;
+  fit?: "scaleDown" | "contain" | "cover" | "crop" | "pad";
+  gravity?: "auto" | "side" | string;
+  quality?: number;
+  format?: "auto" | "webp";
+  animation?: boolean;
+  sharpen?: number;
+  onError?: boolean;
+  metadata?: "keep" | "copyright" | "none";
+};
+```
+
+If the content being fetched is an image you can apply image optimizations to the image.
+
+```typescript
+const data = await pinata.gateways
+  .get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+  .optimizeImage({
+    width: 500,
+    height: 500,
+    format: "webp"
+  })
+```

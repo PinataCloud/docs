@@ -1,5 +1,5 @@
 ---
-title: "Types"
+Title: "Types"
 ---
 
 ## `AuthTestResponse`
@@ -7,6 +7,15 @@ title: "Types"
 ```typescript
 type AuthTestResponse = {
   message: string;
+};
+```
+
+## `ContainsCIDResponse`
+
+```typescript
+type ContainsCIDResponse = {
+  containsCid: boolean;
+  cid: string | null;
 };
 ```
 
@@ -61,6 +70,24 @@ type FileObject = {
   type: string;
   lastModified: number;
   arrayBuffer: () => Promise<ArrayBuffer>;
+};
+```
+
+## `GatewayAnalyticsQuery`
+
+```typescript
+type GatewayAnalyticsQuery = {
+  gateway_domain: string;
+  start_date: string;
+  end_date: string;
+  cid?: string;
+  file_name?: string;
+  user_agent?: string;
+  country?: string;
+  region?: string;
+  referer?: string;
+  limit?: number;
+  sort_order?: "asc" | "desc";
 };
 ```
 
@@ -208,6 +235,24 @@ type KeyScopes = {
 };
 ```
 
+## `OptimizeImageOptions`
+
+```typescript
+type OptimizeImageOptions = {
+  width?: number;
+  height?: number;
+  dpr?: number;
+  fit?: "scaleDown" | "contain" | "cover" | "crop" | "pad";
+  gravity?: "auto" | "side" | string;
+  quality?: number;
+  format?: "auto" | "webp";
+  animation?: boolean;
+  sharpen?: number;
+  onError?: boolean;
+  metadata?: "keep" | "copyright" | "none";
+};
+```
+
 ## `PinByCIDResponse`
 
 ```typescript
@@ -217,6 +262,37 @@ type PinByCIDResponse = {
   status: "prechecking" | "retrieving";
   name: string;
   updated?: boolean;
+};
+```
+
+## `PinataConfig`
+
+```typescript
+type PinataConfig = {
+  pinataJwt: string | undefined;
+  pinataGateway?: string;
+  pinataGatewayKey?: string;
+  customHeaders?: Record<string, string>;
+  endpointUrl?: string;
+};
+```
+
+## `PinataMetadata`
+
+```typescript
+type PinataMetadata = {
+  name?: string;
+  keyValues?: Record<string, string | number>;
+};
+```
+
+## `PinataMetadataUpdate`
+
+```typescript
+type PinataMetadataUpdate = {
+  cid: string;
+  name?: string;
+  keyValues?: Record<string, string | number>;
 };
 ```
 
@@ -335,35 +411,6 @@ type PinListResponse = {
 };
 ```
 
-## `PinataConfig`
-
-```typescript
-type PinataConfig = {
-  pinataJwt: string;
-  pinataGateway?: string;
-  pinataGatewayKey?: string;
-};
-```
-
-## `PinataMetadata`
-
-```typescript
-type PinataMetadata = {
-  name?: string;
-  keyValues?: Record<string, string | number>;
-};
-```
-
-## `PinataMetadataUpdate`
-
-```typescript
-type PinataMetadataUpdate = {
-  cid: string;
-  name?: string;
-  keyValues?: Record<string, string | number>;
-};
-```
-
 ## `PinningEndpoints`
 
 ```typescript
@@ -402,7 +449,7 @@ type RevokeKeyResponse = {
 ## `SignatureOptions`
 
 ```typescript
-export type SignatureOptions = {
+type SignatureOptions = {
   cid: string;
   signature: string;
 };
@@ -414,6 +461,87 @@ export type SignatureOptions = {
 type SignatureResponse = {
   cid: string;
   signature: string;
+};
+```
+
+## `SwapCidOptions`
+
+```typescript
+type SwapCidOptions = {
+  cid: string;
+  swapCid: string;
+};
+```
+
+## `SwapCidResponse`
+
+```typescript
+type SwapCidResponse = {
+  mappedCid: string;
+  createdAt: string;
+};
+```
+
+## `SwapHistoryOptions`
+
+```typescript
+type SwapHistoryOptions = {
+  cid: string;
+  domain: string;
+};
+```
+
+## `TimeIntervalGatewayAnalyticsQuery`
+
+```typescript
+type TimeIntervalGatewayAnalyticsQuery = GatewayAnalyticsQuery & {
+  sort_by?: "requests" | "bandwidth";
+  date_interval: "day" | "week";
+};
+```
+
+## `TimeIntervalGatewayAnalyticsResponse`
+
+```typescript
+type TimeIntervalGatewayAnalyticsResponse = {
+  total_requests: number;
+  total_bandwidth: number;
+  time_periods: TimePeriodItem[];
+};
+```
+
+## `TimePeriodItem`
+
+```typescript
+type TimePeriodItem = {
+  period_start_time: string;
+  requests: number;
+  bandwidth: number;
+};
+```
+
+## `TopGatewayAnalyticsItem`
+
+```typescript
+type TopGatewayAnalyticsItem = {
+  value: string;
+  requests: number;
+  bandwidth: number;
+};
+```
+
+## `TopGatewayAnalyticsQuery`
+
+```typescript
+type TopGatewayAnalyticsQuery = GatewayAnalyticsQuery & {
+  sort_by: "requests" | "bandwidth";
+  attribute:
+    | "cid"
+    | "country"
+    | "region"
+    | "user_agent"
+    | "referer"
+    | "file_name";
 };
 ```
 
