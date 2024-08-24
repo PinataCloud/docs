@@ -80,7 +80,6 @@
 			"group": "Get Started",
 			"pages": [
 				"quickstart",
-				"introduction",
 				{
 					"group": "Frameworks",
 					"pages": [
@@ -179,121 +178,126 @@
 			"pages": ["api-reference/introduction"]
 		},
 		{
-			"group": "Authentication",
-			"pages": ["api-reference/endpoint/test-authentication"]
-		},
-		{
-			"group": "Pinning",
-			"pages": [
-				"api-reference/endpoint/pin-file-to-ipfs",
-				"api-reference/endpoint/pin-json-to-ipfs",
-				"api-reference/endpoint/list-files",
-				"api-reference/endpoint/update-file-metadata",
-				"api-reference/endpoint/unpin-file"
-			]
-		},
-		{
-			"group": "Groups",
-			"pages": [
-				"api-reference/endpoint/create-group",
-				"api-reference/endpoint/get-a-group",
-				"api-reference/endpoint/list-groups",
-				"api-reference/endpoint/update-group",
-				"api-reference/endpoint/add-cids-to-group",
-				"api-reference/endpoint/remove-cids-from-a-group",
-				"api-reference/endpoint/delete-group"
-			]
-		},
-		{
-			"group": "Pinning by CID",
-			"pages": [
-				"api-reference/endpoint/pin-by-cid",
-				"api-reference/endpoint/list-pin-by-cid-jobs",
-				"api-reference/pinning-service-api"
-			]
-		},
-		{
-			"group": "Gateways",
+			"group": "Web3 API",
 			"pages": [
 				{
-					"group": "General",
+					"group": "Authentication",
+					"pages": ["api-reference/endpoint/test-authentication"]
+				},
+				{
+					"group": "Pinning",
 					"pages": [
-						"api-reference/endpoint/list-gateways",
-						"api-reference/endpoint/gateway-details",
-						"api-reference/endpoint/gateway-domain-available",
-						"api-reference/endpoint/create-gateway",
-						"api-reference/endpoint/delete-gateway"
+						"api-reference/endpoint/pin-file-to-ipfs",
+						"api-reference/endpoint/pin-json-to-ipfs",
+						"api-reference/endpoint/list-files",
+						"api-reference/endpoint/update-file-metadata",
+						"api-reference/endpoint/unpin-file"
 					]
 				},
 				{
-					"group": "Custom Domains",
+					"group": "Groups",
 					"pages": [
-						"api-reference/endpoint/gateway-custom-domain-details",
-						"api-reference/endpoint/create-custom-domain-for-gateway",
-						"api-reference/endpoint/delete-gateway-custom-domain"
+						"api-reference/endpoint/create-group",
+						"api-reference/endpoint/get-a-group",
+						"api-reference/endpoint/list-groups",
+						"api-reference/endpoint/update-group",
+						"api-reference/endpoint/add-cids-to-group",
+						"api-reference/endpoint/remove-cids-from-a-group",
+						"api-reference/endpoint/delete-group"
 					]
 				},
 				{
-					"group": "Access Controls",
+					"group": "Pinning by CID",
 					"pages": [
-						"api-reference/endpoint/create-gateway-key-restriction",
-						"api-reference/endpoint/create-gateway-ip-address-restriction",
-						"api-reference/endpoint/create-gateway-host-origin-restriction",
-						"api-reference/endpoint/revoke-gateway-key",
-						"api-reference/endpoint/revoke-ip-address-restricton",
-						"api-reference/endpoint/revoke-host-origin-restriction"
+						"api-reference/endpoint/pin-by-cid",
+						"api-reference/endpoint/list-pin-by-cid-jobs",
+						"api-reference/pinning-service-api"
 					]
 				},
 				{
-					"group": "Gateway Analytics",
+					"group": "Gateways",
 					"pages": [
-						"api-reference/endpoint/top-gateway-analytics",
-						"api-reference/endpoint/time-interval-gateway-analytics"
+						{
+							"group": "General",
+							"pages": [
+								"api-reference/endpoint/list-gateways",
+								"api-reference/endpoint/gateway-details",
+								"api-reference/endpoint/gateway-domain-available",
+								"api-reference/endpoint/create-gateway",
+								"api-reference/endpoint/delete-gateway"
+							]
+						},
+						{
+							"group": "Custom Domains",
+							"pages": [
+								"api-reference/endpoint/gateway-custom-domain-details",
+								"api-reference/endpoint/create-custom-domain-for-gateway",
+								"api-reference/endpoint/delete-gateway-custom-domain"
+							]
+						},
+						{
+							"group": "Access Controls",
+							"pages": [
+								"api-reference/endpoint/create-gateway-key-restriction",
+								"api-reference/endpoint/create-gateway-ip-address-restriction",
+								"api-reference/endpoint/create-gateway-host-origin-restriction",
+								"api-reference/endpoint/revoke-gateway-key",
+								"api-reference/endpoint/revoke-ip-address-restricton",
+								"api-reference/endpoint/revoke-host-origin-restriction"
+							]
+						},
+						{
+							"group": "Gateway Analytics",
+							"pages": [
+								"api-reference/endpoint/top-gateway-analytics",
+								"api-reference/endpoint/time-interval-gateway-analytics"
+							]
+						},
+						{
+							"group": "Gateway Plugins",
+							"pages": [
+								"api-reference/endpoint/list-marketplace-plugins",
+								"api-reference/endpoint/get-marketplace-plugin-details",
+								"api-reference/endpoint/list-installed-plugins-for-gateway",
+								"api-reference/endpoint/install-gateway-plugin",
+								"api-reference/endpoint/list-gateway-plugins",
+								"api-reference/endpoint/uninstall-gateway-plugin"
+							]
+						}
 					]
 				},
 				{
-					"group": "Gateway Plugins",
+					"group": "Users",
 					"pages": [
-						"api-reference/endpoint/list-marketplace-plugins",
-						"api-reference/endpoint/get-marketplace-plugin-details",
-						"api-reference/endpoint/list-installed-plugins-for-gateway",
-						"api-reference/endpoint/install-gateway-plugin",
-						"api-reference/endpoint/list-gateway-plugins",
-						"api-reference/endpoint/uninstall-gateway-plugin"
+						"api-reference/endpoint/generate-pinata-api-key",
+						"api-reference/endpoint/list-api-keys",
+						"api-reference/endpoint/revoke-api-key",
+						{
+							"group": "V3 (beta)",
+							"pages": [
+								"api-reference/endpoint/v3-create-api-key",
+								"api-reference/endpoint/v3-list-api-keys",
+								"api-reference/endpoint/v3-revoke-api-key"
+							]
+						}
+					]
+				},
+				{
+					"group": "Signatures",
+					"pages": [
+						"api-reference/endpoint/get-signature-for-a-cid",
+						"api-reference/endpoint/add-signature-to-cid",
+						"api-reference/endpoint/remove-signature-from-cid"
+					]
+				},
+				{
+					"group": "Swaps",
+					"pages": [
+						"api-reference/endpoint/add-swap",
+						"api-reference/endpoint/get-swap-history",
+						"api-reference/endpoint/remove-swap"
 					]
 				}
-			]
-		},
-		{
-			"group": "Users",
-			"pages": [
-				"api-reference/endpoint/generate-pinata-api-key",
-				"api-reference/endpoint/list-api-keys",
-				"api-reference/endpoint/revoke-api-key",
-				{
-					"group": "V3 (beta)",
-					"pages": [
-						"api-reference/endpoint/v3-create-api-key",
-						"api-reference/endpoint/v3-list-api-keys",
-						"api-reference/endpoint/v3-revoke-api-key"
-					]
-				}
-			]
-		},
-		{
-			"group": "Signatures",
-			"pages": [
-				"api-reference/endpoint/get-signature-for-a-cid",
-				"api-reference/endpoint/add-signature-to-cid",
-				"api-reference/endpoint/remove-signature-from-cid"
-			]
-		},
-		{
-			"group": "Swaps",
-			"pages": [
-				"api-reference/endpoint/add-swap",
-				"api-reference/endpoint/get-swap-history",
-				"api-reference/endpoint/remove-swap"
 			]
 		},
 		{

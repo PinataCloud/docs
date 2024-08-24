@@ -29,14 +29,7 @@ For users with traffic that can be burst-heavy, we recommend using a task schedu
 
 For NodeJS users specifically, we recommend the [bottleneck library](https://www.npmjs.com/package/bottleneck) to help with this.
 
-## Public Gateway Rate Limits
-
-The Pinata public IPFS gateway (gateway.pinata.cloud) is meant for testing purposes or very low volume retrieval and should not be used in production scenarios. It currently has the following rate limits:
-
-- Each CID has a global rate limit of 15 requests per minute (this is across all IP addresses)
-- Each IP address has a rate limit of 200 requests per minute
-
-## Dedicated Gateway Rate Limits
+## Gateway Rate Limits
 
 At this time there are currently no rate limits for users retrieving content from a dedicated gateway.
 
@@ -47,7 +40,3 @@ At this time there are currently no rate limits for users retrieving content fro
 There is no aggregate limit for uploads, but each individual upload (whether it is a file or a folder) is limited to **25 GB**.
 
 There is also a file limit size of **10MB** for the pinJSONToIPFS API endpoint.
-
-## Pin by CID
-
-When using the [Pin By CID](/api-reference/endpoint/pin-by-cid) endpoint or using it in the [Files](/pinning/pinning-files) page in the app, there is a limit of 250 items that can be in the queue at once.
