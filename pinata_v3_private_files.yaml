@@ -1,0 +1,51 @@
+openapi: 3.0.0
+info:
+  title: Private Files API
+  version: 1.0.0
+servers:
+  - url: https://uploads.devpinata.cloud
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+paths:
+  /v3/files:
+    post:
+      tags:
+        - default
+      summary: Upload a File
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  cid:
+                    type: string
+                  size:
+                    type: number
+                  number_of_files:
+                    type: number
+                  mime_type:
+                    type: string
+                  user_id:
+                    type: string
+

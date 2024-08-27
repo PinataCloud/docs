@@ -178,39 +178,58 @@
 			"pages": ["api-reference/introduction"]
 		},
 		{
+			"group": "Files",
+			"pages": [
+				"api-reference/endpoint/upload-a-file",
+				"api-reference/endpoint/list-files",
+				"api-reference/endpoint/get-file-by-id",
+				"api-reference/endpoint/update-file",
+				"api-reference/endpoint/delete-file-by-id"
+			]
+		},
+
+		{
+			"group": "API Keys",
+			"pages": [
+				"api-reference/endpoint/v3-create-api-key",
+				"api-reference/endpoint/v3-list-api-keys",
+				"api-reference/endpoint/v3-revoke-api-key"
+			]
+		},
+		{
 			"group": "Web3 API",
 			"pages": [
 				{
 					"group": "Authentication",
-					"pages": ["api-reference/endpoint/test-authentication"]
+					"pages": ["api-reference/endpoint/ipfs/test-authentication"]
 				},
 				{
 					"group": "Pinning",
 					"pages": [
-						"api-reference/endpoint/pin-file-to-ipfs",
-						"api-reference/endpoint/pin-json-to-ipfs",
-						"api-reference/endpoint/list-files",
-						"api-reference/endpoint/update-file-metadata",
-						"api-reference/endpoint/unpin-file"
+						"api-reference/endpoint/ipfs/pin-file-to-ipfs",
+						"api-reference/endpoint/ipfs/pin-json-to-ipfs",
+						"api-reference/endpoint/ipfs/list-files",
+						"api-reference/endpoint/ipfs/update-file-metadata",
+						"api-reference/endpoint/ipfs/unpin-file"
 					]
 				},
 				{
 					"group": "Groups",
 					"pages": [
-						"api-reference/endpoint/create-group",
-						"api-reference/endpoint/get-a-group",
-						"api-reference/endpoint/list-groups",
-						"api-reference/endpoint/update-group",
-						"api-reference/endpoint/add-cids-to-group",
-						"api-reference/endpoint/remove-cids-from-a-group",
-						"api-reference/endpoint/delete-group"
+						"api-reference/endpoint/ipfs/create-group",
+						"api-reference/endpoint/ipfs/get-a-group",
+						"api-reference/endpoint/ipfs/list-groups",
+						"api-reference/endpoint/ipfs/update-group",
+						"api-reference/endpoint/ipfs/add-cids-to-group",
+						"api-reference/endpoint/ipfs/remove-cids-from-a-group",
+						"api-reference/endpoint/ipfs/delete-group"
 					]
 				},
 				{
 					"group": "Pinning by CID",
 					"pages": [
-						"api-reference/endpoint/pin-by-cid",
-						"api-reference/endpoint/list-pin-by-cid-jobs",
+						"api-reference/endpoint/ipfs/pin-by-cid",
+						"api-reference/endpoint/ipfs/list-pin-by-cid-jobs",
 						"api-reference/pinning-service-api"
 					]
 				},
@@ -220,48 +239,48 @@
 						{
 							"group": "General",
 							"pages": [
-								"api-reference/endpoint/list-gateways",
-								"api-reference/endpoint/gateway-details",
-								"api-reference/endpoint/gateway-domain-available",
-								"api-reference/endpoint/create-gateway",
-								"api-reference/endpoint/delete-gateway"
+								"api-reference/endpoint/ipfs/list-gateways",
+								"api-reference/endpoint/ipfs/gateway-details",
+								"api-reference/endpoint/ipfs/gateway-domain-available",
+								"api-reference/endpoint/ipfs/create-gateway",
+								"api-reference/endpoint/ipfs/delete-gateway"
 							]
 						},
 						{
 							"group": "Custom Domains",
 							"pages": [
-								"api-reference/endpoint/gateway-custom-domain-details",
-								"api-reference/endpoint/create-custom-domain-for-gateway",
-								"api-reference/endpoint/delete-gateway-custom-domain"
+								"api-reference/endpoint/ipfs/gateway-custom-domain-details",
+								"api-reference/endpoint/ipfs/create-custom-domain-for-gateway",
+								"api-reference/endpoint/ipfs/delete-gateway-custom-domain"
 							]
 						},
 						{
 							"group": "Access Controls",
 							"pages": [
-								"api-reference/endpoint/create-gateway-key-restriction",
-								"api-reference/endpoint/create-gateway-ip-address-restriction",
-								"api-reference/endpoint/create-gateway-host-origin-restriction",
-								"api-reference/endpoint/revoke-gateway-key",
-								"api-reference/endpoint/revoke-ip-address-restricton",
-								"api-reference/endpoint/revoke-host-origin-restriction"
+								"api-reference/endpoint/ipfs/create-gateway-key-restriction",
+								"api-reference/endpoint/ipfs/create-gateway-ip-address-restriction",
+								"api-reference/endpoint/ipfs/create-gateway-host-origin-restriction",
+								"api-reference/endpoint/ipfs/revoke-gateway-key",
+								"api-reference/endpoint/ipfs/revoke-ip-address-restricton",
+								"api-reference/endpoint/ipfs/revoke-host-origin-restriction"
 							]
 						},
 						{
 							"group": "Gateway Analytics",
 							"pages": [
-								"api-reference/endpoint/top-gateway-analytics",
-								"api-reference/endpoint/time-interval-gateway-analytics"
+								"api-reference/endpoint/ipfs/top-gateway-analytics",
+								"api-reference/endpoint/ipfs/time-interval-gateway-analytics"
 							]
 						},
 						{
 							"group": "Gateway Plugins",
 							"pages": [
-								"api-reference/endpoint/list-marketplace-plugins",
-								"api-reference/endpoint/get-marketplace-plugin-details",
-								"api-reference/endpoint/list-installed-plugins-for-gateway",
-								"api-reference/endpoint/install-gateway-plugin",
-								"api-reference/endpoint/list-gateway-plugins",
-								"api-reference/endpoint/uninstall-gateway-plugin"
+								"api-reference/endpoint/ipfs/list-marketplace-plugins",
+								"api-reference/endpoint/ipfs/get-marketplace-plugin-details",
+								"api-reference/endpoint/ipfs/list-installed-plugins-for-gateway",
+								"api-reference/endpoint/ipfs/install-gateway-plugin",
+								"api-reference/endpoint/ipfs/list-gateway-plugins",
+								"api-reference/endpoint/ipfs/uninstall-gateway-plugin"
 							]
 						}
 					]
@@ -269,33 +288,25 @@
 				{
 					"group": "Users",
 					"pages": [
-						"api-reference/endpoint/generate-pinata-api-key",
-						"api-reference/endpoint/list-api-keys",
-						"api-reference/endpoint/revoke-api-key",
-						{
-							"group": "V3 (beta)",
-							"pages": [
-								"api-reference/endpoint/v3-create-api-key",
-								"api-reference/endpoint/v3-list-api-keys",
-								"api-reference/endpoint/v3-revoke-api-key"
-							]
-						}
+						"api-reference/endpoint/ipfs/generate-pinata-api-key",
+						"api-reference/endpoint/ipfs/list-api-keys",
+						"api-reference/endpoint/ipfs/revoke-api-key"
 					]
 				},
 				{
 					"group": "Signatures",
 					"pages": [
-						"api-reference/endpoint/get-signature-for-a-cid",
-						"api-reference/endpoint/add-signature-to-cid",
-						"api-reference/endpoint/remove-signature-from-cid"
+						"api-reference/endpoint/ipfs/get-signature-for-a-cid",
+						"api-reference/endpoint/ipfs/add-signature-to-cid",
+						"api-reference/endpoint/ipfs/remove-signature-from-cid"
 					]
 				},
 				{
 					"group": "Swaps",
 					"pages": [
-						"api-reference/endpoint/add-swap",
-						"api-reference/endpoint/get-swap-history",
-						"api-reference/endpoint/remove-swap"
+						"api-reference/endpoint/ipfs/add-swap",
+						"api-reference/endpoint/ipfs/get-swap-history",
+						"api-reference/endpoint/ipfs/remove-swap"
 					]
 				}
 			]

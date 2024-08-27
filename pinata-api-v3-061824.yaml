@@ -2063,3 +2063,319 @@ paths:
                 type: object
               example:
                 data: null
+  /files:
+    get:
+      tags:
+        - Private Files
+      summary: List Files
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Limit the number of results
+          example: '10'
+        - name: pageToken
+          in: query
+          schema:
+            type: string
+          description: Paginate using the nextPageToken
+        - name: cidPending
+          in: query
+          schema:
+            type: boolean
+          description: Return only files that are still waiting for a CID
+          example: 'true'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:02:30 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '382'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: f60474dfa75f70cbde347239324f49cc
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      files:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            cid:
+                              type: string
+                            size:
+                              type: number
+                            numberOfFiles:
+                              type: number
+                            mimeType:
+                              type: string
+                            groupId:
+                              type: string
+                            updatedAt:
+                              type: string
+                            createdAt:
+                              type: string
+                      nextPageToken:
+                        type: string
+              example:
+                data:
+                  files:
+                    - id: 01919457-c2c6-770e-9391-8c72c4f41f64
+                      name: radicalize-local.gif
+                      cid: >-
+                        bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
+                      size: 4861678
+                      numberOfFiles: 1
+                      mimeType: TODO
+                      groupId: null
+                      updatedAt: '2024-08-27T14:57:51.485934Z'
+                      createdAt: '2024-08-27T14:57:51.485934Z'
+                  nextPageToken: MDE5MTk0NTctYzJjNi03NzBlLTkzOTEtOGM3MmM0ZjQxZjY0
+  /files/{id}:
+    get:
+      tags:
+        - Private Files
+      summary: Get File by ID
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 01919457-c2c6-770e-9391-8c72c4f41f64
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:04:00 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '303'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 5cda7fd04bb31bc8c6bd461089fcfa1c
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      cid:
+                        type: string
+                      size:
+                        type: number
+                      numberOfFiles:
+                        type: number
+                      mimeType:
+                        type: string
+                      groupId:
+                        type: string
+                      updatedAt:
+                        type: string
+                      createdAt:
+                        type: string
+              example:
+                data:
+                  id: 01919457-c2c6-770e-9391-8c72c4f41f64
+                  name: radicalize-local.gif
+                  cid: bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
+                  size: 4861678
+                  numberOfFiles: 1
+                  mimeType: TODO
+                  groupId: null
+                  updatedAt: '2024-08-27T14:57:51.485934Z'
+                  createdAt: '2024-08-27T14:57:51.485934Z'
+    put:
+      tags:
+        - Private Files
+      summary: Update File
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                groupId:
+                  type: string
+              example:
+                name: Hello Files API
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 01919457-c2c6-770e-9391-8c72c4f41f64
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:12:50 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '298'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: b41144a3011804309872d413a6dbc3b0
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      cid:
+                        type: string
+                      size:
+                        type: number
+                      numberOfFiles:
+                        type: number
+                      mimeType:
+                        type: string
+                      groupId:
+                        type: string
+                      updatedAt:
+                        type: string
+                      createdAt:
+                        type: string
+              example:
+                data:
+                  id: 01919457-c2c6-770e-9391-8c72c4f41f64
+                  name: Hello Files API
+                  cid: bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
+                  size: 4861678
+                  numberOfFiles: 1
+                  mimeType: TODO
+                  groupId: null
+                  updatedAt: '2024-08-27T15:12:50.021584Z'
+                  createdAt: '2024-08-27T14:57:51.485934Z'
+    delete:
+      tags:
+        - Private Files
+      summary: Delete File by ID
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 01919461-6d4c-7456-870d-0d1faeb90f46
+      responses:
+        '500':
+          description: Internal Server Error
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:09:20 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Content-Length:
+              schema:
+                type: integer
+                example: '201'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 79dbc0bba9ecb69876a9f935f1931f3c
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                error:
+                  code: 500
+                  status: Internal Server Error
+                  request: 79dbc0bba9ecb69876a9f935f1931f3c
+                  details: []
+                  message: >-
+                    An internal server error occurred, please contact the system
+                    administrator
+
