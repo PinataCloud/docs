@@ -178,6 +178,10 @@
 			"pages": ["api-reference/introduction"]
 		},
 		{
+			"group": "Authentication",
+			"pages": ["api-reference/endpoint/ipfs/test-authentication"]
+		},
+		{
 			"group": "Files",
 			"pages": [
 				"api-reference/endpoint/upload-a-file",
@@ -199,10 +203,6 @@
 		{
 			"group": "Web3 API",
 			"pages": [
-				{
-					"group": "Authentication",
-					"pages": ["api-reference/endpoint/ipfs/test-authentication"]
-				},
 				{
 					"group": "Pinning",
 					"pages": [
