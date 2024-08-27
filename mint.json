@@ -323,17 +323,11 @@
 		},
 		{
 			"group": "Pinata SDK",
-			"pages": ["sdk/getting-started", "sdk/config"]
+			"pages": ["sdk/getting-started", "sdk/config", "sdk/test-authentication"]
 		},
 		{
-			"group": "Data",
-			"pages": [
-				"sdk/data/test-authentication",
-				"sdk/data/list-files",
-				"sdk/data/pin-jobs",
-				"sdk/data/unpin",
-				"sdk/data/update-metadata"
-			]
+			"group": "Files",
+			"pages": ["sdk/files/list", "sdk/files/update", "sdk/files/delete"]
 		},
 		{
 			"group": "Upload",
@@ -342,29 +336,12 @@
 				"sdk/upload/file-array",
 				"sdk/upload/json",
 				"sdk/upload/base64",
-				"sdk/upload/url",
-				"sdk/upload/cid"
+				"sdk/upload/url"
 			]
 		},
 		{
 			"group": "Gateways",
-			"pages": [
-				"sdk/gateways/get",
-				"sdk/gateways/convert",
-				"sdk/gateways/swap-cid",
-				"sdk/gateways/swap-history",
-				"sdk/gateways/delete-swap",
-				"sdk/gateways/topUsageAnalytics",
-				"sdk/gateways/dateIntervalAnalytics"
-			]
-		},
-		{
-			"group": "Signatures",
-			"pages": [
-				"sdk/signatures/add",
-				"sdk/signatures/get",
-				"sdk/signatures/delete"
-			]
+			"pages": ["sdk/gateways/get"]
 		},
 		{
 			"group": "Groups",
@@ -381,10 +358,6 @@
 		{
 			"group": "Keys",
 			"pages": ["sdk/keys/create", "sdk/keys/list", "sdk/keys/revoke"]
-		},
-		{
-			"group": "Usage",
-			"pages": ["sdk/usage/pinned-file-count", "sdk/usage/total-storage-size"]
 		},
 		{
 			"group": "Glossary",
