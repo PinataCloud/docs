@@ -2,16 +2,11 @@
 title: "Deleting Files"
 ---
 
-The process of removing files from IPFS is called unpinning. When you unpin something from an IPFS storage node, it is marked for garbage collection. When garbage collection runs, the content is permanently deleted from the storage node.
-
-<Warning>
-  Keep in mind that if someone else has pinned your content on IPFS, it will
-  remain available even if you delete your files!
-</Warning>
+Deleting files from Pinata is simple and easy!
 
 ## Deleting Programatically
 
-The SDK has a very simple [unpin](/ipfs-sdk/data/unpin) method that will allow you to delete an array of `cids`.
+The SDK has a very simple [delete](/sdk/files/delete) method that will allow you to delete an array of files by `id`.
 
 ```typescript
 import { PinataSDK } from "pinata";
@@ -21,15 +16,15 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const unpin = await pinata.unpin([
-  "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4",
-  "QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng"
+const unpin = await pinata.files.delete([
+  "3c52f1b8-11b1-40d9-849d-5f05a4bbd76d",
+  "b72886db-9dd4-434c-a1b2-f9d36781ecee"
 ])
 ```
 
 ### Deleting All Files
 
-If you find yourself in a place where you need to unpin a lot of files or perhaps all your files, you can use a script like this to create an array of CIDs and unpin them one by one. The example below uses the [`pinList`](/api-reference/endpoint/list-files) queries to target all pinned files and return 1000 for each request. This could easily be done with a different query to target different files, please check out the [listing files](/pinning/listing-files) doc for more info.
+TBD
 
 ```javascript Unpin All Files
 const PINATA_JWT = "YOUR_JWT_HERE";
@@ -114,7 +109,7 @@ deletePins();
 
 ## Deleting by Web App
 
-If you are trying to delete files (or in IPFS terms "Unpin"), you can do so by clicking on the "more" button and selecting "Unpin File”
+If you are trying to delete files you can do so by clicking on the "more" button and selecting "Delete"
 
 <img
   style={{ width: "100%", borderRadius: "0.5rem" }}

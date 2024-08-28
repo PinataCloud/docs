@@ -66,7 +66,7 @@ const files = await pinata.files
 The `list` method has an auto pagination feature that is triggered when used inside a `for await` iterator
 
 ```typescript
-for await (const item of pinata.files.list() {
+for await (const item of pinata.files.list()) {
   console.log(item.id);
 }
 ```
