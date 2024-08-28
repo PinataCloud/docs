@@ -2378,3 +2378,71 @@ paths:
                   message: >-
                     An internal server error occurred, please contact the system
                     administrator
+  /files/sign:
+    post:
+      tags:
+        - Private Files
+      summary: Get Signed URL
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  url:
+                    type: string
+                    description: The full URL of your file in the format of `https://{yourgatewaydomain}.mypinata.cloud/files/{cid}`
+                  date:
+                    type: number
+                    description: The unix timestamp that the URL is signed, ie time of request
+                  expires:
+                    type: number
+                    description: How long the URL is valid for in sconds after signing based on the date parameter
+                  method:
+                    type: string
+                    description: The URL method, ie `GET`
+              example:
+                url: >-
+                  https://example.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
+                expires: 500000
+                date: 1724875300
+                method: GET
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 28 Aug 2024 20:01:46 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '291'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 0c7a656fdb5c98f6a89cd9cd70147c6d
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    description: The signed URL
+              example:
+                data: >-
+                  https://blush-fast-impala-660.dev-mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm?X-Algorithm=PINATA1&X-Date=1724875300&X-Expires=500000&X-Method=GET&X-Signature=example-signature

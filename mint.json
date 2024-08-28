@@ -136,8 +136,7 @@
 				"files/uploading-files",
 				"files/file-groups",
 				"files/listing-files",
-				"files/deleting-files",
-				"files/file-signatures"
+				"files/deleting-files"
 			]
 		},
 		{
@@ -186,6 +185,7 @@
 				"api-reference/endpoint/upload-a-file",
 				"api-reference/endpoint/list-files",
 				"api-reference/endpoint/get-file-by-id",
+				"api-reference/endpoint/get-signed-url",
 				"api-reference/endpoint/update-file",
 				"api-reference/endpoint/delete-file-by-id"
 			]
