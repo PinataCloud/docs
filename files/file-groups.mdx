@@ -6,11 +6,11 @@ Groups allow you to organize your Pinata content through the Pinata App or throu
 
 ## Pinata API
 
-With the [SDK](/ipfs-sdk/groups), you can create groups, add files to groups, list details about a group, and more! You can also mange groups using the [Pinata API](/api-reference/endpoint/create-group).
+With the [SDK](/sdk/groups), you can create groups, add files to groups, list details about a group, and more! You can also mange groups using the [Pinata API](/api-reference/endpoint/create-group).
 
 ### Create a Group
 
-To create a group you can use the [create](/ipfs-sdk/groups/create) method and passing in the `name` you want to give a group.
+To create a group you can use the [create](/sdk/groups/create) method and passing in the `name` you want to give a group.
 
 ```typescript
 import { PinataSDK } from "pinata";
@@ -27,19 +27,19 @@ const group = await pinata.groups.create({
 
 This will return the Group info
 
-```json
+```typescript
 {
-  "id": "61a4a882-1591-462e-bcb7-fa0eee5f3c51",
-  "user_id": "ec50a085-a746-428d-b01d-167ac379fbd4",
-  "name": "NFT-Project",
-  "updatedAt": "2024-07-03T18:09:33.610Z",
-  "createdAt": "2024-07-03T18:09:33.610Z"
+    id: "01919976-955f-7d06-bd59-72e80743fb95",
+    name: "Test Private Group",
+    public: false,
+    updated_at: "2024-08-28T14:49:31.246596Z",
+    created_at: "2024-08-28T14:49:31.246596Z"
 }
 ```
 
 ### Get a Group
 
-To fetch details of an already existing group you can use the [get](/ipfs-sdk/groups/get) and pass in the `groupId`.
+To fetch details of an already existing group you can use the [get](/sdk/groups/get) and pass in the `groupId`.
 
 ```typescript
 import { PinataSDK } from "pinata";
@@ -56,21 +56,21 @@ const groups = await pinata.groups.get({
 
 This will return the same group info received upon creation.
 
-```json
-[
-  {
-    "id": "61a4a882-1591-462e-bcb7-fa0eee5f3c51",
-    "name": "NFT-Project-updated",
-    "user_id": "ec50a085-a746-428d-b01d-167ac379fbd4",
-    "createdAt": "2024-07-03T18:09:33.610Z",
-    "updatedAt": "2024-07-03T18:15:17.440Z"
-  }
-]
+```typescript
+{
+  data: {
+    id: "0191997b-ca28-79e8-9dbc-a8044ad3e547",
+    name: "My New Group 5",
+    public: false,
+    updated_at: "2024-08-28T14:55:12.448504Z",
+    created_at: "2024-08-28T14:55:12.448504Z",
+  },
+}
 ```
 
 ### List All Groups
 
-If you want to get all Groups or filter through them, you can use the [list](/ipfs-sdk/groups/list) method.
+If you want to get all Groups or filter through them, you can use the [list](/sdk/groups/list) method.
 
 ```typescript
 import { PinataSDK } from "pinata";
@@ -80,9 +80,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const groups = await pinata.groups
-  .list()
-  .name("Greetings");
+const groups = await pinata.groups.list()
 ```
 
 Results can be filtered with the following queries.
@@ -101,21 +99,21 @@ Results can be filtered with the following queries.
 
 This will return an array of Groups and their respective info:
 
-```json
+```typescript
 [
   {
-    "id": "61a4a882-1591-462e-bcb7-fa0eee5f3c51",
-    "name": "NFT-Project-updated",
-    "user_id": "ec50a085-a746-428d-b01d-167ac379fbd4",
-    "createdAt": "2024-07-03T18:09:33.610Z",
-    "updatedAt": "2024-07-03T18:15:17.440Z"
+    id: "0191997b-ca28-79e8-9dbc-a8044ad3e547",
+    name: "My New Group 5",
+    public: false,
+    updated_at: "2024-08-28T14:55:12.448504Z",
+    created_at: "2024-08-28T14:55:12.448504Z",
   }
 ]
 ```
 
 ### Listing Files in a Group
 
-To list all the files that are part of a group you can use the [listFiles](/ipfs-sdk/data/list-files) method and the `group` filter.
+To list all the files that are part of a group you can use the [list](/sdk/files/list) method and the `group` filter.
 
 ```typescript
 import { PinataSDK } from "pinata";
@@ -133,37 +131,25 @@ const files = await pinata
 
 This will return an array of [PinListItem](/ipfs-sdk/types#pinlistitem) objects.
 
-```json
-{
-  "rows": [
+```typescript
+[
     {
-      "id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
-      "ipfs_pin_hash": "<string>",
-      "size": 123,
-      "user_id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
-      "date_pinned": "2023-11-07T05:31:56Z",
-      "date_unpinned": "2023-11-07T05:31:56Z",
-      "metadata": {
-        "name": "<string>",
-        "keyvalues": {}
-      },
-      "regions": [
-        {
-          "regionId": "<string>",
-          "currentReplicationCount": 123,
-          "desiredReplicationCount": 123
-        }
-      ],
-      "mime_type": "<string>",
-      "number_of_files": 123
+        id: "2fd6175d-9220-4ea4-8939-b9cb572f08a4",
+        name: "hello.txt",
+        cid: "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq",
+        size: 5,
+        number_of_files: 1,
+        mime_type: "text/plain",
+        group_id: null,
+        updated_at: "2024-08-27T19:14:36.978738Z",
+        created_at: "2024-08-27T17:14:42.315122Z",
     }
-  ]
-}
+]
 ```
 
 ### Updating the Name of a Group
 
-You can update the name of a group using the [update](/ipfs-sdk/groups/update) method and passing in the `groupId` and the new `name` you want to use.
+You can update the name of a group using the [update](/sdk/groups/update) method and passing in the `groupId` and the new `name` you want to use.
 
 ```typescript
 import { PinataSDK } from "pinata";
@@ -191,7 +177,7 @@ This will return the updated Group info.
 }
 ```
 
-### Add CIDs to a Group
+### Add CIDs to a Group // TO DO
 
 <Note>
   At this time, CIDs can only belong to one group at a time. If a CID is added
@@ -217,7 +203,7 @@ const group = await pinata.groups.addCids({
 
 If successful, the endpoint will return an `OK` response.
 
-### Removing CIDs from a Group
+### Removing CIDs from a Group // TO DO
 
 To remove CIDs from a Group, you would follow the same pattern as `addCids` except using the [removeCids](/ipfs-sdk/groups/remove-files) method instead.
 
@@ -237,7 +223,7 @@ const group = await pinata.groups.removeCids({
 
 If successful, the endpoint will return an `OK` response.
 
-### Delete a Group
+### Delete a Group // TO DO
 
 <Note>
   Deleting a Group that has CIDs inside of it will not unpin/delete the CIDs. Please use the [unpin](/ipfs-sdk/data/unpin) method to actually delete a file from your account
