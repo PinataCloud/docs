@@ -3,13 +3,13 @@ title: "Uploading Files"
 ---
 
 
-With Pinata, there are a few ways you can pin files to IPFS!
+With Pinata there are multiple ways you can upload files!
 
 <Info>HTML uploads are currently only available on paid plans with granted access. If you are on a paid plan and wish to upload HTML please send a request through our support chat or send an email to [team@pinata.cloud](mailto:team@pinata.cloud)</Info>
 
 ## API & SDKs
 
-If you’re a developer that needs to build decentralized applications, then you will likely want to use the [SDK](/ipfs-sdk) or the [Pinata API](/api-reference/introduction). These make it simple to integrate IPFS uploads into your App!
+If you’re a developer that needs to build applications, then you will likely want to use the [SDK](/sdk) or the [Pinata API](/api-reference/introduction). These make it simple to integrate uploads into your App!
 
 ### Using the SDK
 
@@ -50,7 +50,7 @@ The API is a bit more flexible, as it can be used in multiple languages or envir
   Using your API Keys in a client side application will expose them! Consider using a [signed JWT approach](https://www.pinata.cloud/blog/how-to-upload-to-ipfs-from-the-frontend-with-signed-jwts).
 </Warning>
 
-The API accepts `File` objects (and blobs in the right environment) through a multipart form data request, where the object has a key of `file`. Additionally you can add [pinataMetadata](/pinning/pinata-metadata) and [pinataOptions](/pinning/pinata-metadata) to the request. Here is an example of how you could upload with the API:
+The API accepts `File` objects (and blobs in the right environment) through a multipart form data request, where the object has a key of `file`.
 
 ```javascript
 const JWT = "YOUR_PINATA_JWT";
@@ -62,17 +62,7 @@ async function pinFileToIPFS() {
     const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
     formData.append("file", file);
 
-    const pinataMetadata = JSON.stringify({
-      name: "File name",
-    });
-    formData.append("pinataMetadata", pinataMetadata);
-
-    const pinataOptions = JSON.stringify({
-      cidVersion: 1,
-    });
-    formData.append("pinataOptions", pinataOptions);
-
-    const request = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+    const request = await fetch("https://uploads.pinata.cloud/v3/files", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${JWT}`
@@ -122,9 +112,12 @@ const pinata = new PinataSDK({
 });
 
 const upload = await pinata.upload.json({
-  name: "Pinnie NFT",
-  description: "A Pinnie NFT from Pinata",
-  image: "ipfs://bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
+    id: 2,
+    name: "Bob Smith",
+    email: "bob.smith@example.com",
+    age: 34,
+    isActive: false,
+    roles: ["user"]
 })
 ```
 
@@ -204,7 +197,7 @@ import basePathConverter from "base-path-converter"
 import got from 'got'
 
 const pinDirectoryToPinata = async () => {
-  const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
+  const url = `https://uploads.pinata.cloud/v3/files`;
   const src = "PATH_TO_FOLDER";
   var status = 0;
   try {
@@ -254,18 +247,9 @@ function App() {
       Array.from(selectedFile).forEach((file) => {
         formData.append("file", file);
       });
-      const metadata = JSON.stringify({
-        name: "File name",
-      });
-      formData.append("pinataMetadata", metadata);
-
-      const options = JSON.stringify({
-        cidVersion: 0,
-      });
-      formData.append("pinataOptions", options);
 
       const res = await fetch(
-        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        "https://uploads.pinata.cloud/v3/files",
         {
           method: "POST",
           headers: {
@@ -325,12 +309,7 @@ const pinDirectoryToIPFS = async () => {
       data.append("file", file, `${folder}/${file.name}`);
     });
 
-    const pinataMetadata = JSON.stringify({
-      name: `${folder}`,
-    });
-    data.append("pinataMetadata", pinataMetadata);
-
-    const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+    const res = await fetch("https://uploads.pinata.cloud/v3/files", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${PINATA_JWT}`,
