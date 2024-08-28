@@ -22,10 +22,16 @@ paths:
           multipart/form-data:
             schema:
               type: object
+              required:
+                - file
               properties:
                 file:
                   type: string
                   format: binary
+                  description: File object you want to upload
+                group_id:
+                  type: string
+                  description: ID of the group you would like to upload
       responses:
         '200':
           description: Successful response
