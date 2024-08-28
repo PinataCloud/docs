@@ -3,7 +3,7 @@ info:
   title: Private Files API
   version: 1.0.0
 servers:
-  - url: https://uploads.devpinata.cloud
+  - url: https://uploads.devpinata.cloud/v3
 components:
   securitySchemes:
     bearerAuth:
@@ -12,7 +12,7 @@ components:
 security:
   - bearerAuth: []
 paths:
-  /v3/files:
+  /files:
     post:
       tags:
         - default
@@ -48,4 +48,3 @@ paths:
                     type: string
                   user_id:
                     type: string
-
