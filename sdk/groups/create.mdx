@@ -23,11 +23,11 @@ const group = await pinata.groups.create({
 
 ```typescript
 type GroupResponseItem = {
-  id: string;
-  user_id: string;
-  name: string;
-  updatedAt: string;
-  createdAt: string;
+    id: string;
+    public: boolean;
+    name: string;
+    updatedAt: string;
+    createdAt: string;
 };
 ```
 

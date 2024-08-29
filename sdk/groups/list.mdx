@@ -22,53 +22,17 @@ const groups = await pinata.groups
 
 ```typescript
 type GroupResponseItem = {
-  id: string;
-  user_id: string;
-  name: string;
-  updatedAt: string;
-  createdAt: string;
+    id: string;
+    public: boolean;
+    name: string;
+    updatedAt: string;
+    createdAt: string;
 };
 ```
 
 ## Parameters
 
 Filter response with the following additional methods. All filters are optional.
-
-### name
-
-- Type: `string`
-
-Filter by name, uses "contains" matching
-
-```typescript
-const groups = await pinata.groups
-  .list()
-  .name("Greetings");
-```
-
-### limit
-
-- Type: `number`
-
-Limit the number of results
-
-```typescript
-const groups = await pinata.groups
-  .list()
-  .limit(5);
-```
-
-### offset
-
-- Type: `number`
-
-Offset the number of groups returned to paginate
-
-```typescript
-const groups = await pinata.groups
-  .list()
-  .offset(10);
-```
 
 ## Auto Paginate
 
