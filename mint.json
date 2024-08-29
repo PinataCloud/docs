@@ -190,7 +190,16 @@
 				"api-reference/endpoint/delete-file-by-id"
 			]
 		},
-
+		{
+			"group": "Groups",
+			"pages": [
+				"api-reference/endpoint/create-group",
+				"api-reference/endpoint/get-group",
+				"api-reference/endpoint/list-groups",
+				"api-reference/endpoint/update-group",
+				"api-reference/endpoint/delete-group"
+			]
+		},
 		{
 			"group": "API Keys",
 			"pages": [
