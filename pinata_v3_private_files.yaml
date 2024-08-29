@@ -29,6 +29,9 @@ paths:
                   type: string
                   format: binary
                   description: File object you want to upload
+                name:
+                  type: string
+                  description: Add a custom name for the file
                 group_id:
                   type: string
                   description: ID of the group you would like to upload
