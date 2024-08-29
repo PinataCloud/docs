@@ -26,10 +26,9 @@ const groups = await pinata.groups.update({
 ```typescript
 type GroupResponseItem = {
     id: string;
-    public: boolean;
+    is_public: boolean;
     name: string;
-    updatedAt: string;
-    createdAt: string;
+    created_at: string;
 };
 ```
 
@@ -59,7 +58,7 @@ const groups = await pinata.groups.update({
 });
 ```
 
-### public (Optional)
+### isPublic (Optional)
 
 - Type: `boolean`
 
@@ -67,6 +66,6 @@ Update a group to be public or private
 
 ```typescript
 const groups = await pinata.groups.update({
-    public: true
+    isPublic: true
 });
 ```

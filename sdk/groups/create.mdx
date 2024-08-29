@@ -16,6 +16,7 @@ const pinata = new PinataSDK({
 
 const group = await pinata.groups.create({
 	name: "My New Group",
+	isPublic: true
 });
 ```
 
@@ -24,10 +25,9 @@ const group = await pinata.groups.create({
 ```typescript
 type GroupResponseItem = {
     id: string;
-    public: boolean;
+    is_public: boolean;
     name: string;
-    updatedAt: string;
-    createdAt: string;
+    created_at: string;
 };
 ```
 
@@ -44,3 +44,16 @@ const group = await pinata.groups.create({
 	name: "My New Group",
 });
 ```
+
+### isPublic
+
+-type: `boolean`
+
+Determine whether or not a group is public upon creation. Default is `false`.
+
+
+```typescript
+const group = await pinata.groups.create({
+	name: "My New Group",
+	isPublic: true
+});
