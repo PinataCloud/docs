@@ -2244,8 +2244,6 @@ paths:
               properties:
                 name:
                   type: string
-                group_id:
-                  type: string
               example:
                 name: Hello Files API
       parameters:
