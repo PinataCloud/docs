@@ -1,0 +1,76 @@
+---
+title: "createSignedURL ✅"
+---
+
+Create a Signed URL for a file
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const url = await pinata.gateways.createSignedURL({
+	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
+	expires: 30,
+});
+```
+
+## Returns
+
+- Type: `string`
+
+The full signed URL
+
+```
+https://example-gateway.mypinata.cloud/files/bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq?X-Algorithm=PINATA1&X-Date=1724943397&X-Expires=30&X-Method=GET&X-Signature=<SIGNATURE>
+```
+
+## Parameters
+
+### cid
+
+- Type: `string`
+
+Accepts CID of the file you are trying to create a signed URL for
+
+```typescript
+const url = await pinata.gateways.createSignedURL({
+	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
+});
+```
+
+### expires
+
+- Type: `number`
+
+The number of seconds the signed URL should be valid for
+
+
+```typescript
+const url = await pinata.gateways.createSignedURL({
+	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
+	expires: 30,
+});
+```
+
+### date (Optional)
+
+- Type: `number`
+
+A UNIX timestamp of the date a URL is signed
+
+```typescript
+const date = Math.floor(new Date().getTime() / 1000);
+//date: 1724943711
+
+const url = await pinata.gateways.createSignedURL({
+	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
+	expires: 30,
+	date: date
+});
+```

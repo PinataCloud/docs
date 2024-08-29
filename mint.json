@@ -340,7 +340,7 @@
 		},
 		{
 			"group": "Gateways",
-			"pages": ["sdk/gateways/get"]
+			"pages": ["sdk/gateways/get", "sdk/gateways/create-signed-url"]
 		},
 		{
 			"group": "Groups",
