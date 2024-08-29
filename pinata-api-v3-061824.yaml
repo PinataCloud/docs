@@ -2462,6 +2462,9 @@ paths:
                 name:
                   type: string
                   description: The name of the group you want to create
+                is_public:
+                  type: boolean
+                  description: Flag if group is public or not
               example:
                 name: Test Group 3
       responses:
@@ -2506,8 +2509,6 @@ paths:
                         type: string
                       public:
                         type: boolean
-                      updated_at:
-                        type: string
                       created_at:
                         type: string
               example:
@@ -2522,7 +2523,7 @@ paths:
         - Groups
       summary: List Groups
       parameters:
-        - name: public
+        - name: isPublic
           in: query
           schema:
             type: boolean
@@ -2584,10 +2585,8 @@ paths:
                                 type: string
                             name:
                                 type: string
-                            public:
+                            is_public:
                                 type: boolean
-                            updated_at:
-                                type: string
                             created_at:
                                 type: string
                       next_page_token:
@@ -2653,10 +2652,8 @@ paths:
                         type: string
                       name:
                         type: string
-                      public:
+                      is_public:
                         type: boolean
-                      updated_at:
-                        type: string
                       created_at:
                         type: string
               example:
@@ -2725,6 +2722,18 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      is_public:
+                        type: boolean
+                      created_at:
+                        type: string
               example:
                 data:
                   id: 01919ac8-a6f5-7e8e-a8a2-6cfe00122b90
