@@ -43,12 +43,21 @@ type ContentType =
   | null;
 ```
 
-## `DataEndponts`
+## `DataEndpoints`
 
 ```typescript
-type DataEndponts = {
+type DataEndpoints = {
   pinList?: boolean;
   userPinnedDataTotal?: boolean;
+};
+```
+
+## `DeleteResponse`
+
+```typescript
+type DeleteResponse = {
+  id: string;
+  status: string;
 };
 ```
 
@@ -56,8 +65,42 @@ type DataEndponts = {
 
 ```typescript
 type Endpoints = {
-  data?: DataEndponts;
+  data?: DataEndpoints;
   pinning?: PinningEndpoints;
+};
+```
+
+## `FileListItem`
+
+```typescript
+type FileListItem = {
+  id: string;
+  name: string | null;
+  cid: "pending" | string;
+  size: number;
+  number_of_files: number;
+  mime_type: string;
+  group_id: string;
+  created_at: string;
+};
+```
+
+## `FileListQuery`
+
+```typescript
+type FileListQuery = {
+  limit?: number;
+  pageToken?: string;
+  cidPending?: boolean;
+};
+```
+
+## `FileListResponse`
+
+```typescript
+type FileListResponse = {
+  files: FileListItem[];
+  next_page_token: string;
 };
 ```
 
@@ -117,11 +160,21 @@ type GroupCIDOptions = {
 };
 ```
 
+## `GroupListResponse`
+
+```typescript
+type GroupListResponse = {
+  groups: GroupResponseItem[];
+  next_page_token: string;
+};
+```
+
 ## `GroupOptions`
 
 ```typescript
 type GroupOptions = {
   name: string;
+  isPublic?: boolean;
 };
 ```
 
@@ -130,8 +183,9 @@ type GroupOptions = {
 ```typescript
 type GroupQueryOptions = {
   nameContains?: string;
-  offset?: number;
   limit?: number;
+  pageToken?: string;
+  isPublic?: boolean;
 };
 ```
 
@@ -140,9 +194,8 @@ type GroupQueryOptions = {
 ```typescript
 type GroupResponseItem = {
   id: string;
-  user_id: string;
+  is_public: boolean;
   name: string;
-  updatedAt: string;
   createdAt: string;
 };
 ```
@@ -253,18 +306,6 @@ type OptimizeImageOptions = {
 };
 ```
 
-## `PinByCIDResponse`
-
-```typescript
-type PinByCIDResponse = {
-  id: string;
-  ipfsHash: string;
-  status: "prechecking" | "retrieving";
-  name: string;
-  updated?: boolean;
-};
-```
-
 ## `PinataConfig`
 
 ```typescript
@@ -282,17 +323,6 @@ type PinataConfig = {
 ```typescript
 type PinataMetadata = {
   name?: string;
-  keyValues?: Record<string, string | number>;
-};
-```
-
-## `PinataMetadataUpdate`
-
-```typescript
-type PinataMetadataUpdate = {
-  cid: string;
-  name?: string;
-  keyValues?: Record<string, string | number>;
 };
 ```
 
@@ -344,73 +374,6 @@ type PinJobResponse = {
 };
 ```
 
-## `PinListItem`
-
-```typescript
-type PinListItem = {
-  id: string;
-  ipfs_pin_hash: string;
-  size: number;
-  user_id: string;
-  date_pinned: string;
-  date_unpinned: string | null;
-  metadata: {
-    name: string | null;
-    keyvalues: {
-      [key: string]: any;
-    } | null;
-  };
-  regions: {
-    regionId: string;
-    currentReplicationCount: number;
-    desiredReplicationCount: number;
-  }[];
-  mime_type: string;
-  number_of_files: number;
-};
-```
-
-## `PinListQuery`
-
-```typescript
-type PinListQuery = {
-  cid?: string;
-  pinStart?: string;
-  pinEnd?: string;
-  pinSizeMin?: number;
-  pinSizeMax?: number;
-  pageLimit?: number;
-  pageOffset?: number;
-  name?: string;
-  groupId?: string;
-  key?: string;
-  value?: string | number;
-  operator?:
-    | "gt"
-    | "gte"
-    | "lt"
-    | "lte"
-    | "ne"
-    | "eq"
-    | "between"
-    | "notBetween"
-    | "like"
-    | "notLike"
-    | "iLike"
-    | "notILike"
-    | "regexp"
-    | "iRegexp";
-};
-```
-
-## `PinListResponse`
-
-```typescript
-type PinListResponse = {
-  rows: PinListItem[];
-};
-```
-
 ## `PinningEndpoints`
 
 ```typescript
@@ -423,17 +386,6 @@ type PinningEndpoints = {
   pinJobs?: boolean;
   unpin?: boolean;
   userPinPolicy?: boolean;
-};
-```
-
-## `PinResponse`
-
-```typescript
-type PinResponse = {
-  IpfsHash: string;
-  PinSize: number;
-  Timestamp: string;
-  isDuplicate?: boolean;
 };
 ```
 
@@ -461,6 +413,16 @@ type SignatureOptions = {
 type SignatureResponse = {
   cid: string;
   signature: string;
+};
+```
+
+## `SignedUrlOptions`
+
+```typescript
+type SignedUrlOptions = {
+  cid: string;
+  date?: number;
+  expires: number;
 };
 ```
 
@@ -545,12 +507,12 @@ type TopGatewayAnalyticsQuery = GatewayAnalyticsQuery & {
 };
 ```
 
-## `UnpinResponse`
+## `UpdateFileOptions`
 
 ```typescript
-type UnpinResponse = {
-  hash: string;
-  status: string;
+type UpdateFileOptions = {
+  id: string;
+  name?: string;
 };
 ```
 
@@ -558,19 +520,9 @@ type UnpinResponse = {
 
 ```typescript
 type UpdateGroupOptions = {
-  name: string;
   groupId: string;
-};
-```
-
-## `UploadCIDOptions`
-
-```typescript
-type UploadCIDOptions = {
-  metadata?: PinataMetadata;
-  peerAddresses?: string[];
-  keys?: string;
-  groupId?: string;
+  name?: string;
+  isPublic?: boolean;
 };
 ```
 
@@ -579,10 +531,22 @@ type UploadCIDOptions = {
 ```typescript
 type UploadOptions = {
   metadata?: PinataMetadata;
-  pinType?: "async" | "sync" | "cidOnly";
   keys?: string;
   groupId?: string;
-  cidVersion?: 0 | 1;
+};
+```
+
+## `UploadResponse`
+
+```typescript
+type UploadResponse = {
+  id: string;
+  name: string;
+  cid: string;
+  size: number;
+  number_of_files: number;
+  mime_type: string;
+  user_id: string;
 };
 ```
 
