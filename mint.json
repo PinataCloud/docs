@@ -28,10 +28,6 @@
 	},
 	"topbarLinks": [
 		{
-			"name": "Provide Feedback",
-			"url": "https://tally.so/r/mRz0ap"
-		},
-		{
 			"name": "Support",
 			"url": "mailto:team@pinata.cloud"
 		}
@@ -68,11 +64,6 @@
 			"name": "Blog",
 			"icon": "newspaper",
 			"url": "https://pinata.cloud/blog"
-		},
-		{
-			"name": "Community",
-			"icon": "archway",
-			"url": "https://warpcast.com/~/channel/pinata"
 		}
 	],
 	"navigation": [
