@@ -2,16 +2,15 @@
 title: "Uploading Files"
 ---
 
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/QmU5aZHLRSsKyGP8wreHMKyNSmnS1mzQzqUZZNxqJAjWNY?img-format=webp" />
 
-With Pinata there are multiple ways you can upload files!
+At the core of Pinata is file uploads through our File API. It's fast and easy to use, whether you're using the [SDK](/sdk) or the [API](/api-reference). Something unique about the Files API is that all files are given a unique Content Identifier or `CID`. These are not like normal IDs in that they are content addressable hashes based on the contents of the file. You can upload the same file over and over and it will always return the same CID. This has multiple benefits including:
+    - Deduplication: Since a duplicate file would have the same CID, it is not included upon upload and reduces the amount of files in your account. This keeps things organized and reduces your total costs.
+    - Versioning: Tracking the history of a file requires proprietary solutions built on top of the data storage provider and does not expose that history and provenance in a meaningful way to everyone who needs to access it.
 
-<Info>HTML uploads are currently only available on paid plans with granted access. If you are on a paid plan and wish to upload HTML please send a request through our support chat or send an email to [team@pinata.cloud](mailto:team@pinata.cloud)</Info>
+Let's look at the multiple ways you can upload files!
 
-## API & SDKs
-
-If you’re a developer that needs to build applications, then you will likely want to use the [SDK](/sdk) or the [Pinata API](/api-reference/introduction). These make it simple to integrate uploads into your App!
-
-### Using the SDK
+## Using the SDK
 
 The Pinata SDK is able to handle mutliple kinds of uploads, whether its file objects, base64 strings, or even content from remote URLs.
 
@@ -42,7 +41,7 @@ const file2 = new File(["hello world again!"], "hello2.txt", { type: "text/plain
 const upload = await pinata.upload.fileArray([file1, file2])
 ```
 
-### Using the API
+## Using the API
 
 The API is a bit more flexible, as it can be used in multiple languages or environments, and is sometimes preferred for client side uploads. With that, we should express warning in that client side applications will expose API keys.
 
@@ -77,11 +76,11 @@ async function pinFileToIPFS() {
 }
 ```
 
-### Common File Recipes
+## Common File Recipes
 
 Below are some common recipes for uploading a file.
 
-#### Blob
+### Blob
 
 Usually you can pass a Blob directly into the request but to help guarantee success we recommend passing it into a `File` object.
 
@@ -99,7 +98,7 @@ const file = new File(["hello world!"], "hello.txt", { type: "text/plain" })
 const upload = await pinata.upload.file(file)
 ```
 
-#### JSON
+### JSON
 
 Pinata makes it easy to upload JSON objects using the [json](/ipfs-sdk/upload/json) method.
 
@@ -121,7 +120,7 @@ const upload = await pinata.upload.json({
 })
 ```
 
-#### Local Files
+### Local Files
 
 If you need to upload files from a local file source you can use `fs` to feed a file into a `blob`, then turn that `blob` into a `File`.
 
@@ -140,7 +139,7 @@ const file = new File([blob], "hello-world.txt", { type: "text/plain"})
 const upload = await pinata.upload.file(file);
 ```
 
-#### URL
+### URL
 
 To upload a file from an external URL you can stream the contents into an `arrayBuffer`, which then gets passed into a new `Blob` that can then be uploaded to Pinata. This has been abstracted in the SDK using the [url](/ipfs-sdk/upload/url) method.
 
@@ -155,7 +154,7 @@ const pinata = new PinataSDK({
 const upload = await pinata.upload.url("https://i.imgur.com/u4mGk5b.gif")
 ```
 
-#### base64
+### base64
 
 To upload a file in base64 simply turn the contents into a `buffer` that is passed into a `Blob`. Alternatively you can use the SDK for this as well using the [base64](/ipfs-sdk/upload/base64) method.
 
@@ -170,7 +169,7 @@ const pinata = new PinataSDK({
 const upload = await pinata.upload.base64("SGVsbG8gV29ybGQh")
 ```
 
-#### Folders
+### Folders
 
 The SDK can accept an array of files using the [fileArray](/ipfs-sdk/upload/file-array) method. Folders can also be uploaded via the API by creating an array of files and mapping over them to add them to the form data. This is different then having a single `file` entry and having multiple files for that one entry, which does not work.
 

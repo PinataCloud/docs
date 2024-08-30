@@ -5,18 +5,7 @@ excerpt: ""
 hidden: false
 ---
 
-This guide will walk you through setting up Pinata in a Next.js app. If you don't want to do all these steps manually, you can use `npx create-pinata-app` to use our [Next.js Starter Template](/sdks/nextjs-starter).
-
-<iframe
-  width="600"
-  height="400"
-  src="https://www.youtube.com/embed/TaJzw_2hEJI"
-  title="YouTube video player"
-  frameBorder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-  style={{ width: "100%", borderRadius: "0.5rem" }}
-></iframe>
+This guide will walk you through setting up Pinata in a Next.js app.
 
 ## Create an API Key and get Gateway URL
 
@@ -38,7 +27,7 @@ Once you have created the keys you will be shown your API Key Info. This will co
   The API keys are only shown once, be sure to copy them somewhere safe!
 </Note>
 
-After you have your API key you will want to get your Dedicated Gateway domain. Dedicated Gateways are the fastest way to fetch content from IPFS, and are the ideal tool when building decentralized applications. When you create a Pinata account you'll automatically have a Dedicated Gateway created for you! To see it, simply visit the [Gateways Page](https://app.pinata.cloud/gateway) see it listed there.
+After you have your API key you will want to get your Gateway domain. Gateways are the fastest way to fetch content from Pinata, and are the ideal tool when building applications. When you create a Pinata account you'll automatically have a Gateway created for you! To see it, simply visit the [Gateways Page](https://app.pinata.cloud/gateway) see it listed there.
 
 <img
   style={{ width: "100%", borderRadius: "0.5rem" }}
@@ -107,7 +96,7 @@ import { useState, useRef } from "react";
 
 export default function Home() {
   const [file, setFile] = useState("");
-  const [cid, setCid] = useState("");
+  const [url, setUrl] = useState("");
   const [uploading, setUploading] = useState(false);
   const inputFile = useRef(null);
 
@@ -120,8 +109,8 @@ export default function Home() {
         method: "POST",
         body: data,
       });
-      const uploadData = await uploadRequest.json();
-      setCid(uploadData.IpfsHash);
+      const signedUrl = await uploadRequest.json();
+      setCid(signedUrl);
       setUploading(false);
     } catch (e) {
       console.log(e);
@@ -175,7 +164,11 @@ export async function POST(request: NextRequest) {
     const data = await request.formData();
     const file: File | null = data.get("file") as unknown as File;
     const uploadData = await pinata.upload.file(file)
-    return NextResponse.json(uploadData, { status: 200 });
+    const url = await pinata.gateways.createSignedURL({
+		cid: uploadData.cid,
+		expires: 3600,
+	});
+    return NextResponse.json(url, { status: 200 });
   } catch (e) {
     console.log(e);
     return NextResponse.json(
@@ -186,67 +179,24 @@ export async function POST(request: NextRequest) {
 }
 ```
 
-This will accept a `POST` request from the client, create [`pinataMetadata`](/pinning/pinata-metadata), then send an API request to Pinata with the upload. Once complete it will return the [`CID`](/ipfs-101/what-are-cids) to the client.
+This will accept a `POST` request from the client, then send an API request to Pinata with the upload, then make one more request to get a signed URL we can use to see the content. Once complete it will return the URL to the client.
 
-### Pull Content from IPFS
-
-After we have uploaded the file and get the CID back we can pass it through our [Dedicatd Gateway](/gateways/dedicated-ipfs-gateways) to either download it or render it in our app. For this example we will assume the file is an image, but IPFS supports any kind of file type.
-
-Back in `app/page.ts` we can add the following code.
+With our URL we can render the image we uploaded by adding the following code to the `page.tsx` file.
 
 ```typescript app/page.tsx
-"use client";
-
-import { useState, useRef } from "react";
-
-export default function Home() {
-  const [file, setFile]: any = useState();
-  const [cid, setCid] = useState("");
-  const [uploading, setUploading] = useState(false);
-
-  const inputFile = useRef(null);
-
-  const uploadFile = async () => {
-    try {
-      setUploading(true);
-      const data = new FormData();
-      data.set("file", file);
-      const uploadRequest = await fetch("/api/files", {
-        method: "POST",
-        body: data,
-      });
-      const uploadData = await uploadRequest.json();
-      setCid(uploadData.IpfsHash);
-      setUploading(false);
-    } catch (e) {
-      console.log(e);
-      setUploading(false);
-      alert("Trouble uploading file");
-    }
-  };
-
-  const handleChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-
-  return (
-    <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
-      <input type="file" id="file" ref={inputFile} onChange={handleChange} />
-      <button disabled={uploading} onClick={uploadFile}>
-        {uploading ? "Uploading..." : "Upload"}
-      </button>
-      {cid && (
-        <img
-          src={`https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`}
-          alt="Image from IPFS"
-        />
-      )}
-    </main>
-  );
-}
+    return (
+		<main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
+			<input type="file" id="file" ref={inputFile} onChange={handleChange} />
+			<button disabled={uploading} onClick={uploadFile}>
+				{uploading ? "Uploading..." : "Upload"}
+			</button>
+			{/* Add a conditional looking for the signed url and use it as the source */}
+			{url && <img src={url} alt="Image from Pinata" />}
+		</main>
+	);
 ```
 
-This will check to make sure the CID has been set, then pass it through our Dedicated Gateway to render it in our `img` tag.
+And just like that we have uploaded an image to Pinata and recieved a usable URL in return!
 
 ## Client Side Setup
 
@@ -380,68 +330,81 @@ export default function Home() {
 
 The main thing to understand here is that we are able to use the `key()` method in combination with our upload methods which passes in the temporary key instead of trying to access the admin key.
 
-### Pull Content from IPFS
+Now that we have the file uploaded we can create a signed URL for the file using another API endpoint under `app/api/sign/route.ts`.
 
-After we have uploaded the file and get the CID back we can pass it through our [Dedicatd Gateway](/gateways/dedicated-ipfs-gateways) to either download it or render it in our app. For this example we will assume the file is an image, but IPFS supports any kind of file type.
+```typescript app/api/sign/route.ts
+import { type NextRequest, NextResponse } from "next/server";
+import { pinata } from "@/utils/config"
 
-Back in `app/page.ts` we can add the following code.
+export const dynamic = "force-dynamic";
+
+export async function GET(req: NextRequest, res: NextResponse) {
+  try {
+    const data = await reqest.json()
+    const url = await pinata.gateways.createSignedURL({
+        cid: data.cid,
+        expires: 30
+    })
+    return NextResponse.json(url, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ text: "Error creating API Key:" }, { status: 500 });
+  }
+}
+```
+
+With this we can make another request from the client to get the URL and display it on our page.
 
 ```typescript app/page.tsx
 "use client";
 
 import { useState, useRef } from "react";
-import { pinata } from "@/utils/config"
+import { pinata } from "@/utils/config";
 
 export default function Home() {
-  const [file, setFile]: any = useState();
-  const [cid, setCid] = useState("");
-  const [uploading, setUploading] = useState(false);
+	const [file, setFile]: any = useState();
+	const [url, setUrl] = useState("");
+	const [uploading, setUploading] = useState(false);
 
-  const inputFile = useRef(null);
+	const inputFile = useRef(null);
 
-  const uploadFile = async () => {
-    try {
-      setUploading(true);
-      const keyRequest = await fetch("/api/key", {
-        method: "GET",
-      });
-      const keyData = await keyRequest.json();
-      const upload = await pinata.upload
-        .file(file)
-        .key(keyData.JWT)
-      setCid(upload.IpfsHash);
-      setUploading(false);
-    } catch (e) {
-      console.log(e);
-      setUploading(false);
-      alert("Trouble uploading file");
-    }
-  };
+	const uploadFile = async () => {
+		try {
+			setUploading(true);
+			const keyRequest = await fetch("/api/key", {
+				method: "GET",
+			});
+			const keyData = await keyRequest.json();
+			const upload = await pinata.upload.file(file).key(keyData.JWT);
+			const urlReuest = await fetch("/api/sign", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ cid: upload.cid }),
+			});
+			const url = await urlReuest.json();
+			setUrl(url);
+			setUploading(false);
+		} catch (e) {
+			console.log(e);
+			setUploading(false);
+			alert("Trouble uploading file");
+		}
+	};
 
-  const handleChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+	const handleChange = (e) => {
+		setFile(e.target.files[0]);
+	};
 
-  return (
-    <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
-      <input type="file" id="file" ref={inputFile} onChange={handleChange} />
-      <button disabled={uploading} onClick={uploadFile}>
-        {uploading ? "Uploading..." : "Upload"}
-      </button>
-      {cid && (
-        <img
-          src={`https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`}
-          alt="Image from IPFS"
-        />
-      )}
-    </main>
-  );
+	return (
+		<main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
+			<input type="file" id="file" ref={inputFile} onChange={handleChange} />
+			<button disabled={uploading} onClick={uploadFile}>
+				{uploading ? "Uploading..." : "Upload"}
+			</button>
+			{url && <img src={url} alt="Image from Pinata" />}
+		</main>
+	);
 }
 ```
-
-This will check to make sure the CID has been set, then pass it through our Dedicated Gateway to render it in our `img` tag.
-
-
-## Next Steps
-
-If you will be working with images a lot then you may want to look at our built in [image optimizations](/gateways/image-optimizations) for resizing images on the fly. Be sure to check out our [API Reference](/api-reference/introduction) to see what else you can do with the API like listing or deleting files, and check out [Gateway Access Controls](/gateways/gateway-access-controls) if you specifically need to fetch files outside your account that you have not uploaded yourself.

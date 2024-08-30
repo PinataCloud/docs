@@ -95,8 +95,7 @@
 			"pages": [
 				"account-management/api-keys",
 				"account-management/workspaces",
-				"account-management/billing",
-				"account-management/limits"
+				"account-management/billing"
 			]
 		},
 		{
@@ -140,20 +139,8 @@
 			]
 		},
 		{
-			"group": "Dedicated Gateways",
-			"pages": [
-				"gateways/dedicated-ipfs-gateways",
-				"gateways/gateway-access-controls",
-				"gateways/image-optimizations",
-				{
-					"group": "Plugins",
-					"pages": [
-						"gateways/plugins/getting-started",
-						"gateways/plugins/content-addressable",
-						"gateways/plugins/hot-swaps"
-					]
-				}
-			]
+			"group": "Gateways",
+			"pages": ["gateways/retrieving-files"]
 		},
 		{
 			"group": "Dedicated Gateways",

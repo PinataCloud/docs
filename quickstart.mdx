@@ -69,6 +69,7 @@ const pinata = new PinataSDK({
 Use the `upload` method to upload a File object.
 
 <CodeGroup>
+
 ```typescript SDK
 import { PinataSDK } from "pinata";
 
@@ -141,10 +142,9 @@ The unique thing about Pinata's File API is the CID or Content Identifier. Its a
 
 ### 3. Retrieve a File through a Gateway
 
-Use the `id` of a file to fetch it through a Gateway
+Use the `cid` of a file to fetch it through a Gateway, or create a signed URL.
 
-<CodeGroup>
-```typescript SDK
+```typescript
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
@@ -156,6 +156,12 @@ async function main() {
   try {
     const data = await pinata.gateways.get("bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq");
     console.log(data)
+
+    const url = await pinata.gateways.createSignedURL({
+       	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
+    	expires: 1800,
+    })
+    console.log(url)
   } catch (error) {
     console.log(error);
   }
@@ -164,46 +170,16 @@ async function main() {
 main();
 ```
 
-```typescript API
-const GATEWAY = "my-example.mypinata.cloud";
-const CID = "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq";
-
-async function fetchFileFromIPFS() {
-  const url = `https://${GATEWAY}/ipfs/${CID}`;
-  try {
-    const request = await fetch(url);
-    const response = await request.text();
-    console.log(response);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-await fetchFileFromIPFS();
-// Hello World!
-```
-</CodeGroup>
-
 ## What's Next? [NEEDS UPDATING]
 
 Ready to see more of what Pinata has to offer? Here are some additional features and concepts to help you get the most out of our platform:
 
 <CardGroup cols={2}>
-  <Card title="Basic IPFS Concepts" icon="cube" color="#00cc92" href="https://www.youtube.com/watch?v=SLfa1vUkCH0&list=PLNlv1NZFFbLeSpHeb4H43VbopG4Z0z2Nc">
-  Want to learn more about basic IPFS concepts? We have plenty of information for you, including more about [IPFS](https://docs.pinata.cloud/ipfs-101/what-is-ipfs), [Pinning](https://docs.pinata.cloud/ipfs-101/what-is-ipfs-pinning), [CIDs](https://docs.pinata.cloud/ipfs-101/what-are-cids), and [Gateways](https://docs.pinata.cloud/ipfs-101/what-are-ipfs-gateways)!
-
-  </Card>
-  <Card title="Groups" icon="cabinet-filing" color="#00cc92" href="https://docs.pinata.cloud/pinning/groups">
-
+  <Card title="Groups" icon="cabinet-filing" color="#00cc92" href="https://docs.pinata.cloud/files/groups">
 With Groups, you can organize your files via the Pinata API or the web app. Create a Group, store your IPFS content, and fetch content quickly and easily.
-
   </Card>
   <Card title="Workspaces" icon="people-group" color="#00cc92" href="https://docs.pinata.cloud/account-management/workspaces">
   Workspaces allow you to add multiple team members to your Pinata account and collaborate seamlessly. Even if your team members don’t have a Pinata account, you can invite them easily. This feature is essential for efficient project collaboration and management.
-  </Card>
-  <Card title="Analytics" icon="chart-mixed" color="#00cc92" href="https://www.pinata.cloud/blog/ipfs-gateway-analytics-available-on-all-paid-plans/">
-Gain comprehensive insights into your content with Pinata Analytics. Understanding detailed analytics on requests and bandwidth empower you to make informed decisions, driving your business forward with clear visibility.
-
   </Card>
 
 </CardGroup>

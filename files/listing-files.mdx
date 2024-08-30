@@ -18,7 +18,31 @@ const files = await pinata.files.list()
 
 ## Filters
 
-TBD
+When listing files there a few ways you can filter the results
+
+### limit
+
+- Type: `number`
+
+Limit the number of results
+
+```typescript
+const files = await pinata.files
+  .list()
+  .limit(10)
+```
+
+### cidPending
+
+- Type: `boolean`
+
+Filters results and only returns files where `cid` is still `pending`
+
+```typescript
+const files = await pinata.files
+  .list()
+  .cid(true)
+```
 
 ## Auto Paginate
 
