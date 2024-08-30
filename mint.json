@@ -60,6 +60,11 @@
 			"name": "Blog",
 			"icon": "newspaper",
 			"url": "https://pinata.cloud/blog"
+		},
+		{
+			"name": "Community",
+			"icon": "github",
+			"url": "https://github.com/PinataCloud"
 		}
 	],
 	"navigation": [
