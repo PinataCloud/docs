@@ -80,14 +80,9 @@
 			"group": "Get Started",
 			"pages": [
 				"quickstart",
-				{
-					"group": "Frameworks",
-					"pages": [
-						"frameworks/next-js",
-						"frameworks/react",
-						"frameworks/node-js"
-					]
-				}
+				"frameworks/next-js",
+				"frameworks/react",
+				"frameworks/node-js"
 			]
 		},
 		{
