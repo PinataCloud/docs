@@ -409,6 +409,16 @@
 			]
 		},
 		{
+			"group": "Other Tools",
+			"pages": [
+				"web3/tools/pinata-sdk",
+				"web3/tools/nextjs-starter",
+				"web3/tools/pinata-cli",
+				"web3/tools/pinata-raycast-extension",
+				"web3/tools/community-sdks"
+			]
+		},
+		{
 			"group": "Farcaster",
 			"pages": [
 				{
