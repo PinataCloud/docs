@@ -323,7 +323,6 @@
 			"group": "Upload",
 			"pages": [
 				"sdk/upload/file",
-				"sdk/upload/file-array",
 				"sdk/upload/json",
 				"sdk/upload/base64",
 				"sdk/upload/url"
@@ -337,8 +336,6 @@
 			"group": "Groups",
 			"pages": [
 				"sdk/groups/create",
-				"sdk/groups/add-cids",
-				"sdk/groups/remove-cids",
 				"sdk/groups/get",
 				"sdk/groups/list",
 				"sdk/groups/update",
@@ -593,6 +590,18 @@
 		"suggestEdit": true
 	},
 	"redirects": [
+		{
+			"source": "/pinning/:slug*",
+			"destination": "/web3/pinning/:slug*"
+		},
+		{
+			"source": "/ipfs-101/:slug*",
+			"destination": "/web3/ipfs-101/:slug*"
+		},
+		{
+			"source": "/farcaster/:slug*",
+			"destination": "/web3/farcaster/:slug*"
+		},
 		{
 			"source": "/sdks/:slug*",
 			"destination": "/tools/:slug*"

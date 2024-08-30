@@ -1,5 +1,5 @@
 ---
-title: "list ✅"
+title: "list"
 ---
 
 List and filter through all Groups
@@ -32,6 +32,30 @@ type GroupResponseItem = {
 ## Parameters
 
 Filter response with the following additional methods. All filters are optional.
+
+### isPublic
+
+- Type: `boolean`
+
+Filters groups based on whether they are public or not
+
+```typescript
+const groups = await pinata.groups
+    .list()
+    .isPublic(true)
+```
+
+### limit
+
+- Type: `number`
+
+Limits the number of results
+
+```typescript
+const groups = await pinata.groups
+    .list()
+    .limit(10)
+```
 
 ## Auto Paginate
 

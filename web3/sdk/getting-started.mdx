@@ -1,12 +1,12 @@
 ---
 title: "Getting Started"
 description: "Get up and running with the Pinata SDK"
-'og:image': "https://docs.mypinata.cloud/ipfs/QmWJyo6D9oBrFcNJh58qMZ8JZWkVaFN4fJAZzCgd168FR3?filename=og.png"
+'og:image': "https://docs.mypinata.cloud/ipfs/Qmbg1KajsrdLoBwZ8aoSMDMHrWd9EGJkun24UVXJVWYqVx?filename=og.png"
 ---
 
 <Note>This is a `v0.1.*` release of the Pinata SDK, please [email us](mailto:steve@pinata.cloud) if you have any questions or issues</Note>
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/QmWJyo6D9oBrFcNJh58qMZ8JZWkVaFN4fJAZzCgd168FR3" />
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/Qmbg1KajsrdLoBwZ8aoSMDMHrWd9EGJkun24UVXJVWYqVx" />
 
 The Pinata Typescript SDK is an all-in-one tool for everything you might need, from uploading content, using Dedicated Gateways, even user or group management!
 
@@ -30,29 +30,29 @@ Install with your package manager of choice
 <CodeGroup>
 
 ```bash npm
-npm i pinata
+npm i pinata-web3
 ```
 
 ```bash pnpm
-pnpm i pinata
+pnpm i pinata-web3
 ```
 
 ```bash yarn
-yarn add pinata
+yarn add pinata-web3
 ```
 
 ```bash bun
-bun i pinata
+bun i pinata-web3
 ```
 
 </CodeGroup>
 
 Import and initialize the SDK in your codebase with the following variables
-- [Pinata API Key JWT](/account-management/api-keys)
-- [Pinata Dedicated Gateway Domain](/gateways/dedicated-ipfs-gateways)
+- [Pinata API Key JWT](/web3/account-management/api-keys)
+- [Pinata Dedicated Gateway Domain](/web3/gateways/dedicated-ipfs-gateways)
 
 ```typescript
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: "PINATA_JWT",
@@ -65,7 +65,7 @@ const pinata = new PinataSDK({
 ## 2. Upload a File
 
 ```typescript
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -100,7 +100,7 @@ This will return an object like the following
 Use the CID or `IpfsHash` from the upload to fetch a file
 
 ```typescript
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,

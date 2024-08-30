@@ -9,7 +9,7 @@ Upload a single file to Pinata
 ## Usage
 
 ```typescript
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -25,7 +25,7 @@ const upload = await pinata.upload.file(file)
 If you need to upload files from a local file source you can use `fs` to feed a file into a `blob`, then turn that `blob` into a `File`.
 
 ```typescript
-const { PinataSDK } = require("pinata")
+const { PinataSDK } = require("pinata-web3")
 const fs = require("fs")
 const { Blob } = require("buffer")
 

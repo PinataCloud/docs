@@ -4,8 +4,6 @@ description: "Get up and running with the Pinata SDK"
 'og:image': "https://docs.mypinata.cloud/ipfs/QmWJyo6D9oBrFcNJh58qMZ8JZWkVaFN4fJAZzCgd168FR3?filename=og.png"
 ---
 
-<Note>This is a `v0` release of the Pinata SDK, please [email us](mailto:steve@pinata.cloud) if you have any questions or issues</Note>
-
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/QmWJyo6D9oBrFcNJh58qMZ8JZWkVaFN4fJAZzCgd168FR3" />
 
 The Pinata Typescript SDK is an all-in-one tool for everything you might need, from uploading content, using Dedicated Gateways, even user or group management!
@@ -49,7 +47,7 @@ bun i pinata
 
 Import and initialize the SDK in your codebase with the following variables
 - [Pinata API Key JWT](/account-management/api-keys)
-- [Pinata Dedicated Gateway Domain](/gateways/dedicated-ipfs-gateways)
+- [Pinata Dedicated Gateway Domain](/gateways/retrieving-files)
 
 ```typescript
 import { PinataSDK } from "pinata";
@@ -89,22 +87,27 @@ This will return an object like the following
 
 ```typescript
 {
-  IpfsHash: "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq",
-  PinSize: 5,
-  Timestamp: "2024-07-11T23:33:27.665Z",
+    id: "41bc6820-43d3-46f8-a9e0-e53e8adea2e8",
+    name: "hello.txt",
+    cid: "bafkreid7qoywk77r7rj3slobqfekdvs57qwuwh5d2z3sqsw52iabe3mqne",
+    size: 12,
+    number_of_files: 1,
+    mime_type: "text/plain;charset=utf-8",
+    user_id: "cb7c7bd8-7deb-479d-8750-34a20f2adb3b",
+    group_id: null,
 }
 ```
 
 ## 3. Retrieve a File
 
-Use the CID or `IpfsHash` from the upload to fetch a file
+Use the `cid` from the upload to fetch a file
 
 ```typescript
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
-  pinataJwt: process.env.PINATA_JWT!,
-  pinataGateway: "example-gateway.mypinata.cloud",
+    pinataJwt: process.env.PINATA_JWT!,
+    pinataGateway: "example-gateway.mypinata.cloud",
 });
 
 async function main() {
