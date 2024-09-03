@@ -3,7 +3,7 @@ info:
   title: Private Files API
   version: 1.0.0
 servers:
-  - url: https://uploads.devpinata.cloud/v3
+  - url: https://uploads.pinata.cloud/v3
 components:
   securitySchemes:
     bearerAuth:

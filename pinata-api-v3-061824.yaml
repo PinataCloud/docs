@@ -3,7 +3,7 @@ info:
   title: Pinata V3 API
   version: 1.0.0
 servers:
-  - url: https://api.devpinata.cloud/v3
+  - url: https://api.pinata.cloud/v3
 components:
   securitySchemes:
     bearerAuth:
