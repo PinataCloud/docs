@@ -1,19 +1,23 @@
 ---
 title: "Quickstart"
-description: "Start uploading and retrieving content to IPFS in no time"
+description: "Start uploading and retrieving content in no time"
 slug: "quickstart"
-excerpt: "Start uploading to IPFS with Pinata"
+excerpt: "Start uploading files with Pinata"
 hidden: false
 ---
 
 <img
   style={{ width: "100%", borderRadius: "0.5rem" }}
-  src="https://docs.mypinata.cloud/ipfs/bafybeicpfp5m4oepo6yaojoloonyh4nlifqiynn2as76cgg2ulzrosxiza"
+  src="https://docs.mypinata.cloud/ipfs/QmP9PGe3PdUqmsq8xY4sEW3qgdXx4WT9ictTWCb3qyzz3s?img-format=webp"
 />
 
 ## Getting Started with Pinata
 
-Whether you're brand new to IPFS or a seasoned developer, Pinata makes it simple to store and retrieve content with speed and security. All you need to kick off your journey is a [free Pinata account](https://app.pinata.cloud/register)!
+Whether you're brand new or a seasoned developer, Pinata makes it simple to store and retrieve content with speed and security. All you need to kick off your journey is a [free Pinata account](https://app.pinata.cloud/register)!
+
+<Note>
+Looking for our Web3 tools? You can find them [here](/web3)!
+</Note>
 
 ### 1. Get API key and Gateway URL
 
@@ -24,7 +28,7 @@ Whether you're brand new to IPFS or a seasoned developer, Pinata makes it simple
 
 Inside the [Pinata App](https://app.pinata.cloud) select "API Keys" from the sidebar, then click "New Key" in the top right. We would recommend starting with Admin privileges and unlimited uses to start. You will receive a `pinata_api_key`, `pinata_api_secret`, and a `JWT`. The JWT is the most common authentication method and what we'll be using below.
 
-Next you will want to grab your Dedicated Gateway domain by clicking the Gateways tab in the sidebar. You should see it listed in the format `fun-llama-300.mypinata.cloud` and you will want to copy it exactly like that.
+Next you will want to grab your Gateway domain by clicking the Gateways tab in the sidebar. You should see it listed in the format `fun-llama-300.mypinata.cloud` and you will want to copy it exactly like that.
 
 ### 2. Install and Setup SDK
 
@@ -69,6 +73,7 @@ const pinata = new PinataSDK({
 Use the `upload` method to upload a File object.
 
 <CodeGroup>
+
 ```typescript SDK
 import { PinataSDK } from "pinata";
 
@@ -93,7 +98,7 @@ await main();
 ```typescript API
 const JWT = "PINATA_JWT";
 
-async function pinFileToIPFS() {
+async function uploadFile() {
   try {
     const text = "Hello World!";
     const blob = new Blob([text], { type: "text/plain" });
@@ -102,7 +107,7 @@ async function pinFileToIPFS() {
     data.append("file", file);
 
     const request = await fetch(
-      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      "https://uploads.pinata.cloud/v3/files",
       {
         method: "POST",
         headers: {
@@ -126,20 +131,24 @@ You should get a response object like the one below
 
 ```typescript
 {
-  IpfsHash: "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq",
-  PinSize: 20,
-  Timestamp: "2024-02-03T18:42:14.989Z"
+    id: "349f1bb2-5d59-4cab-9966-e94c028a05b7",
+    name: "file.txt",
+    cid: "bafybeihgxdzljxb26q6nf3r3eifqeedsvt2eubqtskghpme66cgjyw4fra",
+    size: 4682779,
+    number_of_files: 1,
+    mime_type: "text/plain",
+    user_id: "7a484d2c-4219-4f80-9d9d-86b42461e71a",
+    group_id: null
 }
 ```
 
-The `IpfsHash` is more commonly recognized as the `CID`, both a hash verifying the content’s authenticity but also it serves as the address to the file.
+The unique thing about Pinata's File API is the CID or Content Identifier. Its a unique hash based on the content ofthe file.
 
-### 3. Retrieve a File from IPFS
+### 3. Retrieve a File through a Gateway
 
-Use the CID or `IpfsHash` from the upload to fetch a file
+Use the `cid` of a file to fetch it through a Gateway, or create a signed URL.
 
-<CodeGroup>
-```typescript SDK
+```typescript
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
@@ -151,6 +160,12 @@ async function main() {
   try {
     const data = await pinata.gateways.get("bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq");
     console.log(data)
+
+    const url = await pinata.gateways.createSignedURL({
+       	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
+    	expires: 1800,
+    })
+    console.log(url)
   } catch (error) {
     console.log(error);
   }
@@ -159,46 +174,16 @@ async function main() {
 main();
 ```
 
-```typescript API
-const GATEWAY = "my-example.mypinata.cloud";
-const CID = "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq";
-
-async function fetchFileFromIPFS() {
-  const url = `https://${GATEWAY}/ipfs/${CID}`;
-  try {
-    const request = await fetch(url);
-    const response = await request.text();
-    console.log(response);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-await fetchFileFromIPFS();
-// Hello World!
-```
-</CodeGroup>
-
 ## What's Next?
 
 Ready to see more of what Pinata has to offer? Here are some additional features and concepts to help you get the most out of our platform:
 
 <CardGroup cols={2}>
-  <Card title="Basic IPFS Concepts" icon="cube" color="#00cc92" href="https://www.youtube.com/watch?v=SLfa1vUkCH0&list=PLNlv1NZFFbLeSpHeb4H43VbopG4Z0z2Nc">
-  Want to learn more about basic IPFS concepts? We have plenty of information for you, including more about [IPFS](https://docs.pinata.cloud/ipfs-101/what-is-ipfs), [Pinning](https://docs.pinata.cloud/ipfs-101/what-is-ipfs-pinning), [CIDs](https://docs.pinata.cloud/ipfs-101/what-are-cids), and [Gateways](https://docs.pinata.cloud/ipfs-101/what-are-ipfs-gateways)!
-
-  </Card>
-  <Card title="Groups" icon="cabinet-filing" color="#00cc92" href="https://docs.pinata.cloud/pinning/groups">
-
+  <Card title="Groups" icon="cabinet-filing" color="#00cc92" href="https://docs.pinata.cloud/files/groups">
 With Groups, you can organize your files via the Pinata API or the web app. Create a Group, store your IPFS content, and fetch content quickly and easily.
-
   </Card>
   <Card title="Workspaces" icon="people-group" color="#00cc92" href="https://docs.pinata.cloud/account-management/workspaces">
   Workspaces allow you to add multiple team members to your Pinata account and collaborate seamlessly. Even if your team members don’t have a Pinata account, you can invite them easily. This feature is essential for efficient project collaboration and management.
-  </Card>
-  <Card title="Analytics" icon="chart-mixed" color="#00cc92" href="https://www.pinata.cloud/blog/ipfs-gateway-analytics-available-on-all-paid-plans/">
-Gain comprehensive insights into your content with Pinata Analytics. Understanding detailed analytics on requests and bandwidth empower you to make informed decisions, driving your business forward with clear visibility.
-
   </Card>
 
 </CardGroup>

@@ -22,11 +22,14 @@ const upload = await pinata.upload.fileArray([file1, file2])
 ## Returns
 
 ```typescript
-type PinResponse = {
-  IpfsHash: string;
-  PinSize: number;
-  Timestamp: string;
-  isDuplicate?: boolean;
+type UploadResponse = {
+	id: string;
+	name: string;
+	cid: string;
+	size: number;
+	number_of_files: number;
+	mime_type: string;
+	user_id: string;
 };
 ```
 
@@ -42,23 +45,6 @@ Accepts an array of File objects in accordance with the [W3C File API](https://w
 const file1 = new File([blob1], "hello1.txt", { type: "text/plain" })
 const file2 = new File([blob2], "hello2.txt", { type: "text/plain" })
 const upload = await pinata.upload.fileArray([file1, file2])
-```
-
-### addMetadata (Optional)
-
-- Type: [PinataMetadata](../types#pinatametadata)
-
-Add optional metadata to file
-
-```typescript
-const upload = await pinata.upload
-  .fileArray([file1, file2])
-  .addMetadata({
-    name: "pinnie.png",
-    keyValues: {
-      whimsey: 100
-    }
-  })
 ```
 
 ### group (Optional)
@@ -83,16 +69,4 @@ Upload a file using a secondary API key generated through `keys.create()`
 const upload = await pinata.upload
   .fileArray([file1, file2])
   .key("GENERATED_API_JWT")
-```
-
-### cidVersion (Optional)
-
-- Type: `0 | 1`
-
-Specificy CID version for upload
-
-```typescript
-const upload = await pinata.upload
-  .fileArray([file1, file2])
-  .cidVersion(0)
 ```

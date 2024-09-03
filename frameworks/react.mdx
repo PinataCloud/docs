@@ -165,7 +165,7 @@ export default App;
 
 ### Pull Content from IPFS
 
-After we have uploaded the file and get the CID back we can pass it through our [Dedicatd Gateway](/gateways/dedicated-ipfs-gateways) to either download it or render it in our app. For this example we will assume the file is an image, but IPFS supports any kind of file type.
+After we have uploaded the file and get the CID back we can create a signed URL for the file to either download it or render it in our app. For this example we will assume the file is an image, but Pinata supports any kind of file type.
 
 We can do this by adding the following code to our `App.tsx` file.
 
@@ -175,7 +175,7 @@ import { pinata } from "./utils/config"
 
 function App() {
   const [selectedFile, setSelectedFile]: any = useState();
-  const [cid, setCid]: any = useState();
+  const [url, setUrl]: any = useState();
 
   const changeHandler = (event: any) => {
     setSelectedFile(event.target.files[0]);
@@ -185,7 +185,12 @@ function App() {
     try {
       const upload = await pinata.upload.file(selectedFile)
       console.log(upload);
-      setCid(upload.IpfsHash)
+
+      const signedUrl = await pinata.gateways.createSignedURL({
+          cid: upload.cid,
+          expires: 30
+      })
+      setUrl(signedUrl)
     } catch (error) {
       console.log(error);
     }
@@ -199,10 +204,10 @@ function App() {
         onChange={changeHandler}
       />
       <button onClick={handleSubmission}>Submit</button>
-      {cid && (
+      {url && (
         <img
-          src={`https://${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}
-          alt="ipfs image"
+          src={url}
+          alt="uploaded image"
         />
       )}
     </>
@@ -211,9 +216,3 @@ function App() {
 
 export default App;
 ```
-
-You can see in the image tag that we simply pass in our `VITE_GATEWAY_URL` variable followed by the `/ipfs` path, and finishing the url with the `cid`.
-
-## Next Steps
-
-If you will be working with images a lot then you may want to look at our built in [image optimizations](/gateways/image-optimizations) for resizing images on the fly. Be sure to check out our [API Reference](/api-reference/introduction) to see what else you can do with the API like listing or deleting files, and check out [Gateway Access Controls](/gateways/gateway-access-controls) if you specifically need to fetch files outside your account that you have not uploaded yourself.

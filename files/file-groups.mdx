@@ -1,0 +1,171 @@
+---
+title: "File Groups"
+---
+
+Groups allow you to organize your Pinata content through the Pinata App or through the Pinata API, giving you a clearer picture of what your files are being used for.
+
+## Pinata API
+
+With the [SDK](/sdk/groups), you can create groups, add files to groups, list details about a group, and more! You can also mange groups using the [Pinata API](/api-reference/endpoint/create-group).
+
+### Create a Group
+
+To create a group you can use the [create](/sdk/groups/create) method and passing in the `name` you want to give a group.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const group = await pinata.groups.create({
+	name: "My New Group",
+});
+```
+
+This will return the Group info
+
+```typescript
+{
+    id: "01919976-955f-7d06-bd59-72e80743fb95",
+    name: "Test Private Group",
+    is_public: false,
+    created_at: "2024-08-28T14:49:31.246596Z"
+}
+```
+
+### Get a Group
+
+To fetch details of an already existing group you can use the [get](/sdk/groups/get) and pass in the `groupId`.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+    pinataJwt: process.env.PINATA_JWT!,
+    pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const groups = await pinata.groups.get({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+});
+```
+
+This will return the same group info received upon creation.
+
+```typescript
+{
+    id: "0191997b-ca28-79e8-9dbc-a8044ad3e547",
+    name: "My New Group 5",
+    is_public: false,
+    created_at: "2024-08-28T14:55:12.448504Z",
+}
+```
+
+### List All Groups
+
+If you want to get all Groups or filter through them, you can use the [list](/sdk/groups/list) method.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+    pinataJwt: process.env.PINATA_JWT!,
+    pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const groups = await pinata.groups.list()
+```
+
+Results can be filtered with the following queries.
+
+#### isPublic
+
+- Type: `boolean`
+
+Filters groups based on whether they are public or not
+
+```typescript
+const groups = await pinata.groups
+    .list()
+    .isPublic(true)
+```
+
+#### limit
+
+- Type: `number`
+
+Limits the number of results
+
+```typescript
+const groups = await pinata.groups
+    .list()
+    .limit(10)
+```
+
+This will return an array of Groups and their respective info:
+
+```typescript
+[
+  {
+    id: "0191997b-ca28-79e8-9dbc-a8044ad3e547",
+    name: "My New Group 5",
+    is_public: false,
+    created_at: "2024-08-28T14:55:12.448504Z",
+  }
+]
+```
+
+### Updating the Name of a Group
+
+You can update the name of a group using the [update](/sdk/groups/update) method and passing in the `groupId` and the new `name` you want to use.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const groups = await pinata.groups.update({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+	name: "My New Group 2"
+});
+```
+
+This will return the updated Group info.
+
+```json
+{
+    "id": "3778c10d-452e-4def-8299-ee6bc548bdb0",
+    "name": "My New Group 2",
+    "is_public": false,
+    "created_at": "2024-08-28T20:58:46.96779Z"
+}
+```
+
+### Delete a Group
+
+<Note>
+  Deleting a Group that has CIDs inside of it will not unpin/delete the files. Please use the [delete](/sdk/files/delete) method to actually delete a file from your account
+</Note>
+
+To delete a Group you can use the [delete](/sdk/groups/delete) method and pass in the `groupId`.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const groups = await pinata.groups.delete({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+});
+```
+
+If successful, the endpoint will return an `OK` response.

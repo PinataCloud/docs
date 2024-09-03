@@ -15,20 +15,23 @@ const pinata = new PinataSDK({
 });
 
 const upload = await pinata.upload.json({
-  name: "Pinnie NFT",
-  description: "A Pinnie NFT from Pinata",
-  image: "ipfs://bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
+    content: "console.log('hello world!)",
+    name: "helloworld.ts",
+    lang: "ts"
 })
 ```
 
 ## Returns
 
 ```typescript
-type PinResponse = {
-  IpfsHash: string;
-  PinSize: number;
-  Timestamp: string;
-  isDuplicate?: boolean;
+type UploadResponse = {
+	id: string;
+	name: string;
+	cid: string;
+	size: number;
+	number_of_files: number;
+	mime_type: string;
+	user_id: string;
 };
 ```
 
@@ -42,37 +45,10 @@ Accepts an object that is turned into JSON
 
 ```typescript
 const upload = await pinata.upload.json({
-  name: "Pinnie NFT",
-  description: "A Pinnie NFT from Pinata",
-  image: "ipfs://bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4",
-  attributes: [
-    {
-      name: "whimsey",
-      value: 100
-    }
-  ]
+    content: "console.log('hello world!)",
+    name: "helloworld.ts",
+    lang: "ts"
 })
-```
-
-### addMetadata (Optional)
-
-- Type: [PinataMetadata](../types#pinatametadata)
-
-Add optional metadata to file
-
-```typescript
-const upload = await pinata.upload
-  .json({
-    name: "Pinnie NFT",
-    description: "A Pinnie NFT from Pinata",
-    image: "ipfs://bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
-  })
-  .addMetadata({
-    name: "pinnie.png",
-    keyValues: {
-      whimsey: 100
-    }
-  })
 ```
 
 ### group (Optional)
@@ -84,9 +60,9 @@ Upload to a specific group by passing in the `groupId`
 ```typescript
 const upload = await pinata.upload
   .json({
-    name: "Pinnie NFT",
-    description: "A Pinnie NFT from Pinata",
-    image: "ipfs://bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
+      content: "console.log('hello world!)",
+      name: "helloworld.ts",
+      lang: "ts"
   })
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
@@ -99,26 +75,10 @@ Upload a file using a secondary API key generated through `keys.create()`
 
 ```typescript
 const upload = await pinata.upload
-  .json({
-    name: "Pinnie NFT",
-    description: "A Pinnie NFT from Pinata",
-    image: "ipfs://bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
-  })
+    .json({
+        content: "console.log('hello world!)",
+        name: "helloworld.ts",
+        lang: "ts"
+    })
   .key("GENERATED_API_JWT")
-```
-
-### cidVersion (Optional)
-
-- Type: `0 | 1`
-
-Specificy CID version for upload
-
-```typescript
-const upload = await pinata.upload
-  .json({
-    name: "Pinnie NFT",
-    description: "A Pinnie NFT from Pinata",
-    image: "ipfs://bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
-  })
-  .cidVersion(0)
 ```

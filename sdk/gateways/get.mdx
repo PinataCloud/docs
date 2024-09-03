@@ -2,7 +2,7 @@
 title: "get"
 ---
 
-Retrieve a file from IPFS through the config's `pinataGateway`
+Retrieve a file through the config's `pinataGateway`
 
 ## Usage
 
@@ -19,7 +19,7 @@ const file = await pinata.gateways.get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848
 
 ## Returns
 
-Returns the data from the CID in the form of `JSON`, `string`, or `Blob` as well as the `ContentType`
+Returns the data in the form of `JSON`, `string`, or `Blob` as well as the `ContentType`
 
 ```typescript
 type GetCIDResponse = {
@@ -53,52 +53,9 @@ type ContentType =
 
 - Type: `string`
 
-Accepts CID or IPFS gateway link.
+Accepts CID of the file you are trying to fetch
 
 ```typescript
 const data = await pinata.gateways.get(
-	"bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi/hello-1.txt",
+	"bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi",
 );
-
-const data = await pinata.gateways.get(
-	"https://ipfs.io/ipfs/bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi/hello-1.txt",
-);
-
-const data = await pinata.gateways.get(
-	"https://bafyreibroegmxohcbvvs3rziqsp3osyn7t5rzot34y6pn5xtewffhtsl4e.ipfs.nftstorage.link/metadata.json",
-);
-```
-
-## Methods
-
-### optimizeImage (Optional)
-
-- Type: [OptimizeImageOptions](/sdk/types#optimizeimageoptions)
-
-```typescript
-type OptimizeImageOptions = {
-  width?: number;
-  height?: number;
-  dpr?: number;
-  fit?: "scaleDown" | "contain" | "cover" | "crop" | "pad";
-  gravity?: "auto" | "side" | string;
-  quality?: number;
-  format?: "auto" | "webp";
-  animation?: boolean;
-  sharpen?: number;
-  onError?: boolean;
-  metadata?: "keep" | "copyright" | "none";
-};
-```
-
-If the content being fetched is an image you can apply image optimizations to the image.
-
-```typescript
-const data = await pinata.gateways
-  .get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
-  .optimizeImage({
-    width: 500,
-    height: 500,
-    format: "webp"
-  })
-```

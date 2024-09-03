@@ -20,17 +20,20 @@ const upload = await pinata.upload.url("https://i.imgur.com/u4mGk5b.gif")
 ## Returns
 
 ```typescript
-type PinResponse = {
-  IpfsHash: string;
-  PinSize: number;
-  Timestamp: string;
-  isDuplicate?: boolean;
+type UploadResponse = {
+	id: string;
+	name: string;
+	cid: string;
+	size: number;
+	number_of_files: number;
+	mime_type: string;
+	user_id: string;
 };
 ```
 
 ## Parameters
 
-### base64
+### url
 
 - Type: `string`
 
@@ -38,23 +41,6 @@ Accepts a URL in the form of a string. The mimetype of the URL body provided in 
 
 ```typescript
 const upload = await pinata.upload.url("https://i.imgur.com/u4mGk5b.gif")
-```
-
-### addMetadata (Optional)
-
-- Type: [PinataMetadata](../types#pinatametadata)
-
-Add optional metadata to file
-
-```typescript
-const upload = await pinata.upload
-  .url("https://i.imgur.com/u4mGk5b.gif")
-  .addMetadata({
-    name: "hello.txt",
-    keyValues: {
-      whimsey: 100
-    }
-  })
 ```
 
 ### group (Optional)
@@ -79,16 +65,4 @@ Upload a file using a secondary API key generated through `keys.create()`
 const upload = await pinata.upload
   .url("https://i.imgur.com/u4mGk5b.gif")
   .key("GENERATED_API_JWT")
-```
-
-### cidVersion (Optional)
-
-- Type: `0 | 1`
-
-Specificy CID version for upload
-
-```typescript
-const upload = await pinata.upload
-  .url("https://i.imgur.com/u4mGk5b.gif")
-  .cidVersion(0)
 ```

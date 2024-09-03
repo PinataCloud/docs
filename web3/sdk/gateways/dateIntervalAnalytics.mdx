@@ -1,0 +1,238 @@
+---
+title: "dateIntervalAnalytics"
+---
+
+Get specific usage analytics for a date range and interval
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata-web3";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  domain: "docs.mypinata.cloud",
+  start: "2024-08-01",
+  end: "2024-08-15",
+  interval: "day"
+})
+.sort("desc");
+```
+
+## Returns
+
+```typescript
+export type TimeIntervalGatewayAnalyticsResponse = {
+	total_requests: number;
+	total_bandwidth: number;
+	time_periods: TimePeriodItem[];
+};
+
+export type TimePeriodItem = {
+	period_start_time: string;
+	requests: number;
+	bandwidth: number;
+};
+```
+
+## Parameters
+
+Filter response with the following additional methods.
+
+### domain
+
+- Type: `string`
+
+Domain of the Gateway to get analytics for. Must be owned by the same account that is being authorized.
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  domain: "docs.mypinata.cloud"
+})
+```
+
+### start
+
+- Type: `string`
+
+Start date for the analytics query in the format `YYYY-MM-DD`
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  start: "2024-08-01"
+})
+```
+
+### end
+
+- Type: `string`
+
+End date for the analytics query in the format `YYYY-MM-DD`
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  end: "2024-08-15"
+})
+```
+
+### interval
+
+- Type: `day` | `week`
+
+Aggregate results by either `day` or `week` intervals
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  interval: "day"
+})
+```
+
+### sortBy (Optional)
+
+- Type: `requests` | `bandwidth`
+
+Sort results by either `requests` or `bandwidth`
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  domain: "docs.mypinata.cloud",
+  start: "2024-08-01",
+  end: "2024-08-15",
+  interval: "day"
+})
+.sortBy("requests");
+```
+
+### cid (Optional)
+
+- Type: `string`
+
+Filter results by CID
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  domain: "docs.mypinata.cloud",
+  start: "2024-08-01",
+  end: "2024-08-15",
+  interval: "day"
+})
+.cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng");
+```
+
+
+### fileName (Optional)
+
+- Type: `string`
+
+Filter results by file name
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  domain: "docs.mypinata.cloud",
+  start: "2024-08-01",
+  end: "2024-08-15",
+  interval: "day"
+})
+.fileName("pinnie.png");
+```
+
+### userAgent (Optional)
+
+- Type: `string`
+
+Filter results by a target user agent
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  domain: "docs.mypinata.cloud",
+  start: "2024-08-01",
+  end: "2024-08-15",
+  interval: "day"
+})
+.userAgent("Go-http-client/2.0");
+```
+
+### country (Optional)
+
+- Type: `string`
+
+Filter results by country
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  domain: "docs.mypinata.cloud",
+  start: "2024-08-01",
+  end: "2024-08-15",
+  interval: "day"
+})
+.country("us");
+```
+
+### region (Optional)
+
+- Type: `string`
+
+Filter results by a target region with the format `lowercaseCountry - upperCaseRegion`
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  domain: "docs.mypinata.cloud",
+  start: "2024-08-01",
+  end: "2024-08-15",
+  interval: "day"
+})
+.region("us - TN");
+```
+
+
+### referer (Optional)
+
+- Type: `string`
+
+Filter results by a target referer
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  domain: "docs.mypinata.cloud",
+  start: "2024-08-01",
+  end: "2024-08-15",
+  interval: "day"
+})
+.referer("https://docs.pinata.cloud");
+```
+
+### limit (Optional)
+
+- Type: `number`
+
+Limit the number of results, default is `100`
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  domain: "docs.mypinata.cloud",
+  start: "2024-08-01",
+  end: "2024-08-15",
+  interval: "day"
+})
+.limit(100);
+```
+
+### sort (Optional)
+
+- Type: `asc` | `desc`
+
+Sort the result values by either `asc` or `desc`
+
+```typescript
+const analytics = await pinata.gateways.dateIntervalAnalytics({
+  domain: "docs.mypinata.cloud",
+  start: "2024-08-01",
+  end: "2024-08-15",
+  interval: "day"
+})
+.sort("asc")
+```

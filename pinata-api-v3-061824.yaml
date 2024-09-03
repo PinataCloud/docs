@@ -3,7 +3,7 @@ info:
   title: Pinata V3 API
   version: 1.0.0
 servers:
-  - url: https://api.pinata.cloud/v3
+  - url: https://api.devpinata.cloud/v3
 components:
   securitySchemes:
     bearerAuth:
@@ -2053,6 +2053,708 @@ paths:
               schema:
                 type: string
                 example: cb4721118316fe9ac2e7ec44a2e25133
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: null
+  /files:
+    get:
+      tags:
+        - Private Files
+      summary: List Files
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Limit the number of results
+          example: '10'
+        - name: pageToken
+          in: query
+          schema:
+            type: string
+          description: Paginate using the nextPageToken
+        - name: cidPending
+          in: query
+          schema:
+            type: boolean
+          description: Return only files that are still waiting for a CID
+          example: 'true'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:02:30 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '382'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: f60474dfa75f70cbde347239324f49cc
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      files:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            cid:
+                              type: string
+                            size:
+                              type: number
+                            number_of_files:
+                              type: number
+                            mime_type:
+                              type: string
+                            group_id:
+                              type: string
+                            created_at:
+                              type: string
+                      next_page_token:
+                        type: string
+              example:
+                data:
+                  files:
+                    - id: 01919457-c2c6-770e-9391-8c72c4f41f64
+                      name: radicalize-local.gif
+                      cid: >-
+                        bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
+                      size: 4861678
+                      number_of_files: 1
+                      mime_type: TODO
+                      group_id: null
+                      created_at: '2024-08-27T14:57:51.485934Z'
+                  next_page_token: MDE5MTk0NTctYzJjNi03NzBlLTkzOTEtOGM3MmM0ZjQxZjY0
+  /files/{id}:
+    get:
+      tags:
+        - Private Files
+      summary: Get File by ID
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 01919457-c2c6-770e-9391-8c72c4f41f64
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:04:00 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '303'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 5cda7fd04bb31bc8c6bd461089fcfa1c
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      cid:
+                        type: string
+                      size:
+                        type: number
+                      number_of_files:
+                        type: number
+                      mime_type:
+                        type: string
+                      group_id:
+                        type: string
+                      created_at:
+                        type: string
+              example:
+                data:
+                  id: 01919457-c2c6-770e-9391-8c72c4f41f64
+                  name: radicalize-local.gif
+                  cid: bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
+                  size: 4861678
+                  number_of_files: 1
+                  mime_type: TODO
+                  group_id: null
+                  created_at: '2024-08-27T14:57:51.485934Z'
+    put:
+      tags:
+        - Private Files
+      summary: Update File
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              example:
+                name: Hello Files API
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 01919457-c2c6-770e-9391-8c72c4f41f64
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:12:50 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '298'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: b41144a3011804309872d413a6dbc3b0
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      cid:
+                        type: string
+                      size:
+                        type: number
+                      number_of_files:
+                        type: number
+                      mime_type:
+                        type: string
+                      group_id:
+                        type: string
+                      created_at:
+                        type: string
+              example:
+                data:
+                  id: 01919457-c2c6-770e-9391-8c72c4f41f64
+                  name: Hello Files API
+                  cid: bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
+                  size: 4861678
+                  number_of_files: 1
+                  mime_type: TODO
+                  group_id: null
+                  created_at: '2024-08-27T14:57:51.485934Z'
+    delete:
+      tags:
+        - Private Files
+      summary: Delete File by ID
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 01919461-6d4c-7456-870d-0d1faeb90f46
+      responses:
+        '500':
+          description: Internal Server Error
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:09:20 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Content-Length:
+              schema:
+                type: integer
+                example: '201'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 79dbc0bba9ecb69876a9f935f1931f3c
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  null
+  /files/sign:
+    post:
+      tags:
+        - Private Files
+      summary: Get Signed URL
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  url:
+                    type: string
+                    description: The full URL of your file in the format of `https://{yourgatewaydomain}.mypinata.cloud/files/{cid}`
+                  date:
+                    type: number
+                    description: The unix timestamp that the URL is signed, ie time of request
+                  expires:
+                    type: number
+                    description: How long the URL is valid for in sconds after signing based on the date parameter
+                  method:
+                    type: string
+                    description: The URL method, ie `GET`
+              example:
+                url: >-
+                  https://example.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
+                expires: 500000
+                date: 1724875300
+                method: GET
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 28 Aug 2024 20:01:46 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '291'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 0c7a656fdb5c98f6a89cd9cd70147c6d
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    description: The signed URL
+              example:
+                data: >-
+                  https://blush-fast-impala-660.dev-mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm?X-Algorithm=PINATA1&X-Date=1724875300&X-Expires=500000&X-Method=GET&X-Signature=example-signature
+  /files/groups:
+    post:
+      tags:
+        - Groups
+      summary: Create Group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: The name of the group you want to create
+                is_public:
+                  type: boolean
+                  description: Flag if group is public or not
+              example:
+                name: Test Group 3
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 28 Aug 2024 14:49:31 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '184'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: cab11653b355c8f6fa80544a61ec7a30
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      is_public:
+                        type: boolean
+                      created_at:
+                        type: string
+              example:
+                data:
+                  id: 01919976-955f-7d06-bd59-72e80743fb95
+                  name: Test Private Group
+                  public: false
+                  created_at: '2024-08-28T14:49:31.246596Z'
+    get:
+      tags:
+        - Groups
+      summary: List Groups
+      parameters:
+        - name: isPublic
+          in: query
+          schema:
+            type: boolean
+          description: Only return groups that are public
+          example: 'true'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Limit the number of results
+          example: '10'
+        - name: pageToken
+          in: query
+          schema:
+            type: string
+          description: Paginate using the nextPageToken
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 28 Aug 2024 14:50:07 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '266'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 256ce2733baf16700d77f582c8ae95c8
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      groups:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                                type: string
+                            name:
+                                type: string
+                            is_public:
+                                type: boolean
+                            created_at:
+                                type: string
+                      next_page_token:
+                        type: string
+              example:
+                data:
+                  groups:
+                    - id: 01919976-955f-7d06-bd59-72e80743fb95
+                      name: Test Private Group
+                      public: false
+                      created_at: '2024-08-28T14:49:31.246596Z'
+                  next_page_token: MDE5MTk5NzYtOTU1Zi03ZDA2LWJkNTktNzJlODA3NDNmYjk1
+  /files/groups/{id}:
+    get:
+      tags:
+        - Groups
+      summary: Get Group
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 01919976-955f-7d06-bd59-72e80743fb95
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 28 Aug 2024 14:50:47 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '184'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: b9bcd1c7dba0f7241ae8ee526fdc81be
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      is_public:
+                        type: boolean
+                      created_at:
+                        type: string
+              example:
+                data:
+                  id: 01919976-955f-7d06-bd59-72e80743fb95
+                  name: Test Private Group
+                  public: false
+                  created_at: '2024-08-28T14:49:31.246596Z'
+    put:
+      tags:
+        - Groups
+      summary: Update Group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Updated name for target group
+                is_public:
+                  type: boolean
+                  description: Toggle if group is public or not
+              example:
+                name: Updated Name
+                is_public: true
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the target group
+          schema:
+            type: string
+          required: true
+          example: 01919ac8-a6f5-7e8e-a8a2-6cfe00122b90
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 15:17:52 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '136'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 5cee9f024755176365a202b6ce5d29e4
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      is_public:
+                        type: boolean
+                      created_at:
+                        type: string
+              example:
+                data:
+                  id: 01919ac8-a6f5-7e8e-a8a2-6cfe00122b90
+                  name: Updated Name
+                  is_public: true
+                  created_at: '2024-08-28T20:58:46.96779Z'
+    delete:
+      tags:
+        - Groups
+      summary: Delete Group
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 01919eba-b4e4-7cc6-8a72-c01358ec8f8d
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 15:22:17 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '14'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: e603f9d52d268705312556d6064c9379
             Strict-Transport-Security:
               schema:
                 type: string

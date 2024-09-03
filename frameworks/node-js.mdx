@@ -5,11 +5,9 @@ excerpt: ""
 hidden: false
 ---
 
-This Node.js quickstart should get you up and running with your standard backend javascript setup, and by using the API will give you flexibility when it comes to [pinning files](/pinning/pinning-files).
+This Node.js quickstart should get you up and running with your standard backend javascript setup, and by using the API will give you flexibility when it comes to [uploading files](files/uploading-files).
 
 ## Generate your API Keys
-
-Pinata offers developer keys for various scenarios. The most common scenario is normal IPFS actions (pinning content, unpinning, listing content, etc). These actions happen through the core Pinata API, and are documented in the [Pinata API Reference](ref:pinningpinfiletoipfs).
 
 To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key.
 
@@ -91,17 +89,22 @@ upload()
 
 You can run this by using `node index.js` in the terminal. After uploading a file you should get a response that looks like this
 
-```json
+```javascript
 {
-  IpfsHash: "bafkreiac3t35fklpiwqonav2vj4x2dh6x2zugkdu7dsh6zkaq5jr33lcwy",
-  PinSize: 17,
-  Timestamp: "2024-08-06T20:53:49.603Z"
+    id: "349f1bb2-5d59-4cab-9966-e94c028a05b7",
+    name: "file.txt",
+    cid: "bafybeihgxdzljxb26q6nf3r3eifqeedsvt2eubqtskghpme66cgjyw4fra",
+    size: 4682779,
+    number_of_files: 1,
+    mime_type: "text/plain",
+    user_id: "7a484d2c-4219-4f80-9d9d-86b42461e71a",
+    group_id: null
 }
 ```
 
 ## Fetch the File through a Gateway
 
-With the `IpfsHash` you can view the file or fetch the data using an IPFS Gateway, which acts as a bridge between the IPFS protocol and the HTTP protocol. Lets make a new file called `fetch.js` and put in the following code.
+With the `cid` you can view the file or fetch the data using your Gateway. Lets make a new file called `fetch.js` and put in the following code.
 
 ```javascript fetch.js
 const { PinataSDK } = require("pinata")
@@ -123,7 +126,3 @@ async function main() {
 
 main()
 ```
-
-## Next Steps
-
-If you will be working with images a lot then you may want to look at our built in [image optimizations](/gateways/image-optimizations) for resizing images on the fly. Be sure to check out our [API Reference](/api-reference/introduction) to see what else you can do with the API like listing or deleting files, and check out [Gateway Access Controls](/gateways/gateway-access-controls) if you specifically need to fetch files outside your account that you have not uploaded yourself.

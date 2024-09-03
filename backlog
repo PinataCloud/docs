@@ -1,0 +1,173 @@
+--- GROUPS ---
+### Listing Files in a Group
+
+To list all the files that are part of a group you can use the [list](/sdk/files/list) method and the `group` filter.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const files = await pinata
+  .listFiles()
+  .group('648767d5-0a80-4b3a-9669-93693e4a0519')
+```
+
+
+This will return an array of [PinListItem](/ipfs-sdk/types#pinlistitem) objects.
+
+```typescript
+[
+    {
+        id: "2fd6175d-9220-4ea4-8939-b9cb572f08a4",
+        name: "hello.txt",
+        cid: "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq",
+        size: 5,
+        number_of_files: 1,
+        mime_type: "text/plain",
+        group_id: null,
+        updated_at: "2024-08-27T19:14:36.978738Z",
+        created_at: "2024-08-27T17:14:42.315122Z",
+    }
+]
+```
+
+
+### Add CIDs to a Group // TO DO
+
+<Note>
+  At this time, CIDs can only belong to one group at a time. If a CID is added
+  to a Group while already being part of another, it will move the CID to the
+  latest requested Group.
+</Note>
+
+After a Group is created you can add CIDs to it using the [addCids](/ipfs-sdk/groups/add-cids) method. Just pass in the `groupId` and an array of `cids`.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const group = await pinata.groups.addCids({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+	cids: ["QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng"],
+});
+```
+
+If successful, the endpoint will return an `OK` response.
+
+### Removing CIDs from a Group // TO DO
+
+To remove CIDs from a Group, you would follow the same pattern as `addCids` except using the [removeCids](/ipfs-sdk/groups/remove-files) method instead.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const group = await pinata.groups.removeCids({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+	cids: ["QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng"],
+});
+```
+
+If successful, the endpoint will return an `OK` response.
+
+
+## Pinata App
+
+If you just need to organize your files through a web interface, then the Pinata Web App can do just that!
+
+### Create a Group
+
+Navigate to the Groups tab, click "New" in the top right corner, give it a name, then click "Create."
+
+<video
+  autoPlay
+  muted
+  loop
+  playsinline
+  className="w-full aspect-video"
+  src="https://docs.mypinata.cloud/ipfs/bafybeic42gzphbbgnlpenvnaxfjvyohoj7p5nuhpjbfgep6xzxevnigety"
+></video>
+
+### Add Files to Groups
+
+<Note>
+  At this time, CIDs can only belong to one group at a time. If a CID is added
+  to a Group while already being part of another, it will move the CID to the
+  latest requested Group.
+</Note>
+
+There are a few ways you can add files to a Group after you have created one.
+
+#### Upload Directly
+
+After creating a group, you can click on it, then click the "Add" button in the top right to add files directly to the group.
+
+<video
+  autoPlay
+  muted
+  loop
+  playsinline
+  className="w-full aspect-video"
+  src="https://docs.mypinata.cloud/ipfs/bafybeiateld4izmgvjo27hnmq5n6y6zxc576qifww32pe22awuoqibubky"
+></video>
+
+#### File Details
+
+If you already have files uploaded and you just need to add it to a Group, you can click on the file details button on the far right and select "Add to Group"
+
+<video
+  autoPlay
+  muted
+  loop
+  playsinline
+  className="w-full aspect-video"
+  src="https://docs.mypinata.cloud/ipfs/bafybeifqkibs5htg56dtkjcwf2tmqvqst2wxomqvmlyxrln3vzur3km6nm"
+></video>
+
+#### Bulk Add
+
+To add lots of files at once, you can select multiple files from the Files page then click the "Add to Group" button from the toolbar.
+
+<video
+  autoPlay
+  muted
+  loop
+  playsinline
+  className="w-full aspect-video"
+  src="https://docs.mypinata.cloud/ipfs/bafybeiert2udnwy7ze3vrgaydqmprpjenbp5fpcbv7hyofovpitmcbtrzi"
+></video>
+
+### Remove Files from Group
+
+While inside the Group view, you can remove files from a group by either clicking on the file detail for a single file or by using the multi-select tool.
+
+### Deleting Groups
+
+<Note>
+  Deleting a Group that has CIDs inside of it will not unpin/delete the CIDs.
+  Please follow the [unpin guide](pinning/deleting-files) to actually delete a
+  file from your account
+</Note>
+
+To delete a Group, navigate to the Groups page, click on the details of the Group, and select the "Delete Group" from the dropdown.
+
+<video
+  autoPlay
+  muted
+  loop
+  playsinline
+  className="w-full aspect-video"
+  src="https://docs.mypinata.cloud/ipfs/bafybeidkxgiup4rmv5jhyra5g5tfoscutknifsuzsbbmgyqabzmmzsdt34"
+></video>

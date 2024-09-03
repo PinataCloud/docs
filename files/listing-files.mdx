@@ -1,0 +1,94 @@
+---
+title: "Listing Files"
+description: "Learn how to list files inside your Pinata account"
+---
+
+To list the files on your account you can either use the [SDK](/sdk/data/list) or the [Pinata API](/api-reference/endpoint/list-files) to fetch file data programatically.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const files = await pinata.files.list()
+```
+
+This will return an array of file objects
+
+```typescript
+[
+  {
+    id: "dd5f8888-bf15-4559-b8a2-6c626869507f",
+    name: "Hello Files API",
+    cid: "bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm",
+    size: 4861678,
+    number_of_files: 1,
+    mime_type: "TODO",
+    group_id: null,
+    created_at: "2024-08-27T14:57:51.485934Z",
+  },
+  {
+    id: "e2057aa3-7b6c-4a45-b785-12ba297bcbd0",
+    name: "Quickstart.png",
+    cid: "bafkreiebavn2jzkqh3ehy4pkqkdi2otnho6gbcffkeqnunk2lw5nmnwaea",
+    size: 223548,
+    number_of_files: 1,
+    mime_type: "TODO",
+    group_id: "5f8adce6-7312-46e0-90f7-13896bed297d",
+    created_at: "2024-08-28T23:46:07.823118Z",
+  },
+  {
+    id: "ac5308a1-de49-40a3-9f5c-d20f1bb6206d",
+    name: "hello.txt",
+    cid: "bafkreiffsgtnic7uebaeuaixgph3pmmq2ywglpylzwrswv5so7m23hyuny",
+    size: 11,
+    number_of_files: 1,
+    mime_type: "TODO",
+    group_id: null,
+    created_at: "2024-08-29T02:23:02.735018Z",
+  }
+]
+```
+
+## Filters
+
+When listing files there a few ways you can filter the results
+
+### limit
+
+- Type: `number`
+
+Limit the number of results
+
+```typescript
+const files = await pinata.files
+  .list()
+  .limit(10)
+```
+
+### cidPending
+
+- Type: `boolean`
+
+Filters results and only returns files where `cid` is still `pending`
+
+```typescript
+const files = await pinata.files
+  .list()
+  .cid(true)
+```
+
+## Auto Paginate
+
+The `list` method has an auto pagination feature that is triggered when used inside a `for await` iterator
+
+```typescript
+for await (const item of pinata.files.list() {
+  console.log(item.id);
+}
+```
+
+Works like magic ✨

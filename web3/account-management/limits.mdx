@@ -1,0 +1,53 @@
+---
+title: "Limits"
+slug: "limits"
+excerpt: ""
+hidden: false
+createdAt: "Fri Jul 28 2023 19:54:38 GMT+0000 (Coordinated Universal Time)"
+updatedAt: "Thu Jan 25 2024 21:31:19 GMT+0000 (Coordinated Universal Time)"
+---
+The Pinata platform currently has the following rate limits in place:
+
+## File Restrictions
+
+HTML uploads are currently only available on paid plans with granted access. If you are on a paid plan and wish to upload HTML please send a request through our support chat or send an email to [team@pinata.cloud](mailto:team@pinata.cloud)
+
+## API Rate Limits
+
+The Pinata API currently has a rate limit of 180 requests per minute to our API.
+
+### Exceptions
+
+The following API calls have increased rate limits:
+
+- Endpoints under the `/data/` route have a rate limit of 30 requests per minute
+- The [Pinning Services API endpoint for listing content](https://ipfs.github.io/pinning-services-api-spec/#tag/pins/paths/~1pins/get) has a rate limit of 30 requests per minute
+
+### Recommendations
+
+For users with traffic that can be burst-heavy, we recommend using a task scheduler or queue-based upload approach that limits requests to the allowed amount.
+
+For NodeJS users specifically, we recommend the [bottleneck library](https://www.npmjs.com/package/bottleneck) to help with this.
+
+## Public Gateway Rate Limits
+
+The Pinata public IPFS gateway (gateway.pinata.cloud) is meant for testing purposes or very low volume retrieval and should not be used in production scenarios. It currently has the following rate limits:
+
+- Each CID has a global rate limit of 15 requests per minute (this is across all IP addresses)
+- Each IP address has a rate limit of 200 requests per minute
+
+## Dedicated Gateway Rate Limits
+
+At this time there are currently no rate limits for users retrieving content from a dedicated gateway.
+
+## Upload Size Limits
+
+<Warning>While the upload limit is 25GB we would recommend only uploading up to 15GB per file/folder for reliability reasons. We can try to assist uploads 15GB-25GB but we cannot guarantee success at this time.</Warning>
+
+There is no aggregate limit for uploads, but each individual upload (whether it is a file or a folder) is limited to **25 GB**.
+
+There is also a file limit size of **10MB** for the pinJSONToIPFS API endpoint.
+
+## Pin by CID
+
+When using the [Pin By CID](/api-reference/endpoint/pin-by-cid) endpoint or using it in the [Files](/pinning/pinning-files) page in the app, there is a limit of 250 items that can be in the queue at once.

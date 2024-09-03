@@ -16,7 +16,8 @@ const pinata = new PinataSDK({
 
 const groups = await pinata.groups.update({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
-	name: "My New Group 2"
+	name: "My New Group 2",
+	public: true
 });
 ```
 
@@ -24,11 +25,10 @@ const groups = await pinata.groups.update({
 
 ```typescript
 type GroupResponseItem = {
-  id: string;
-  user_id: string;
-  name: string;
-  updatedAt: string;
-  createdAt: string;
+    id: string;
+    is_public: boolean;
+    name: string;
+    created_at: string;
 };
 ```
 
@@ -46,7 +46,7 @@ const groups = await pinata.groups.update({
 });
 ```
 
-### name
+### name (Optional)
 
 - Type: `string`
 
@@ -56,3 +56,16 @@ Updated name for the target group
 const groups = await pinata.groups.update({
 	name: "My Group Again",
 });
+```
+
+### isPublic (Optional)
+
+- Type: `boolean`
+
+Update a group to be public or private
+
+```typescript
+const groups = await pinata.groups.update({
+    isPublic: true
+});
+```

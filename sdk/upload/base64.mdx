@@ -20,11 +20,14 @@ const upload = await pinata.upload.base64("SGVsbG8gV29ybGQh")
 ## Returns
 
 ```typescript
-type PinResponse = {
-  IpfsHash: string;
-  PinSize: number;
-  Timestamp: string;
-  isDuplicate?: boolean;
+type UploadResponse = {
+	id: string;
+	name: string;
+	cid: string;
+	size: number;
+	number_of_files: number;
+	mime_type: string;
+	user_id: string;
 };
 ```
 
@@ -38,23 +41,6 @@ Accepts a string encoded in base64
 
 ```typescript
 const upload = await pinata.upload.base64("SGVsbG8gV29ybGQh")
-```
-
-### addMetadata (Optional)
-
-- Type: [PinataMetadata](../types#pinatametadata)
-
-Add optional metadata to file
-
-```typescript
-const upload = await pinata.upload
-  .base64("SGVsbG8gV29ybGQh")
-  .addMetadata({
-    name: "hello.txt",
-    keyValues: {
-      whimsey: 100
-    }
-  })
 ```
 
 ### group (Optional)
@@ -79,16 +65,4 @@ Upload a file using a secondary API key generated through `keys.create()`
 const upload = await pinata.upload
   .base64("SGVsbG8gV29ybGQh")
   .key("GENERATED_API_JWT")
-```
-
-### cidVersion (Optional)
-
-- Type: `0 | 1`
-
-Specificy CID version for upload
-
-```typescript
-const upload = await pinata.upload
-  .base64("SGVsbG8gV29ybGQh")
-  .cidVersion(0)
 ```

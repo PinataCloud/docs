@@ -1,0 +1,66 @@
+---
+title: "Deleting Files"
+---
+
+Deleting files from Pinata is simple and easy!
+
+## Deleting Programatically
+
+The SDK has a very simple [delete](/sdk/files/delete) method that will allow you to delete an array of files by `id`.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const unpin = await pinata.files.delete([
+  "3c52f1b8-11b1-40d9-849d-5f05a4bbd76d",
+  "b72886db-9dd4-434c-a1b2-f9d36781ecee"
+])
+```
+
+### Deleting All Files
+
+If you find yourself in a position where you need to delete most or all of your files you can use the [Auto Paginate](/sdk/files/list#auto-paginate) feature on the SDK to fetch all the IDs of your files and delete them in a few lines of code!
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+	pinataJwt: process.env.PINATA_JWT!,
+	pinataGateway: "dweb.mypinata.cloud",
+});
+
+async function main() {
+	try {
+		let files = [];
+		for await (const item of pinata.files.list()) {
+			files.push(item.id);
+		}
+		const res = await pinata.files.delete(files);
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+main();
+```
+
+## Deleting by Web App
+
+If you are trying to delete files you can do so by clicking on the "more" button and selecting "Delete"
+
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/bafkreicpuclqqsle422wqok46o55h7t4cpee5nrvjhndpzdnpkpk5iwhfi"
+/>
+
+Additionally, with our Bulk File Actions tool, you can select and manage multiple files at once - up to 100!
+
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmX9EKBjj3fvgZNeUL3NPcti2i6GWXrjc8N8m9UUTcf3Q5"
+/>
