@@ -86,6 +86,10 @@
 			]
 		},
 		{
+			"group": "Getting Started",
+			"pages": ["web3/quickstart"]
+		},
+		{
 			"group": "Account Management",
 			"pages": [
 				"web3/account-management/api-keys",
