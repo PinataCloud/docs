@@ -43,17 +43,26 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  cid:
-                    type: string
-                  size:
-                    type: number
-                  number_of_files:
-                    type: number
-                  mime_type:
-                    type: string
-                  user_id:
-                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      cid:
+                        type: string
+                      created_at:
+                        type: string
+                      size:
+                        type: number
+                      number_of_files:
+                        type: number
+                      mime_type:
+                        type: string
+                      user_id:
+                        type: string
+                      group_id:
+                        type: string
+                      is_duplicate:
+                        type: boolean

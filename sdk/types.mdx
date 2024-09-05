@@ -80,7 +80,7 @@ type FileListItem = {
   size: number;
   number_of_files: number;
   mime_type: string;
-  group_id: string;
+  group_id: string | null;
   created_at: string;
 };
 ```
@@ -315,6 +315,7 @@ type PinataConfig = {
   pinataGatewayKey?: string;
   customHeaders?: Record<string, string>;
   endpointUrl?: string;
+  uploadUrl?: string;
 };
 ```
 
@@ -323,54 +324,6 @@ type PinataConfig = {
 ```typescript
 type PinataMetadata = {
   name?: string;
-};
-```
-
-## `PinJobItem`
-
-```typescript
-type PinJobItem = {
-  id: string;
-  ipfs_pin_hash: string;
-  date_queued: string;
-  name: string;
-  status: string;
-  keyvalues: any;
-  host_nodes: string[];
-  pin_policy: {
-    regions: {
-      id: string;
-      desiredReplicationCount: number;
-    }[];
-    version: number;
-  };
-};
-```
-
-## `PinJobQuery`
-
-```typescript
-type PinJobQuery = {
-  sort?: "ASC" | "DSC";
-  status?:
-    | "prechecking"
-    | "retrieving"
-    | "expired"
-    | "over_free_limit"
-    | "over_max_size"
-    | "invalid_object"
-    | "bad_host_node";
-  ipfs_pin_hash?: string;
-  limit?: number;
-  offset?: number;
-};
-```
-
-## `PinJobResponse`
-
-```typescript
-type PinJobResponse = {
-  rows: PinJobItem[];
 };
 ```
 
@@ -544,9 +497,12 @@ type UploadResponse = {
   name: string;
   cid: string;
   size: number;
+  created_at: string;
   number_of_files: number;
   mime_type: string;
   user_id: string;
+  group_id: string | null;
+  is_duplicate: boolean | null;
 };
 ```
 
