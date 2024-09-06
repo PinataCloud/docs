@@ -74,6 +74,7 @@ The date the target CID was first uploaded to Pinata
 In order to sign a CID you can use any library that support EIP-712 signing, like the example below with [viem](https://viem.sh/docs/actions/wallet/signTypedData).
 
 <CodeGroup>
+
 ```typescript example.ts
 import { account, walletClient } from './config'
 import { domain, types } from './data'
@@ -148,7 +149,7 @@ In order to attach a signature to a CID the following requirements must be met:
 After creating the signature with the previous step you can add it to the CID with the [add](/ipfs-sdk/signatures/add) method in the SDK.
 
 ```typescript
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -188,7 +189,7 @@ This method will check all CIDs on Pinata and will return a signature if it exis
 </Note>
 
 ```typescript
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -205,6 +206,7 @@ const signature = await pinata.signatures.get(
 Since the signatures are using the EIP-712 standard you can use a library like [Viem](https://viem.sh/docs/utilities/verifyTypedData) to verify with the same typed data used to create it.
 
 <CodeGroup>
+
 ```typescript example.ts
 import { account, walletClient } from './config'
 import { domain, types } from './data'
@@ -286,7 +288,7 @@ export const [account] = await walletClient.getAddresses()
 To delete an existing signautre for a given CID you can use the [delete](/ipfs-sdk/signatures/delete) method.
 
 ```typescript
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,

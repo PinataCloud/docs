@@ -23,7 +23,7 @@ If you’re a developer that needs to build decentralized applications, then you
 The Pinata SDK is able to handle mutliple kinds of uploads, whether its file objects, base64 strings, or even content from remote URLs.
 
 ```typescript
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -37,7 +37,7 @@ const upload = await pinata.upload.file(file);
 The SDK is also equipped to handle an array of file objects.
 
 ```typescript
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -103,7 +103,7 @@ Below are some common recipes for uploading a file.
 Usually you can pass a Blob directly into the request but to help guarantee success we recommend passing it into a `File` object.
 
 ```typescript Blob
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -121,7 +121,7 @@ const upload = await pinata.upload.file(file)
 Pinata makes it easy to upload JSON objects using the [json](/ipfs-sdk/upload/json) method.
 
 ```typescript JSON
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -140,7 +140,7 @@ const upload = await pinata.upload.json({
 If you need to upload files from a local file source you can use `fs` to feed a file into a `blob`, then turn that `blob` into a `File`.
 
 ```typescript
-const { PinataSDK } = require("pinata")
+const { PinataSDK } = require("pinata-web3")
 const fs = require("fs")
 const { Blob } = require("buffer")
 
@@ -159,7 +159,7 @@ const upload = await pinata.upload.file(file);
 To upload a file from an external URL you can stream the contents into an `arrayBuffer`, which then gets passed into a new `Blob` that can then be uploaded to Pinata. This has been abstracted in the SDK using the [url](/ipfs-sdk/upload/url) method.
 
 ```typescript URL
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -174,7 +174,7 @@ const upload = await pinata.upload.url("https://i.imgur.com/u4mGk5b.gif")
 To upload a file in base64 simply turn the contents into a `buffer` that is passed into a `Blob`. Alternatively you can use the SDK for this as well using the [base64](/ipfs-sdk/upload/base64) method.
 
 ```typescript base64
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -191,7 +191,7 @@ The SDK can accept an array of files using the [fileArray](/ipfs-sdk/upload/file
 <CodeGroup>
 
 ```typescript SDK
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -384,7 +384,7 @@ Another way you can upload content to Pinata is by transferring content that is 
 Or you can pin by CID with the SDK using the [cid](/ipfs-sdk/upload/cid) method.
 
 ```typescript
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -397,7 +397,7 @@ const pin = await pinata.upload.cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNz
 This will result in a `request_id` and Pinata will start looking for the file. Progress can be checked by using the [pinJobs](/ipfs-sdk/data/pin-jobs) method.
 
 ```typescript
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
