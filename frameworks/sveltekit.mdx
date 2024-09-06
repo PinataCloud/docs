@@ -1,0 +1,208 @@
+---
+title: "SvelteKit"
+slug: "sveltekit"
+excerpt: ""
+hidden: false
+---
+
+This guide will walk you through setting up Pinata in a SvelteKit app.
+
+## Create an API Key and get Gateway URL
+
+To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key.
+
+<Note>
+  If you are just getting started we recommend using Admin privileges, then move
+  to scope keys as you better understand your needs
+</Note>
+
+<img
+  style={{ borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmZY4xv8YQ2ttsiYL3XEyq4hGAZ7P7ddjyYguiYkrZBim2"
+/>
+
+Once you have created the keys you will be shown your API Key Info. This will contain your **Api Key**, **API Secret**, and your **JWT**. Click "Copy All" and save them somewhere safe!
+
+<Note>
+  The API keys are only shown once, be sure to copy them somewhere safe!
+</Note>
+
+After you have your API key you will want to get your Gateway domain. Gateways are the fastest way to fetch content from Pinata, and are the ideal tool when building applications. When you create a Pinata account you'll automatically have a Gateway created for you! To see it, simply visit the [Gateways Page](https://app.pinata.cloud/gateway) see it listed there.
+
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/Qmcn3K1Bo5W6GgVX935FxdmVYg91rVLMrcZ3NsZ8Vemsd4"
+/>
+
+The gateway domains are randomly generated and might look something like this:
+
+```
+aquamarine-casual-tarantula-177.mypinata.cloud
+```
+
+## Server-side Setup
+
+
+### Start up SvelteKit Project
+
+The easiest way to start building a SvelteKit app is to run `npm create`
+
+```bash
+npm create svelte@latest pinata-app
+- Which Svelte app template? Skeleton project
+- Add type checking with TypeScript? Yes, using TypeScript syntax
+- Select additional options (use arrow keys/space bar) <- These are optional
+
+```
+
+After the project is created `cd` into the repo and install `pinata-web3`
+
+```bash
+npm i pinata-web3
+```
+
+In this demo we will be using `tailwindcss` with typography plugin. Follow other CSS Framework guides respectively.
+
+```bash
+npx svelte-add@latest tailwindcss
+```
+
+After making the project, create a `.env.local` file in the root of the project and put in the following variables:
+
+```
+PINATA_JWT=
+PUBLIC_GATEWAY_URL=
+```
+
+Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `mydomain.mypinata.cloud`.
+
+### Setup Pinata
+
+Create a directory called `server` in the `src/lib` folder of the project and then make a file called `pinata.ts` inside of it. In that file we'll export an instance of the Pinata SDK that we can use throughout the rest of the app.
+<Note>
+   The use of the `server` directory prevents it being used client side. 
+</Note>
+
+```typescript src/lib/server/pinata.ts
+import { PinataSDK } from "pinata-web3"
+import { PINATA_JWT } from "$env/static/private";
+import { PUBLIC_GATEWAY_URL } from "$env/static/public";
+
+export const pinata = new PinataSDK({
+  pinataJwt: `${PINATA_JWT}`,
+  pinataGateway: `${PUBLIC_GATEWAY_URL}`
+})
+```
+
+### Create Client Side Form
+
+Next we'll want to add a form on our home page that will allow someone to select a file and upload it.
+In the `src/routes/+page.svelte` file take out the boiler plate code and use the following.
+This is a basic example and could be further enhanced if you wanted to use SuperForms https://superforms.rocks
+Lets also restrict the allowed extensions for the file. (e.g. jpg, jpeg, png, webp).
+
+```typescript src/routes/+page.svelte
+<script lang="ts">
+  import { enhance } from '$app/forms';
+
+  let uploading = false;
+
+  function handleUpload() {
+    uploading = true;
+      return async ({ update }) => {
+        await update();
+        uploading = false;
+      };
+  }
+</script>
+
+<main class="w-full min-h-screen m-auto flex flex-col justify-center items-center">
+  <form method="POST" enctype="multipart/form-data" use:enhance={handleUpload}>
+    <input type="file" id="file" name="fileToUpload" accept=".jpg, .jpeg, .png, .webp" />
+    <button disabled={uploading} type="submit">
+      {uploading ? 'Uploading...' : 'Upload'}
+    </button>
+  </form>
+</main>
+
+```
+
+This will take a file from the client side and upload it through a form Action we are going to make next.
+
+### Create Server Action
+
+Create a server file, `src/routes/+page.server.ts`, so that we can add a form action to use. 
+Since this demo and page only has 1 form, we will keep the `default` action. 
+
+```typescript src/routes/+page.server.ts
+import { fail, json, type Actions } from "@sveltejs/kit";
+import { pinata } from "$lib/server/pinata";
+
+export const actions: Actions = {
+  default: async ({ request }) => {
+    try {
+      const formData = await request.formData();
+      const uploadedFile = (formData?.get('fileToUpload') as File);
+
+      if (!uploadedFile.name || uploadedFile.size === 0) {
+        return fail(400, {
+          error: true,
+          message: "You must provide a file to upload"
+        })
+      }
+
+      const upload = await pinata.upload.file(uploadedFile);
+      const url = await pinata.gateways.convert(upload.IpfsHash);
+      return { url, filename: uploadedFile.name, status: 200 };
+    } catch (error) {
+      console.log(error);
+      return json(
+        { error: "Internal Server Error" },
+        { status: 500 }
+      );
+    }
+  }
+}
+```
+
+The form action will send an API request to Pinata with the upload, then make one more request to get a signed URL we can use to see the content.
+Once complete, we can define the return data sent to the client.
+
+### Access the Returned value of the Form Action
+
+We can access the returned data by exporting the `form` prop on our `+page.svelte`. Now, after submitting the form,
+the `form` prop will be updated and we can conditionally render the image we just uploaded.
+
+```typescript src/routes/+page.svelte
+<script lang="ts">
+  import { enhance } from '$app/forms';
+  import type { ActionData } from './$types';
+
+  export let form: ActionData;
+  let uploading = false;
+
+  function handleUpload() {
+    uploading = true;
+      return async ({ update }) => {
+        await update();
+        uploading = false;
+      };
+  }
+</script>
+
+<main class="w-full min-h-screen m-auto flex flex-col justify-center items-center">
+  <form method="POST" enctype="multipart/form-data" use:enhance={handleUpload}>
+    <input type="file" id="file" name="fileToUpload" accept=".jpg, .jpeg, .png, .webp" />
+    <button disabled={uploading} type="submit">
+      {uploading ? 'Uploading...' : 'Upload'}
+    </button>
+  </form>
+  {#if form && form.status === 200}
+    <img src={form.url} alt={form.filename} />
+  {/if}
+</main>
+
+```
+
+And just like that we have uploaded an image to Pinata and recieved a usable URL in return!
+Remember that the url for the image is ephemeral, once you refresh the page the url and image will be gone. 
