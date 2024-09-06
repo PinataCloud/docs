@@ -20,6 +20,11 @@ const files = await pinata.files.list()
 ## Returns
 
 ```typescript
+type FileListResponse = {
+  files: FileListItem[];
+  next_page_token: string;
+};
+
 type FileListItem = {
 	id: string;
 	name: string | null;
@@ -59,6 +64,18 @@ Filters results and only returns files where `cid` is still `pending`
 const files = await pinata.files
   .list()
   .cid(true)
+```
+
+### pageToken
+
+- Type: `string`
+
+Paginates through files based on a provided page token
+
+```typescript
+const files = await pinata.files
+  .list()
+  .pageToken("MDE5MWIzZWYtM2U0Zi03YTY5LWE3OTQtOTRhZDE5NjQxMTk0")
 ```
 
 ## Auto Paginate

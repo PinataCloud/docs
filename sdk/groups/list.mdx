@@ -21,6 +21,11 @@ const groups = await pinata.groups
 ## Returns
 
 ```typescript
+type GroupListResponse = {
+  groups: GroupResponseItem[];
+  next_page_token: string;
+};
+
 type GroupResponseItem = {
     id: string;
     is_public: boolean;
@@ -55,6 +60,18 @@ Limits the number of results
 const groups = await pinata.groups
     .list()
     .limit(10)
+```
+
+### pageToken
+
+- Type: `string`
+
+Paginates through groups based on a provided page token
+
+```typescript
+const groups = await pinata.groups
+  .list()
+  .pageToken("MDE5MWIzZWYtM2U0Zi03YTY5LWE3OTQtOTRhZDE5NjQxMTk0")
 ```
 
 ## Auto Paginate
