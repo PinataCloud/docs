@@ -2428,7 +2428,7 @@ paths:
                     description: The signed URL
               example:
                 data: >-
-                  https://blush-fast-impala-660.dev-mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm?X-Algorithm=PINATA1&X-Date=1724875300&X-Expires=500000&X-Method=GET&X-Signature=example-signature
+                  https://blush-fast-impala-660.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm?X-Algorithm=PINATA1&X-Date=1724875300&X-Expires=500000&X-Method=GET&X-Signature=example-signature
   /files/groups:
     post:
       tags:
@@ -2578,7 +2578,7 @@ paths:
                   groups:
                     - id: 01919976-955f-7d06-bd59-72e80743fb95
                       name: Test Private Group
-                      public: false
+                      is_public: false
                       created_at: '2024-08-28T14:49:31.246596Z'
                   next_page_token: MDE5MTk5NzYtOTU1Zi03ZDA2LWJkNTktNzJlODA3NDNmYjk1
   /files/groups/{id}:
@@ -2641,7 +2641,7 @@ paths:
                 data:
                   id: 01919976-955f-7d06-bd59-72e80743fb95
                   name: Test Private Group
-                  public: false
+                  is_public: false
                   created_at: '2024-08-28T14:49:31.246596Z'
     put:
       tags:

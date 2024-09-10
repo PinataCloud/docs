@@ -8,9 +8,9 @@ description: "Get up and running with the Pinata SDK"
 
 The Pinata Typescript SDK is an all-in-one tool for everything you might need, from uploading content, using Dedicated Gateways, even user or group management!
 
-<Note>
+<Warning>
 Looking for our Web3 SDK? You can find it [here](/web3/sdk)!
-</Note>
+</Warning>
 
 ## 1. Installation and Setup
 
@@ -91,7 +91,7 @@ This will return an object like the following
 
 ## 3. Retrieve a File
 
-Use the `cid` from the upload to fetch a file
+Use the `cid` of a file to fetch it through a Gateway, or create a signed URL.
 
 ```typescript
 import { PinataSDK } from "pinata";
@@ -105,6 +105,13 @@ async function main() {
   try {
     const data = await pinata.gateways.get("bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq");
     console.log(data)
+
+    const url = await pinata.gateways.createSignedURL({
+       	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
+    	expires: 1800,
+    })
+    console.log(url)
+
   } catch (error) {
     console.log(error);
   }
