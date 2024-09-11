@@ -7,10 +7,6 @@ hidden: false
 
 This guide will walk you through setting up Pinata in a Next.js app.
 
-<Warning>
-If you are looking to use IPFS please follow [this guide](/web3/frameworks/next-js)
-</Warning>
-
 ## Create an API Key and get Gateway URL
 
 To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key.
@@ -62,7 +58,7 @@ npx create-next-app@latest
 After the project is created `cd` into the repo and install `pinata`
 
 ```bash
-npm i pinata
+npm i pinata-web3
 ```
 
 After making the project, create a `.env.local` file in the root of the project and put in the following variables:
@@ -81,7 +77,7 @@ Create a directory called `utils` in the root of the project and then make a fil
 ```typescript utils/config.ts
 "server only"
 
-import { PinataSDK } from "pinata"
+import { PinataSDK } from "pinata-web3"
 
 export const pinata = new PinataSDK({
   pinataJwt: `${process.env.PINATA_JWT}`,
@@ -114,8 +110,8 @@ export default function Home() {
         method: "POST",
         body: data,
       });
-      const signedUrl = await uploadRequest.json();
-      setUrl(signedUrl);
+      const ipfsUrl = await uploadRequest.json();
+      setUrl(ipfsUrl);
       setUploading(false);
     } catch (e) {
       console.log(e);
@@ -169,10 +165,7 @@ export async function POST(request: NextRequest) {
     const data = await request.formData();
     const file: File | null = data.get("file") as unknown as File;
     const uploadData = await pinata.upload.file(file)
-    const url = await pinata.gateways.createSignedURL({
-		cid: uploadData.cid,
-		expires: 3600,
-	});
+    const url = await pinata.gateways.convert(uploadData.IpfsHash)
     return NextResponse.json(url, { status: 200 });
   } catch (e) {
     console.log(e);
@@ -218,7 +211,7 @@ npx create-next-app@latest
 After the project is created `cd` into the repo and install `pinata`
 
 ```bash
-npm i pinata
+npm i pinata-web3
 ```
 
 After making the project, create a `.env.local` file in the root of the project and put in the following variables:
@@ -237,7 +230,7 @@ Create a directory called `utils` in the root of the project and then make a fil
 ```typescript utils/config.ts
 "server only"
 
-import { PinataSDK } from "pinata"
+import { PinataSDK } from "pinata-web3"
 
 export const pinata = new PinataSDK({
   pinataJwt: `${process.env.PINATA_JWT}`,
@@ -334,30 +327,7 @@ export default function Home() {
 
 The main thing to understand here is that we are able to use the `key()` method in combination with our upload methods which passes in the temporary key instead of trying to access the admin key.
 
-Now that we have the file uploaded we can create a signed URL for the file using another API endpoint under `app/api/sign/route.ts`.
-
-```typescript app/api/sign/route.ts
-import { type NextRequest, NextResponse } from "next/server";
-import { pinata } from "@/utils/config"
-
-export const dynamic = "force-dynamic";
-
-export async function GET(req: NextRequest, res: NextResponse) {
-  try {
-    const data = await reqest.json()
-    const url = await pinata.gateways.createSignedURL({
-        cid: data.cid,
-        expires: 30
-    })
-    return NextResponse.json(url, { status: 200 });
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({ text: "Error creating API Key:" }, { status: 500 });
-  }
-}
-```
-
-With this we can make another request from the client to get the URL and display it on our page.
+Now that we have the file uploaded we can create a URL to display in our app.
 
 ```typescript app/page.tsx
 "use client";
@@ -381,15 +351,8 @@ export default function Home() {
 			const keyRequest = await fetch("/api/key");
 			const keyData = await keyRequest.json();
 			const upload = await pinata.upload.file(file).key(keyData.JWT);
-			const urlReuest = await fetch("/api/sign", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ cid: upload.cid }),
-			});
-			const url = await urlReuest.json();
-			setUrl(url);
+			const ipfsUrl = await pinata.gateways.convert(upload.IpfsHash)
+			setUrl(ipfsUrl);
 			setUploading(false);
 		} catch (e) {
 			console.log(e);
