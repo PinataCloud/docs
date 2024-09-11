@@ -1,0 +1,175 @@
+---
+title: "React"
+slug: "react"
+excerpt: ""
+hidden: false
+---
+
+### Start up React Project
+
+Run the command below to make a new React project:
+
+```bash
+npm create vite@latest
+```
+
+Give the project a name and select the React framework. Then `cd` into the project and install `pinata`.
+
+```bash
+npm i pinata
+```
+
+After making the project, create a `.env.local` file in the root of the project and put in the following variables:
+
+```
+VITE_PINATA_JWT=
+VITE_GATEWAY_URL=
+```
+
+Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `mydomain.mypinata.cloud`.
+
+### Setup Pinata
+
+Create a directory called `utils` in the `src` folder of the project and then make a file called `config.ts` inside of it. In that file we'll export an instance of the Pinata SDK that we can use throughout the rest of the app.
+
+```typescript src/utils/config.ts
+import { PinataSDK } from "pinata"
+
+export const pinata = new PinataSDK({
+  pinataJwt: `${import.meta.env.VITE_PINATA_JWT}`,
+  pinataGateway: `${import.meta.env.VITE_GATEWAY_URL}`
+})
+```
+
+### Create Upload Form
+
+Next we'll want to make an upload form on the client side that will allow someone to select a file and upload it.
+
+In the `src/App.tsx` file take out the boiler plate code and use the following. Switch between tabs if you want to see how you would handle folder uploads.
+
+<Warning>Uploading files like this will expose your API keys!</Warning>
+
+<CodeGroup>
+
+```typescript src/App.tsx - Single File
+import { useState } from "react";
+import { pinata } from "./utils/config"
+
+function App() {
+  const [selectedFile, setSelectedFile]: any = useState();
+  const changeHandler = (event: any) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleSubmission = async () => {
+    try {
+      const upload = await pinata.upload.file(selectedFile)
+      console.log(upload);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <label className="form-label"> Choose File</label>
+      <input type="file" onChange={changeHandler} />
+      <button onClick={handleSubmission}>Submit</button>
+    </>
+  );
+}
+
+export default App;
+```
+
+```typescript src/App.tsx - Folder
+import { useState } from "react";
+import { pinata } from "./utils/config"
+
+function App() {
+  const [selectedFiles, setSelectedFiles]: any = useState();
+  const changeHandler = (event: any) => {
+    setSelectedFiles(event.target.files);
+  };
+
+  const handleSubmission = async () => {
+    try {
+      const upload = await pinata.upload.fileArray(selectedFiles)
+      console.log(upload);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <label className="form-label"> Choose File</label>
+      <input
+        directory=""
+        webkitdirectory=""
+        type="file"
+        onChange={changeHandler}
+      />
+      <button onClick={handleSubmission}>Submit</button>
+    </>
+  );
+}
+
+export default App;
+```
+
+</CodeGroup>
+
+### Pull Content from IPFS
+
+After we have uploaded the file and get the CID back we can create a signed URL for the file to either download it or render it in our app. For this example we will assume the file is an image, but Pinata supports any kind of file type.
+
+We can do this by adding the following code to our `App.tsx` file.
+
+```typescript src/App.tsx
+import { useState } from "react";
+import { pinata } from "./utils/config"
+
+function App() {
+  const [selectedFile, setSelectedFile]: any = useState();
+  const [url, setUrl]: any = useState();
+
+  const changeHandler = (event: any) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleSubmission = async () => {
+    try {
+      const upload = await pinata.upload.file(selectedFile)
+      console.log(upload);
+
+      const signedUrl = await pinata.gateways.createSignedURL({
+          cid: upload.cid,
+          expires: 30
+      })
+      setUrl(signedUrl)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <label className="form-label"> Choose File</label>
+      <input
+        type="file"
+        onChange={changeHandler}
+      />
+      <button onClick={handleSubmission}>Submit</button>
+      {url && (
+        <img
+          src={url}
+          alt="uploaded image"
+        />
+      )}
+    </>
+  );
+}
+
+export default App;
+```

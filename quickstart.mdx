@@ -15,10 +15,6 @@ hidden: false
 
 Whether you're brand new or a seasoned developer, Pinata makes it simple to store and retrieve content with speed and security. All you need to kick off your journey is a [free Pinata account](https://app.pinata.cloud/register)!
 
-<Warning>
-Looking for our Web3 tools? You can find them [here](/web3)!
-</Warning>
-
 <CardGroup cols={3}>
   <Card icon={
   <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48"><path fill="#888888" d="M23.749 30.005c-.119.063-.109.083.005.025a.3.3 0 0 0 .095-.061c0-.021 0-.021-.1.036m.24-.13c-.057.047-.057.047.011.016a.3.3 0 0 0 .068-.047c0-.027-.016-.021-.079.031m.156-.094c-.057.047-.057.047.011.016a.3.3 0 0 0 .068-.048c0-.025-.016-.02-.079.032m.158-.093c-.057.047-.057.047.009.015c.037-.02.068-.041.068-.047c0-.025-.016-.02-.077.032m.213-.141c-.109.073-.147.12-.047.068c.067-.041.181-.131.161-.131c-.043.016-.079.043-.115.063zM14.953.011c-.073.005-.292.025-.484.041c-4.548.412-8.803 2.86-11.5 6.631a15.8 15.8 0 0 0-2.824 6.989c-.129.88-.145 1.14-.145 2.333c0 1.192.016 1.448.145 2.328c.871 6.011 5.147 11.057 10.943 12.927c1.043.333 2.136.563 3.381.704c.484.052 2.577.052 3.061 0c2.152-.24 3.969-.771 5.767-1.688c.276-.14.328-.177.291-.208a341 341 0 0 1-2.609-3.495l-2.557-3.453l-3.203-4.745a416 416 0 0 0-3.229-4.744c-.011 0-.025 2.109-.031 4.681c-.011 4.505-.011 4.688-.068 4.792a.57.57 0 0 1-.276.287c-.099.047-.188.057-.661.057h-.541l-.141-.088a.6.6 0 0 1-.208-.229l-.068-.141l.005-6.271l.011-6.271l.099-.125a.8.8 0 0 1 .229-.187c.131-.063.183-.073.724-.073c.635 0 .74.025.907.208a603 603 0 0 1 3.859 5.812c2.079 3.152 4.917 7.453 6.312 9.563l2.537 3.839l.125-.083a16.4 16.4 0 0 0 3.285-2.885a15.94 15.94 0 0 0 3.767-8.177c.129-.88.145-1.141.145-2.333s-.016-1.448-.145-2.328C30.985 7.668 26.709 2.622 20.913.751a17 17 0 0 0-3.328-.697c-.303-.031-2.371-.068-2.631-.041zM21.5 9.688a.62.62 0 0 1 .317.364c.027.084.032 1.823.027 5.74l-.011 5.624l-.989-1.52l-.995-1.521v-4.083c0-2.647.011-4.131.025-4.204a.67.67 0 0 1 .313-.395c.124-.063.172-.068.667-.068c.463 0 .541.005.645.063z"/></svg>
@@ -49,160 +45,18 @@ Inside the [Pinata App](https://app.pinata.cloud) select "API Keys" from the sid
 
 Next you will want to grab your Gateway domain by clicking the Gateways tab in the sidebar. You should see it listed in the format `fun-llama-300.mypinata.cloud` and you will want to copy it exactly like that.
 
-### 2. Install and Setup SDK
-
-In the root of your project run the install command with your package manager of choice.
-
-<CodeGroup>
-
-```bash npm
-npm i pinata
-```
-
-```bash pnpm
-pnpm i pinata
-```
-
-```bash yarn
-yarn add pinata
-```
-
-```bash bun
-bun i pinata
-```
-
-</CodeGroup>
-
-Import and initialize the SDK in your codebase with the API key and Gateway from the previous step
-
-```typescript
-import { PinataSDK } from "pinata";
-
-const pinata = new PinataSDK({
-  pinataJwt: "PINATA_JWT",
-  pinataGateway: "example-gateway.mypinata.cloud",
-});
-```
-
-<Note>The `PINATA_JWT` is a secret key, be sure to initialize the SDK in a secure environment and practice basic variable security practices. If you need to upload from a client environment, consider using signed JWTs</Note>
-
-
-### 2. Upload a File
-
-Use the `upload` method to upload a File object.
-
-<CodeGroup>
-
-```typescript SDK
-import { PinataSDK } from "pinata";
-
-const pinata = new PinataSDK({
-  pinataJwt: process.env.PINATA_JWT!,
-  pinataGateway: "example-gateway.mypinata.cloud",
-});
-
-async function main() {
-  try {
-    const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
-    const upload = await pinata.upload.file(file);
-    console.log(upload);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-await main();
-```
-
-```typescript API
-const JWT = "PINATA_JWT";
-
-async function uploadFile() {
-  try {
-    const text = "Hello World!";
-    const blob = new Blob([text], { type: "text/plain" });
-    const file = new File([blob], "hello-world.txt");
-    const data = new FormData();
-    data.append("file", file);
-
-    const request = await fetch(
-      "https://uploads.pinata.cloud/v3/files",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${JWT}`,
-        },
-        body: data,
-      }
-    );
-    const response = await request.json();
-    console.log(response);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-await pinFileToIPFS();
-```
-</CodeGroup>
-
-You should get a response object like the one below
-
-```typescript
-{
-    id: "349f1bb2-5d59-4cab-9966-e94c028a05b7",
-    name: "file.txt",
-    cid: "bafybeihgxdzljxb26q6nf3r3eifqeedsvt2eubqtskghpme66cgjyw4fra",
-    size: 4682779,
-    number_of_files: 1,
-    mime_type: "text/plain",
-    user_id: "7a484d2c-4219-4f80-9d9d-86b42461e71a",
-    group_id: null
-}
-```
-
-The unique thing about Pinata's File API is the CID or Content Identifier. Its a unique hash based on the content ofthe file.
-
-### 3. Retrieve a File through a Gateway
-
-Use the `cid` of a file to fetch it through a Gateway, or create a signed URL.
-
-```typescript
-import { PinataSDK } from "pinata";
-
-const pinata = new PinataSDK({
-  pinataJwt: process.env.PINATA_JWT!,
-  pinataGateway: "example-gateway.mypinata.cloud",
-});
-
-async function main() {
-  try {
-    const data = await pinata.gateways.get("bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq");
-    console.log(data)
-
-    const url = await pinata.gateways.createSignedURL({
-       	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
-    	expires: 1800,
-    })
-    console.log(url)
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-main();
-```
-
-## What's Next?
-
-Ready to see more of what Pinata has to offer? Here are some additional features and concepts to help you get the most out of our platform:
+### 2. Choose Your Setup
 
 <CardGroup cols={2}>
-  <Card title="Groups" icon="cabinet-filing" color="#00cc92" href="https://docs.pinata.cloud/files/groups">
-With Groups, you can organize your files via the Pinata API or the web app. Create a Group, store your IPFS content, and fetch content quickly and easily.
-  </Card>
-  <Card title="Workspaces" icon="people-group" color="#00cc92" href="https://docs.pinata.cloud/account-management/workspaces">
-  Workspaces allow you to add multiple team members to your Pinata account and collaborate seamlessly. Even if your team members don’t have a Pinata account, you can invite them easily. This feature is essential for efficient project collaboration and management.
-  </Card>
+<Card icon="file" horizontal href="/quickstart-files" title="Files API">
+Use Pinata's first class Files API and SDK which uses private files by default
+</Card>
 
+<Card
+horizontal
+icon="cube"
+color="#00cc92"
+href="/quickstart-ipfs" title="IPFS API">
+Use Pinata's reknown IPFS API and SDK for Web3 apps
+</Card>
 </CardGroup>

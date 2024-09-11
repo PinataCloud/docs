@@ -42,6 +42,10 @@
 			"url": "sdk"
 		},
 		{
+			"name": "IPFS SDK",
+			"url": "web3/sdk"
+		},
+		{
 			"name": "API Reference",
 			"url": "api-reference"
 		}
@@ -68,9 +72,14 @@
 			"group": "Get Started",
 			"pages": [
 				"quickstart",
-				"frameworks/next-js",
-				"frameworks/react",
-				"frameworks/node-js"
+				{
+					"group": "Frameworks",
+					"pages": [
+						"frameworks/next-js",
+						"frameworks/react",
+						"frameworks/node-js"
+					]
+				}
 			]
 		},
 		{
@@ -87,7 +96,9 @@
 				"files/uploading-files",
 				"files/file-groups",
 				"files/listing-files",
-				"files/deleting-files"
+				"files/deleting-files",
+				"gateways/retrieving-files",
+				"gateways/image-optimizations"
 			]
 		},
 		{
@@ -98,12 +109,44 @@
 				"web3/pinning/listing-files",
 				"web3/pinning/pinata-metadata",
 				"web3/pinning/deleting-files",
-				"web3/pinning/signatures"
+				"web3/pinning/signatures",
+				{
+					"group": "Dedicated Gateways",
+					"pages": [
+						"web3/gateways/dedicated-ipfs-gateways",
+						"web3/gateways/gateway-access-controls",
+						"web3/gateways/image-optimizations",
+						{
+							"group": "Plugins",
+							"pages": [
+								"web3/gateways/plugins/getting-started",
+								"web3/gateways/plugins/content-addressable",
+								"web3/gateways/plugins/hot-swaps"
+							]
+						}
+					]
+				},
+				{
+					"group": "IPFS 101",
+					"pages": [
+						"web3/ipfs-101/what-is-ipfs",
+						"web3/ipfs-101/what-is-ipfs-pinning",
+						"web3/ipfs-101/what-are-cids",
+						"web3/ipfs-101/what-are-ipfs-gateways",
+						"web3/ipfs-101/how-does-ipfs-work-with-nfts"
+					]
+				},
+				{
+					"group": "Tools",
+					"pages": [
+						"web3/tools/pinata-sdk",
+						"web3/tools/nextjs-starter",
+						"web3/tools/pinata-cli",
+						"web3/tools/pinata-raycast-extension",
+						"web3/tools/community-sdks"
+					]
+				}
 			]
-		},
-		{
-			"group": "Gateways",
-			"pages": ["gateways/retrieving-files", "gateways/image-optimizations"]
 		},
 		{
 			"group": "Pinata SDK",
@@ -145,6 +188,82 @@
 			"pages": ["sdk/types"]
 		},
 		{
+			"group": "Pinata IPFS SDK",
+			"pages": ["web3/sdk/getting-started", "web3/sdk/config"]
+		},
+		{
+			"group": "Data",
+			"pages": [
+				"web3/sdk/data/test-authentication",
+				"web3/sdk/data/list-files",
+				"web3/sdk/data/pin-jobs",
+				"web3/sdk/data/unpin",
+				"web3/sdk/data/update-metadata"
+			]
+		},
+		{
+			"group": "Upload",
+			"pages": [
+				"web3/sdk/upload/file",
+				"web3/sdk/upload/file-array",
+				"web3/sdk/upload/json",
+				"web3/sdk/upload/base64",
+				"web3/sdk/upload/url",
+				"web3/sdk/upload/cid"
+			]
+		},
+		{
+			"group": "Gateways",
+			"pages": [
+				"web3/sdk/gateways/get",
+				"web3/sdk/gateways/convert",
+				"web3/sdk/gateways/swap-cid",
+				"web3/sdk/gateways/swap-history",
+				"web3/sdk/gateways/delete-swap",
+				"web3/sdk/gateways/topUsageAnalytics",
+				"web3/sdk/gateways/dateIntervalAnalytics"
+			]
+		},
+		{
+			"group": "Signatures",
+			"pages": [
+				"web3/sdk/signatures/add",
+				"web3/sdk/signatures/get",
+				"web3/sdk/signatures/delete"
+			]
+		},
+		{
+			"group": "Groups",
+			"pages": [
+				"web3/sdk/groups/create",
+				"web3/sdk/groups/add-cids",
+				"web3/sdk/groups/remove-cids",
+				"web3/sdk/groups/get",
+				"web3/sdk/groups/list",
+				"web3/sdk/groups/update",
+				"web3/sdk/groups/delete"
+			]
+		},
+		{
+			"group": "Keys",
+			"pages": [
+				"web3/sdk/keys/create",
+				"web3/sdk/keys/list",
+				"web3/sdk/keys/revoke"
+			]
+		},
+		{
+			"group": "Usage",
+			"pages": [
+				"web3/sdk/usage/pinned-file-count",
+				"web3/sdk/usage/total-storage-size"
+			]
+		},
+		{
+			"group": "Glossary",
+			"pages": ["web3/sdk/types"]
+		},
+		{
 			"group": "API Documentation",
 			"pages": ["api-reference/introduction"]
 		},
@@ -182,7 +301,7 @@
 			]
 		},
 		{
-			"group": "Web3 API",
+			"group": "IPFS API",
 			"pages": [
 				{
 					"group": "Pinning",
@@ -293,45 +412,8 @@
 			]
 		},
 		{
-			"group": "IPFS",
+			"group": "Farcaster",
 			"pages": [
-				{
-					"group": "IPFS 101",
-					"pages": [
-						"web3/ipfs-101/what-is-ipfs",
-						"web3/ipfs-101/what-is-ipfs-pinning",
-						"web3/ipfs-101/what-are-cids",
-						"web3/ipfs-101/what-are-ipfs-gateways",
-						"web3/ipfs-101/how-does-ipfs-work-with-nfts"
-					]
-				},
-				{
-					"group": "Dedicated Gateways",
-					"pages": [
-						"web3/gateways/dedicated-ipfs-gateways",
-						"web3/gateways/gateway-access-controls",
-						"web3/gateways/image-optimizations",
-						{
-							"group": "Plugins",
-							"pages": [
-								"web3/gateways/plugins/getting-started",
-								"web3/gateways/plugins/content-addressable",
-								"web3/gateways/plugins/hot-swaps"
-							]
-						}
-					]
-				},
-
-				{
-					"group": "Other Tools",
-					"pages": [
-						"web3/tools/pinata-sdk",
-						"web3/tools/nextjs-starter",
-						"web3/tools/pinata-cli",
-						"web3/tools/pinata-raycast-extension",
-						"web3/tools/community-sdks"
-					]
-				},
 				{
 					"group": "Farcaster",
 					"pages": [

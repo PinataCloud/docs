@@ -1,0 +1,101 @@
+---
+title: "Node.js"
+slug: "node-js"
+excerpt: ""
+hidden: false
+---
+
+## Setup a Node.js Project
+
+To start you can go to your terminal and put in the following code
+
+```bash
+mkdir pinata-starter && cd pinata-starter && npm init -y
+```
+
+Then install the [Pinata SDK](/ipfs-sdk) as well as `dotenv`
+
+```bash
+npm i pinata-web3 dotenv
+```
+
+In the root of the directory make a `.env` file where we're pull the following variables.
+
+```
+PINATA_JWT=
+GATEWAY_URL=
+```
+
+Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `mydomain.mypinata.cloud`.
+
+Now we'll make two files, `index.js` and `hello-world.txt`.
+
+```bash
+touch index.js && touch hello-world.txt
+```
+
+Inside the `hello-world.txt` you can put whatever you'd like such as `Hello from IPFS!`.
+
+## Upload a File to Pinata
+
+Once we have our initial project setup we can put the following code into our `index.js` file.
+
+```javascript index.js
+const { PinataSDK } = require("pinata-web3")
+const fs = require("fs")
+const { Blob } = require("buffer")
+require("dotenv").config()
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT,
+  pinataGateway: process.env.GATEWAY_URL
+})
+
+async function upload(){
+  try {
+    const blob = new Blob([fs.readFileSync("./hello-world.txt")]);
+    const file = new File([blob], "hello-world.txt", { type: "text/plain"})
+    const upload = await pinata.upload.file(file);
+    console.log(upload)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+upload()
+```
+
+You can run this by using `node index.js` in the terminal. After uploading a file you should get a response that looks like this
+
+```javascript
+{
+  IpfsHash: "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq",
+  PinSize: 20,
+  Timestamp: "2024-02-03T18:42:14.989Z"
+}
+```
+
+## Fetch the File through a Gateway
+
+With the `cid` you can view the file or fetch the data using your Gateway. Lets make a new file called `fetch.js` and put in the following code.
+
+```javascript fetch.js
+const { PinataSDK } = require("pinata-web3")
+require("dotenv").config()
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT,
+  pinataGateway: process.env.GATEWAY_URL
+})
+
+async function main() {
+  try {
+    const file = await pinata.gateways.get("bafkreiac3t35fklpiwqonav2vj4x2dh6x2zugkdu7dsh6zkaq5jr33lcwy")
+    console.log(file.data)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+main()
+```
