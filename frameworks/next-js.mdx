@@ -107,6 +107,11 @@ export default function Home() {
 
   const uploadFile = async () => {
     try {
+      if (!file) {
+        alert("No file selected");
+        return;
+      }
+
       setUploading(true);
       const data = new FormData();
       data.set("file", file);
