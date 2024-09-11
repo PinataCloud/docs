@@ -42,7 +42,7 @@ const pinata = new PinataSDK({
 <Note>The `PINATA_JWT` is a secret key, be sure to initialize the SDK in a secure environment and practice basic variable security practices. If you need to upload from a client environment, consider using signed JWTs</Note>
 
 
-### 3. Upload a File
+### 2. Upload a File
 
 Use the `upload` method to upload a File object.
 
@@ -118,7 +118,7 @@ You should get a response object like the one below
 
 The unique thing about Pinata's File API is the CID or Content Identifier. Its a unique hash based on the content ofthe file.
 
-### 4. Retrieve a File through a Gateway
+### 3. Retrieve a File through a Gateway
 
 Use the `cid` of a file to fetch it through a Gateway, or create a signed URL.
 
