@@ -84,6 +84,20 @@ const upload = await pinata.upload
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
 
+### addMetadata (Optional)
+
+- Type: [PinataMetadata](../types#pinatametadata)
+
+Add optional metadata to file
+
+```typescript
+const upload = await pinata.upload
+  .file(file)
+  .addMetadata({
+    name: "hello.txt",
+  })
+```
+
 ### key (Optional)
 
 - Type: `string`
