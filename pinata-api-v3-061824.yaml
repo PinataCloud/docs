@@ -3,7 +3,7 @@ info:
   title: Pinata V3 API
   version: 1.0.0
 servers:
-  - url: https://api.pinata.cloud/v3
+  - url: https://api.devpinata.cloud/v3
 components:
   securitySchemes:
     bearerAuth:
@@ -1045,14 +1045,14 @@ paths:
             type: string
           description: Start date of aggregation in the format `YYYY-MM-DD`
           required: true
-          example: '2024-07-01'
+          example: "2024-07-01"
         - name: end_date
           in: query
           schema:
             type: string
           description: End date of aggregation in the format `YYYY-MM-DD`
           required: true
-          example: '2024-08-15'
+          example: "2024-08-15"
         - name: by
           in: query
           schema:
@@ -1073,52 +1073,52 @@ paths:
           in: query
           schema:
             type: string
-          description:  Filter by CID
+          description: Filter by CID
           example: bafybeiegx7bgm5gpiutivw6e234gflheqjmp7hxlxfkihd3zdfx6omocia
         - name: file_name
           in: query
           schema:
             type: string
-          description:  Filter by file name
+          description: Filter by file name
           example: 8.png
         - name: user_agent
           in: query
           schema:
             type: string
-          description:  Filter by user agent
+          description: Filter by user agent
           example: Go-http-client/2.0
         - name: country
           in: query
           schema:
             type: string
-          description:  Filter by country
+          description: Filter by country
           example: us
         - name: region
           in: query
           schema:
             type: string
-          description:  Filter by region
+          description: Filter by region
           example: us - TN
         - name: referer
           in: query
           schema:
             type: string
-          description:  Filter by referer
+          description: Filter by referer
           example: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
         - name: limit
           in: query
           schema:
             type: integer
-          description:  Limit the number of results returned, default is 100
-          example: '100'
+          description: Limit the number of results returned, default is 100
+          example: "100"
         - name: sort_order
           in: query
           schema:
             type: string
-          description:  Sort results by either `asc` or `desc`
+          description: Sort results by either `asc` or `desc`
           example: desc
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -1132,7 +1132,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '121'
+                example: "121"
             Connection:
               schema:
                 type: string
@@ -1174,14 +1174,14 @@ paths:
             type: string
           description: Start date of aggregation in the format `YYYY-MM-DD`
           required: true
-          example: '2024-08-01'
+          example: "2024-08-01"
         - name: end_date
           in: query
           schema:
             type: string
           description: End date of aggregation in the format `YYYY-MM-DD`
           required: true
-          example: '2024-08-15'
+          example: "2024-08-15"
         - name: date_interval
           in: query
           schema:
@@ -1199,52 +1199,52 @@ paths:
           in: query
           schema:
             type: string
-          description:  Filter by CID
+          description: Filter by CID
           example: QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng
         - name: file_name
           in: query
           schema:
             type: string
-          description:  Filter by file name
+          description: Filter by file name
           example: 8.png
         - name: user_agent
           in: query
           schema:
             type: string
-          description:  Filter by user agent
+          description: Filter by user agent
           example: Go-http-client/2.0
         - name: country
           in: query
           schema:
             type: string
-          description:  Filter by country
+          description: Filter by country
           example: us
         - name: region
           in: query
           schema:
             type: string
-          description:  Filter by region
+          description: Filter by region
           example: us - TN
         - name: referer
           in: query
           schema:
             type: string
-          description:  Filter by referer
+          description: Filter by referer
           example: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
         - name: limit
           in: query
           schema:
             type: integer
-          description:  Limit the number of results returned, default is 100
-          example: '100'
+          description: Limit the number of results returned, default is 100
+          example: "100"
         - name: sort_order
           in: query
           schema:
             type: string
-          description:  Sort results by either `asc` or `desc`
+          description: Sort results by either `asc` or `desc`
           example: desc
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -1258,7 +1258,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '1139'
+                example: "1139"
             Connection:
               schema:
                 type: string
@@ -1280,49 +1280,49 @@ paths:
                   total_requests: 1756
                   total_bandwidth: 1034631262
                   time_periods:
-                    - period_start_time: '2024-08-15'
+                    - period_start_time: "2024-08-15"
                       requests: 100
                       bandwidth: 75721161
-                    - period_start_time: '2024-08-14'
+                    - period_start_time: "2024-08-14"
                       requests: 109
                       bandwidth: 55430651
-                    - period_start_time: '2024-08-13'
+                    - period_start_time: "2024-08-13"
                       requests: 70
                       bandwidth: 32806252
-                    - period_start_time: '2024-08-12'
+                    - period_start_time: "2024-08-12"
                       requests: 71
                       bandwidth: 90781331
-                    - period_start_time: '2024-08-11'
+                    - period_start_time: "2024-08-11"
                       requests: 121
                       bandwidth: 60168755
-                    - period_start_time: '2024-08-10'
+                    - period_start_time: "2024-08-10"
                       requests: 187
                       bandwidth: 86036341
-                    - period_start_time: '2024-08-09'
+                    - period_start_time: "2024-08-09"
                       requests: 360
                       bandwidth: 262348634
-                    - period_start_time: '2024-08-08'
+                    - period_start_time: "2024-08-08"
                       requests: 86
                       bandwidth: 45399695
-                    - period_start_time: '2024-08-07'
+                    - period_start_time: "2024-08-07"
                       requests: 114
                       bandwidth: 27869980
-                    - period_start_time: '2024-08-06'
+                    - period_start_time: "2024-08-06"
                       requests: 146
                       bandwidth: 65227201
-                    - period_start_time: '2024-08-05'
+                    - period_start_time: "2024-08-05"
                       requests: 93
                       bandwidth: 101281128
-                    - period_start_time: '2024-08-04'
+                    - period_start_time: "2024-08-04"
                       requests: 62
                       bandwidth: 18297460
-                    - period_start_time: '2024-08-03'
+                    - period_start_time: "2024-08-03"
                       requests: 65
                       bandwidth: 21646988
-                    - period_start_time: '2024-08-02'
+                    - period_start_time: "2024-08-02"
                       requests: 64
                       bandwidth: 49484961
-                    - period_start_time: '2024-08-01'
+                    - period_start_time: "2024-08-01"
                       requests: 108
                       bandwidth: 42130724
   /ipfs/signature/{cid}:
@@ -1905,7 +1905,7 @@ paths:
           description: The target original CID
           example: QmV66MtU6PHNAooavATGJyYrAgAeRDaHN4UvRwVN2Lsrp6
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -1919,7 +1919,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '114'
+                example: "114"
             Connection:
               schema:
                 type: string
@@ -1949,7 +1949,7 @@ paths:
               example:
                 data:
                   mappedCid: QmXog19G7QvqHQUMH4R6aCaq8J9qfKAU9ethr51PUjtKjM
-                  createdAt: '2024-08-18T19:36:29.442559Z'
+                  createdAt: "2024-08-18T19:36:29.442559Z"
     get:
       tags:
         - Swaps
@@ -1970,7 +1970,7 @@ paths:
           required: true
           example: QmV66MtU6PHNAooavATGJyYrAgAeRDaHN4UvRwVN2Lsrp6
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -1984,7 +1984,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '116'
+                example: "116"
             Connection:
               schema:
                 type: string
@@ -2016,7 +2016,7 @@ paths:
               example:
                 data:
                   - mappedCid: QmXog19G7QvqHQUMH4R6aCaq8J9qfKAU9ethr51PUjtKjM
-                    createdAt: '2024-08-18T19:36:29.442559Z'
+                    createdAt: "2024-08-18T19:36:29.442559Z"
     delete:
       tags:
         - Swaps
@@ -2030,7 +2030,7 @@ paths:
           description: Target CID to remove swap
           example: QmV66MtU6PHNAooavATGJyYrAgAeRDaHN4UvRwVN2Lsrp6
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -2044,7 +2044,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '14'
+                example: "14"
             Connection:
               schema:
                 type: string
@@ -2069,25 +2069,51 @@ paths:
         - Private Files
       summary: List Files
       parameters:
-        - name: limit
-          in: query
-          schema:
-            type: integer
-          description: Limit the number of results
-          example: '10'
-        - name: pageToken
+        - name: name
           in: query
           schema:
             type: string
-          description: Paginate using the nextPageToken
+          description: Filter files by name
+        - name: group
+          in: query
+          schema:
+            type: string
+          description: Filter fils by group_id
+        - name: mimeType
+          in: query
+          schema:
+            type: string
+          description: Filter files by mime_type
+        - name: cid
+          in: query
+          schema:
+            type: string
+          description: Filter files by CID
         - name: cidPending
           in: query
           schema:
             type: boolean
           description: Return only files that are still waiting for a CID
-          example: 'true'
+          example: "true"
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Limit the number of results
+          example: "10"
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: ["ASC", "DESC"]
+          description: Sort results by creation date with with ASC or DESC
+        - name: pageToken
+          in: query
+          schema:
+            type: string
+          description: Paginate using the nextPageToken
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -2101,7 +2127,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '382'
+                example: "382"
             Connection:
               schema:
                 type: string
@@ -2154,9 +2180,9 @@ paths:
                         bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
                       size: 4861678
                       number_of_files: 1
-                      mime_type: TODO
+                      mime_type: "image/gif"
                       group_id: null
-                      created_at: '2024-08-27T14:57:51.485934Z'
+                      created_at: "2024-08-27T14:57:51.485934Z"
                   next_page_token: MDE5MTk0NTctYzJjNi03NzBlLTkzOTEtOGM3MmM0ZjQxZjY0
   /files/{id}:
     get:
@@ -2171,7 +2197,7 @@ paths:
           required: true
           example: 01919457-c2c6-770e-9391-8c72c4f41f64
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -2185,7 +2211,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '303'
+                example: "303"
             Connection:
               schema:
                 type: string
@@ -2229,9 +2255,9 @@ paths:
                   cid: bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
                   size: 4861678
                   number_of_files: 1
-                  mime_type: TODO
+                  mime_type: "image/gif"
                   group_id: null
-                  created_at: '2024-08-27T14:57:51.485934Z'
+                  created_at: "2024-08-27T14:57:51.485934Z"
     put:
       tags:
         - Private Files
@@ -2254,7 +2280,7 @@ paths:
           required: true
           example: 01919457-c2c6-770e-9391-8c72c4f41f64
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -2268,7 +2294,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '298'
+                example: "298"
             Connection:
               schema:
                 type: string
@@ -2314,7 +2340,7 @@ paths:
                   number_of_files: 1
                   mime_type: TODO
                   group_id: null
-                  created_at: '2024-08-27T14:57:51.485934Z'
+                  created_at: "2024-08-27T14:57:51.485934Z"
     delete:
       tags:
         - Private Files
@@ -2327,7 +2353,7 @@ paths:
           required: true
           example: 01919461-6d4c-7456-870d-0d1faeb90f46
       responses:
-        '500':
+        "500":
           description: Internal Server Error
           headers:
             Date:
@@ -2341,7 +2367,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '201'
+                example: "201"
             Connection:
               schema:
                 type: string
@@ -2359,8 +2385,7 @@ paths:
               schema:
                 type: object
               example:
-                data:
-                  null
+                data: null
   /files/sign:
     post:
       tags:
@@ -2372,18 +2397,18 @@ paths:
             schema:
               type: object
               properties:
-                  url:
-                    type: string
-                    description: The full URL of your file in the format of `https://{yourgatewaydomain}.mypinata.cloud/files/{cid}`
-                  date:
-                    type: number
-                    description: The unix timestamp that the URL is signed, ie time of request
-                  expires:
-                    type: number
-                    description: How long the URL is valid for in sconds after signing based on the date parameter
-                  method:
-                    type: string
-                    description: The URL method, ie `GET`
+                url:
+                  type: string
+                  description: The full URL of your file in the format of `https://{yourgatewaydomain}.mypinata.cloud/files/{cid}`
+                date:
+                  type: number
+                  description: The unix timestamp that the URL is signed, ie time of request
+                expires:
+                  type: number
+                  description: How long the URL is valid for in sconds after signing based on the date parameter
+                method:
+                  type: string
+                  description: The URL method, ie `GET`
               example:
                 url: >-
                   https://example.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
@@ -2391,7 +2416,7 @@ paths:
                 date: 1724875300
                 method: GET
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -2405,7 +2430,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '291'
+                example: "291"
             Connection:
               schema:
                 type: string
@@ -2451,7 +2476,7 @@ paths:
               example:
                 name: Test Group 3
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -2465,7 +2490,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '184'
+                example: "184"
             Connection:
               schema:
                 type: string
@@ -2499,31 +2524,36 @@ paths:
                   id: 01919976-955f-7d06-bd59-72e80743fb95
                   name: Test Private Group
                   public: false
-                  created_at: '2024-08-28T14:49:31.246596Z'
+                  created_at: "2024-08-28T14:49:31.246596Z"
     get:
       tags:
         - Groups
       summary: List Groups
       parameters:
+        - name: name
+          in: query
+          schema:
+            type: string
+          description: Filter groups by name
         - name: isPublic
           in: query
           schema:
             type: boolean
-          description: Only return groups that are public
-          example: 'true'
+          description: Filters groups by is_public set to true or false
+          example: "true"
         - name: limit
           in: query
           schema:
             type: integer
           description: Limit the number of results
-          example: '10'
+          example: "10"
         - name: pageToken
           in: query
           schema:
             type: string
           description: Paginate using the nextPageToken
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -2537,7 +2567,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '266'
+                example: "266"
             Connection:
               schema:
                 type: string
@@ -2564,13 +2594,13 @@ paths:
                           type: object
                           properties:
                             id:
-                                type: string
+                              type: string
                             name:
-                                type: string
+                              type: string
                             is_public:
-                                type: boolean
+                              type: boolean
                             created_at:
-                                type: string
+                              type: string
                       next_page_token:
                         type: string
               example:
@@ -2579,7 +2609,7 @@ paths:
                     - id: 01919976-955f-7d06-bd59-72e80743fb95
                       name: Test Private Group
                       is_public: false
-                      created_at: '2024-08-28T14:49:31.246596Z'
+                      created_at: "2024-08-28T14:49:31.246596Z"
                   next_page_token: MDE5MTk5NzYtOTU1Zi03ZDA2LWJkNTktNzJlODA3NDNmYjk1
   /files/groups/{id}:
     get:
@@ -2594,7 +2624,7 @@ paths:
           required: true
           example: 01919976-955f-7d06-bd59-72e80743fb95
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -2608,7 +2638,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '184'
+                example: "184"
             Connection:
               schema:
                 type: string
@@ -2642,7 +2672,7 @@ paths:
                   id: 01919976-955f-7d06-bd59-72e80743fb95
                   name: Test Private Group
                   is_public: false
-                  created_at: '2024-08-28T14:49:31.246596Z'
+                  created_at: "2024-08-28T14:49:31.246596Z"
     put:
       tags:
         - Groups
@@ -2671,7 +2701,7 @@ paths:
           required: true
           example: 01919ac8-a6f5-7e8e-a8a2-6cfe00122b90
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -2685,7 +2715,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '136'
+                example: "136"
             Connection:
               schema:
                 type: string
@@ -2719,7 +2749,7 @@ paths:
                   id: 01919ac8-a6f5-7e8e-a8a2-6cfe00122b90
                   name: Updated Name
                   is_public: true
-                  created_at: '2024-08-28T20:58:46.96779Z'
+                  created_at: "2024-08-28T20:58:46.96779Z"
     delete:
       tags:
         - Groups
@@ -2732,7 +2762,7 @@ paths:
           required: true
           example: 01919eba-b4e4-7cc6-8a72-c01358ec8f8d
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             Date:
@@ -2746,7 +2776,7 @@ paths:
             Content-Length:
               schema:
                 type: integer
-                example: '14'
+                example: "14"
             Connection:
               schema:
                 type: string
