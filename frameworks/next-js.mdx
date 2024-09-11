@@ -75,6 +75,8 @@ Use the `JWT` from the API key creation in the previous step as well as the `Gat
 Create a directory called `utils` in the root of the project and then make a file called `config.ts` inside of it. In that file we'll export an instance of the Pinata SDK that we can use throughout the rest of the app.
 
 ```typescript utils/config.ts
+"server only"
+
 import { PinataSDK } from "pinata"
 
 export const pinata = new PinataSDK({
@@ -92,13 +94,12 @@ In the `/app/page.tsx` file take out the boiler plate code and use the following
 ```typescript app/page.tsx
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 export default function Home() {
   const [file, setFile] = useState("");
   const [url, setUrl] = useState("");
   const [uploading, setUploading] = useState(false);
-  const inputFile = useRef(null);
 
   const uploadFile = async () => {
     try {
@@ -125,7 +126,7 @@ export default function Home() {
 
   return (
     <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
-      <input type="file" id="file" ref={inputFile} onChange={handleChange} />
+      <input type="file" onChange={handleChange} />
       <button disabled={uploading} onClick={uploadFile}>
         {uploading ? "Uploading..." : "Upload"}
       </button>
@@ -186,7 +187,7 @@ With our URL we can render the image we uploaded by adding the following code to
 ```typescript app/page.tsx
     return (
 		<main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
-			<input type="file" id="file" ref={inputFile} onChange={handleChange} />
+			<input type="file" onChange={handleChange} />
 			<button disabled={uploading} onClick={uploadFile}>
 				{uploading ? "Uploading..." : "Upload"}
 			</button>
@@ -213,7 +214,7 @@ npx create-next-app@latest
 After the project is created `cd` into the repo and install `pinata`
 
 ```bash
-npm i pinata uuid
+npm i pinata
 ```
 
 After making the project, create a `.env.local` file in the root of the project and put in the following variables:
@@ -230,6 +231,8 @@ Use the `JWT` from the API key creation in the previous step as well as the `Gat
 Create a directory called `utils` in the root of the project and then make a file called `config.ts` inside of it. In that file we'll export an instance of the Pinata SDK that we can use throughout the rest of the app.
 
 ```typescript utils/config.ts
+"server only"
+
 import { PinataSDK } from "pinata"
 
 export const pinata = new PinataSDK({
@@ -246,14 +249,13 @@ Once you have created that file you can paste in the following code.
 
 ```typescript app/api/key/route.ts
 import { type NextRequest, NextResponse } from "next/server";
-const { v4: uuidv4 } = require("uuid");
 import { pinata } from "@/utils/config"
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    const uuid = uuidv4();
+    const uuid = crypto.randomUUID();
     const keyData = await pinata.keys.create({
       keyName: uuid.toString(),
       permissions: {
@@ -284,26 +286,25 @@ In the `/app/page.tsx` file take out the boiler plate code and use the following
 ```typescript app/page.tsx
 "use client";
 
-import { useState, useRef } from "react";
-import { pinata } from "@/utils/config"
+import { useState } from "react";
+import { pinata } from "@/utils/config";
 
 export default function Home() {
-  const [file, setFile]: any = useState();
-  const [url, setUrl] = useState("");
+  const [file, setFile] = useState<File>();
   const [uploading, setUploading] = useState(false);
 
-  const inputFile = useRef(null);
-
   const uploadFile = async () => {
+    if (!file) {
+      alert("No file selected");
+      return;
+    }
+
     try {
       setUploading(true);
-      const keyRequest = await fetch("/api/key", {
-        method: "GET",
-      });
+      const keyRequest = await fetch("/api/key");
       const keyData = await keyRequest.json();
-      const upload = await pinata.upload
-        .file(file)
-        .key(keyData.JWT)
+      const upload = await pinata.upload.file(file).key(keyData.JWT);
+      console.log(upload);
       setUploading(false);
     } catch (e) {
       console.log(e);
@@ -312,13 +313,13 @@ export default function Home() {
     }
   };
 
-  const handleChange = (e) => {
-    setFile(e.target.files[0]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(e.target?.files?.[0]);
   };
 
   return (
     <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
-      <input type="file" id="file" ref={inputFile} onChange={handleChange} />
+      <input type="file" onChange={handleChange} />
       <button disabled={uploading} onClick={uploadFile}>
         {uploading ? "Uploading..." : "Upload"}
       </button>
@@ -357,22 +358,23 @@ With this we can make another request from the client to get the URL and display
 ```typescript app/page.tsx
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { pinata } from "@/utils/config";
 
 export default function Home() {
-	const [file, setFile]: any = useState();
+	const [file, setFile] = useState<File>();
 	const [url, setUrl] = useState("");
 	const [uploading, setUploading] = useState(false);
 
-	const inputFile = useRef(null);
-
 	const uploadFile = async () => {
+		if (!file) {
+			alert("No file selected");
+			return;
+		}
+
 		try {
 			setUploading(true);
-			const keyRequest = await fetch("/api/key", {
-				method: "GET",
-			});
+			const keyRequest = await fetch("/api/key");
 			const keyData = await keyRequest.json();
 			const upload = await pinata.upload.file(file).key(keyData.JWT);
 			const urlReuest = await fetch("/api/sign", {
@@ -392,13 +394,13 @@ export default function Home() {
 		}
 	};
 
-	const handleChange = (e) => {
-		setFile(e.target.files[0]);
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setFile(e.target?.files?.[0]);
 	};
 
 	return (
 		<main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
-			<input type="file" id="file" ref={inputFile} onChange={handleChange} />
+			<input type="file" onChange={handleChange} />
 			<button disabled={uploading} onClick={uploadFile}>
 				{uploading ? "Uploading..." : "Upload"}
 			</button>
