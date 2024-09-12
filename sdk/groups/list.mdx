@@ -38,6 +38,18 @@ type GroupResponseItem = {
 
 Filter response with the following additional methods. All filters are optional.
 
+### name
+
+- Type: `string`
+
+Filters groups based the group name
+
+```typescript
+const groups = await pinata.groups
+    .list()
+    .name("SDK")
+```
+
 ### isPublic
 
 - Type: `boolean`

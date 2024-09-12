@@ -74,3 +74,35 @@ const url = await pinata.gateways.createSignedURL({
 	date: date
 });
 ```
+
+### optimizeImage (Optional)
+
+- Type: [OptimizeImageOptions](/sdk/types#optimizeimageoptions)
+
+```typescript
+type OptimizeImageOptions = {
+  width?: number;
+  height?: number;
+  dpr?: number;
+  fit?: "scaleDown" | "contain" | "cover" | "crop" | "pad";
+  gravity?: "auto" | "side" | string;
+  quality?: number;
+  format?: "auto" | "webp";
+  animation?: boolean;
+  sharpen?: number;
+  onError?: boolean;
+  metadata?: "keep" | "copyright" | "none";
+};
+```
+
+If the content being fetched is an image you can apply image optimizations to the image.
+
+```typescript
+const data = await pinata.gateways
+  .createSignedURL("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
+  .optimizeImage({
+    width: 500,
+    height: 500,
+    format: "webp"
+  })
+```
