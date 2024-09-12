@@ -81,6 +81,18 @@ const groups = await pinata.groups.list()
 
 Results can be filtered with the following queries.
 
+#### name
+
+- Type: `boolean`
+
+Filters groups based on the group name
+
+```typescript
+const groups = await pinata.groups
+    .list()
+    .name("SDK")
+```
+
 #### isPublic
 
 - Type: `boolean`

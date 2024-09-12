@@ -42,6 +42,66 @@ type FileListItem = {
 
 Filter response with the following additional methods. All filters are optional.
 
+### name
+
+- Type: `string`
+
+Filter results based on name
+
+```typescript
+const files = await pinata.files
+  .list()
+  .name("pinnie")
+```
+
+### group
+
+- Type: `string`
+
+Filter results based on group ID
+
+```typescript
+const files = await pinata.files
+  .list()
+  .group("5b56981c-7e5b-4dff-aeca-de784728dddb")
+```
+
+### cid
+
+- Type: `string`
+
+Filter results based on CID
+
+```typescript
+const files = await pinata.files
+  .list()
+  .cid("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
+```
+
+### mimeType
+
+- Type: `string`
+
+Filter results based on mime type
+
+```typescript
+const files = await pinata.files
+  .list()
+  .mimeType("image/png")
+```
+
+### order
+
+- Type: `"ASC" | "DESC"`
+
+Order results either ascending or descending by created date
+
+```typescript
+const files = await pinata.files
+  .list()
+  .order("ASC")
+```
+
 ### limit
 
 - Type: `number`
