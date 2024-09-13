@@ -40,10 +40,11 @@ Inside the `hello-world.txt` you can put whatever you'd like such as `Hello from
 
 Once we have our initial project setup we can put the following code into our `index.js` file.
 
-```javascript index.js
+<CodeGroup>
+
+```javascript index.js (Node v.20)
 const { PinataSDK } = require("pinata-web3")
 const fs = require("fs")
-const { Blob } = require("buffer")
 require("dotenv").config()
 
 const pinata = new PinataSDK({
@@ -65,6 +66,31 @@ async function upload(){
 upload()
 ```
 
+```javascript index.js (Node v.18)
+const { PinataSDK } = require("pinata-web3")
+const fs = require("fs")
+const { Blob } = require("buffer")
+require("dotenv").config()
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT,
+  pinataGateway: process.env.GATEWAY_URL
+})
+
+async function upload(){
+  try {
+    const blob: any = new Blob([fs.readFileSync("./hello-world.txt")]);
+    const upload = await pinata.upload.file(blob);
+    console.log(upload)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+upload()
+```
+
+</CodeGroup>
 You can run this by using `node index.js` in the terminal. After uploading a file you should get a response that looks like this
 
 ```javascript
