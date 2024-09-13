@@ -1105,6 +1105,13 @@ paths:
             type: string
           description: Filter by referer
           example: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+        - name: http_status_code
+          in: query
+          schema:
+            type: string
+            enum: ["200", "206", "301", "302","304", "307", "308", "404", "499"]
+          description: Filter results by HTTP status code
+          example: "200"
         - name: limit
           in: query
           schema:
@@ -1231,6 +1238,13 @@ paths:
             type: string
           description: Filter by referer
           example: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+        - name: http_status_code
+          in: query
+          schema:
+            type: string
+            enum: ["200", "206", "301", "302","304", "307", "308", "404", "499"]
+          description: Filter results by HTTP status code
+          example: "200"
         - name: limit
           in: query
           schema:
