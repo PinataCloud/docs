@@ -111,6 +111,7 @@
 				"web3/pinning/pinata-metadata",
 				"web3/pinning/deleting-files",
 				"web3/pinning/signatures",
+				"web3/account-management/limits",
 				{
 					"group": "Dedicated Gateways",
 					"pages": [
