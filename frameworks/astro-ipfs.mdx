@@ -1,0 +1,176 @@
+---
+title: "Astro"
+description: "Get started using Pinata with Astro"
+---
+
+## Setup Astro
+
+To create a new Astro project go ahead and run this command in the terminal:
+
+```bash
+npm create astro@latest pinata-astro
+```
+
+You can select which options you prefer, but for this exmaple we'll use the following:
+
+```
+tmpl   How would you like to start your new project?
+       Empty
+
+  ts   Do you plan to write TypeScript?
+       Yes
+
+ use   How strict should TypeScript be?
+       Strict
+
+deps   Install dependencies?
+       Yes
+
+ git   Initialize a new git repository?
+       Yes
+```
+
+After completing the project setup we can go ahead and `cd` into the repo and install `pinata-web3`.
+
+```bash
+cd pinata-astro && npm i pinata-web3
+```
+
+Since we want to keep our API key private we will need to make sure our code is deployed server side, and we can use several different adapter options which you can view [here](https://docs.astro.build/en/guides/server-side-rendering/). We also need a UI framework to handle our upload form, and there are many to choose from [here](https://docs.astro.build/en/guides/framework-components/). We'll use `vercel` and `svelte` for this tutorial, and you can install them like so.
+
+```bash
+npx astro add vercel svelte
+```
+
+This should install the dependencies and alter the `astro.config.mjs` for us.
+
+## Setup Pinata
+
+In the `src` folder make a new folder called `utils`, and inside there make a file called `pinata.ts` with the following contents:
+
+```typescript src/utils/pinata.ts
+import { PinataSDK } from "pinata";
+
+export const pinata = new PinataSDK({
+	pinataJwt: import.meta.env.PINATA_JWT,
+	pinataGateway: import.meta.env.GATEWAY_URL,
+});
+```
+
+This will create and export an instance of the Pinata SDK using environment variables, and to set those up make a new file at the root of the project called `.env` with the following values:
+
+```
+PINATA_JWT= # The Pinata JWT API key we got earlier
+GATEWAY_URL= # The Gateway domain we grabbed earlier, formatting just as we copied it from the app
+```
+
+## Create Client Side Form
+
+In the `src` folder make another folder called `components`, then inside there make file called `UploadForm.svelte`.
+
+```html src/components/UploadForm.svelte
+<script lang="ts">
+let url: string;
+let isUploading: boolean;
+
+async function submit(e: SubmitEvent) {
+	isUploading = true;
+	e.preventDefault();
+	const formData = new FormData(e.currentTarget as HTMLFormElement);
+	const request = await fetch("/api/upload", {
+		method: "POST",
+		body: formData,
+	});
+	const response = await request.json();
+	url = response.data;
+	isUploading = false;
+}
+</script>
+
+<style>
+  img {
+    max-width: 500px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+  button {
+   background-color: #6E57FF;
+   color: white;
+   border: none;
+   border-radius: 5px;
+   padding: 0.75rem 1.5rem;
+   font-weight: bold;
+  }
+</style>
+
+<form on:submit={submit}>
+  <input type="file" id="file" name="file" required />
+  <button>{isUploading ? "Uploading..." : "Upload"}</button>
+  {#if url}
+    <img src={url} alt="pinnie" />
+  {/if}
+</form>
+```
+
+This component creates a `<form>` with a file `<input>` as well as a `<button>` to send it. The form will trigger the `submit` function, which takes our form data and makes an API request to our server side code. Once complete the API will send response with a `url` that we can use in the `<img>` tag to display it on the page.
+
+## Server Side API Route
+
+In the `src/pages` folder make a new folder called `api` and inside there make a file called `upload.ts`. Paste the following code inside it:
+
+```typescript
+import type { APIRoute } from "astro";
+import { pinata } from "../../utils/pinata";
+
+export const POST: APIRoute = async ({ request }) => {
+	const data = await request.formData();
+	const file = data.get("file") as File;
+	if (!file) {
+		return new Response(
+			JSON.stringify({
+				message: "Missing file",
+			}),
+			{ status: 400 },
+		);
+	}
+	const { IpfsHash } = await pinata.upload.file(file);
+	const url = await pinata.gateways.convert(IpfsHash);
+	return new Response(
+		JSON.stringify({
+			data: url,
+		}),
+		{ status: 200 },
+	);
+};
+```
+
+This simple API route will parse the incoming `formData` and get the `file` we attached. If there isn't a file attached we'll send a error response. Otherwise we'll upload the file using the SDK method `pinata.upload.file` and deconstruct the response to get the `IpfsHash`. With that `IpfsHash` (aka `CID`) we can use the `convert` method to create a gateway URL that we can send back to the client.
+
+## Add Component to the Page
+
+The last step here is to update the `src/pages/index.astro` file with our new component!
+
+```html src/pages/index.astro
+---
+import UploadForm from "../components/UploadForm.svelte";
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<h1>Astro + Pinata</h1>
+		<UploadForm client:load />
+	</body>
+</html>
+```
