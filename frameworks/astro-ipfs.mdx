@@ -49,7 +49,7 @@ This should install the dependencies and alter the `astro.config.mjs` for us.
 In the `src` folder make a new folder called `utils`, and inside there make a file called `pinata.ts` with the following contents:
 
 ```typescript src/utils/pinata.ts
-import { PinataSDK } from "pinata";
+import { PinataSDK } from "pinata-web3";
 
 export const pinata = new PinataSDK({
 	pinataJwt: import.meta.env.PINATA_JWT,
