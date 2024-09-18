@@ -78,6 +78,7 @@
 						"frameworks/next-js",
 						"frameworks/react",
 						"frameworks/sveltekit",
+						"frameworks/remix",
 						"frameworks/node-js"
 					]
 				}
