@@ -2082,6 +2082,7 @@ paths:
       tags:
         - Private Files
       summary: List Files
+      operationId: listFiles
       parameters:
         - name: name
           in: query
@@ -2203,6 +2204,7 @@ paths:
       tags:
         - Private Files
       summary: Get File by ID
+      operationId: getFile
       parameters:
         - name: id
           in: path
@@ -2276,6 +2278,7 @@ paths:
       tags:
         - Private Files
       summary: Update File
+      operationId: updateFile
       requestBody:
         content:
           application/json:
@@ -2359,6 +2362,7 @@ paths:
       tags:
         - Private Files
       summary: Delete File by ID
+      operationId: deleteFile
       parameters:
         - name: id
           in: path
@@ -2405,6 +2409,7 @@ paths:
       tags:
         - Private Files
       summary: Get Signed URL
+      operationId: createSignedURL
       requestBody:
         content:
           application/json:
@@ -2473,6 +2478,7 @@ paths:
       tags:
         - Groups
       summary: Create Group
+      operationId: createGroup
       requestBody:
         content:
           application/json:
@@ -2543,6 +2549,7 @@ paths:
       tags:
         - Groups
       summary: List Groups
+      operationId: listGroups
       parameters:
         - name: name
           in: query
@@ -2630,6 +2637,7 @@ paths:
       tags:
         - Groups
       summary: Get Group
+      operationId: getGroup
       parameters:
         - name: id
           in: path
@@ -2691,6 +2699,7 @@ paths:
       tags:
         - Groups
       summary: Update Group
+      operationId: updateGroup
       requestBody:
         content:
           application/json:
@@ -2768,6 +2777,7 @@ paths:
       tags:
         - Groups
       summary: Delete Group
+      operationId: deleteGroup
       parameters:
         - name: id
           in: path
