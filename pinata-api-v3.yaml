@@ -2891,8 +2891,8 @@ paths:
                         description: The date this CID was updated
               example:
                 data:
-                  mappedCid: bafkreig4zcnmqa23zff3ye7tuef6wrlq3aimffzm22axfeh3ddmawzlzz4
-                  createdAt: "2024-09-20T17:09:39.490275Z"
+                  mapped_cid: bafkreig4zcnmqa23zff3ye7tuef6wrlq3aimffzm22axfeh3ddmawzlzz4
+                  created_at: "2024-09-20T17:09:39.490275Z"
     get:
       tags:
         - Swaps
@@ -2959,8 +2959,8 @@ paths:
                           description: The date this CID was updated
               example:
                 data:
-                  - mappedCid: bafkreig4zcnmqa23zff3ye7tuef6wrlq3aimffzm22axfeh3ddmawzlzz4
-                    createdAt: "2024-09-20T17:09:39.490275Z"
+                  - mapped_cid: bafkreig4zcnmqa23zff3ye7tuef6wrlq3aimffzm22axfeh3ddmawzlzz4
+                    created_at: "2024-09-20T17:09:39.490275Z"
     delete:
       tags:
         - Swaps
