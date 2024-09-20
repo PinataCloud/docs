@@ -297,6 +297,14 @@
 			]
 		},
 		{
+			"group": "Swaps",
+			"pages": [
+				"api-reference/endpoint/add-swap",
+				"api-reference/endpoint/get-swap-history",
+				"api-reference/endpoint/remove-swap"
+			]
+		},
+		{
 			"group": "API Keys",
 			"pages": [
 				"api-reference/endpoint/v3-create-api-key",

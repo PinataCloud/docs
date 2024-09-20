@@ -2819,3 +2819,192 @@ paths:
                 type: object
               example:
                 data: null
+
+  /files/swap/{cid}:
+    put:
+      tags:
+        - Swaps
+      summary: Add Swap
+      operationId: add-swap
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - swap_cid
+              properties:
+                swap_cid:
+                  type: string
+                  description: The CID you want to redirect to
+              example:
+                swap_cid: bafkreig4zcnmqa23zff3ye7tuef6wrlq3aimffzm22axfeh3ddmawzlzz4
+      parameters:
+        - name: cid
+          in: path
+          schema:
+            type: string
+          required: true
+          description: The target original CID
+          example: bafkreiccqfcxwp52uqwd7r5g7kdukgz7jvs6jcusetfnznj5jfch3r6wlm
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Sun, 18 Aug 2024 19:36:29 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "114"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 576d0cc3a1b66e3b8938c90e0f45f3a7
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      mapped_cid:
+                        type: string
+                        description: The current CID that is being pointed to from the original
+                      created_at:
+                        type: string
+                        description: The date this CID was updated
+              example:
+                data:
+                  mappedCid: bafkreig4zcnmqa23zff3ye7tuef6wrlq3aimffzm22axfeh3ddmawzlzz4
+                  createdAt: "2024-09-20T17:09:39.490275Z"
+    get:
+      tags:
+        - Swaps
+      summary: Get Swap History
+      operationId: get-swap
+      parameters:
+        - name: domain
+          in: query
+          schema:
+            type: string
+            description: The domain of the gateway that has the Hot Swaps plugin installed
+          required: true
+          example: discordpinnie.mypinata.cloud
+        - name: cid
+          in: path
+          schema:
+            type: string
+            description: The original CID that is in the Gateway path
+          required: true
+          example: bafkreiccqfcxwp52uqwd7r5g7kdukgz7jvs6jcusetfnznj5jfch3r6wlm
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Sun, 18 Aug 2024 19:44:14 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "116"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 32947ddd9c147410acebab6b9221f523
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        mapped_cid:
+                          type: string
+                          description: The current CID that is being pointed to from the original
+                        created_at:
+                          type: string
+                          description: The date this CID was updated
+              example:
+                data:
+                  - mappedCid: bafkreig4zcnmqa23zff3ye7tuef6wrlq3aimffzm22axfeh3ddmawzlzz4
+                    createdAt: "2024-09-20T17:09:39.490275Z"
+    delete:
+      tags:
+        - Swaps
+      summary: Remove Swap
+      operationId: delete-swap
+      parameters:
+        - name: cid
+          in: path
+          schema:
+            type: string
+          required: true
+          description: Target CID to remove swap
+          example: bafkreiccqfcxwp52uqwd7r5g7kdukgz7jvs6jcusetfnznj5jfch3r6wlm
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Sun, 18 Aug 2024 19:45:11 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "14"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: cb4721118316fe9ac2e7ec44a2e25133
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data: null
