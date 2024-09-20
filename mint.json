@@ -642,6 +642,10 @@
 			"destination": "farcaster/events/farhack"
 		},
 		{
+			"source": "/hackmidwest",
+			"destination": "events/hack-midwest"
+		},
+		{
 			"source": "/events/frameworks",
 			"destination": "farcaster/events/frameworks"
 		}
