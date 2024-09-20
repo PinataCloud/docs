@@ -159,7 +159,14 @@
 		},
 		{
 			"group": "Files",
-			"pages": ["sdk/files/list", "sdk/files/update", "sdk/files/delete"]
+			"pages": [
+				"sdk/files/list",
+				"sdk/files/update",
+				"sdk/files/delete",
+				"sdk/files/add-swap",
+				"sdk/files/get-swap-history",
+				"sdk/files/delete-swap"
+			]
 		},
 		{
 			"group": "Upload",
