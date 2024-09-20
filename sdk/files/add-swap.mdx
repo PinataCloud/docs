@@ -1,5 +1,5 @@
 ---
-title: "swapCid"
+title: "addSwap"
 ---
 
 Swap a CID for another using the [Hot Swaps](/gateways/plugins/hot-swaps) gateway plugin
@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const swap = await pinata.gateways.swapCid({
+const swap = await pinata.gateways.addSwap({
   cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
   swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
 })
@@ -24,8 +24,8 @@ const swap = await pinata.gateways.swapCid({
 
 ```typescript
 export type SwapCidResponse = {
-	mappedCid: string;
-	createdAt: string;
+	mapped_cid: string;
+	created_at: string;
 };
 ```
 
@@ -40,7 +40,7 @@ Pass in the required parameters below to swap a CID
 This would be the original CID that would be visted
 
 ```typescript
-const swap = await pinata.gateways.swapCid({
+const swap = await pinata.gateways.addSwap({
   cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
 })
 ```
@@ -52,7 +52,7 @@ const swap = await pinata.gateways.swapCid({
 This would be the CID you would want the old CID to point to
 
 ```typescript
-const swap = await pinata.gateways.swapCid({
+const swap = await pinata.gateways.addSwap({
   swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
 })
 ```

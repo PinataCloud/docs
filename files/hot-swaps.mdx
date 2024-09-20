@@ -3,12 +3,7 @@ title: "Hot Swaps"
 description: "Use the Hot Swaps plugin to make one CID map to another"
 ---
 
-The Hot Swaps plugin can be used to "redirect" a CID to another CID. This can be useful when you need to replace content without updaing the CID hash.
-
-While it may seem like this undermines the benefits of IPFS' imutable content system, it should be made clear that this only works on a per gateway level for those who install it. Additionally:
-- Any CID can be called by another gateway to view the original content
-- Pinata has an [SDK method](/sdk/gateways/swap-history) and [API endpoint](/api-reference/endpoint/get-swap-history) that any Pinata user can call to check the history of a swap
-- All gateway requests that have the hot swap plugin installed and are serving a swapped CID will have a header of `etag` that will have the CID that is currently being directed to.
+The Hot Swaps plugin can be used to "redirect" a CID to another CID. This can be useful when you need to replace content without updaing the CID hash. What makes this unique from just replacing content is that every swap is recorded and is available as a history. Combine that with the content addressable nature of CIDs and you get a version history of content.
 
 To demonstrate how this plugin works, consider the following example:
 
@@ -26,16 +21,16 @@ async function main() {
     const file = new File(["The original CID"], "cid.txt", {
       type: "text/plain",
     });
-    const { IpfsHash: CID1 } = await pinata.upload.file(file);
+    const { cid: CID1 } = await pinata.upload.file(file);
     console.log("This is the original CID hash: ", CID1);
 
     // Upload a second file
     const file2 = new File(["The new CID"], "cid.txt", { type: "text/plain" });
-    const { IpfsHash: CID2 } = await pinata.upload.file(file2);
+    const { cid: CID2 } = await pinata.upload.file(file2);
     console.log("This is the new CID hash: ", CID2);
 
     // Create the swap, so when we visit CID1 we will get the content of CID2
-    const swap = await pinata.gateways.swapCid({
+    const swap = await pinata.files.addSwap({
       cid: CID1,
       swapCid: CID2,
     });
@@ -54,7 +49,23 @@ main();
 
 ## Installation
 
-Follow the steps in the [Getting Started](/gateways/plugins/getting-started) guide to install the Hot Swaps Plugin.
+To install a plugin navigate to the Plugins Marketplace tab on the right side.
+
+<Frame>
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafkreidmyi2vmovwmcyc4zhnetr632rvnvo4owrmigqnunezbdqfm32q2e" />
+</Frame>
+
+Once there you can find the plugin you want to install and click "Install." This will bring up a drop down of your Gateways to choose which the plugin is installed to.
+
+<Frame>
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeig4pkyofczlhlag33i5coxs4oewk66ejveguzppqng23qo45gabgi" />
+</Frame>
+
+Once installed you can confirm its there by going to the "My Plugins" tab.
+
+<Frame>
+<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafkreiabaxv26bt7wkuq5k5maya4lwpegmvcpz5tlr6rbjpgijvwxxmymu" />
+</Frame>
 
 ## Usage
 
@@ -68,29 +79,29 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const swap = await pinata.gateways.swapCid({
+const swap = await pinata.files.addSwap({
   cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
   swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
 })
 ```
 
-You can fetch the history of CID swaps using the `swapHistory` method, passing in the `cid` of the original CID and the `domain` of the gateway that has the Hot Swaps plugin installed.
+You can fetch the history of CID swaps using the `getSwapHistory` method, passing in the `cid` of the original CID and the `domain` of the gateway that has the Hot Swaps plugin installed.
 
 ```typescript
-const history = await pinata.gateways.swapHistory({
+const history = await pinata.files.getSwapHistory({
   cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
   domain: "discordpinnie.mypinata.cloud"
 })
 
 // [
 //   {
-//     mappedCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu",
-//     createdAt: "2024-08-19T14:34:46.492432Z"
+//     mapped_cid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu",
+//     created_at: "2024-08-19T14:34:46.492432Z"
 //   },
-//   { mappedCid: null, createdAt: "2024-08-19T14:25:10.208726Z" },
+//   { mapped_cid: null, created_at: "2024-08-19T14:25:10.208726Z" },
 //   {
-//     mappedCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu",
-//     createdAt: "2024-08-19T00:23:41.755206Z"
+//     mapped_cid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu",
+//     created_at: "2024-08-19T00:23:41.755206Z"
 //   }
 // ]
 ```

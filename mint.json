@@ -101,7 +101,8 @@
 				"files/listing-files",
 				"files/deleting-files",
 				"gateways/retrieving-files",
-				"gateways/image-optimizations"
+				"gateways/image-optimizations",
+				"files/hot-swaps"
 			]
 		},
 		{
