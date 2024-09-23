@@ -75,6 +75,20 @@ const url = await pinata.gateways.createSignedURL({
 });
 ```
 
+### gateway (Optional)
+
+- Type: `string`
+
+Use a Gateway domain other than the default domain from the config
+
+```typescript
+const url = await pinata.gateways.createSignedURL({
+	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
+	expires: 30,
+	gateway: "discordpinnie.mypinata.cloud"
+});
+```
+
 ### optimizeImage (Optional)
 
 - Type: [OptimizeImageOptions](/sdk/types#optimizeimageoptions)
