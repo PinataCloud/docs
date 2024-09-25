@@ -646,6 +646,10 @@
 			"destination": "events/hack-midwest"
 		},
 		{
+			"source": "/dif",
+			"destination": "events/dif"
+		},
+		{
 			"source": "/events/frameworks",
 			"destination": "farcaster/events/frameworks"
 		}
