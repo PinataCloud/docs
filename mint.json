@@ -221,6 +221,7 @@
 				"web3/sdk/upload/json",
 				"web3/sdk/upload/base64",
 				"web3/sdk/upload/url",
+				"web3/sdk/upload/stream",
 				"web3/sdk/upload/cid"
 			]
 		},
