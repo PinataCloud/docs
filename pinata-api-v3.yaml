@@ -2110,6 +2110,14 @@ paths:
             type: boolean
           description: Return only files that are still waiting for a CID
           example: "true"
+        - name: metadata
+          in: query
+          style: deepObject
+          explode: true
+          schema:
+            type: object
+            additionalProperties: true
+          description: Filter by key values in file metadata
         - name: limit
           in: query
           schema:
@@ -2287,6 +2295,10 @@ paths:
               properties:
                 name:
                   type: string
+                  description: The updated name for a file
+                keyvalues:
+                  type: string
+                  description: Stringified key/values metadata
               example:
                 name: Hello Files API
       parameters:
