@@ -2190,6 +2190,8 @@ paths:
                               type: string
                             group_id:
                               type: string
+                            keyvalues:
+                              type: object
                             created_at:
                               type: string
                       next_page_token:
@@ -2197,14 +2199,16 @@ paths:
               example:
                 data:
                   files:
-                    - id: 01919457-c2c6-770e-9391-8c72c4f41f64
-                      name: radicalize-local.gif
+                    - id: e5323ea7-8a02-4486-9b6f-63c788810aeb
+                      name: e093dbd3-f276-4bb3-a43e-60437725f410.txt
                       cid: >-
-                        bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
-                      size: 4861678
+                        bafkreicnu2aqjkoglrlrd65giwo4l64pdajxffk6jtq2vb7yaiopc3yu7m
+                      size: 36
                       number_of_files: 1
-                      mime_type: "image/gif"
-                      group_id: null
+                      mime_type: "text/plain"
+                      group_id: 18893556-de8e-4229-8a9a-27b95468dd3e
+                      keyvalues:
+                        whimsey: "true"
                       created_at: "2024-08-27T14:57:51.485934Z"
                   next_page_token: MDE5MTk0NTctYzJjNi03NzBlLTkzOTEtOGM3MmM0ZjQxZjY0
   /files/{id}:
@@ -2268,19 +2272,24 @@ paths:
                         type: number
                       mime_type:
                         type: string
+                      keyvalues:
+                        type: object
                       group_id:
                         type: string
                       created_at:
                         type: string
               example:
                 data:
-                  id: 01919457-c2c6-770e-9391-8c72c4f41f64
-                  name: radicalize-local.gif
-                  cid: bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
-                  size: 4861678
+                  id: e5323ea7-8a02-4486-9b6f-63c788810aeb
+                  name: e093dbd3-f276-4bb3-a43e-60437725f410.txt
+                  cid: >-
+                    bafkreicnu2aqjkoglrlrd65giwo4l64pdajxffk6jtq2vb7yaiopc3yu7m
+                  size: 36
                   number_of_files: 1
-                  mime_type: "image/gif"
-                  group_id: null
+                  mime_type: "text/plain"
+                  group_id: 18893556-de8e-4229-8a9a-27b95468dd3e
+                  keyvalues:
+                    whimsey: "true"
                   created_at: "2024-08-27T14:57:51.485934Z"
     put:
       tags:
@@ -2297,7 +2306,8 @@ paths:
                   type: string
                   description: The updated name for a file
                 keyvalues:
-                  type: string
+                  type: object
+                  additionalProperties: true
                   description: Stringified key/values metadata
               example:
                 name: Hello Files API
@@ -2354,6 +2364,8 @@ paths:
                         type: number
                       number_of_files:
                         type: number
+                      keyvalues:
+                        type: object
                       mime_type:
                         type: string
                       group_id:
@@ -2362,13 +2374,16 @@ paths:
                         type: string
               example:
                 data:
-                  id: 01919457-c2c6-770e-9391-8c72c4f41f64
-                  name: Hello Files API
-                  cid: bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm
-                  size: 4861678
+                  id: e5323ea7-8a02-4486-9b6f-63c788810aeb
+                  name: e093dbd3-f276-4bb3-a43e-60437725f410.txt
+                  cid: >-
+                    bafkreicnu2aqjkoglrlrd65giwo4l64pdajxffk6jtq2vb7yaiopc3yu7m
+                  size: 36
                   number_of_files: 1
-                  mime_type: TODO
-                  group_id: null
+                  mime_type: "text/plain"
+                  group_id: 18893556-de8e-4229-8a9a-27b95468dd3e
+                  keyvalues:
+                    whimsey: "true"
                   created_at: "2024-08-27T14:57:51.485934Z"
     delete:
       tags:
