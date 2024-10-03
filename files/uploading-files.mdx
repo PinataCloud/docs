@@ -76,6 +76,38 @@ async function pinFileToIPFS() {
 }
 ```
 
+### Upload Progress
+
+If you happen to use the API as well as local files you can also track the progress of the upload using a library like `got`. Better support for upload progress will come in later versions of the SDK!
+
+```typescript
+import fs from "fs";
+import FormData from "form-data";
+import got from "got";
+
+async function upload() {
+	const url = `https://uploads.pinata.cloud/v3/files`;
+	try {
+		let data = new FormData();
+		data.append(`file`, fs.createReadStream("path/to/file"));
+		const response = await got(url, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${process.env.PINATA_JWT}`,
+			},
+			body: data,
+		}).on("uploadProgress", (progress) => {
+			console.log(progress);
+		});
+		console.log(JSON.parse(response.body));
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+upload();
+```
+
 ## Common File Recipes
 
 Below are some common recipes for uploading a file.
