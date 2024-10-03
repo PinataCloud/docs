@@ -54,7 +54,7 @@ The API accepts `File` objects (and blobs in the right environment) through a mu
 ```javascript
 const JWT = "YOUR_PINATA_JWT";
 
-async function pinFileToIPFS() {
+async function upload() {
   try {
     const formData = new FormData();
 
@@ -104,8 +104,6 @@ async function upload() {
 		console.log(error);
 	}
 }
-
-upload();
 ```
 
 ## Common File Recipes
