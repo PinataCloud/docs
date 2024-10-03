@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const history = await pinata.gateways.getSwapHistory({
+const history = await pinata.files.getSwapHistory({
   cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
   domain: "discordpinnie.mypinata.cloud"
 })
@@ -42,7 +42,7 @@ Pass in the required parameters to get a swap history
 The target CID for swap history
 
 ```typescript
-const history = await pinata.gateways.getSwapHistory({
+const history = await pinata.files.getSwapHistory({
   cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
 })
 ```
@@ -54,7 +54,7 @@ const history = await pinata.gateways.getSwapHistory({
 The Gateway domain that has the Hot Swaps plugin installed
 
 ```typescript
-const history = await pinata.gateways.getSwapHistory({
+const history = await pinata.files.getSwapHistory({
   domain: "discordpinnie.mypinata.cloud"
 })
 ```
