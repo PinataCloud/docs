@@ -345,14 +345,14 @@ export default function Home() {
 			const keyRequest = await fetch("/api/key");
 			const keyData = await keyRequest.json();
 			const upload = await pinata.upload.file(file).key(keyData.JWT);
-			const urlReuest = await fetch("/api/sign", {
+			const urlRequest = await fetch("/api/sign", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({ cid: upload.cid }),
 			});
-			const url = await urlReuest.json();
+			const url = await urlRequest.json();
 			setUrl(url);
 			setUploading(false);
 		} catch (e) {
