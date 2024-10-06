@@ -108,7 +108,7 @@ This will take a file from the client side and upload it through an API route we
 <Note>
   Next.js does have a file size limitation for what can be passed through the
   API routes, so if you need more than the limit then it is advised to make
-  signed JWTs by folloing [this
+  signed JWTs by following [this
   guide](https://www.pinata.cloud/blog/how-to-upload-to-ipfs-from-the-frontend-with-signed-jwts).
 </Note>
 
@@ -221,7 +221,7 @@ import { pinata } from "@/utils/config"
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function POST() {
   try {
     const uuid = crypto.randomUUID();
     const keyData = await pinata.keys.create({
