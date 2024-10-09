@@ -35,6 +35,11 @@ paths:
                 group_id:
                   type: string
                   description: ID of the group you would like to upload
+                keyvalues:
+                  type: object
+                  description: Add additional key value metadata to files upon upload
+                  additionalProperties:
+                    type: string
       responses:
         '200':
           description: Successful response
