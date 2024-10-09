@@ -66,6 +66,9 @@ const upload = await pinata.upload
   .base64("SGVsbG8gV29ybGQh")
   .addMetadata({
     name: "hello.txt",
+    keyValues: {
+      whimsey: "100"
+    }
   })
 ```
 
