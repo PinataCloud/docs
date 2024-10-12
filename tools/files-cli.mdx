@@ -236,13 +236,20 @@ OPTIONS:
 ### `gateways`
 
 ```
+NAME:
+   pinata gateways - Interact with your gateways on Pinata
+
 USAGE:
    pinata gateways command [command options] [arguments...]
 
 COMMANDS:
    set, s   Set your default gateway to be used by the CLI
+   open, o  Open a file in the browser
    sign, s  Get a signed URL for a file by CID
    help, h  Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
 ```
 
 #### `set`
@@ -271,6 +278,19 @@ NAME:
 USAGE:
    pinata gateways sign [command options] [cid of the file, number of seconds the url is valid for]
    example: pinata gateways sign bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4 30
+
+OPTIONS:
+   --help, -h  show help
+```
+
+#### `open`
+
+```
+NAME:
+   pinata gateways open - Open a file in the browser
+
+USAGE:
+   pinata gateways open [command options] [CID of the file]
 
 OPTIONS:
    --help, -h  show help
