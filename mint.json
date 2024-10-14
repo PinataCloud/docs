@@ -600,6 +600,10 @@
 	},
 	"redirects": [
 		{
+			"source": "/sdk",
+			"destination": "/sdk/getting-started"
+		},
+		{
 			"source": "/pinning/:slug*",
 			"destination": "/web3/pinning/:slug*"
 		},
