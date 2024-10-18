@@ -155,7 +155,7 @@
 			]
 		},
 		{
-			"group": "Pinata SDK",
+			"group": "Files SDK",
 			"pages": ["sdk/getting-started", "sdk/config", "sdk/test-authentication"]
 		},
 		{
@@ -201,7 +201,7 @@
 			"pages": ["sdk/types"]
 		},
 		{
-			"group": "Pinata IPFS SDK",
+			"group": "IPFS SDK",
 			"pages": ["web3/sdk/getting-started", "web3/sdk/config"]
 		},
 		{
