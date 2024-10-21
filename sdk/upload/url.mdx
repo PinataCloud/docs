@@ -66,6 +66,9 @@ const upload = await pinata.upload
   .url("https://i.imgur.com/u4mGk5b.gif")
   .addMetadata({
     name: "pinnie.gif",
+    keyvalues: {
+      env: "prod"
+    }
   })
 ```
 

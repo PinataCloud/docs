@@ -78,6 +78,20 @@ const files = await pinata.files
   .cid("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
 ```
 
+### metadata
+
+- Type: `Record<string, string>`
+
+Filter results based on keyvalue pairs in metadata
+
+```typescript
+const files = await pinata.files
+  .list()
+  .metadata({
+    env: "prod"
+  })
+```
+
 ### mimeType
 
 - Type: `string`

@@ -95,6 +95,9 @@ const upload = await pinata.upload
   .file(file)
   .addMetadata({
     name: "hello.txt",
+    keyvalues: {
+      env: "prod"
+    }
   })
 ```
 
