@@ -2093,7 +2093,7 @@ paths:
           in: query
           schema:
             type: string
-          description: Filter fils by group_id
+          description: Filter fils by group_id. Pass `null` to show files that are not part of a group
         - name: mimeType
           in: query
           schema:

@@ -188,6 +188,8 @@
 				"sdk/groups/create",
 				"sdk/groups/get",
 				"sdk/groups/list",
+				"sdk/groups/add-files",
+				"sdk/groups/remove-files",
 				"sdk/groups/update",
 				"sdk/groups/delete"
 			]

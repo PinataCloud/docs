@@ -66,6 +66,18 @@ const files = await pinata.files
   .group("5b56981c-7e5b-4dff-aeca-de784728dddb")
 ```
 
+### noGroup
+
+- Type: `boolean`
+
+Filter results to only show files that are not part of a group
+
+```typescript
+const files = await pinata.files
+  .list()
+  .noGroup(true)
+```
+
 ### cid
 
 - Type: `string`
