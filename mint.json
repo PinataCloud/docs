@@ -302,6 +302,8 @@
 				"api-reference/endpoint/create-group",
 				"api-reference/endpoint/get-group",
 				"api-reference/endpoint/list-groups",
+				"api-reference/endpoint/add-file-to-group",
+				"api-reference/endpoint/remove-file-from-group",
 				"api-reference/endpoint/update-group",
 				"api-reference/endpoint/delete-group"
 			]
