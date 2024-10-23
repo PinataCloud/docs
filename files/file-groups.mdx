@@ -49,18 +49,45 @@ This will return the Group info
 }
 ```
 
+### Add or Rremove Files from a Group
+
+There are two ways you can add files to a group. The first is to add the file to a group on [upload](/sdk/upload/file).
+
+```typescript
+const upload = await pinata.upload
+  .file(file)
+  .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
+```
+
+Another option is to add files after the fact using the [addFiles](/sdk/groups/add-files) method.
+
+```typescript
+const upload = await pinata.groups.addFiles({
+  groupId: "b07da1ff-efa4-49af-bdea-9d95d8881103",
+  files: [
+    "0ed5738f-07e7-4587-81fb-f04f8be15d77",
+    "a277dc29-2ca3-4dfb-aeb9-3f2b23e956f7"
+  ]
+})
+```
+
+Removing files can be done the exact same way with the [removeFiles](/sdk/groups/remove-files) method.
+
+```typescript
+const upload = await pinata.groups.removeFiles({
+  groupId: "b07da1ff-efa4-49af-bdea-9d95d8881103",
+  files: [
+    "0ed5738f-07e7-4587-81fb-f04f8be15d77",
+    "a277dc29-2ca3-4dfb-aeb9-3f2b23e956f7"
+  ]
+})
+```
+
 ### Get a Group
 
 To fetch details of an already existing group you can use the [get](/sdk/groups/get) and pass in the `groupId`.
 
 ```typescript
-import { PinataSDK } from "pinata";
-
-const pinata = new PinataSDK({
-    pinataJwt: process.env.PINATA_JWT!,
-    pinataGateway: "example-gateway.mypinata.cloud",
-});
-
 const groups = await pinata.groups.get({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 });
@@ -82,13 +109,6 @@ This will return the same group info received upon creation.
 If you want to get all Groups or filter through them, you can use the [list](/sdk/groups/list) method.
 
 ```typescript
-import { PinataSDK } from "pinata";
-
-const pinata = new PinataSDK({
-    pinataJwt: process.env.PINATA_JWT!,
-    pinataGateway: "example-gateway.mypinata.cloud",
-});
-
 const groups = await pinata.groups.list()
 ```
 
@@ -148,13 +168,6 @@ This will return an array of Groups and their respective info:
 You can update the name of a group or it's public status using the [update](/sdk/groups/update) method and passing in the `groupId, a new `name` you want to use, or setting the `isPublic` boolean.
 
 ```typescript
-import { PinataSDK } from "pinata";
-
-const pinata = new PinataSDK({
-  pinataJwt: process.env.PINATA_JWT!,
-  pinataGateway: "example-gateway.mypinata.cloud",
-});
-
 const groups = await pinata.groups.update({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 	name: "My New Group 2",
@@ -182,13 +195,6 @@ This will return the updated Group info.
 To delete a Group you can use the [delete](/sdk/groups/delete) method and pass in the `groupId`.
 
 ```typescript
-import { PinataSDK } from "pinata";
-
-const pinata = new PinataSDK({
-  pinataJwt: process.env.PINATA_JWT!,
-  pinataGateway: "example-gateway.mypinata.cloud",
-});
-
 const groups = await pinata.groups.delete({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 });
