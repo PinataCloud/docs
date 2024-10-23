@@ -40,7 +40,7 @@ type GroupResponseItem = {
 
 ID for the target Group
 
-```typescript
+```typescript {2}
 const groups = await pinata.groups.update({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 });
@@ -52,7 +52,7 @@ const groups = await pinata.groups.update({
 
 Updated name for the target group
 
-```typescript
+```typescript {2}
 const groups = await pinata.groups.update({
 	name: "My Group Again",
 });
@@ -64,7 +64,7 @@ const groups = await pinata.groups.update({
 
 Update a group to be public or private
 
-```typescript
+```typescript {2}
 const groups = await pinata.groups.update({
     isPublic: true
 });

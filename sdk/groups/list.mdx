@@ -44,7 +44,7 @@ Filter response with the following additional methods. All filters are optional.
 
 Filters groups based the group name
 
-```typescript
+```typescript {3}
 const groups = await pinata.groups
     .list()
     .name("SDK")
@@ -56,7 +56,7 @@ const groups = await pinata.groups
 
 Filters groups based on whether they are public or not
 
-```typescript
+```typescript {3}
 const groups = await pinata.groups
     .list()
     .isPublic(true)
@@ -68,7 +68,7 @@ const groups = await pinata.groups
 
 Limits the number of results
 
-```typescript
+```typescript {3}
 const groups = await pinata.groups
     .list()
     .limit(10)
@@ -80,7 +80,7 @@ const groups = await pinata.groups
 
 Paginates through groups based on a provided page token
 
-```typescript
+```typescript {3}
 const groups = await pinata.groups
   .list()
   .pageToken("MDE5MWIzZWYtM2U0Zi03YTY5LWE3OTQtOTRhZDE5NjQxMTk0")

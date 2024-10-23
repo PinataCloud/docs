@@ -41,9 +41,13 @@ type KeyResponse = {
 
 Name for the API key
 
-```typescript
+```typescript {2}
 const key = await pinata.keys.create({
-  keyName: "user 1"
+  keyName: "user 1",
+  permissions: {
+    admin: true,
+  },
+  maxUses: 1,
 });
 ```
 
@@ -53,9 +57,13 @@ const key = await pinata.keys.create({
 
 Limit the number of uses a key is valid for
 
-```typescript
+```typescript {6}
 const key = await pinata.keys.create({
-  maxUses: 2
+  keyName: "user 1",
+  permissions: {
+    admin: true,
+  },
+  maxUses: 1,
 });
 ```
 
@@ -69,12 +77,13 @@ const key = await pinata.keys.create({
 
 Grants the key admin access to all endpoints
 
-```typescript
+```typescript {4}
 const key = await pinata.keys.create({
   keyName: "user 1",
   permissions: {
     admin: true,
-  }
+  },
+  maxUses: 1,
 });
 ```
 
@@ -82,7 +91,7 @@ const key = await pinata.keys.create({
 
 - Type [Endpoints](../types#endpoints)
 
-```typescript
+```typescript {3-20}
 const key = await pinata.keys.create({
   keyName: "user 1",
   permissions: {

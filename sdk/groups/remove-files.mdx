@@ -40,9 +40,13 @@ type UpdateGroupFilesResponse[] = {
 
 ID of the target Group to remove files from
 
-```typescript
+```typescript {2}
 const group = await pinata.groups.removeFiles({
-	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+  groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+	files: [
+	  "7e18c4a4-9501-44de-8f81-403db7de0e39",
+		"a606ef7e-70a0-40ad-9b8a-60563e009655"
+	],
 });
 ```
 
@@ -52,11 +56,12 @@ const group = await pinata.groups.removeFiles({
 
 An array of file IDs as strings that you want to remove from the group
 
-```typescript
+```typescript {3-6}
 const group = await pinata.groups.removeFiles({
+  groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 	files: [
-    "7e18c4a4-9501-44de-8f81-403db7de0e39",
-    "a606ef7e-70a0-40ad-9b8a-60563e009655"
+	  "7e18c4a4-9501-44de-8f81-403db7de0e39",
+		"a606ef7e-70a0-40ad-9b8a-60563e009655"
 	],
 });
 ```

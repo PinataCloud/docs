@@ -53,7 +53,7 @@ const pinata = new PinataSDK({
 
 ## 2. Upload a File
 
-```typescript
+```typescript {11}
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
@@ -93,7 +93,7 @@ This will return an object like the following
 
 Use the `cid` of a file to fetch it through a Gateway, or create a signed URL.
 
-```typescript
+```typescript {13-16}
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
