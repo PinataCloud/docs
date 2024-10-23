@@ -44,7 +44,7 @@ type FileListItem = {
 
 ID of the target file to update
 
-```typescript {1-2}
+```typescript {2}
 const update = await pinata.files.update({
   id: "8809812b-cd36-499f-b9b3-a37258a9cd6a",
   name: "New File Name",
@@ -57,7 +57,7 @@ const update = await pinata.files.update({
 
 Update the name of a file
 
-```typescript
+```typescript {3}
 const update = await pinata.files.update({
   id: "8809812b-cd36-499f-b9b3-a37258a9cd6a",
   name: "New File Name"

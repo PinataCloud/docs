@@ -39,7 +39,7 @@ type GroupResponseItem = {
 
 Requires a name for the group to be created
 
-```typescript
+```typescript {2}
 const group = await pinata.groups.create({
 	name: "My New Group",
 });
@@ -52,7 +52,7 @@ const group = await pinata.groups.create({
 Determine whether or not a group is public upon creation. Default is `false`.
 
 
-```typescript
+```typescript {3}
 const group = await pinata.groups.create({
 	name: "My New Group",
 	isPublic: true

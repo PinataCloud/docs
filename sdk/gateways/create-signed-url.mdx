@@ -38,9 +38,10 @@ https://example-gateway.mypinata.cloud/files/bafkreib4pqtikzdjlj4zigobmd63lig7u6
 
 Accepts CID of the file you are trying to create a signed URL for
 
-```typescript
+```typescript {2}
 const url = await pinata.gateways.createSignedURL({
-	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
+  cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
+	expires: 30,
 });
 ```
 
@@ -51,7 +52,7 @@ const url = await pinata.gateways.createSignedURL({
 The number of seconds the signed URL should be valid for
 
 
-```typescript
+```typescript {3}
 const url = await pinata.gateways.createSignedURL({
 	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
 	expires: 30,
@@ -64,7 +65,7 @@ const url = await pinata.gateways.createSignedURL({
 
 A UNIX timestamp of the date a URL is signed
 
-```typescript
+```typescript {1-2,7}
 const date = Math.floor(new Date().getTime() / 1000);
 //date: 1724943711
 
@@ -81,7 +82,7 @@ const url = await pinata.gateways.createSignedURL({
 
 Use a Gateway domain other than the default domain from the config
 
-```typescript
+```typescript {4}
 const url = await pinata.gateways.createSignedURL({
 	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
 	expires: 30,
@@ -111,7 +112,7 @@ type OptimizeImageOptions = {
 
 If the content being fetched is an image you can apply image optimizations to the image.
 
-```typescript
+```typescript {3-7}
 const data = await pinata.gateways
   .createSignedURL("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
   .optimizeImage({

@@ -83,7 +83,7 @@ type OptimizeImageOptions = {
 
 If the content being fetched is an image you can apply image optimizations to the image.
 
-```typescript
+```typescript {3-7}
 const data = await pinata.gateways
   .get("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
   .optimizeImage({
