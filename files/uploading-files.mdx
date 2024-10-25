@@ -2,7 +2,10 @@
 title: "Uploading Files"
 ---
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/QmaHVPUAt5iqhCGHgMcbyRh4dkcoFNod8B38ZUaZ3urxRU?img-format=webp" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmaHVPUAt5iqhCGHgMcbyRh4dkcoFNod8B38ZUaZ3urxRU?img-format=webp"
+/>
 
 At the core of Pinata is file uploads through our File API. It's fast and easy to use, whether you're using the [SDK](/sdk) or the [API](/api-reference). Something unique about the Files API is that all files are given a unique Content Identifier or `CID`. These are not like normal IDs in that they are content addressable hashes based on the contents of the file. You can upload the same file over and over and it will always return the same CID. This has multiple benefits including:
     - Deduplication: Since a duplicate file would have the same CID, it is not included upon upload and reduces the amount of files in your account. This keeps things organized and reduces your total costs.
@@ -24,21 +27,6 @@ const pinata = new PinataSDK({
 
 const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
 const upload = await pinata.upload.file(file);
-```
-
-The SDK is also equipped to handle an array of file objects.
-
-```typescript
-import { PinataSDK } from "pinata";
-
-const pinata = new PinataSDK({
-  pinataJwt: process.env.PINATA_JWT!,
-  pinataGateway: "example-gateway.mypinata.cloud",
-});
-
-const file1 = new File(["hello world!"], "hello.txt", { type: "text/plain" })
-const file2 = new File(["hello world again!"], "hello2.txt", { type: "text/plain" })
-const upload = await pinata.upload.fileArray([file1, file2])
 ```
 
 ## Using the API
