@@ -13,7 +13,7 @@ At the core of Pinata is file uploads through our File API. It's fast and easy t
 
 Let's look at the multiple ways you can upload files!
 
-## Using the SDK
+## Using the Files SDK
 
 The Pinata SDK is able to handle mutliple kinds of uploads, whether its file objects, base64 strings, or even content from remote URLs.
 
@@ -29,7 +29,64 @@ const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
 const upload = await pinata.upload.file(file);
 ```
 
-## Using the API
+This will return the following response
+
+```typescript
+{
+    id: "349f1bb2-5d59-4cab-9966-e94c028a05b7",
+    name: "file.txt",
+    cid: "bafybeihgxdzljxb26q6nf3r3eifqeedsvt2eubqtskghpme66cgjyw4fra",
+    size: 4682779,
+    number_of_files: 1,
+    mime_type: "text/plain",
+    user_id: "7a484d2c-4219-4f80-9d9d-86b42461e71a",
+    group_id: null
+}
+```
+
+- `id`: The ID of the file used for getting info, updating, or deleting
+- `name`: The name of the file or the provided name in the `addMetadata` method
+- `cid`: A cryptographic hash based on the contents of the file
+- `size`: The size of the file in bytes
+- `number_of_files`: The number of files in a reference
+- `mime_type`: The mime type of the uploaded file
+- `user_id`: User ID of the API key that upladed the file
+- `group_id`: The group the file was uploaded to if applicable
+
+### Metadata
+
+When uploading a file you can add additional metadata using the `addMetadata` method after the selected upload method. This can include an optional `name` override or `keyvalue` pairs that can be used to searching the file later on
+
+```typescript
+const upload = await pinata.upload
+  .file(file)
+  .addMetadata({
+    name: "hello.txt",
+    keyvalues: {
+      env: "prod"
+    }
+  })
+```
+
+### Groups
+
+Pinata offers File Groups to organize your content, as well as a method to set files as public or private. You can upload a file to a group by using the `group` method.
+
+```typescript
+const upload = await pinata.upload
+  .file(file)
+  .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
+```
+
+<Info>
+[Check out the Groups doc for more info](/files/file-groups)
+</Info>
+
+### User Generated Keys
+
+There are situations where you may need to upload a file client side instead of server side. A great example is in Next.js where there is a 4MB file size restriction
+
+## Using the Files API
 
 The API is a bit more flexible, as it can be used in multiple languages or environments, and is sometimes preferred for client side uploads. With that, we should express warning in that client side applications will expose API keys.
 
