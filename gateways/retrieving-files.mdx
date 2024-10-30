@@ -15,7 +15,7 @@ The gateway domains are randomly generated and might look something like this:
 aquamarine-casual-tarantula-177.mypinata.cloud
 ```
 
-## Retrieving Files Through Your Gateway
+## Retrieving Private Files
 
 All content uploaded to Pinata is by default private, and there are a few ways you can view it. One of the simplest ways to fetch content is through the [get](/ipfs-sdk/gateways/get) method in the [SDK](/sdk). All content is referenced by the `cid`, a special identifier given to each file based on the cotnent of that file.
 
@@ -27,12 +27,16 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const file = await pinata.gateways.get("bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq")
+const { data, contentType } = await pinata.gateways.get(
+  "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq"
+)
 ```
 
-You can also create a signed URL that can be used to access the content for a limited amount of time.
+Under the hood this method generates a 30 second signed url to access the content with. Alternatively you can also create a signed URL that can be used to access the content for a specified limited amount of time.
 
-```typescript
+<CodeGroup>
+
+```typescript Files SDK
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
@@ -46,6 +50,69 @@ const url = await pinata.gateways.createSignedURL({
 });
 ```
 
+```bash Files API
+curl --request POST \
+  --url https://api.pinata.cloud/v3/files/sign \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "url": "https://example.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm?img-width=500&img-height=500",
+  "expires": 500000,
+  "date": 1724875300,
+  "method": "GET"
+}'
+```
+
+</CodeGroup>
+
+### Image Optmizations
+
+In order ot use [Image Optmizations](/gateways/image-optimizations) with private files the query parameters must be part of the request of getting a signed url.
+
+<CodeGroup>
+
+```typescript Files SDK
+const data = await pinata.gateways
+  .createSignedURL("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
+  .optimizeImage({
+    width: 500,
+    height: 500,
+    format: "webp"
+  })
+```
+
+```bash Files API
+curl --request POST \
+  --url https://api.pinata.cloud/v3/files/sign \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "url": "https://example.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm?img-width=500&img-height=500",
+  "expires": 500000,
+  "date": 1724875300,
+  "method": "GET"
+}'
+```
+
+</CodeGroup>
+
+## Retrieving Public Files
+
+If you uploaded or added files to a [public group](/files/file-groups#public-vs-private-groups) then you can access them with the methods mentioned previously, or just by appending the `cid` to the `gateway` url like so:
+
+```
+https://example-gateway.mypinata.cloud/files/{cid}
+```
+
+Since these files are public there is no need create a temporary url. At this point you can also use some handy queries such as `?filename=image.png`, `?download=true`.
+
+### Image Optimizations
+
+With public files you can simply append the [Image Optimizations](/gateways/image-optimizations) queries which would look something like this:
+
+```
+https://example-gateway.mypinata.cloud/files/{cid}?img-width=500&img-height=500
+```
 
 ## Adding a Custom Domain
 
