@@ -16,15 +16,17 @@ At this point the file can be accessed publicly without a signed URL. For more i
 
 Groups can either be public upon creation or updated after the fact, as laid out below.
 
-## SDK and API
+## Files SDK and API
 
-With the [SDK](/sdk/groups), you can create groups, add files to groups, list details about a group, and more! You can also mange groups using the [Pinata API](/api-reference/endpoint/create-group).
+With the [Files SDK](/sdk/groups), you can create groups, add files to groups, list details about a group, and more! You can also mange groups using the [Files API](/api-reference/endpoint/create-group).
 
 ### Create a Group
 
 To create a group you can use the [create](/sdk/groups/create) method and passing in the `name` you want to give a group.
 
-```typescript
+<CodeGroup>
+
+```typescript Files SDK
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
@@ -38,30 +40,72 @@ const group = await pinata.groups.create({
 });
 ```
 
+```bash Files API
+curl --request POST \
+  --url https://api.pinata.cloud/v3/files/groups \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "name": "Test Group 3"
+}'
+```
+
+</CodeGroup>
+
 This will return the Group info
 
-```typescript
+<CodeGroup>
+
+```typescript Files SDK
 {
-    id: "01919976-955f-7d06-bd59-72e80743fb95",
-    name: "Test Private Group",
-    is_public: true,
-    created_at: "2024-08-28T14:49:31.246596Z"
+  id: "01919976-955f-7d06-bd59-72e80743fb95",
+  name: "Test Private Group",
+  is_public: true,
+  created_at: "2024-08-28T14:49:31.246596Z"
 }
 ```
+
+```json Files API
+{
+  "data": {
+    "id": "01919976-955f-7d06-bd59-72e80743fb95",
+    "name": "Test Private Group",
+    "public": false,
+    "created_at": "2024-08-28T14:49:31.246596Z"
+  }
+}
+```
+
+</CodeGroup>
 
 ### Add or Remove Files from a Group
 
 There are two ways you can add files to a group. The first is to add the file to a group on [upload](/sdk/upload/file).
 
-```typescript
+<CodeGroup>
+
+```typescript Files SDK
 const upload = await pinata.upload
   .file(file)
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
 
+```bash Files API
+curl --request POST \
+  --url https://uploads.pinata.cloud/v3/files \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: multipart/form-data' \
+  --form 'file=@filename.extension' \
+  --form 'group_id=b07da1ff-efa4-49af-bdea-9d95d8881103' \
+```
+
+</CodeGroup>
+
 Another option is to add files after the fact using the [addFiles](/sdk/groups/add-files) method.
 
-```typescript
+<CodeGroup>
+
+```typescript Files SDK
 const upload = await pinata.groups.addFiles({
   groupId: "b07da1ff-efa4-49af-bdea-9d95d8881103",
   files: [
@@ -71,9 +115,19 @@ const upload = await pinata.groups.addFiles({
 })
 ```
 
+```bash Files API
+curl --request PUT \
+  --url https://api.pinata.cloud/v3/files/groups/{id}/ids/{file_id} \
+  --header 'Authorization: Bearer <token>'
+```
+
+</CodeGroup>
+
 Removing files can be done the exact same way with the [removeFiles](/sdk/groups/remove-files) method.
 
-```typescript
+<CodeGroup>
+
+```typescript Files SDK
 const upload = await pinata.groups.removeFiles({
   groupId: "b07da1ff-efa4-49af-bdea-9d95d8881103",
   files: [
@@ -83,19 +137,39 @@ const upload = await pinata.groups.removeFiles({
 })
 ```
 
+```bash Files API
+curl --request DELETE \
+  --url https://api.pinata.cloud/v3/files/groups/{id}/ids/{file_id} \
+  --header 'Authorization: Bearer <token>'
+```
+
+</CodeGroup>
+
 ### Get a Group
 
 To fetch details of an already existing group you can use the [get](/sdk/groups/get) and pass in the `groupId`.
 
-```typescript
+<CodeGroup>
+
+```typescript Files SDK
 const groups = await pinata.groups.get({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 });
 ```
 
+```bash Files API
+curl --request GET \
+  --url https://api.pinata.cloud/v3/files/groups/{id} \
+  --header 'Authorization: Bearer <token>'
+```
+
+</CodeGroup>
+
 This will return the same group info received upon creation.
 
-```typescript
+<CodeGroup>
+
+```typescript Files SDK
 {
     id: "0191997b-ca28-79e8-9dbc-a8044ad3e547",
     name: "My New Group 5",
@@ -104,13 +178,34 @@ This will return the same group info received upon creation.
 }
 ```
 
+```json Files API
+{
+  "data": {
+    "id": "01919976-955f-7d06-bd59-72e80743fb95",
+    "name": "Test Private Group",
+    "is_public": false,
+    "created_at": "2024-08-28T14:49:31.246596Z"
+  }
+}
+```
+
 ### List All Groups
 
 If you want to get all Groups or filter through them, you can use the [list](/sdk/groups/list) method.
 
-```typescript
+<CodeGroup>
+
+```typescript Files SDK
 const groups = await pinata.groups.list()
 ```
+
+```bash Files API
+curl --request GET \
+  --url https://api.pinata.cloud/v3/files/groups \
+  --header 'Authorization: Bearer <token>'
+```
+
+</CodeGroup>
 
 Results can be filtered with the following queries.
 
@@ -167,7 +262,9 @@ This will return an array of Groups and their respective info:
 
 You can update the name of a group or it's public status using the [update](/sdk/groups/update) method and passing in the `groupId, a new `name` you want to use, or setting the `isPublic` boolean.
 
-```typescript
+<CodeGroup>
+
+```typescript Files SDK
 const groups = await pinata.groups.update({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 	name: "My New Group 2",
@@ -175,16 +272,42 @@ const groups = await pinata.groups.update({
 });
 ```
 
+```bash Files API
+curl --request PUT \
+  --url https://api.pinata.cloud/v3/files/groups/{id} \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "name": "Updated Name",
+  "is_public": true
+}'
+```
+
 This will return the updated Group info.
 
-```json
+<CodeGroup>
+
+```typescript Files SDK
 {
-    "id": "3778c10d-452e-4def-8299-ee6bc548bdb0",
-    "name": "My New Group 2",
-    "is_public": false,
-    "created_at": "2024-08-28T20:58:46.96779Z"
+  id: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+  name: "My New Group 2",
+  is_public: false,
+  created_at: "2024-08-28T20:58:46.96779Z"
 }
 ```
+
+```json Files API
+{
+  "data": {
+    "id": "01919ac8-a6f5-7e8e-a8a2-6cfe00122b90",
+    "name": "Updated Name",
+    "is_public": true,
+    "created_at": "2024-08-28T20:58:46.96779Z"
+  }
+}
+```
+
+</CodeGroup>
 
 ### Delete a Group
 
@@ -194,10 +317,20 @@ This will return the updated Group info.
 
 To delete a Group you can use the [delete](/sdk/groups/delete) method and pass in the `groupId`.
 
-```typescript
+<CodeGroup>
+
+```typescript Files SDK
 const groups = await pinata.groups.delete({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 });
 ```
+
+```bash Files API
+curl --request DELETE \
+  --url https://api.pinata.cloud/v3/files/groups/{id} \
+  --header 'Authorization: Bearer <token>'
+```
+
+</CodeGroup
 
 If successful, the endpoint will return an `OK` response.
