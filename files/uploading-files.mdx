@@ -82,6 +82,52 @@ const upload = await pinata.upload
 [Check out the Groups doc for more info](/files/file-groups)
 </Info>
 
+### User Generated Keys
+
+There are situations where you may need to upload a file client side instead of server side. A great example is in Next.js where there is a 4MB file size restriction for files passed through Next's API routes. To solve this you can use the [keys](/sdk/keys/create) method in the SDK or the [API endpoint](/api-reference/endpoint/v3-create-api-key) to create a Pinata API key with limited permissions that expire after the upload is complete. This way your admin API key stays safe behind a server.
+
+Setting up a server side API endpoint might look something like this:
+
+```typescript
+import { type NextRequest, NextResponse } from "next/server";
+import { pinata } from "@/utils/config"; // Import the Pinata SDK instance
+
+export const dynamic = "force-dynamic";
+
+export async function GET() {
+  // Handle your auth here to protect the endpoint
+  try {
+    const uuid = crypto.randomUUID();
+    const keyData = await pinata.keys.create({
+      keyName: uuid.toString(),
+      permissions: {
+        endpoints: {
+          pinning: {
+            pinFileToIPFS: true, // Creates a key that can only upload a file
+          },
+        },
+      },
+      maxUses: 1,
+    })
+    return NextResponse.json(keyData, { status: 200 }); // Returns the key data
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ text: "Error creating API Key:" }, { status: 500 });
+  }
+}
+```
+
+Then back on the client side code, you can upload and override the default API key set for the SDK using the `key` method on the `upload` class.
+
+<Note>
+Be sure to pass in the Pinata JWT key into the `.key()` method.
+</Note>
+
+```typescript
+const keyRequest = await fetch("/api/key"); // Fetches the temporary API key
+const keyData = await keyRequest.json(); // Parse response
+const upload = await pinata.upload.file(file).key(keyData.JWT); // Upload the file with temp key
+```
 
 ## Using the Files API
 
