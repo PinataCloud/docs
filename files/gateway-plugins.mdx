@@ -31,7 +31,7 @@ Once installed you can confirm its there by going to the "My Plugins" tab.
 
 ### Pinata API
 
-With the Pinata API you can list all available plugins using the [/ipfs/plugins_marketplace](/api-reference/endpoint/list-marketplace-plugins) endpoint.
+With the Pinata API you can list all available plugins using the [/ipfs/plugins_marketplace](/api-reference/endpoint/ipfs/list-marketplace-plugins) endpoint.
 
 <CodeGroup>
 ```typescript Get Plugins
@@ -151,7 +151,7 @@ Then locate the target gateway and plugin, then click the action item on the rig
 
 ### Pinata API
 
-To uninstall a plug from the API you can use the [/ipfs/gateway_plugins/:gateway_id/plugin/:plugin_id](/api-reference/endpoint/uninstall-gateway-plugin) endpoint, where the `gateway_id` is the target gateway and the `plugin_id` is the target plugin to uninstall.
+To uninstall a plug from the API you can use the [/ipfs/gateway_plugins/:gateway_id/plugin/:plugin_id](/api-reference/endpoint/ipfs/uninstall-gateway-plugin) endpoint, where the `gateway_id` is the target gateway and the `plugin_id` is the target plugin to uninstall.
 
 ```typescript Install Plugin
 const gatewayId = "8673cd80-bf53-4bca-b684-bec1d6bdf004"

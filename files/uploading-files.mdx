@@ -15,7 +15,7 @@ Let's look at the multiple ways you can upload files!
 
 ## Using the Files SDK
 
-The Pinata SDK is able to handle mutliple kinds of uploads, whether its file objects, base64 strings, or even content from remote URLs.
+The Files SDK is able to handle mutliple kinds of uploads, whether its file objects, base64 strings, or even content from remote URLs.
 
 ```typescript
 import { PinataSDK } from "pinata";
@@ -90,7 +90,7 @@ Setting up a server side API endpoint might look something like this:
 
 ```typescript
 import { type NextRequest, NextResponse } from "next/server";
-import { pinata } from "@/utils/config"; // Import the Pinata SDK instance
+import { pinata } from "@/utils/config"; // Import the Files SDK instance
 
 export const dynamic = "force-dynamic";
 
