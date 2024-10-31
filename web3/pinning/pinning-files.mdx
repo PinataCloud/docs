@@ -474,3 +474,17 @@ async function pinFileToIPFS() {
 main()
 pinFileToIPFS()
 ```
+
+## Peering with Pinata
+
+If you run IPFS infrastructure and would like to peer with Pinata's nodes you can do so with the [Kubo](https://docs.ipfs.tech/reference/kubo/cli/) commands listed below. Rather than using full multiaddresses for our node IDs we use a DNS setup that is more stable and allows our infrastructure to be flexible.
+
+```bash
+ipfs swarm connect /dnsaddr/bitswap.pinata.cloud
+```
+
+```bash
+ipfs config --json Peering.Peers '[{ "ID": "Qma8ddFEQWEU8ijWvdxXm3nxU7oHsRtCykAaVz8WUYhiKn", "Addrs": ["/dnsaddr/bitswap.pinata.cloud"] }]'
+```
+
+If you have any issues feel free to [reach out](mailto:team@pinata.cloud)!
