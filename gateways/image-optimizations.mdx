@@ -9,9 +9,17 @@ updatedAt: "Fri Dec 08 2023 19:08:18 GMT+0000 (Coordinated Universal Time)"
 
 Pinata image optimizations provides image optimization functionality directly through your [Gateway](/gateways/retrieving-files). These capabilities that can significantly improve the load time and experience when viewing image content.
 
-Any image you have uploaded can be manipulated with query string parameters. The query string options are defined below.
+## Usage
 
-## Options
+To use image optimizations on files you've uploaded simply add on the queries listed in the [reference](#reference) to your full Gateway url, which might look something like this:
+
+```
+https://example-gateway.mypinata.cloud/files/{cid}?img-width=500&img-height=500
+```
+
+There are differences when using image optmizations for public files vs private files, so be sure to visit the [retrieving files](/gateways/retrieving-files) for more information!
+
+## Reference
 
 At least one option must be specified. Options are comma-separated (spaces are not allowed anywhere). Names of options can be specified in full or abbreviated.
 
@@ -87,7 +95,7 @@ At least one option must be specified. Options are comma-separated (spaces are n
 
 Read JPEG, PNG, GIF (including animations), and WebP images. SVG is not supported, since this format is inherently scalable and does not need resizing. Resize and generate JPEG and PNG images, and optionally AVIF or WebP. AVIF format is supported on a best-effort basis. Images that cannot be compressed as AVIF will be served as WebP instead.
 
-## SDK Methods
+## SDK Method Reference
 
 Image Optimizations are built into both [`get`](/sdk/gateways/get) and [`createdSignedURL`](/sdk/gateways/created-signed-url) methods of the SDK.
 
