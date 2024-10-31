@@ -152,7 +152,7 @@ async function upload() {
     const request = await fetch("https://uploads.pinata.cloud/v3/files", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${JWT}`
+        Authorization: `Bearer ${JWT}`,
       },
       body: formData,
     });
@@ -174,25 +174,27 @@ import FormData from "form-data";
 import got from "got";
 
 async function upload() {
-	const url = `https://uploads.pinata.cloud/v3/files`;
-	try {
-		let data = new FormData();
-		data.append(`file`, fs.createReadStream("path/to/file"));
-		const response = await got(url, {
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${process.env.PINATA_JWT}`,
-			},
-			body: data,
-		}).on("uploadProgress", (progress) => {
-			console.log(progress);
-		});
-		console.log(JSON.parse(response.body));
-	} catch (error) {
-		console.log(error);
-	}
+  const url = `https://uploads.pinata.cloud/v3/files`;
+  try {
+    let data = new FormData();
+    data.append(`file`, fs.createReadStream("path/to/file"));
+    const response = await got(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.PINATA_JWT}`,
+      },
+      body: data,
+    }).on("uploadProgress", (progress) => {
+      console.log(progress);
+    });
+    console.log(JSON.parse(response.body));
+  } catch (error) {
+    console.log(error);
+  }
 }
 ```
+
+If your file is larger than 100MB then a better approach is to follow the [Resumable Upload Guide](#resumable-uploads)
 
 ## Common File Recipes
 
@@ -212,8 +214,8 @@ const pinata = new PinataSDK({
 
 const text = "Hello World!";
 const blob = new Blob([text], { type: "text/plain" });
-const file = new File(["hello world!"], "hello.txt", { type: "text/plain" })
-const upload = await pinata.upload.file(file)
+const file = new File(["hello world!"], "hello.txt", { type: "text/plain" });
+const upload = await pinata.upload.file(file);
 ```
 
 ### JSON
@@ -229,13 +231,13 @@ const pinata = new PinataSDK({
 });
 
 const upload = await pinata.upload.json({
-    id: 2,
-    name: "Bob Smith",
-    email: "bob.smith@example.com",
-    age: 34,
-    isActive: false,
-    roles: ["user"]
-})
+  id: 2,
+  name: "Bob Smith",
+  email: "bob.smith@example.com",
+  age: 34,
+  isActive: false,
+  roles: ["user"],
+});
 ```
 
 ### Local Files
@@ -243,17 +245,17 @@ const upload = await pinata.upload.json({
 If you need to upload files from a local file source you can use `fs` to feed a file into a `blob`, then turn that `blob` into a `File`.
 
 ```typescript
-const { PinataSDK } = require("pinata")
-const fs = require("fs")
-const { Blob } = require("buffer")
+const { PinataSDK } = require("pinata");
+const fs = require("fs");
+const { Blob } = require("buffer");
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
-  pinataGateway: "example-gateway.mypinata.cloud"
-})
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
 
 const blob = new Blob([fs.readFileSync("./hello-world.txt")]);
-const file = new File([blob], "hello-world.txt", { type: "text/plain"})
+const file = new File([blob], "hello-world.txt", { type: "text/plain" });
 const upload = await pinata.upload.file(file);
 ```
 
@@ -269,7 +271,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const upload = await pinata.upload.url("https://i.imgur.com/u4mGk5b.gif")
+const upload = await pinata.upload.url("https://i.imgur.com/u4mGk5b.gif");
 ```
 
 ### base64
@@ -284,7 +286,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const upload = await pinata.upload.base64("SGVsbG8gV29ybGQh")
+const upload = await pinata.upload.base64("SGVsbG8gV29ybGQh");
 ```
 
 ## Web App
