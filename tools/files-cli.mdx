@@ -325,7 +325,74 @@ OPTIONS:
    --help, -h  show help
 ```
 
-### Swaps
+### `keys`
+
+```
+NAME:
+   pinata keys - Create and manage generated API keys
+
+USAGE:
+   pinata keys command [command options] [arguments...]
+
+COMMANDS:
+   create, c  Create an API key with admin or scoped permissions
+   list, l    List and filter API key
+   revoke, r  Revoke an API key
+   help, h    Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+#### `create`
+
+```
+NAME:
+   pinata keys create - Create an API key with admin or scoped permissions
+
+USAGE:
+   pinata keys create [command options] [arguments...]
+
+OPTIONS:
+   --name value, -n value                                       Name of the API key
+   --admin, -a                                                  Set the key as Admin (default: false)
+   --uses value, -u value                                       Max uses a key can use (default: 0)
+   --endpoints value, -e value [ --endpoints value, -e value ]  Optional array of endpoints the key is allowed to use
+   --help, -h                                                   show help
+```
+
+#### `list`
+
+```
+NAME:
+   pinata keys list - List and filter API key
+
+USAGE:
+   pinata keys list [command options] [arguments...]
+
+OPTIONS:
+   --name value, -n value    Name of the API key
+   --revoked, -r             Set the key as Admin (default: false)
+   --exhausted, -e           Filter keys that are exhausted or not (default: false)
+   --uses, -u                Filter keys that do or don't have limited uses (default: false)
+   --offset value, -o value  Offset the number of results to paginate
+   --help, -h                show help
+```
+
+#### `revoke`
+
+```
+NAME:
+   pinata keys revoke - Revoke an API key
+
+USAGE:
+   pinata keys revoke [command options] [key]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+### `swaps`
 
 ```
 NAME:
