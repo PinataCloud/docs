@@ -71,7 +71,9 @@ Once installed you can confirm its there by going to the "My Plugins" tab.
 
 After installing the plugin you can then make CID swaps and have them reflect when making Gateway requests. The first parameter `cid` will be the original CID, and `swapCid` will be the content you want it to point to instead.
 
-```typescript
+<CodeGroup>
+
+```typescript SDK {8-11}
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
@@ -85,32 +87,149 @@ const swap = await pinata.files.addSwap({
 })
 ```
 
+```typescript API {6,8,10-12}
+const JWT = "YOUR_PINATA_JWT";
+
+async function swap() {
+  try {
+
+    const cid = "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske"
+
+    const url = `https://api.pinata.cloud/v3/files/swap/${cid}`
+
+    const payload = JSON.stringify({
+      swap_cid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
+    })
+
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: payload
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
 You can fetch the history of CID swaps using the `getSwapHistory` method, passing in the `cid` of the original CID and the `domain` of the gateway that has the Hot Swaps plugin installed.
 
-```typescript
+<CodeGroup>
+
+```typescript SDK
 const history = await pinata.files.getSwapHistory({
   cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
   domain: "discordpinnie.mypinata.cloud"
 })
-
-// [
-//   {
-//     mapped_cid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu",
-//     created_at: "2024-08-19T14:34:46.492432Z"
-//   },
-//   { mapped_cid: null, created_at: "2024-08-19T14:25:10.208726Z" },
-//   {
-//     mapped_cid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu",
-//     created_at: "2024-08-19T00:23:41.755206Z"
-//   }
-// ]
 ```
 
+```typescript API {6,8,10}
+const JWT = "YOUR_PINATA_JWT";
+
+async function swap() {
+  try {
+
+    const cid = "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske"
+
+    const query = "?domain=discordpinnie.mypinata.cloud"
+
+    const url = `https://api.pinata.cloud/v3/files/swap/${cid}` + query
+
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: payload
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
+The response will show a history of the CID and domain in question
+
+<CodeGroup>
+
+```typescript SDK
+{
+  data: [
+    {
+      mapped_cid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu",
+      created_at: "2024-08-19T14:34:46.492432Z"
+    },
+    { mapped_cid: null, created_at: "2024-08-19T14:25:10.208726Z" },
+    {
+      mapped_cid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu",
+      created_at: "2024-08-19T00:23:41.755206Z"
+    }
+  ]
+}
+```
+
+```json API
+{
+  "data": [
+    {
+      "mapped_cid": "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu",
+      "created_at": "2024-08-19T14:34:46.492432Z"
+    },
+    { "mapped_cid": null, "created_at": "2024-08-19T14:25:10.208726Z" },
+    {
+      "mapped_cid": "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu",
+      "created_at": "2024-08-19T00:23:41.755206Z"
+    }
+  ]
+}
+```
+
+</CodeGroup>
+
 To delete a CID swap you can simply use the `deleteSwap` method and pass in the CID.
+
+<CodeGroup>
 
 ```typescript
 const deleteSwap = await pinata.gateways.deleteSwap(
   "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske"
 )
-// OK
 ```
+
+```typescript API {6,8}
+const JWT = "YOUR_PINATA_JWT";
+
+async function swap() {
+  try {
+
+    const cid = "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske"
+
+    const url = `https://api.pinata.cloud/v3/files/swap/${cid}`
+
+    const request = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: payload
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
