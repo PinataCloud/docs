@@ -36,7 +36,7 @@ Under the hood this method generates a 30 second signed url to access the conten
 
 <CodeGroup>
 
-```typescript Files SDK
+```typescript SDK {8-11}
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
@@ -50,17 +50,34 @@ const url = await pinata.gateways.createSignedURL({
 });
 ```
 
-```bash Files API
-curl --request POST \
-  --url https://api.pinata.cloud/v3/files/sign \
-  --header 'Authorization: Bearer <token>' \
-  --header 'Content-Type: application/json' \
-  --data '{
-  "url": "https://example.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm?img-width=500&img-height=500",
-  "expires": 500000,
-  "date": 1724875300,
-  "method": "GET"
-}'
+```typescript API {5-10}
+const JWT = "YOUR_PINATA_JWT";
+
+async function url() {
+  try {
+    const payload = JSON.stringify({
+      url: "https://example.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm",
+      expires: 500000,
+      date: 1724875300,
+      method: "GET"
+    })
+
+    const request = await fetch(
+      `https://api.pinata.cloud/v3/files/sign`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: payload
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
 ```
 
 </CodeGroup>
@@ -71,7 +88,7 @@ In order ot use [Image Optmizations](/gateways/image-optimizations) with private
 
 <CodeGroup>
 
-```typescript Files SDK
+```typescript SDK
 const data = await pinata.gateways
   .createSignedURL("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
   .optimizeImage({
@@ -81,17 +98,34 @@ const data = await pinata.gateways
   })
 ```
 
-```bash Files API
-curl --request POST \
-  --url https://api.pinata.cloud/v3/files/sign \
-  --header 'Authorization: Bearer <token>' \
-  --header 'Content-Type: application/json' \
-  --data '{
-  "url": "https://example.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm?img-width=500&img-height=500",
-  "expires": 500000,
-  "date": 1724875300,
-  "method": "GET"
-}'
+```typescript API {6}
+const JWT = "YOUR_PINATA_JWT";
+
+async function url() {
+  try {
+    const payload = JSON.stringify({
+      url: "https://example.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm?img-width=500&img-height=500&img-format=webp",
+      expires: 500000,
+      date: 1724875300,
+      method: "GET"
+    })
+
+    const request = await fetch(
+      `https://api.pinata.cloud/v3/files/sign`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: payload
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
 ```
 
 </CodeGroup>
