@@ -6,9 +6,11 @@ Deleting files from Pinata is simple and easy!
 
 ## Deleting Programatically
 
-The SDK has a very simple [delete](/sdk/files/delete) method that will allow you to delete an array of files by `id`.
+The SDK has a very simple [delete](/sdk/files/delete) method that will allow you to delete an array of files by `id`. Alternatively you can delete a single file with the [API](/api-reference/introduction).
 
-```typescript
+<CodeGroup>
+
+```typescript SDK
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
@@ -21,6 +23,32 @@ const unpin = await pinata.files.delete([
   "b72886db-9dd4-434c-a1b2-f9d36781ecee"
 ])
 ```
+
+```typescript API {6,9,11}
+const JWT = "YOUR_PINATA_JWT";
+
+async function delete() {
+  try {
+
+    const fileId = "e0b102e9-d481-4192-ab44-b8f7ff010e9a"
+
+    const request = await fetch(
+      `https://api.pinata.cloud/v3/files/${fileId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      }
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
 
 ### Deleting All Files
 
