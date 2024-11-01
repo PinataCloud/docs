@@ -26,7 +26,7 @@ To create a group you can use the [create](/sdk/groups/create) method and passin
 
 <CodeGroup>
 
-```typescript Files SDK
+```typescript SDK
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
@@ -40,7 +40,7 @@ const group = await pinata.groups.create({
 });
 ```
 
-```typescript Files API
+```typescript API
 const JWT = "YOUR_PINATA_JWT";
 
 async function group() {
@@ -73,7 +73,7 @@ This will return the Group info
 
 <CodeGroup>
 
-```typescript Files SDK
+```typescript SDK
 {
   id: "01919976-955f-7d06-bd59-72e80743fb95",
   name: "Test Private Group",
@@ -82,7 +82,7 @@ This will return the Group info
 }
 ```
 
-```json Files API
+```json API
 {
   "data": {
     "id": "01919976-955f-7d06-bd59-72e80743fb95",
@@ -183,7 +183,7 @@ Removing files can be done the exact same way with the [removeFiles](/sdk/groups
 
 <CodeGroup>
 
-```typescript Files SDK
+```typescript SDK
 const upload = await pinata.groups.removeFiles({
   groupId: "b07da1ff-efa4-49af-bdea-9d95d8881103",
   files: [
@@ -193,7 +193,7 @@ const upload = await pinata.groups.removeFiles({
 })
 ```
 
-```typescript Files API {6,8,11}
+```typescript API {6,8,11}
 const JWT = "YOUR_PINATA_JWT";
 
 async function group() {
@@ -333,7 +333,7 @@ const groups = await pinata.groups
     .name("SDK")
 ```
 
-```typescript API URL
+```typescript API
 const url = "https://api.pinata.cloud/v3/files/groups?name=SDK"
 ```
 
@@ -347,13 +347,13 @@ Filters groups based on whether they are public or not
 
 <CodeGroup>
 
-```typescript
+```typescript SDK
 const groups = await pinata.groups
     .list()
     .isPublic(true)
 ```
 
-```typescript API URL
+```typescript API
 const url = "https://api.pinata.cloud/v3/files/groups?isPublic=true"
 ```
 
@@ -367,13 +367,13 @@ Limits the number of results
 
 <CodeGroup>
 
-```typescript
+```typescript SDK
 const groups = await pinata.groups
     .list()
     .limit(10)
 ```
 
-```typescript API URL
+```typescript API
 const url = "https://api.pinata.cloud/v3/files/groups?limit=10"
 ```
 
@@ -464,7 +464,7 @@ This will return the updated Group info.
 
 <CodeGroup>
 
-```typescript Files SDK
+```typescript SDK
 {
   id: "3778c10d-452e-4def-8299-ee6bc548bdb0",
   name: "My New Group 2",
@@ -473,7 +473,7 @@ This will return the updated Group info.
 }
 ```
 
-```json Files API
+```json API
 {
   "data": {
     "id": "01919ac8-a6f5-7e8e-a8a2-6cfe00122b90",
