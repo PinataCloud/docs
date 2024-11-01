@@ -64,7 +64,7 @@ Filter files by `keyValue` objects used in Pinata Metadata
 ```typescript
 const files = await pinata
   .listFiles()
-  .keyValues("whimsey", 100)
+  .keyValue("whimsey", 100)
 ```
 
 This also includes an optional `operator` for even more fine tuned data
@@ -91,7 +91,7 @@ operator?:
 ```typescript
 const files = await pinata
   .listFiles()
-  .keyValues("whimsey", 400, "lt")
+  .keyValue("whimsey", 400, "lt")
 ```
 
 ### pageLimit
