@@ -3,7 +3,7 @@ title: "Gateway Access Controls"
 slug: "gateway-access-controls"
 ---
 
-Pinata's Dedicated Gateways make it possible to fetch and serve IPFS content quickly and reliably, however there can be security risks in exposing an open gateway to the world. That's why Pinata has created Gateway Access Controls. These controls will allow you to further limit your gateway, making sure only your platform is using it. This is accomplished with **Access Tokens, IP Address Restrictions,** and **Host Origin Restrictions.**
+Pinata's Dedicated Gateways make it possible to fetch and serve IPFS content quickly and reliably, however there can be security risks in exposing an open gateway to the world. That's why Pinata has created Gateway Access Controls. These controls will allow you to further limit your gateway, making sure only your platform is using it. This is accomplished with **Gateway Keys, IP Address Restrictions,** and **Host Origin Restrictions.**
 
 ## Restricted vs Open
 
@@ -44,7 +44,7 @@ Pinata currently provides three primary methods for opening your gateway securel
 
 ### Gateway Keys
 
-Adding a Gateway Key restriction means that content served through your gateway will only be served successfully if the key is present with the request. **Importantly, content pinned to your account won't be accessible through your gateway if you've implemented an access token restriction and fail to include that token in content requests.**
+Adding a Gateway Key restriction means that content served through your gateway will only be served successfully if the key is present with the request. **Importantly, content pinned to your account won't be accessible through your gateway if you've implemented a gateway key restriction and fail to include that token in content requests.**
 
 To create a Gateway Key, click on the button that says "Request Key."
 
@@ -53,7 +53,7 @@ To create a Gateway Key, click on the button that says "Request Key."
   src="https://docs.mypinata.cloud/ipfs/QmbD4KujBsW7dX8wsdbG1rhsm4wZwpWMKad5nUJC19NJFW"
 />
 
-When you create a key you will have the ability to preview the token by clicking the "eye" icon, or copy the token to your clipboard with the "copy" icon. At any point, you can delete an access token by clicking the "trash" icon.
+When you create a key you will have the ability to preview the token by clicking the "eye" icon, or copy the token to your clipboard with the "copy" icon. At any point, you can delete a gateway key by clicking the "trash" icon.
 
 <img
   style={{ width: "100%", borderRadius: "0.5rem" }}
@@ -72,13 +72,13 @@ To use the query parameter method, simply add this to the end of a gateway reque
 
 #### Header
 
-Another way to use the access token is in the request header. The Key Value would look like this:
+Another way to use the gateway key is in the request header. The Key Value would look like this:
 
 | Key                    | Value        |
 | ---------------------- | ------------ |
-| x-pinata-gateway-token | ACCESS_TOKEN |
+| x-pinata-gateway-token | GATEWAY_KEY |
 
-**Please keep in mind that using the access token in the request header may not work in a client side application, so consider using IP Address restriction instead for those use cases.**
+**Please keep in mind that using the gateway key in the request header may not work in a client side application, so consider using IP Address restriction instead for those use cases.**
 
 ### IP Address
 
@@ -140,4 +140,4 @@ For more info on `crossorigin` please read this article [here](https://developer
 
 ### Multiple Restrictions
 
-You can add multiple Access Controls, and they will perform as an "OR" operator. This means that if you have Host Origins and Access Token set, you can use either one for content to go through.
+You can add multiple Access Controls, and they will perform as an "OR" operator. This means that if you have Host Origins and a Gateway Key set, you can use either one for content to go through.
