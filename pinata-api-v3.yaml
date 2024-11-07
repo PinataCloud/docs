@@ -2435,7 +2435,7 @@ paths:
     post:
       tags:
         - Private Files
-      summary: Get Signed URL
+      summary: Create Signed URL
       operationId: createSignedURL
       requestBody:
         content:
