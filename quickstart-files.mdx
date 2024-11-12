@@ -103,7 +103,9 @@ await pinFileToIPFS();
 
 You should get a response object like the one below
 
-```typescript
+<CodeGroup>
+
+```typescript SDK
 {
     id: "349f1bb2-5d59-4cab-9966-e94c028a05b7",
     name: "file.txt",
@@ -116,13 +118,32 @@ You should get a response object like the one below
 }
 ```
 
+```typescript API
+{
+  data: {
+      id: "349f1bb2-5d59-4cab-9966-e94c028a05b7",
+      name: "file.txt",
+      cid: "bafybeihgxdzljxb26q6nf3r3eifqeedsvt2eubqtskghpme66cgjyw4fra",
+      size: 4682779,
+      number_of_files: 1,
+      mime_type: "text/plain",
+      user_id: "7a484d2c-4219-4f80-9d9d-86b42461e71a",
+      group_id: null
+  }
+}
+```
+
+</CodeGroup>
+
 The unique thing about Pinata's File API is the CID or Content Identifier. Its a unique hash based on the content ofthe file.
 
 ### 3. Retrieve a File through a Gateway
 
 Use the `cid` of a file to fetch it through a Gateway, or create a signed URL.
 
-```typescript
+<CodeGroup>
+
+```typescript SDK
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
@@ -147,6 +168,38 @@ async function main() {
 
 main();
 ```
+
+```typescript API
+const JWT = "YOUR_PINATA_JWT";
+
+async function url() {
+  try {
+    const payload = JSON.stringify({
+      url: "https://example.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm", // Gateway domain `+ /files/ + CID
+      expires: 500000, // Number of seconds
+      date: 1724875300, // Current date
+      method: "GET" // GET for retrieving files
+    })
+
+    const request = await fetch(
+      `https://api.pinata.cloud/v3/files/sign`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: payload
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
 
 ## What's Next?
 
