@@ -662,6 +662,10 @@
 		{
 			"source": "/events/frameworks",
 			"destination": "farcaster/events/frameworks"
+		},
+		{
+			"source": "/hackutd",
+			"destination": "/events/hackutd"
 		}
 	]
 }
