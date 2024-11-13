@@ -1,39 +1,55 @@
 ---
 title: "Limits"
-slug: "limits"
-excerpt: ""
-hidden: false
-createdAt: "Fri Jul 28 2023 19:54:38 GMT+0000 (Coordinated Universal Time)"
-updatedAt: "Thu Jan 25 2024 21:31:19 GMT+0000 (Coordinated Universal Time)"
 ---
-The Pinata platform currently has the following rate limits in place:
 
-## File Restrictions
+The Files API and IPFS API have variying rate limits that users should be aware of.
 
-HTML uploads are currently only available on paid plans with granted access. If you are on a paid plan and wish to upload HTML please send a request through our support chat or send an email to [team@pinata.cloud](mailto:team@pinata.cloud)
+## Files API
 
-## API Rate Limits
+### API Rate Limits
 
-The Pinata API currently has a rate limit of 180 requests per minute to our API.
+API limits on the Files API are currently determined by plan type:
+
+| Plan         | Rate Limit                |
+| ------------ | ------------------------- |
+| Free         | 60 requests per minute    |
+| Picnic       | 250 requests per minute   |
+| Fiesta       | 500 requests per minute   |
+
+### File Restrictions
+
+HTML and binary file uploads are currently only available on paid plans with granted access. If you are on a paid plan and wish to upload HTML please send a request through our support chat or send an email to [team@pinata.cloud](mailto:team@pinata.cloud)
+
+### Upload Size Limits
+
+Files that are over **100MB** will require using [resumable uploads](/files/uploading-files#resumable-uploads) to complete. If you are using the SDK and the method `upload.file()` this will be handled automatically.
+
+Beyond 100MB the max file size is **25GB** at this time.
+
+## IPFS API
+
+### API Rate Limits
+
+API limits on the Files API are currently determined by plan type:
+
+| Plan         | Rate Limit                |
+| ------------ | ------------------------- |
+| Free         | 60 requests per minute    |
+| Picnic       | 250 requests per minute   |
+| Fiesta       | 500 requests per minute   |
 
 ### Exceptions
 
 The following API calls have increased rate limits:
 
-- Endpoints under the `/data/` route have a rate limit of 30 requests per minute
-- The [Pinning Services API endpoint for listing content](https://ipfs.github.io/pinning-services-api-spec/#tag/pins/paths/~1pins/get) has a rate limit of 30 requests per minute
+- Endpoints under `api.pinata.cloud/data/` have a rate limit of 30 requests per minute
+- The [Pinning Services API endpoint for listing content](/api-reference/pinning-service-api) has a rate limit of 30 requests per minute
 
-### Recommendations
-
-For users with traffic that can be burst-heavy, we recommend using a task scheduler or queue-based upload approach that limits requests to the allowed amount.
-
-For NodeJS users specifically, we recommend the [bottleneck library](https://www.npmjs.com/package/bottleneck) to help with this.
-
-## Gateway Rate Limits
+### Gateway Rate Limits
 
 At this time there are currently no rate limits for users retrieving content from a dedicated gateway.
 
-## Upload Size Limits
+### Upload Size Limits
 
 <Warning>While the upload limit is 25GB we would recommend only uploading up to 15GB per file/folder for reliability reasons. We can try to assist uploads 15GB-25GB but we cannot guarantee success at this time.</Warning>
 
