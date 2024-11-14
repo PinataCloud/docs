@@ -1057,6 +1057,7 @@ paths:
           in: query
           schema:
             type: string
+            enum: ["cid","country","region", "user_agent", "referrer", "file_name"]
           description: >-
             Attribute to aggregaate results by, must be `cid`, `country`, `region`,
             `user_agent`, `referer`, or `file_name`.
@@ -1066,6 +1067,7 @@ paths:
           in: query
           schema:
             type: string
+            enum: ["requests", "bandwidth"]
           description: Sort data by either `requests` or `bandwidth`
           required: true
           example: requests
@@ -1122,6 +1124,7 @@ paths:
           in: query
           schema:
             type: string
+            enum: ["asc", "desc"]
           description: Sort results by either `asc` or `desc`
           example: desc
       responses:
@@ -1193,6 +1196,7 @@ paths:
           in: query
           schema:
             type: string
+            enum: ["day", "week"]
           description: Date interval to view gateway usage by. Must be either `day` or `week.`
           required: true
           example: day
@@ -1200,6 +1204,7 @@ paths:
           in: query
           schema:
             type: string
+            enum: ["requests", "bandwidth"]
           description: Sort data by either `requests` or `bandwidth`
           example: requests
         - name: cid
