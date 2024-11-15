@@ -2,11 +2,11 @@
 
 ![header](https://docs.mypinata.cloud/ipfs/QmP9PGe3PdUqmsq8xY4sEW3qgdXx4WT9ictTWCb3qyzz3s?img-format=webp)
 
-Welcome to the offical repository for [docs.pinata.cloud](https://docs.pinata.cloud)! Contributions and edits are welcome, please keep the following guidelies in mind:
+Welcome to the official repository for [docs.pinata.cloud](https://docs.pinata.cloud)! Contributions and edits are welcome, please keep the following guidelines in mind:
 
-- Be respectful of other memebers and the Pinata team
-- Refrain from making unhelpful edits (e.g. changing all the single quotes to double quotes, random puncuation, etc.). Contributions must be sustantive and help improve the experience of the Pinata user.
-- All edits must be submited as pull requests and reviewed by the maintainers before merging into the main branch.
+- Be respectful of other members and the Pinata team
+- Refrain from making unhelpful edits (e.g. changing all the single quotes to double quotes, random punctuation, etc.). Contributions must be substantive and help improve the experience of the Pinata user.
+- All edits must be submitted as pull requests and reviewed by the maintainers before merging into the main branch.
 
 ## Development
 
@@ -24,4 +24,4 @@ mintlify dev
 
 ## Publishing Changes
 
-Submit a pull request with your changes and one of the Pinata Team maintaners will review and either request more edits or merge it into main.
+Submit a pull request with your changes and one of the Pinata Team maintainers will review and either request more edits or merge it into main.
