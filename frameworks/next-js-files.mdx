@@ -95,7 +95,7 @@ export default function Home() {
   return (
     <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
       <input type="file" onChange={handleChange} />
-      <button disabled={uploading} onClick={uploadFile}>
+      <button type="button" disabled={uploading} onClick={uploadFile} >
         {uploading ? "Uploading..." : "Upload"}
       </button>
     </main>
@@ -150,7 +150,7 @@ With our URL we can render the image we uploaded by adding the following code to
     return (
 		<main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
 			<input type="file" onChange={handleChange} />
-			<button disabled={uploading} onClick={uploadFile}>
+			<button type="button" disabled={uploading} onClick={uploadFile}>
 				{uploading ? "Uploading..." : "Upload"}
 			</button>
 			{/* Add a conditional looking for the signed url and use it as the source */}
@@ -279,7 +279,7 @@ export default function Home() {
   return (
     <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
       <input type="file" onChange={handleChange} />
-      <button disabled={uploading} onClick={uploadFile}>
+      <button type="button" disabled={uploading} onClick={uploadFile}>
         {uploading ? "Uploading..." : "Upload"}
       </button>
     </main>
@@ -360,7 +360,7 @@ export default function Home() {
 	return (
 		<main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
 			<input type="file" onChange={handleChange} />
-			<button disabled={uploading} onClick={uploadFile}>
+			<button type="button" disabled={uploading} onClick={uploadFile}>
 				{uploading ? "Uploading..." : "Upload"}
 			</button>
 			{url && <img src={url} alt="Image from Pinata" />}
