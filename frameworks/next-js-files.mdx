@@ -297,9 +297,9 @@ import { pinata } from "@/utils/config"
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const data = await req.json()
+    const data = await request.json()
     const url = await pinata.gateways.createSignedURL({
         cid: data.cid,
         expires: 30
