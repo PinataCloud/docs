@@ -15,7 +15,7 @@ Next.js has a limit of how large a file can be passed through the built in API r
 As with any Next.js project we can start one up with the following command
 
 ```bash
-npx create-next-app@latest
+npx create-next-app@14
 ```
 
 After the project is created `cd` into the repo and install `pinata`
@@ -119,7 +119,7 @@ Next.js is ideal for file uploads as it's API routes keep keys hidden and unexpo
 Once you have created that file you can paste in the following code.
 
 ```typescript app/api/files/route.ts
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { pinata } from "@/utils/config"
 
 export async function POST(request: NextRequest) {
@@ -210,22 +210,19 @@ In order to upload on the client side we need an API key, but we don't want to e
 Once you have created that file you can paste in the following code.
 
 ```typescript app/api/key/route.ts
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { pinata } from "@/utils/config"
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  // If you're going to use auth you'll want to verify here
   try {
     const uuid = crypto.randomUUID();
     const keyData = await pinata.keys.create({
       keyName: uuid.toString(),
       permissions: {
-        endpoints: {
-          pinning: {
-            pinFileToIPFS: true,
-          },
-        },
+        admin: true
       },
       maxUses: 1,
     })
