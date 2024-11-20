@@ -90,7 +90,8 @@
 			"pages": [
 				"account-management/api-keys",
 				"account-management/workspaces",
-				"account-management/billing"
+				"account-management/billing",
+				"account-management/limits"
 			]
 		},
 		{
@@ -115,7 +116,6 @@
 				"web3/pinning/pinata-metadata",
 				"web3/pinning/deleting-files",
 				"web3/pinning/signatures",
-				"web3/account-management/limits",
 				{
 					"group": "Dedicated Gateways",
 					"pages": [
@@ -666,6 +666,10 @@
 		{
 			"source": "/hackutd",
 			"destination": "/events/hackutd"
+		},
+		{
+			"source": "web3/account-management/limits",
+			"destination": "account-management/limits"
 		}
 	]
 }
