@@ -1,0 +1,76 @@
+---
+title: "Key-Values"
+---
+
+
+A unique and powerful feature included with the Files API and IPFS API is the key-value store. Anytime you upload or update a file you can store up to 10 key-value pairs.
+
+<CodeGroup>
+
+```typescript SDK {3-7}
+const upload = await pinata.upload
+  .file(file)
+  .addMetadata({
+    keyvalues: {
+      env: "prod",
+      userId: "abc123"
+    }
+  })
+```
+
+```typescript API {11-15,17}
+const JWT = "YOUR_PINATA_JWT";
+
+async function upload() {
+  try {
+    const formData = new FormData();
+
+    const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
+
+    formData.append("file", file);
+
+    const keyvalues = JSON.stringify({
+      keyvalues: {
+        env: "prod",
+        userId: "abc123"
+      }
+    })
+
+    formData.append("keyvalues", keyvalues)
+
+    const request = await fetch("https://uploads.pinata.cloud/v3/files", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: formData,
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
+This small yet powerful feature allows you to remove the need for an external database in most cases. We like to call this paradigm **[File-Centric Architecture](https://pinata.cloud/blog/using-file-centric-architecture-to-build-simple-and-capable-apps/)**, where apps and their structure revolves around the files themselves. This creates a molecule like structure and keeps the data related to the file close by.
+
+![cover](https://dweb.mypinata.cloud/files/bafybeieo4ww5lykpsegfgmse5o2d5s5onfvlkglzqmvbeldb2dkx26z2ve)
+
+## Creating Key-Values
+
+TBD
+
+## Retrieving Key-Values
+
+TBD
+
+## Updating Key-Values
+
+TBD
+
+## Deleting Key-Values
+
+TBD

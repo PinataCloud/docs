@@ -102,6 +102,7 @@
 				"files/listing-files",
 				"files/deleting-files",
 				"gateways/retrieving-files",
+				"files/key-values",
 				"gateways/image-optimizations",
 				"files/hot-swaps",
 				"tools/files-cli"
