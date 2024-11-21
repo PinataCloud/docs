@@ -49,7 +49,7 @@ const upload = await pinata.upload.base64("SGVsbG8gV29ybGQh")
 
 Upload to a specific group by passing in the `groupId`
 
-```typescript
+```typescript {3}
 const upload = await pinata.upload
   .base64("SGVsbG8gV29ybGQh")
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
@@ -61,7 +61,7 @@ const upload = await pinata.upload
 
 Add optional metadata to file
 
-```typescript
+```typescript {3-8}
 const upload = await pinata.upload
   .base64("SGVsbG8gV29ybGQh")
   .addMetadata({
@@ -78,7 +78,7 @@ const upload = await pinata.upload
 
 Upload a file using a secondary API key generated through `keys.create()`
 
-```typescript
+```typescript {3}
 const upload = await pinata.upload
   .base64("SGVsbG8gV29ybGQh")
   .key("GENERATED_API_JWT")

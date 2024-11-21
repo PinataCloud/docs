@@ -22,7 +22,7 @@ const upload = await pinata.upload.file(file)
 
 If you need to upload files from a local file source you can use `fs` to feed a file into a `blob`, then turn that `blob` into a `File`.
 
-```typescript
+```typescript {10-12}
 const { PinataSDK } = require("pinata")
 const fs = require("fs")
 const { Blob } = require("buffer")
@@ -59,7 +59,7 @@ type UploadResponse = {
 
 Accepts a File object in accordance with the [W3C File API](https://w3c.github.io/FileAPI/#file-section).
 
-```typescript
+```typescript {3}
 const blob = new Blob(["hello world!"], { type: "text/plain" })
 const file = new File([blob], "hello.txt", { type: "text/plain" })
 const upload = await pinata.upload.file(file)
@@ -67,7 +67,7 @@ const upload = await pinata.upload.file(file)
 
 In most environments you can also pass a Blob here as well.
 
-```typescript
+```typescript {2}
 const blob = new Blob(["hello world!"], { type: "text/plain" })
 const upload = await pinata.upload.file(blob)
 ```
@@ -78,7 +78,7 @@ const upload = await pinata.upload.file(blob)
 
 Upload to a specific group by passing in the `groupId`
 
-```typescript
+```typescript {3}
 const upload = await pinata.upload
   .file(file)
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
@@ -90,7 +90,7 @@ const upload = await pinata.upload
 
 Add optional metadata to file
 
-```typescript
+```typescript {3-8}
 const upload = await pinata.upload
   .file(file)
   .addMetadata({
@@ -107,7 +107,7 @@ const upload = await pinata.upload
 
 Upload a file using a secondary API key generated through `keys.create()`
 
-```typescript
+```typescript {3}
 const upload = await pinata.upload
   .file(file)
   .key("GENERATED_API_JWT")

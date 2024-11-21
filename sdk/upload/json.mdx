@@ -57,7 +57,7 @@ const upload = await pinata.upload.json({
 
 Upload to a specific group by passing in the `groupId`
 
-```typescript
+```typescript {7}
 const upload = await pinata.upload
   .json({
       content: "console.log('hello world!)",
@@ -73,7 +73,7 @@ const upload = await pinata.upload
 
 Add optional metadata to file
 
-```typescript
+```typescript {7-12}
 const upload = await pinata.upload
   .json({
       content: "console.log('hello world!)",
@@ -94,7 +94,7 @@ const upload = await pinata.upload
 
 Upload a file using a secondary API key generated through `keys.create()`
 
-```typescript
+```typescript {7}
 const upload = await pinata.upload
     .json({
         content: "console.log('hello world!)",
