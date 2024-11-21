@@ -7,7 +7,7 @@ A unique and powerful feature included with the Files API and IPFS API is the ke
 
 <CodeGroup>
 
-```typescript SDK {3-7}
+```typescript SDK {3-8}
 const upload = await pinata.upload
   .file(file)
   .addMetadata({
@@ -61,20 +61,249 @@ This small yet powerful feature allows you to remove the need for an external da
 
 ## Creating
 
-TBD
+Creating a new key-value for a file can be done in two ways:
+
+### Uploading a File
+
+By including the key-values as part of the upload [method](/sdk/upload/file) or [endpoint](/api-reference/endpoint/upload-a-file) and the file and the key-values will be created at the same time.
+
+<CodeGroup>
+
+```typescript SDK {3-8}
+const upload = await pinata.upload
+  .file(file)
+  .addMetadata({
+    keyvalues: {
+      env: "prod",
+      userId: "abc123"
+    }
+  })
+```
+
+```typescript API {11-15,17}
+const JWT = "YOUR_PINATA_JWT";
+
+async function upload() {
+  try {
+    const formData = new FormData();
+
+    const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
+
+    formData.append("file", file);
+
+    const keyvalues = JSON.stringify({
+      keyvalues: {
+        env: "prod",
+        userId: "abc123"
+      }
+    })
+
+    formData.append("keyvalues", keyvalues)
+
+    const request = await fetch("https://uploads.pinata.cloud/v3/files", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: formData,
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
+### Updating an Existing File
+
+If you've already uploaded a file and want to add a key-value you can do so with the update [method](/sdk/files/update) or [endpoint](/api-reference/endpoint/update-file).
+
+<CodeGroup>
+
+```typescript SDK {3-7}
+const update = await pinata.files.update({
+  id: "2b4ee88d-1032-4e4e-a373-97d1ab127f16", // Target File ID
+  keyvalues: {
+    env: "prod",
+    userId: "abc123"
+  }
+})
+```
+
+```typescript API {6,8-13,15-21}
+const JWT = "YOUR_PINATA_JWT";
+
+async function update() {
+  try {
+
+    const fileId = "2b4ee88d-1032-4e4e-a373-97d1ab127f16"
+
+    const data = JSON.stringify({
+      keyvalues: {
+        env: "prod",
+        userId: "abc123"
+      }
+    })
+
+    const request = await fetch(`https://api.pinata.cloud/v3/files/${fileId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: data,
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
 
 ## Retrieving
 
-TBD
+Since key-values exist with files, you can retrieve them by listing files either through the SDK [method](/sdk/files/list) or API [endpoint](/api-reference/endpoint/list-files), and filtering results by key-value. The operator will always be `===`.
+
+<Tip>
+You can chain multiple key-value queries together and it will only return files that meet both values.
+</Tip>
+
+<CodeGroup>
+
+```typescript SDK {3-5}
+const files = await pinata.files
+  .list()
+  .metadata({
+    user: "abc123"
+  })
+```
+
+```typescript API {5}
+const JWT = "YOUR_PINATA_JWT";
+
+async function list() {
+  try {
+    const request = await fetch(`https://api.pinata.cloud/v3/files?metadata[user]=123`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      }
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
 
 ## Updating
 
-TBD
+The Files API key-value system will automatically detect if you are replacing an existing value for a given key. For example, if you have a key of `env` with a value of `prod`, if you make an update of `env: "dev"` it will replace the old value. If the key does not exist then it will make a new key-value entry.
+
+<CodeGroup>
+
+```typescript SDK {4}
+const update = await pinata.files.update({
+  id: "2b4ee88d-1032-4e4e-a373-97d1ab127f16", // Target File ID
+  keyvalues: {
+    env: "dev", // Previously `prod`
+  }
+})
+```
+
+```typescript API {10}
+const JWT = "YOUR_PINATA_JWT";
+
+async function update() {
+  try {
+
+    const fileId = "2b4ee88d-1032-4e4e-a373-97d1ab127f16"
+
+    const data = JSON.stringify({
+      keyvalues: {
+        env: "dev", // Previously `prod`
+      }
+    })
+
+    const request = await fetch(`https://api.pinata.cloud/v3/files/${fileId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: data,
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
 
 ## Deleting
 
-TBD
+You can remove a key-value entry by making the value `null`.
+
+<CodeGroup>
+
+```typescript SDK {4}
+const update = await pinata.files.update({
+  id: "2b4ee88d-1032-4e4e-a373-97d1ab127f16", // Target File ID
+  keyvalues: {
+    env: null, // Deletes the `env` key-value entry
+  }
+})
+```
+
+```typescript API {6,8-13,15-21}
+const JWT = "YOUR_PINATA_JWT";
+
+async function update() {
+  try {
+
+    const fileId = "2b4ee88d-1032-4e4e-a373-97d1ab127f16"
+
+    const data = JSON.stringify({
+      keyvalues: {
+        env: null, // Deletes the `env` key-value entry
+      }
+    })
+
+    const request = await fetch(`https://api.pinata.cloud/v3/files/${fileId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: data,
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
 
 ## Further Reading
 
-TBD
+Check out some of our reading material on some of the possibilities of key-values and file-centric architecture!
+
+<CardGroup cols={1}>
+
+<Card title="Using File-Centric Architecture to Build Simple and Capable Apps" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/11/Blog.png" href="https://pinata.cloud/blog/using-file-centric-architecture-to-build-simple-and-capable-apps/"></Card>
+
+</CardGroup>
