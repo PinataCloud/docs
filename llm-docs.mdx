@@ -1,0 +1,39 @@
+---
+title: "LLM Docs"
+---
+
+The Pinata Docs have multiple ways they can be used in LLMs or AI empowered code editors like Cursor or Zed. Both of these options return raw text that can be pasted into the LLM or used in a prompt/docs feature for an editor.
+
+## Smaller Context
+
+If you are concerned about context tokens then you will want to use our hand crafted [AI Docs](https://ai-docs.pinata.cloud)
+
+```bash
+curl https://ai-docs.pinata.cloud
+```
+
+<iframe
+  width="600"
+  height="400"
+  src="https://www.youtube.com/embed/eakKfqp1brE"
+  title="YouTube video player"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+  style={{ width: '100%', borderRadius: '0.5rem' }}
+></iframe>
+
+<Card title="How to Use Pinata with Cursor, Zed, and other LLMs" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/11/Blog-4.1-1.png" href="https://pinata.cloud/blog/how-to-use-pinata-with-cursor-zed-and-other-llms/"></Card>
+
+## Larger Context
+
+Pinata's docs also offer larger contexts if you prefer it. The standard route will return URL routes which make it easy for LLMs to crawl.
+
+```bash Routes
+curl https://docs.pinata.cloud/llms.txt
+```
+
+If you prefer to pull all of the documentaiton you can use the route below.
+```bash Full Docs
+curl https://docs.pinata.cloud/llms-full.txt
+```
