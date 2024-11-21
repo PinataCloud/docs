@@ -112,6 +112,10 @@ This will return the following response
 
 When uploading a file you can add additional metadata using the `addMetadata` method after the selected upload method. This can include an optional `name` override or `keyvalue` pairs that can be used to searching the file later on
 
+<Tip>
+[Check out the Key-Values doc for more info](/files/key-values)
+</Tip>
+
 <CodeGroup>
 
 ```typescript SDK {3-8}
@@ -167,6 +171,10 @@ async function upload() {
 
 Pinata offers File Groups to organize your content, as well as a method to set files as public or private. You can upload a file to a group by using the `group` method.
 
+<Tip>
+[Check out the Groups doc for more info](/files/file-groups)
+</Tip>
+
 <CodeGroup>
 
 ```typescript SDK {3}
@@ -204,10 +212,6 @@ async function upload() {
 ```
 
 </CodeGroup>
-
-<Info>
-[Check out the Groups doc for more info](/files/file-groups)
-</Info>
 
 ### User Generated Keys
 
