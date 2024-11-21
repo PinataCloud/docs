@@ -1,0 +1,230 @@
+---
+title: "requests"
+---
+
+Get analytics on requests for multiple properties
+
+## Usage
+
+The `analytics` class is unique in that it very flexible, but also can require more queries to be used well. Be sure to real the [Parameters](#parameters) in detail to understand how it can be used.
+
+The `requests` method will sort results by highest number of requests, but will also include `bandwidth` values.
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const clicks = await pinata.analytics.requests
+  .days(30)
+  .limit(10)
+  .cid("<CID>")
+```
+
+## Returns
+
+What is returned in `value` will depend on they property or query used. For instance, using `cid()` will return CIDs, `country()` will return Countries, etc.
+
+```typescript
+type TopAnalyticsResponse = {
+	data: TopAnalyticsItem[];
+};
+
+type TopAnalyticsItem = {
+	value: string;
+	requests: number;
+	bandwidth: number;
+};
+```
+
+## Parameters
+
+Filter response with the following additional methods. It does require at least one property, such as `cid`, `fileName`, `userAgent`, `country`, `region`, or `referrer`.
+
+### cid
+
+- Type: `string`
+
+Returns requests for all CIDs
+
+```typescript {3}
+const files = await pinata.analytics.requests
+  .days(7)
+  .cid()
+```
+
+Filter by passing an argument
+
+```typescript {3}
+const files = await pinata.analytics.requests
+  .days(7)
+  .cid("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
+```
+
+### fileName
+
+- Type: `string`
+
+Returns requests for all file names
+
+```typescript {3}
+const files = await pinata.analytics.requests
+  .days(7)
+  .fileName()
+```
+
+Filter by passing an argument
+
+```typescript {3}
+const files = await pinata.analytics.requests
+  .days(7)
+  .fileName("pinnie.png")
+```
+
+### userAgent
+
+- Type: `string`
+
+Returns requests for user agents
+
+```typescript {3}
+const files = await pinata.analytics.requests
+  .days(7)
+  .userAgent()
+```
+
+Filter by passing an argument
+
+```typescript {3-5}
+const files = await pinata.analytics.requests
+  .days(7)
+  .userAgent(
+    "Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0"
+  )
+```
+
+### country
+
+- Type: `string`
+
+Returns requests for countries
+
+```typescript {3}
+const files = await pinata.analytics.requests
+  .days(7)
+  .country()
+```
+
+Filter by passing an argument
+
+```typescript {3}
+const files = await pinata.analytics.requests
+  .days(7)
+  .country("us")
+```
+
+### region
+
+- Type: `string`
+
+Returns requests for regions inside of countries
+
+```typescript {3}
+const files = await pinata.analytics.requests
+  .days(7)
+  .region()
+```
+
+Filter by passing an argument
+
+```typescript {3}
+const files = await pinata.analytics.requests
+  .days(7)
+  .region("us - VA")
+```
+
+### referer
+
+- Type: `string`
+
+Returns requests for referers
+
+```typescript {3}
+const files = await pinata.analytics.requests
+  .days(7)
+  .referer()
+```
+
+Filter by passing an argument
+
+```typescript {3}
+const files = await pinata.analytics.requests
+  .days(7)
+  .referer("https://docs.pinata.cloud/")
+```
+
+### days
+
+- Type: `number`
+
+Number of days to query. Starts with current date and then goes back by provided number.
+
+```typescript {2}
+const files = await pinata.analytics.requests
+  .days(7)
+  .cid()
+```
+
+### sort
+
+- Type: `"asc" | "desc"`
+
+Order results either ascending or descending by created date
+
+```typescript {4}
+const files = await pinata.analytics.requests
+  .days(7)
+  .cid()
+  .sort("asc")
+```
+
+### limit
+
+- Type: `number`
+
+Limit the number of results
+
+```typescript {4}
+const files = await pinata.analytics.requests
+  .days(7)
+  .cid()
+  .limit(10)
+```
+
+### customDates
+
+- Type: `string, string`
+
+Custom dates to query using a start and end date with the format `YYYY-MM-DD`
+
+```typescript {2}
+const files = await pinata.analytics.requests
+  .customDates("2024-11-01", "2024-11-20")
+  .cid()
+```
+
+### from
+
+- Type: `string`
+
+Provide an alternate Gateway domain to query instead of the default one found in the Pinata SDK Config
+
+```typescript {4}
+const files = await pinata.analytics.requests
+  .days(7)
+  .cid()
+  .from("example-2.mypinata.cloud")
+```
