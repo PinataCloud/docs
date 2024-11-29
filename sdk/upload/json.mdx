@@ -88,6 +88,23 @@ const upload = await pinata.upload
   })
 ```
 
+### vectorize (Optional)
+
+- Type: `null`
+
+Vectorize a file on upload, requires a group to be used as well.
+
+```typescript {8}
+const upload = await pinata.upload
+  .json({
+      content: "console.log('hello world!)",
+      name: "helloworld.ts",
+      lang: "ts"
+  })
+  .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
+  .vectorize()
+```
+
 ### key (Optional)
 
 - Type: `string`

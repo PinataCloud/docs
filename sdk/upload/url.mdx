@@ -72,6 +72,19 @@ const upload = await pinata.upload
   })
 ```
 
+### vectorize (Optional)
+
+- Type: `null`
+
+Vectorize a file on upload, requires a group to be used as well.
+
+```typescript {4}
+const upload = await pinata.upload
+  .url("https://i.imgur.com/u4mGk5b.gif")
+  .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
+  .vectorize()
+```
+
 ### key (Optional)
 
 - Type: `string`
