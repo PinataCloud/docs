@@ -42,16 +42,16 @@ aquamarine-casual-tarantula-177.mypinata.cloud
 
 ## Select Setup
 
+Pinata offers two different APIs you can choose from:
+
 <CardGroup cols={2}>
-<Card icon="file" horizontal href="/frameworks/sveltekit-files" title="Files API">
-Use Pinata's first class Files API and SDK which uses private files by default
+
+<Card icon="file" href="/quickstart-files" title="Files API">
+  The Files API keeps files private by default, where you can grant access to a file by generating temporary URLs. It's great when you want to gate content behind an auth mechanism, whether that's an auth provider or through decentralized technology.
 </Card>
 
-<Card
-horizontal
-icon="cube"
-color="#00cc92"
-href="/frameworks/sveltekit-ipfs" title="IPFS API">
-Use Pinata's renown IPFS API and SDK for Web3 apps
+<Card icon="cube" color="#00cc92" href="/quickstart-ipfs" title="IPFS API">
+  The IPFS API has been Pinata's bread and butter for over five years, and is specially designed to work with Web3 applications such a DeFi, NFTs, Gaming, and more! Keep in mind since IPFS is a peer-to-peer protocol, any files uploaded through this API will be public.
 </Card>
+
 </CardGroup>
