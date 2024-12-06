@@ -71,3 +71,99 @@ paths:
                         type: string
                       is_duplicate:
                         type: boolean
+  /vectorize/files/{file_id}:
+    post:
+      tags:
+        - Private Files
+      summary: Vectorize a File
+      description: Vectorize an existing file. File must already be part of a group.
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+          required: true
+          name: file_id
+          in: path
+      responses:
+        '200':
+          description: Vectorize File Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                  - success
+    delete:
+      tags:
+        - Private Files
+      summary: Delete File Vectors
+      description: Delete file vectors for an existing file.
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+          required: true
+          name: file_id
+          in: path
+      responses:
+        '200':
+          description: Vectorize File Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                  - success
+  /vectorize/groups/{group_id}/query:
+    post:
+      tags:
+        - Private Files
+      summary: Query File Vectors
+      description: Query file vectors for a given group
+      parameters:
+        - schema:
+            type: string
+            description: ID of the target group
+            format: uuid
+          required: true
+          name: group_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: Query string
+      responses:
+        '200':
+          description: Vectorize File Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      count:
+                        type: number
+                      matches:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            file_id:
+                              type: string
+                            cid:
+                              type: string
+                            score:
+                              type: number
