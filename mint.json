@@ -104,6 +104,7 @@
 				"files/deleting-files",
 				"gateways/retrieving-files",
 				"files/key-values",
+				"files/vectors",
 				"gateways/image-optimizations",
 				"files/hot-swaps",
 				"tools/files-cli"
@@ -166,6 +167,9 @@
 				"sdk/files/list",
 				"sdk/files/update",
 				"sdk/files/delete",
+				"sdk/files/vectorize",
+				"sdk/files/query-vectors",
+				"sdk/files/delete-vectors",
 				"sdk/files/add-swap",
 				"sdk/files/get-swap-history",
 				"sdk/files/delete-swap"
