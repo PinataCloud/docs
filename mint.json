@@ -305,7 +305,10 @@
 				"api-reference/endpoint/get-file-by-id",
 				"api-reference/endpoint/get-signed-url",
 				"api-reference/endpoint/update-file",
-				"api-reference/endpoint/delete-file-by-id"
+				"api-reference/endpoint/delete-file-by-id",
+				"api-reference/endpoint/vectorize-file",
+				"api-reference/endpoint/query-file-vectors",
+				"api-reference/endpoint/delete-file-vectors"
 			]
 		},
 		{
