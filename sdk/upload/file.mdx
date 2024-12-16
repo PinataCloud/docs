@@ -118,6 +118,18 @@ const upload = await pinata.upload
   .vectorize()
 ```
 
+### url (Optional)
+
+- Type: `string`
+
+Pass in a presigned upload URL created with [createSignedURL](./create-signed-url)
+
+```typescript {3}
+const upload = await pinata.upload
+  .file(file)
+  .url(url)
+```
+
 ### key (Optional)
 
 - Type: `string`
