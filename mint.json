@@ -181,7 +181,8 @@
 				"sdk/upload/file",
 				"sdk/upload/json",
 				"sdk/upload/base64",
-				"sdk/upload/url"
+				"sdk/upload/url",
+				"sdk/upload/create-signed-url"
 			]
 		},
 		{

@@ -128,9 +128,9 @@ export async function POST(request: NextRequest) {
     const file: File | null = data.get("file") as unknown as File;
     const uploadData = await pinata.upload.file(file)
     const url = await pinata.gateways.createSignedURL({
-		cid: uploadData.cid,
-		expires: 3600,
-	});
+     	cid: uploadData.cid,
+     	expires: 3600,
+  	});
     return NextResponse.json(url, { status: 200 });
   } catch (e) {
     console.log(e);
@@ -163,7 +163,7 @@ And just like that we have uploaded an image to Pinata and recieved a usable URL
 
 ## Client Side Setup
 
-Next.js has a file size limit as to what can be pass through API routes, so another workaround is to upload the file on the client side. To do this securely you can make an API route that generates a temporary Pinata JWT that is used in the upload.
+Next.js has a file size limit as to what can be pass through API routes, so another workaround is to upload the file on the client side. To do this securely you can make an API route that generates a temporary upload URL that is used in the upload request.
 
 ### Start up Next.js Project
 
@@ -205,11 +205,11 @@ export const pinata = new PinataSDK({
 
 ### Create API Route
 
-In order to upload on the client side we need an API key, but we don't want to expose our primary admin key. To avoid this we'll make an API route in our Next project under `app/api/key/route.ts`.
+In order to upload on the client side we need to upload it securely without leaking our admin API key. To avoid this we'll make an API route in our Next project under `app/api/url/route.ts`.
 
 Once you have created that file you can paste in the following code.
 
-```typescript app/api/key/route.ts
+```typescript app/api/url/route.ts
 import { NextResponse } from "next/server";
 import { pinata } from "@/utils/config"
 
@@ -218,15 +218,12 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   // If you're going to use auth you'll want to verify here
   try {
-    const uuid = crypto.randomUUID();
-    const keyData = await pinata.keys.create({
-      keyName: uuid.toString(),
-      permissions: {
-        admin: true
-      },
-      maxUses: 1,
+    const url = await pinata.upload.createSignedURL({
+      expires: 30, // The only required param
+      name: "Client File",
+      group: "my-group-id"
     })
-    return NextResponse.json(keyData, { status: 200 });
+    return NextResponse.json({ url: url }, { status: 200 }); // Returns the signed upload URL
   } catch (error) {
     console.log(error);
     return NextResponse.json({ text: "Error creating API Key:" }, { status: 500 });
@@ -234,11 +231,11 @@ export async function GET() {
 }
 ```
 
-When the client makes a `GET` request to `/api/key` it will return a temporary API key that is only valid for `pinFileToIPFS` and one single use (`maxUses: 1`).
+When the client makes a `GET` request to `/api/url` it will return a temporary signed upload URL that is only valid for 30 seconds, which we can use on the client to make the upload request.
 
 ### Create Client Side Form
 
-Next we'll want to make an upload form on the client side that will allow someone to select a file and upload it with a temporary key
+Next we'll want to make an upload form on the client side that will allow someone to select a file and upload it with the signed upload URL
 
 In the `/app/page.tsx` file take out the boiler plate code and use the following.
 
@@ -260,9 +257,11 @@ export default function Home() {
 
     try {
       setUploading(true);
-      const keyRequest = await fetch("/api/key");
-      const keyData = await keyRequest.json();
-      const upload = await pinata.upload.file(file).key(keyData.JWT);
+      const urlRequest = await fetch("/api/url"); // Fetches the temporary upload URL
+      const urlResponse = await urlRequest.json(); // Parse response
+      const upload = await pinata.upload
+        .file(file)
+        .url(urlResponse.url); // Upload the file with the signed URL
       console.log(upload);
       setUploading(false);
     } catch (e) {
@@ -333,18 +332,20 @@ export default function Home() {
 
 		try {
 			setUploading(true);
-			const keyRequest = await fetch("/api/key");
-			const keyData = await keyRequest.json();
-			const upload = await pinata.upload.file(file).key(keyData.JWT);
-			const urlRequest = await fetch("/api/sign", {
+			const urlRequest = await fetch("/api/url"); // Fetches the temporary upload URL
+      const urlResponse = await urlRequest.json(); // Parse response
+      const upload = await pinata.upload
+        .file(file)
+        .url(urlResponse.url); // Upload the file with the signed URL
+			const signRequest = await fetch("/api/sign", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({ cid: upload.cid }),
 			});
-			const url = await urlRequest.json();
-			setUrl(url);
+			const signedResponse = await signRequest.json();
+			setUrl(signedRespons);
 			setUploading(false);
 		} catch (e) {
 			console.log(e);

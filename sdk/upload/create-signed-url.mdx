@@ -2,7 +2,7 @@
 title: "createSignedURL"
 ---
 
-Create a Signed Upload URL for a file upload. This method is ideal when you want to authorize server side but upload on the client.
+Create a signed upload URL for a file upload. This method is ideal when you want to authorize server side but upload on the client; check out [this doc](/files/uploading-files#client-side-uploads) for more details.
 
 <Note>
 All the information about the upload such as the name, group, keyvalues, etc. must be part of the signed URL in order for those values to go through. If you have a basic signed URL with no extra parameters and then try to add fields like name, group, etc. they will not go through.
@@ -104,6 +104,7 @@ const url = await pinata.upload.createSignedURL({
 	vectorize: true
 });
 ```
+
 
 ### date (Optional)
 

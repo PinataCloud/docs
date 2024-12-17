@@ -213,9 +213,9 @@ async function upload() {
 
 </CodeGroup>
 
-### User Generated Keys
+### Client Side Uploads
 
-There are situations where you may need to upload a file client side instead of server side. A great example is in Next.js where there is a 4MB file size restriction for files passed through Next's API routes. To solve this you can use the [keys](/sdk/keys/create) method in the SDK or the [API endpoint](/api-reference/endpoint/v3-create-api-key) to create a Pinata API key with limited permissions that expire after the upload is complete. This way your admin API key stays safe behind a server.
+There are situations where you may need to upload a file client side instead of server side. A great example is in Next.js where there is a 4MB file size restriction for files passed through Next's API routes. To solve this you can create a signed upload URL on the server and then pass it to the client for it to be consumed. This way your admin API key stays safe behind a server. Creating signed upload URLs can be done with either the [Files SDK](/sdk/upload/create-signed-url) or the API, and you can designate how long the URL is valid for or if there is other infromation you want to include such as metadata or a group ID.
 
 Setting up a server side API endpoint might look something like this:
 
@@ -230,22 +230,15 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   // Handle your auth here to protect the endpoint
   try {
-    const uuid = crypto.randomUUID();
-    const keyData = await pinata.keys.create({
-      keyName: uuid.toString(),
-      permissions: {
-        endpoints: {
-          pinning: {
-            pinFileToIPFS: true, // Creates a key that can only upload a file
-          },
-        },
-      },
-      maxUses: 1,
+    const url = await pinata.upload.createSignedURL({
+      expires: 30, // The only required param
+      name: "Client File",
+      group: "my-group-id"
     })
-    return NextResponse.json(keyData, { status: 200 }); // Returns the key data
+    return NextResponse.json({ url: url }, { status: 200 }); // Returns the signed upload URL
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ text: "Error creating API Key:" }, { status: 500 });
+    return NextResponse.json({ text: "Error creating signed URL:" }, { status: 500 });
   }
 }
 ```
@@ -258,30 +251,23 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   // Handle your auth here to protect the endpoint
   try {
-    const uuid = crypto.randomUUID();
-    // Prepare key data for request
-    const keyData = await JSON.stringify({
-      keyName: uuid.toString(),
-      permissions: {
-        endpoints: {
-          pinning: {
-            pinFileToIPFS: true, // Creates a key that can only upload a file
-          },
-        },
-      },
-      maxUses: 1,
+    // Prepare payload data for request
+    const data = JSON.stringify({
+      expires: 30,
+      filename: "Client file",
+      group_id: "my-group-id"
     })
     // send request and parse response
-    const keyRequest = await fetch("https://api.pinata.cloud/v3/pinata/keys", {
+    const urlRequest = await fetch("https://uploads.pinata.cloud/v3/files/sign", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.PINATA_JWT}`
       },
-      body: keyData
+      body: data
     })
-    const keyData = await keyRequest.json()
-    return NextResponse.json(keyData, { status: 200 }); // Returns the key data
+    const urlResponse = await urlRequest.json()
+    return NextResponse.json({ url: urlResponse.data }, { status: 200 }); // Returns the key data
   } catch (error) {
     console.log(error);
     return NextResponse.json({ text: "Error creating API Key:" }, { status: 500 });
@@ -291,23 +277,25 @@ export async function GET() {
 
 </CodeGroup>
 
-Then back on the client side code, you can upload and override the default API key set for the SDK using the `key` method on the `upload` class.
+Then back on the client side code, you can upload using the signed URL instead of the regular upload endpoint.
 
 <Note>
-If using the SDK be sure to pass in the Pinata JWT key into the `.key()` method. With the API, pass in the temporary key into the headers of the upload request
+  If you're using the SDK you can use the `.url()` parameter on any of the upload methods and pass in the signed upload URL there. If you are using the API you can simply make the upload request using the signed URL as the endpoint.
 </Note>
 
 <CodeGroup>
 
 ```typescript SDK {3}
-const keyRequest = await fetch("/api/key"); // Fetches the temporary API key
-const keyData = await keyRequest.json(); // Parse response
-const upload = await pinata.upload.file(file).key(keyData.JWT); // Upload the file with temp key
+const urlRequest = await fetch("/api/url"); // Fetches the temporary upload URL
+const urlResponse = await urlRequest.json(); // Parse response
+const upload = await pinata.upload
+  .file(file)
+  .url(urlResponse.url); // Upload the file with the signed URL
 ```
 
-```typescript API {16}
-const keyRequest = await fetch("/api/key"); // Fetches the temporary API key
-const keyData = await keyRequest.json(); // Parse response
+```typescript API {1-2,11}
+const urlRequest = await fetch("/api/url"); // Fetches the temporary upload URL
+const urlResponse = await urlRequest.json(); // Parse response
 async function upload() {
   try {
     const formData = new FormData();
@@ -316,11 +304,8 @@ async function upload() {
 
     formData.append("file", file);
 
-    const request = await fetch("https://uploads.pinata.cloud/v3/files", {
+    const request = await fetch(urlResponse.url, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${keyData.JWT}`, // Uses the temporary key here
-      },
       body: formData,
     });
     const response = await request.json();
