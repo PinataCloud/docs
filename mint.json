@@ -302,6 +302,7 @@
 			"group": "Files",
 			"pages": [
 				"api-reference/endpoint/upload-a-file",
+				"api-reference/endpoint/create-signed-upload-url",
 				"api-reference/endpoint/list-files",
 				"api-reference/endpoint/get-file-by-id",
 				"api-reference/endpoint/get-signed-url",
