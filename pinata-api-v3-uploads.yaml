@@ -71,6 +71,47 @@ paths:
                         type: string
                       is_duplicate:
                         type: boolean
+  /files/sign:
+    post:
+      tags:
+        - default
+      summary: Create Signed Upload URL
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - date
+                - expires
+              properties:
+                date:
+                  type: number
+                  description: The unix timestamp that the URL is signed, ie time of request
+                expires:
+                  type: number
+                  description: How long the URL is valid for in sconds after signing based on the date parameter
+                group_id:
+                  type: string
+                  description: ID of the group that the file will be uploaded to
+                keyvalues:
+                  type: object
+                  description: Add additional key value metadata to files upon upload
+                  additionalProperties:
+                    type: string
+                filename:
+                  type: string
+                  description: Name of the file that will be uploaded
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
   /vectorize/files/{file_id}:
     post:
       tags:
