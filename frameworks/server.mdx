@@ -1,0 +1,55 @@
+---
+title: "Server"
+description: "Get started using Pinata in a Server environment"
+---
+
+There are many cases where you have a client stack like React or Expo that will require a server to keep your admin API key secure. This guide will walk you through the basics of running a simple server that can either send presigned URLs/JWTs for client side uploads, or accept files and upload them from the server.
+
+## Create an API Key and get Gateway URL
+
+To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key.
+
+<Note>
+  If you are just getting started we recommend using Admin privileges, then move
+  to scope keys as you better understand your needs
+</Note>
+
+<img
+  style={{ borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmZY4xv8YQ2ttsiYL3XEyq4hGAZ7P7ddjyYguiYkrZBim2"
+/>
+
+Once you have created the keys you will be shown your API Key Info. This will contain your **Api Key**, **API Secret**, and your **JWT**. Click "Copy All" and save them somewhere safe!
+
+<Note>
+  The API keys are only shown once, be sure to copy them somewhere safe!
+</Note>
+
+After you have your API key, you will want to get your Gateway domain. When you create a Pinata account, you'll automatically have a Gateway created for you! To see it, simply visit the [Gateways Page](https://app.pinata.cloud/gateway) see it listed there.
+
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/Qmcn3K1Bo5W6GgVX935FxdmVYg91rVLMrcZ3NsZ8Vemsd4"
+/>
+
+The gateway domains are randomly generated and might look something like this:
+
+```
+aquamarine-casual-tarantula-177.mypinata.cloud
+```
+
+## Select Setup
+
+Pinata offers two different APIs you can choose from:
+
+<CardGroup cols={2}>
+
+<Card icon="file" href="/frameworks/server-files" title="Files API">
+  The Files API keeps files private by default, where you can grant access to a file by generating temporary URLs. It's great when you want to gate content behind an auth mechanism, whether that's an auth provider or through decentralized technology.
+</Card>
+
+<Card icon="cube" color="#00cc92" href="/frameworks/server-ipfs" title="IPFS API">
+  The IPFS API has been Pinata's bread and butter for over five years, and is specially designed to work with Web3 applications such a DeFi, NFTs, Gaming, and more! Keep in mind since IPFS is a peer-to-peer protocol, any files uploaded through this API will be public.
+</Card>
+
+</CardGroup>

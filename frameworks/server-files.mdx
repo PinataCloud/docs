@@ -1,0 +1,43 @@
+---
+title: "Server"
+description: "Get started using Pinata with a Server"
+---
+
+You can adapt these steps to any API server framework, but for this guide we'll use [Hono](https://hono.dev).
+
+## Startup Hono Project
+
+Run the following command to start up a new project:
+
+```
+npm create hono@latest pinata-server
+```
+
+This will prompt you to choose from a variety of templates depending where you want to deploy. For simplicity we'll just choose `vercel`, and `npm` as our package manager. Once it's installed the dependencies, open the project folder `pinata-server` with your text editor of choice.
+
+<Tip>
+  One thing you may want to setup now is the cors middleware built into Hono. Do this by opening the `src/index.ts` file and adding the following code:
+
+```typescript {3,10}
+import { Hono } from 'hono'
+import { handle } from 'hono/vercel'
+import { cors } from 'hono/cors'
+
+export const config = {
+  runtime: 'edge'
+}
+
+const app = new Hono().basePath('/api')
+app.use('/', cors())
+
+app.get('/', (c) => {
+  return c.json({ message: 'Hello Hono!' })
+})
+
+export default handle(app)
+```
+
+</Tip>
+
+
+## Setup Pinata
