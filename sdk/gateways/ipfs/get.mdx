@@ -2,7 +2,7 @@
 title: "get"
 ---
 
-Retrieve a file through the config's `pinataGateway`
+Retrieve a file from IPFS through the config's `pinataGateway`
 
 ## Usage
 
@@ -14,12 +14,15 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const file = await pinata.gateways.get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+const file = await pinata
+  .gateways
+  .ipfs
+  .get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
 ```
 
 ## Returns
 
-Returns the data in the form of `JSON`, `string`, or `Blob` as well as the `ContentType`
+Returns the data from the CID in the form of `JSON`, `string`, or `Blob` as well as the `ContentType`
 
 ```typescript
 type GetCIDResponse = {
@@ -53,13 +56,23 @@ type ContentType =
 
 - Type: `string`
 
-Accepts CID of the file you are trying to fetch
+Accepts CID or IPFS gateway link.
 
 ```typescript
-const data = await pinata.gateways.get(
-	"bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi",
+const data = await pinata.gateways.ipfs.get(
+	"bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi/hello-1.txt",
+);
+
+const data = await pinata.gateways.ipfs.get(
+	"https://ipfs.io/ipfs/bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi/hello-1.txt",
+);
+
+const data = await pinata.gateways.ipfs.get(
+	"https://bafyreibroegmxohcbvvs3rziqsp3osyn7t5rzot34y6pn5xtewffhtsl4e.ipfs.nftstorage.link/metadata.json",
 );
 ```
+
+## Methods
 
 ### optimizeImage (Optional)
 
@@ -83,9 +96,9 @@ type OptimizeImageOptions = {
 
 If the content being fetched is an image you can apply image optimizations to the image.
 
-```typescript {3-7}
-const data = await pinata.gateways
-  .get("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
+```typescript
+const data = await pinata.gateways.ipfs
+  .get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
   .optimizeImage({
     width: 500,
     height: 500,

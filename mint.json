@@ -167,15 +167,15 @@
         {
           "group": "private",
           "pages": [
-            "sdk/files/list",
-            "sdk/files/update",
-            "sdk/files/delete",
-            "sdk/files/vectorize",
-            "sdk/files/query-vectors",
-            "sdk/files/delete-vectors",
-            "sdk/files/add-swap",
-            "sdk/files/get-swap-history",
-            "sdk/files/delete-swap"
+            "sdk/files/private/list",
+            "sdk/files/private/update",
+            "sdk/files/private/delete",
+            "sdk/files/private/vectorize",
+            "sdk/files/private/query-vectors",
+            "sdk/files/private/delete-vectors",
+            "sdk/files/private/add-swap",
+            "sdk/files/private/get-swap-history",
+            "sdk/files/private/delete-swap"
           ]
         }
       ]
@@ -193,8 +193,20 @@
     {
       "group": "Gateways",
       "pages": [
-        "sdk/gateways/get",
-        "sdk/gateways/create-signed-url"
+        {
+          "group": "private",
+          "pages": [
+            "sdk/gateways/private/get",
+            "sdk/gateways/private/create-signed-url"
+          ]
+        },
+        {
+          "group": "ipfs",
+          "pages": [
+            "sdk/gateways/ipfs/get",
+            "sdk/gateways/ipfs/convert"
+          ]
+        }
       ]
     },
     {
