@@ -183,11 +183,16 @@
     {
       "group": "Upload",
       "pages": [
-        "sdk/upload/file",
-        "sdk/upload/json",
-        "sdk/upload/base64",
-        "sdk/upload/url",
-        "sdk/upload/create-signed-url"
+        {
+          "group": "private",
+          "pages": [
+            "sdk/upload/private/file",
+            "sdk/upload/private/json",
+            "sdk/upload/private/base64",
+            "sdk/upload/private/url",
+            "sdk/upload/private/create-signed-url"
+          ]
+        }
       ]
     },
     {
