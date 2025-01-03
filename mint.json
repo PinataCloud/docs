@@ -217,13 +217,18 @@
     {
       "group": "Groups",
       "pages": [
-        "sdk/groups/create",
-        "sdk/groups/get",
-        "sdk/groups/list",
-        "sdk/groups/add-files",
-        "sdk/groups/remove-files",
-        "sdk/groups/update",
-        "sdk/groups/delete"
+        {
+          "group": "private",
+          "pages": [
+            "sdk/groups/private/create",
+            "sdk/groups/private/get",
+            "sdk/groups/private/list",
+            "sdk/groups/private/add-files",
+            "sdk/groups/private/remove-files",
+            "sdk/groups/private/update",
+            "sdk/groups/private/delete"
+          ]
+        }
       ]
     },
     {
