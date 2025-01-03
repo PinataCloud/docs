@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const files = await pinata.files.list()
+const files = await pinata.files.private.list()
 ```
 
 ## Returns
@@ -49,7 +49,7 @@ Filter response with the following additional methods. All filters are optional.
 Filter results based on name
 
 ```typescript {3}
-const files = await pinata.files
+const files = await pinata.files.private
   .list()
   .name("pinnie")
 ```
@@ -61,7 +61,7 @@ const files = await pinata.files
 Filter results based on group ID
 
 ```typescript {3}
-const files = await pinata.files
+const files = await pinata.files.private
   .list()
   .group("5b56981c-7e5b-4dff-aeca-de784728dddb")
 ```
@@ -73,7 +73,7 @@ const files = await pinata.files
 Filter results to only show files that are not part of a group
 
 ```typescript {3}
-const files = await pinata.files
+const files = await pinata.files.private
   .list()
   .noGroup(true)
 ```
@@ -85,7 +85,7 @@ const files = await pinata.files
 Filter results based on CID
 
 ```typescript {3}
-const files = await pinata.files
+const files = await pinata.files.private
   .list()
   .cid("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
 ```
@@ -97,7 +97,7 @@ const files = await pinata.files
 Filter results based on keyvalue pairs in metadata
 
 ```typescript {3-5}
-const files = await pinata.files
+const files = await pinata.files.private
   .list()
   .metadata({
     env: "prod"
@@ -111,7 +111,7 @@ const files = await pinata.files
 Filter results based on mime type
 
 ```typescript {3}
-const files = await pinata.files
+const files = await pinata.files.private
   .list()
   .mimeType("image/png")
 ```
@@ -123,7 +123,7 @@ const files = await pinata.files
 Order results either ascending or descending by created date
 
 ```typescript {3}
-const files = await pinata.files
+const files = await pinata.files.private
   .list()
   .order("ASC")
 ```
@@ -135,7 +135,7 @@ const files = await pinata.files
 Limit the number of results
 
 ```typescript {3}
-const files = await pinata.files
+const files = await pinata.files.private
   .list()
   .limit(10)
 ```
@@ -147,7 +147,7 @@ const files = await pinata.files
 Filters results and only returns files where `cid` is still `pending`
 
 ```typescript {3}
-const files = await pinata.files
+const files = await pinata.files.private
   .list()
   .cid(true)
 ```
@@ -159,7 +159,7 @@ const files = await pinata.files
 Paginates through files based on a provided page token
 
 ```typescript {3}
-const files = await pinata.files
+const files = await pinata.files.private
   .list()
   .pageToken("MDE5MWIzZWYtM2U0Zi03YTY5LWE3OTQtOTRhZDE5NjQxMTk0")
 ```
@@ -169,7 +169,7 @@ const files = await pinata.files
 The `list` method has an auto pagination feature that is triggered when used inside a `for await` iterator
 
 ```typescript
-for await (const item of pinata.files.list()) {
+for await (const item of pinata.files.private.list()) {
   console.log(item.id);
 }
 ```
