@@ -49,9 +49,7 @@ In the `src/App.tsx` file take out the boiler plate code and use the following. 
 
 <Warning>Uploading files like this will expose your API keys!</Warning>
 
-<CodeGroup>
-
-```typescript src/App.tsx - Single File
+```typescript src/App.tsx
 import { useState } from "react";
 import { pinata } from "./utils/config"
 
@@ -81,44 +79,6 @@ function App() {
 
 export default App;
 ```
-
-```typescript src/App.tsx - Folder
-import { useState } from "react";
-import { pinata } from "./utils/config"
-
-function App() {
-  const [selectedFiles, setSelectedFiles]: any = useState();
-  const changeHandler = (event: any) => {
-    setSelectedFiles(event.target.files);
-  };
-
-  const handleSubmission = async () => {
-    try {
-      const upload = await pinata.upload.fileArray(selectedFiles)
-      console.log(upload);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  return (
-    <>
-      <label className="form-label"> Choose File</label>
-      <input
-        directory=""
-        webkitdirectory=""
-        type="file"
-        onChange={changeHandler}
-      />
-      <button onClick={handleSubmission}>Submit</button>
-    </>
-  );
-}
-
-export default App;
-```
-
-</CodeGroup>
 
 ### Retrieve Content
 
