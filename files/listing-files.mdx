@@ -212,6 +212,28 @@ const url = "https://api.pinata.cloud/v3/files?mimeType=image/png"
 
 </CodeGroup>
 
+### metdata
+
+- Type: `Record<string | string>`
+
+Filter results based on keyvalue pairs in metadata
+
+<CodeGroup>
+
+```typescript SDK {3}
+const files = await pinata.files
+  .list()
+  .metadata({
+    env: "prod"
+  })
+```
+
+```typescript API
+const url = "https://api.pinata.cloud/v3/files?metadata[env]=prod"
+```
+
+</CodeGroup>
+
 ### order
 
 - Type: `"ASC" | "DESC"`
