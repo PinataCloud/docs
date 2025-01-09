@@ -7,9 +7,7 @@ title: "Uploading Files"
   src="https://docs.mypinata.cloud/ipfs/QmaHVPUAt5iqhCGHgMcbyRh4dkcoFNod8B38ZUaZ3urxRU?img-format=webp"
 />
 
-At the core of Pinata is file uploads through our File API. It's fast and easy to use, whether you're using the [SDK](/sdk) or the [API](/api-reference). Something unique about the Files API is that all files are given a unique Content Identifier or `CID`. These are not like normal IDs in that they are content addressable hashes based on the contents of the file. You can upload the same file over and over and it will always return the same CID. This has multiple benefits including:
-    - Deduplication: Since a duplicate file would have the same CID, it is not included upon upload and reduces the amount of files in your account. This keeps things organized and reduces your total costs.
-    - Versioning: Tracking the history of a file requires proprietary solutions built on top of the data storage provider and does not expose that history and provenance in a meaningful way to everyone who needs to access it.
+In addition to our IPFS product is our new Private IPFS API. It works just like your normal IPFS uploads where you get a CID in return, except these files can only be accessed through your Dedicated Gateway with a time sensitive access token. This means these files are not broadcasted to the public IPFS network and stay strictly with Pinata. It comes in handy if you want to token gate content that would otherwise be exposed on IPFS.
 
 Let's look at the multiple ways you can upload files!
 
@@ -169,7 +167,7 @@ async function upload() {
 
 ### Groups
 
-Pinata offers File Groups to organize your content, as well as a method to set files as public or private. You can upload a file to a group by using the `group` method.
+Pinata offers Private IPFS Groups to organize your content. You can upload a file to a group by using the `group` method.
 
 <Tip>
 [Check out the Groups doc for more info](/files/file-groups)
@@ -616,7 +614,7 @@ async function upload() {
 
 ## Resumable Uploads
 
-The Files API upload endpoint `https://uploads.pinata.cloud/v3/files` is fully [TUS](https://tus.io) compatible, so it can support larger files with the ability to resume uploads. Any file upload larger than 100MB needs to be uploaded through the TUS method. The [Files SDK](/sdk) handles this automatically when you use `pinata.upload.file()` by checking the file size before uploading.
+The Private IPFS API upload endpoint `https://uploads.pinata.cloud/v3/files` is fully [TUS](https://tus.io) compatible, so it can support larger files with the ability to resume uploads. Any file upload larger than 100MB needs to be uploaded through the TUS method. The [Private IPFS SDK](/sdk) handles this automatically when you use `pinata.upload.file()` by checking the file size before uploading.
 
 ```typescript {6}
 const pinata = new PinataSDK({
