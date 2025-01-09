@@ -42,7 +42,7 @@
       "url": "web3/sdk"
     },
     {
-      "name": "Files SDK",
+      "name": "Private IPFS SDK",
       "url": "sdk"
     },
     {
@@ -96,7 +96,7 @@
       ]
     },
     {
-      "group": "IPFS Files",
+      "group": "IPFS",
       "pages": [
         "web3/pinning/pinning-files",
         "web3/pinning/groups",
@@ -143,7 +143,7 @@
       ]
     },
     {
-      "group": "Files",
+      "group": "Private IPFS",
       "pages": [
         "files/uploading-files",
         "files/file-groups",
@@ -158,7 +158,7 @@
       ]
     },
     {
-      "group": "Files SDK",
+      "group": "Private IPFS SDK",
       "pages": [
         "sdk/getting-started",
         "sdk/config",
@@ -354,7 +354,7 @@
       ]
     },
     {
-      "group": "Files",
+      "group": "Private IPFS",
       "pages": [
         "api-reference/endpoint/upload-a-file",
         "api-reference/endpoint/create-signed-upload-url",
@@ -369,7 +369,7 @@
       ]
     },
     {
-      "group": "Groups",
+      "group": "Private Groups",
       "pages": [
         "api-reference/endpoint/create-group",
         "api-reference/endpoint/get-group",
@@ -381,7 +381,7 @@
       ]
     },
     {
-      "group": "Swaps",
+      "group": "Private Swaps",
       "pages": [
         "api-reference/endpoint/add-swap",
         "api-reference/endpoint/get-swap-history",
