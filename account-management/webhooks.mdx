@@ -1,0 +1,359 @@
+---
+title: "Webhooks"
+description: "Subscribe to Pinata API events using Webhooks"
+---
+
+Through the Pinata App you can create Webhooks for particular events fired from the Pinata API for your account specifically, like uploading or deleting a file.
+
+
+## Setup
+
+Navigate to the [Webhooks Tab]() inside the Pinata App and click "Add Endpoint" in the top right.
+
+![webhooks create](https://docs.mypinata.cloud/ipfs/bafkreig535s7dg4gokb37cl3khns7uaq5sqauyzdur2picd76xfzowd5m4)
+
+On the New Endpoint page you can put in a URL for your server endpoint that will receive the events. Additionally you can give it a description, which events it will subscribe to, and more advance options like rate limiting. Once you have your options selected click "Create" at the bottom.
+
+<Tip>
+  If you don't have an endpoint for your app or server yet, you can create a test one by clicking on the `Svix Play` link below the URL input.
+</Tip>
+
+![webhooks form](https://docs.mypinata.cloud/ipfs/bafkreicze5g4n2z7mr4r6o4p6o25lqbswsiytodqe6lwblzk2qmir6bpei)
+
+Once your Webhook is created you will be taken to the dashboard where you can see incoming logs and events that are fired. Try triggering one of the events that you've selected for your webhook either from the Pinata App or from the API. Then come back to the dashboard to see the result!
+
+// Image
+
+## Event Catalog
+
+Here you can reference all of the available events you can subscribe to with Webhooks.
+
+<AccordionGroup>
+  <Accordion title="ipfs">
+  <Accordion title="ipfs.private.file_added">
+
+  Event for when a file is uploaded to Private IPFS
+
+<ResponseField name="data" type="Object">
+  <Expandable title="properties">
+    <ResponseField name="cid" type="string">
+      The IPFS CID of the uploaded content
+    </ResponseField>
+
+    <ResponseField name="created_at" type="string">
+      ISO timestamp of when the content was created
+    </ResponseField>
+
+    <ResponseField name="group_id" type="string">
+      UUID of the content group
+    </ResponseField>
+
+    <ResponseField name="id" type="string">
+      UUID of the content item
+    </ResponseField>
+
+    <ResponseField name="keyvalues" type="Object">
+      Key-value pairs associated with the content
+    </ResponseField>
+
+    <ResponseField name="mime_type" type="string">
+      MIME type of the uploaded file
+    </ResponseField>
+
+    <ResponseField name="name" type="string">
+      Name of the uploaded file
+    </ResponseField>
+
+    <ResponseField name="number_of_files" type="number">
+      Number of files in the upload
+    </ResponseField>
+
+    <ResponseField name="size" type="number">
+      Size of the uploaded content in bytes
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="event_type" type="string">
+  The type of event that occurred
+</ResponseField>
+
+<ResponseField name="timestamp" type="string">
+  ISO timestamp of when the event occurred
+</ResponseField>
+
+<ResponseField name="workspace_id" type="string">
+  UUID of the workspace where the event occurred
+</ResponseField>
+
+
+    ```json Response
+    {
+      "data": {
+        "cid": "bafybeifhh5a2o4ilxviboof4c75kkv62hkljpdq3fo3uowkhdrgjr67kbm",
+        "created_at": "2025-01-07T20:13:39.536Z",
+        "group_id": "11111111-1111-1111-1111-111111111111",
+        "id": "11111111-1111-1111-1111-111111111111",
+        "keyvalues": {
+          "examplekey": "example value",
+          "examplekey2": "example value 2"
+        },
+        "mime_type": "image/png",
+        "name": "001.png",
+        "number_of_files": 42,
+        "size": 42
+      },
+      "event_type": "ipfs.private.pin_added",
+      "timestamp": "2025-01-08T16:01:57.025041Z",
+      "workspace_id": "11111111-1111-1111-1111-111111111111"
+    }
+    ```
+
+  </Accordion>
+
+  <Accordion title="ipfs.private.file_deleted">
+
+  Event for when a file is deleted from Private IPFS
+
+<ResponseField name="data" type="Object">
+  <Expandable title="properties">
+    <ResponseField name="cid" type="string">
+      The IPFS CID of the deleted content
+    </ResponseField>
+
+    <ResponseField name="created_at" type="string">
+      ISO timestamp of when the content was deleted
+    </ResponseField>
+
+    <ResponseField name="group_id" type="string">
+      UUID of the content group
+    </ResponseField>
+
+    <ResponseField name="id" type="string">
+      UUID of the content item
+    </ResponseField>
+
+    <ResponseField name="keyvalues" type="Object">
+      Key-value pairs associated with the content
+    </ResponseField>
+
+    <ResponseField name="mime_type" type="string">
+      MIME type of the uploaded file
+    </ResponseField>
+
+    <ResponseField name="name" type="string">
+      Name of the uploaded file
+    </ResponseField>
+
+    <ResponseField name="number_of_files" type="number">
+      Number of files in the upload
+    </ResponseField>
+
+    <ResponseField name="size" type="number">
+      Size of the uploaded content in bytes
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="event_type" type="string">
+  The type of event that occurred
+</ResponseField>
+
+<ResponseField name="timestamp" type="string">
+  ISO timestamp of when the event occurred
+</ResponseField>
+
+<ResponseField name="workspace_id" type="string">
+  UUID of the workspace where the event occurred
+</ResponseField>
+
+
+    ```json Response
+    {
+      "data": {
+        "cid": "bafybeifhh5a2o4ilxviboof4c75kkv62hkljpdq3fo3uowkhdrgjr67kbm",
+        "created_at": "2025-01-07T20:13:39.536Z",
+        "group_id": "11111111-1111-1111-1111-111111111111",
+        "id": "11111111-1111-1111-1111-111111111111",
+        "keyvalues": {
+          "examplekey": "example value",
+          "examplekey2": "example value 2"
+        },
+        "mime_type": "image/png",
+        "name": "001.png",
+        "number_of_files": 42,
+        "size": 42
+      },
+      "event_type": "ipfs.private.pin_added",
+      "timestamp": "2025-01-08T16:01:57.025041Z",
+      "workspace_id": "11111111-1111-1111-1111-111111111111"
+    }
+    ```
+
+  </Accordion>
+
+  <Accordion title="ipfs.public.file_added">
+
+  Event for when a file is uploaded to Public IPFS
+
+<ResponseField name="data" type="Object">
+  <Expandable title="properties">
+    <ResponseField name="cid" type="string">
+      The IPFS CID of the uploaded content
+    </ResponseField>
+
+    <ResponseField name="created_at" type="string">
+      ISO timestamp of when the content was created
+    </ResponseField>
+
+    <ResponseField name="group_id" type="string">
+      UUID of the content group
+    </ResponseField>
+
+    <ResponseField name="id" type="string">
+      UUID of the content item
+    </ResponseField>
+
+    <ResponseField name="keyvalues" type="Object">
+      Key-value pairs associated with the content
+    </ResponseField>
+
+    <ResponseField name="mime_type" type="string">
+      MIME type of the uploaded file
+    </ResponseField>
+
+    <ResponseField name="name" type="string">
+      Name of the uploaded file
+    </ResponseField>
+
+    <ResponseField name="number_of_files" type="number">
+      Number of files in the upload
+    </ResponseField>
+
+    <ResponseField name="size" type="number">
+      Size of the uploaded content in bytes
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="event_type" type="string">
+  The type of event that occurred
+</ResponseField>
+
+<ResponseField name="timestamp" type="string">
+  ISO timestamp of when the event occurred
+</ResponseField>
+
+<ResponseField name="workspace_id" type="string">
+  UUID of the workspace where the event occurred
+</ResponseField>
+
+
+    ```json Response
+    {
+      "data": {
+        "cid": "bafybeifhh5a2o4ilxviboof4c75kkv62hkljpdq3fo3uowkhdrgjr67kbm",
+        "created_at": "2025-01-07T20:13:39.536Z",
+        "group_id": "11111111-1111-1111-1111-111111111111",
+        "id": "11111111-1111-1111-1111-111111111111",
+        "keyvalues": {
+          "examplekey": "example value",
+          "examplekey2": "example value 2"
+        },
+        "mime_type": "image/png",
+        "name": "001.png",
+        "number_of_files": 42,
+        "size": 42
+      },
+      "event_type": "ipfs.private.pin_added",
+      "timestamp": "2025-01-08T16:01:57.025041Z",
+      "workspace_id": "11111111-1111-1111-1111-111111111111"
+    }
+    ```
+
+  </Accordion>
+
+  <Accordion title="ipfs.public.file_deleted">
+
+  Event for when a file is deleted from Public IPFS
+
+<ResponseField name="data" type="Object">
+  <Expandable title="properties">
+    <ResponseField name="cid" type="string">
+      The IPFS CID of the deleted content
+    </ResponseField>
+
+    <ResponseField name="created_at" type="string">
+      ISO timestamp of when the content was deleted
+    </ResponseField>
+
+    <ResponseField name="group_id" type="string">
+      UUID of the content group
+    </ResponseField>
+
+    <ResponseField name="id" type="string">
+      UUID of the content item
+    </ResponseField>
+
+    <ResponseField name="keyvalues" type="Object">
+      Key-value pairs associated with the content
+    </ResponseField>
+
+    <ResponseField name="mime_type" type="string">
+      MIME type of the uploaded file
+    </ResponseField>
+
+    <ResponseField name="name" type="string">
+      Name of the uploaded file
+    </ResponseField>
+
+    <ResponseField name="number_of_files" type="number">
+      Number of files in the upload
+    </ResponseField>
+
+    <ResponseField name="size" type="number">
+      Size of the uploaded content in bytes
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="event_type" type="string">
+  The type of event that occurred
+</ResponseField>
+
+<ResponseField name="timestamp" type="string">
+  ISO timestamp of when the event occurred
+</ResponseField>
+
+<ResponseField name="workspace_id" type="string">
+  UUID of the workspace where the event occurred
+</ResponseField>
+
+
+    ```json Response
+    {
+      "data": {
+        "cid": "bafybeifhh5a2o4ilxviboof4c75kkv62hkljpdq3fo3uowkhdrgjr67kbm",
+        "created_at": "2025-01-07T20:13:39.536Z",
+        "group_id": "11111111-1111-1111-1111-111111111111",
+        "id": "11111111-1111-1111-1111-111111111111",
+        "keyvalues": {
+          "examplekey": "example value",
+          "examplekey2": "example value 2"
+        },
+        "mime_type": "image/png",
+        "name": "001.png",
+        "number_of_files": 42,
+        "size": 42
+      },
+      "event_type": "ipfs.private.pin_added",
+      "timestamp": "2025-01-08T16:01:57.025041Z",
+      "workspace_id": "11111111-1111-1111-1111-111111111111"
+    }
+    ```
+
+  </Accordion>
+
+  </Accordion>
+
+</AccordionGroup>
