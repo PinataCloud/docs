@@ -91,6 +91,7 @@
       "pages": [
         "account-management/api-keys",
         "account-management/workspaces",
+        "account-management/webhooks",
         "account-management/billing",
         "account-management/limits"
       ]
