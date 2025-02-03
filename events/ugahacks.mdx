@@ -1,10 +1,10 @@
 ---
 title: "UGA Hacks"
 description: "Everything you need to start hacking with Pinata"
-'og:image': "https://dweb.mypinata.cloud/files/bafkreibd7kj7qviao4nx67kvcqhm7gx2mfd5ntemrlsofpbgxlfnbnlg3u?img-format=webp"
+'og:image': "https://dweb.mypinata.cloud/ipfs/bafybeic2xw7xptzy53rtsksecjdzmygliwlqalqkaipq4wwap4kchxg47y"
 ---
 
-![cover](/assets/hack-utd.png)
+![cover](/assets/uga-hacks.png)
 
 Welcome to the Pinata UGA Hacks cheat sheet! This doc will have everything you need to know about:
 - Getting Started with Pinata
@@ -16,15 +16,17 @@ Welcome to the Pinata UGA Hacks cheat sheet! This doc will have everything you n
 Pinata makes decentralized file uploads easy for developers who need fast and zero-setup soltuions. Our primary product, the IPFS API, makes it as simple as one line of code to upload a file:
 
 ```typescript
-const upload = await pinata.upload.file(file)
-console.log(upload.IpfsHash)
+const { IpfsHash } = await pinata.upload.file(file)
+
 // bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq
 ```
 
 Retreiving files is just as easy!
 
 ```typescript
-const signedUrl = await pinata.gateways.get("bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq")
+const { data, contentType } = await pinata.gateways.get(
+  "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq"
+)
 ```
 
 Built on years of experience with IPFS, Pinata has scaled companies to serve high volumes of requests and bandwidth, as well as developers who are just starting out. We want to help build the future of the web through decentralizedd applications!
