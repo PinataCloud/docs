@@ -696,6 +696,10 @@
       "destination": "/events/hackutd"
     },
     {
+      "source": "/ugahacks",
+      "destination": "/events/ugahacks"
+    },
+    {
       "source": "/web3/account-management/limits",
       "destination": "account-management/limits"
     }

@@ -317,24 +317,47 @@ async function url() {
 
 ## Example Apps
 
+Built specially for UGA Hacks, thedappbook is an example of a fullstack decentralized application.
+
+<Card title="thedappbook" href="https://thedappbook.com" img="https://dweb.mypinata.cloud/ipfs/bafkreih24voz7rvhcugw66ulsl7lpmk7sekq2s52anuezuaykb7qt4swo4">
+  One big wall of posts using Ethereum and IPFS through Pinata
+</Card>
+
+<Card horizontal title="Contracts" icon="github" href="https://github.com/PinataCloud/thedappbook-contracts" >
+  Smart contract handles creating posts and records data to the blockchain, including the author's wallet address, the offchain IPFS URI, and the timestamp of the post.
+</Card>
+
+
+<Card horizontal title="Client" icon="github" href="https://github.com/PinataCloud/thedappbook-client" >
+  Client allows a user to connect their wallet and write on the wall. Each post has a message and an optional image which are both uploaded to Pinata as a json file. Returned is an IPFS URL that is stored on the contract to optimize space
+</Card>
+
+
+<Card horizontal title="Server" icon="github" href="https://github.com/PinataCloud/thedappbook-server" >
+  Server provides an API endpoint where the client can get a temporary Pinata API key to handle uploads so our admin API key is not exposed on the client.
+</Card>
+
+
 ## Tutorials
 
 <CardGroup cols={2}>
 
-<Card title="Using File-Centric Architecture to Build Simple and Capable Apps" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/11/Blog.png" href="https://pinata.cloud/blog/using-file-centric-architecture-to-build-simple-and-capable-apps/"></Card>
-
-<Card img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/11/Blog-4.1-1.png" title="How to Use Pinata with Cursor, Zed, and other LLMs" href="https://pinata.cloud/blog/how-to-use-pinata-with-cursor-zed-and-other-llms/"></Card>
-
-<Card img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/10/How-To-Build-An-AI-Powered-App-To-Chat-With-Your-CSVs.png" title="How To Build An AI-Powered App To Chat With Your CSVs" href="https://www.pinata.cloud/blog/how-to-build-an-ai-powered-app-to-chat-with-your-csvs/">
+<Card img="https://mktg.mypinata.cloud/ipfs/QmZxLu6yEeLVTTsbz5k5UM6DsH5o2wNii2q7YgtTwq7PSz" title="How to Mint NFTs with Foundry, Viem, and Pinata" href="https://pinata.cloud/blog/how-to-mint-nfts-with-foundry-viem-and-pinata/">
 </Card>
 
-<Card img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/10/How-to-Build-a-Chattanooga-Video-Wall.png" title="How to Build a Chattanooga Video Wall" href="https://www.pinata.cloud/blog/how-to-build-a-chattanooga-video-wall/">
+<Card title="How to Mint an NFT on Base" img="https://mktg.mypinata.cloud/ipfs/QmTAQ9phy35FSxVvopE47UTU8RkR61qB2YJSLU2GyxNNXM" href="https://pinata.cloud/blog/how-to-mint-an-nft-on-base/">
 </Card>
 
-<Card img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/10/How-To-Build-a-Simple-Podcast-Hosting-App.png" title="How To Build a Simple Podcast Hosting App" href="https://www.pinata.cloud/blog/how-to-build-a-simple-podcast-hosting-app/">
+<Card img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/11/Blog-4.1-1.png" title="How to Use Pinata with Cursor, Zed, and other LLMs" href="https://pinata.cloud/blog/how-to-use-pinata-with-cursor-zed-and-other-llms/">
 </Card>
 
-<Card img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/10/How-to-Create-a-Public-Database-With-PGLite.png" title="How to Create a Public Database With PGLite" href="https://www.pinata.cloud/blog/how-to-create-a-public-database-with-pglite/">
+<Card title="Making Private NFTs" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/781.png" href="https://pinata.cloud/blog/making-private-nfts/">
+</Card>
+
+<Card title="How to Build an NFT Indexer with Ponder and Pinata" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/113.png" href="https://pinata.cloud/blog/how-to-build-an-nft-indexer-with-ponder-and-pinata/">
+</Card>
+
+<Card title="How to Build a Fullstack Mobile App with Expo" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/blog1234.png" href="https://pinata.cloud/blog/how-to-build-a-fullstack-mobile-app-with-expo/">
 </Card>
 
 </CardGroup>
