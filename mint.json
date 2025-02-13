@@ -87,27 +87,13 @@
       "pages": [
         "account-management/api-keys",
         "account-management/workspaces",
+        "account-management/webhooks",
         "account-management/billing",
         "account-management/limits"
       ]
     },
     {
-      "group": "Files",
-      "pages": [
-        "files/uploading-files",
-        "files/file-groups",
-        "files/listing-files",
-        "files/deleting-files",
-        "gateways/retrieving-files",
-        "files/key-values",
-        "files/vectors",
-        "gateways/image-optimizations",
-        "files/hot-swaps",
-        "tools/files-cli"
-      ]
-    },
-    {
-      "group": "IPFS Files",
+      "group": "IPFS",
       "pages": [
         "web3/pinning/pinning-files",
         "web3/pinning/groups",
@@ -154,7 +140,22 @@
       ]
     },
     {
-      "group": "Files",
+      "group": "Private IPFS",
+      "pages": [
+        "files/uploading-files",
+        "files/file-groups",
+        "files/listing-files",
+        "files/deleting-files",
+        "gateways/retrieving-files",
+        "files/key-values",
+        "files/vectors",
+        "gateways/image-optimizations",
+        "files/hot-swaps",
+        "tools/files-cli"
+      ]
+    },
+    {
+      "group": "Private IPFS SDK",
       "pages": [
         "sdk/getting-started",
         "sdk/config",
@@ -716,6 +717,10 @@
     {
       "source": "/hackutd",
       "destination": "/events/hackutd"
+    },
+    {
+      "source": "/ugahacks",
+      "destination": "/events/ugahacks"
     },
     {
       "source": "/web3/account-management/limits",

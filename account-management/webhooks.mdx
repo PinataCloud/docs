@@ -1,0 +1,66 @@
+---
+title: "Webhooks"
+description: "Subscribe to Pinata API events using Webhooks"
+---
+
+Through the Pinata App you can create Webhooks for particular events fired from the Pinata API for your account specifically, like uploading or deleting a file.
+
+
+## Setup
+
+Navigate to the [Webhooks Tab]() inside the Pinata App and click "Add Endpoint" in the top right.
+
+![webhooks create](https://docs.mypinata.cloud/ipfs/bafkreig535s7dg4gokb37cl3khns7uaq5sqauyzdur2picd76xfzowd5m4)
+
+On the New Endpoint page you can put in a URL for your server endpoint that will receive the events. Additionally you can give it a description, which events it will subscribe to, and more advance options like rate limiting. Once you have your options selected click "Create" at the bottom.
+
+<Tip>
+  If you don't have an endpoint for your app or server yet, you can create a test one by clicking on the `Svix Play` link below the URL input.
+</Tip>
+
+![webhooks form](https://docs.mypinata.cloud/ipfs/bafkreicze5g4n2z7mr4r6o4p6o25lqbswsiytodqe6lwblzk2qmir6bpei)
+
+Once your Webhook is created you will be taken to the dashboard where you can see incoming logs and events that are fired. Try triggering one of the events that you've selected for your webhook either from the Pinata App or from the API. Then come back to the dashboard to see the result!
+
+![webhooks dashboard](https://docs.mypinata.cloud/ipfs/bafybeicvtsffigooqn26s5zpgligxwjodlespt6a4lyfpzljn4h2ypu2jy)
+
+## Event Catalog
+
+Check out the link below to browse all the available webhook events you can subscribe to!
+
+<Card title="Webhook Event Catalog" href="https://www.svix.com/event-types/us/org_2sGtLIYJYOng549e486FXXI8wXA/" icon="link" horizontal>
+  Visit our Svix page for all Pinata Webhook events!
+</Card>
+
+
+## Signature Verification
+
+Webhook signatures let you verify that webhook messages are actually sent by Pinata and not a malicious actor.
+
+For a more detailed explanation, check out this article on [why you should verify webhooks](https://docs.svix.com/receiving/verifying-payloads/why).
+
+To grab the secret for your Webhook locate it on the Webhook Dashboard on the right sidebar. Click on the reveal icon to view the secret and copy it.
+
+![webhook secret](https://docs.mypinata.cloud/ipfs/bafybeid6jzbykbdoo742rzyq2l6bswahdxbnl7fmdgcraanjeagtokoeb4)
+
+Our webhook partner Svix offers a set of useful libraries that make verifying webhooks very simple. Here is a an example using Javascript:
+
+```typescript
+import { Webhook } from "svix";
+
+const secret = "whsec_MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw";
+
+// These were all sent from the server
+const headers = {
+  "webhook-id": "msg_p5jXN8AQM9LWM0D4loKWxJek",
+  "webhook-timestamp": "1614265330",
+  "webhook-signature": "v1,g0hM9SsE+OTPJTGt/tmIKtSyZlE3uFJELVlNIOLJ1OE=",
+};
+const payload = '{"test": 2432232314}';
+
+const wh = new Webhook(secret);
+// Throws on error, returns the verified content on success
+const payload = wh.verify(payload, headers);
+```
+
+For more instructions and examples of how to verify signatures, check out their [webhook verification documentation](https://docs.svix.com/receiving/verifying-payloads/how).

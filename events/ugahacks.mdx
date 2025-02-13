@@ -1,19 +1,51 @@
 ---
-title: "Quickstart"
-description: "Start uploading and retrieving content in no time"
-slug: "quickstart"
-excerpt: "Start uploading files with Pinata"
-hidden: false
+title: "UGA Hacks"
+description: "Everything you need to start hacking with Pinata"
+'og:image': "https://dweb.mypinata.cloud/ipfs/bafybeic2xw7xptzy53rtsksecjdzmygliwlqalqkaipq4wwap4kchxg47y"
 ---
 
-<img
-  style={{ width: "100%", borderRadius: "0.5rem" }}
-  src="/assets/hero.png"
-/>
+![cover](/assets/uga-hacks.png)
 
-## Getting Started with Pinata
+Welcome to the Pinata UGA Hacks cheat sheet! This doc will have everything you need to know about:
+- Getting Started with Pinata
+- Challenge and Prizes
+- Tutorials and Guides
 
-Whether you're brand new or a seasoned developer, Pinata makes it simple to store and retrieve content with speed and security. All you need to kick off your journey is a [free Pinata account](https://app.pinata.cloud/register)!
+## What is Pinata?
+
+Pinata makes decentralized file uploads easy for developers who need fast and zero-setup soltuions. Our primary product, the IPFS API, makes it as simple as one line of code to upload a file:
+
+```typescript
+const { IpfsHash } = await pinata.upload.file(file)
+
+// bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq
+```
+
+Retreiving files is just as easy!
+
+```typescript
+const { data, contentType } = await pinata.gateways.get(
+  "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq"
+)
+```
+
+Built on years of experience with IPFS, Pinata has scaled companies to serve high volumes of requests and bandwidth, as well as developers who are just starting out. We want to help build the future of the web through decentralizedd applications!
+
+## Pinata Challenge
+
+Build the best use case of Pinata's APIs or SDKs. Can involve blockchain or crypto but is not a requirement. Pinata will judge based on:
+- Real world usefulness of the app
+- How integral Pinata was to building the app
+- Pure creativity used in the final product
+
+
+## Quickstart
+
+**[Sign up for a free account](https://app.pinata.cloud/register)**
+
+<Info>
+Almost all of our features are on the free account, but if you find yourself limited and need a paid account contact <a target="_blank" href="mailto:steve@pinata.cloud">steve@pinata.cloud</a>
+</Info>
 
 <CardGroup cols={3}>
   <Card
@@ -80,6 +112,10 @@ Whether you're brand new or a seasoned developer, Pinata makes it simple to stor
 
 </CardGroup>
 
+
+
+<Accordion title="Getting Started with Pinata">
+
 ### 1. Get API key and Gateway URL
 
 <img
@@ -91,19 +127,281 @@ Inside the [Pinata App](https://app.pinata.cloud) select "API Keys" from the sid
 
 Next you will want to grab your Gateway domain by clicking the Gateways tab in the sidebar. You should see it listed in the format `fun-llama-300.mypinata.cloud` and you will want to copy it exactly like that.
 
-### 2. Choose Your Setup
 
-Pinata offers two different APIs you can choose from:
+### 2. Install and Setup SDK
 
-<CardGroup cols={2}>
+In the root of your project run the install command with your package manager of choice.
 
-<Card icon="cube" color="#00cc92" href="/quickstart-ipfs" title="Public IPFS">
-  The IPFS API has been Pinata's bread and butter for over five years, and is specially designed to work with Web3 applications such a DeFi, NFTs, Gaming, and more! Keep in mind since IPFS is a peer-to-peer protocol, any files uploaded through this API will be public.
+<CodeGroup>
+
+```bash npm
+npm i pinata-web3
+```
+
+```bash pnpm
+pnpm i pinata-web3
+```
+
+```bash yarn
+yarn add pinata-web3
+```
+
+```bash bun
+bun i pinata-web3
+```
+
+</CodeGroup>
+
+Import and initialize the SDK in your codebase with the API key and Gateway from the previous step
+
+```typescript
+import { PinataSDK } from "pinata-web3";
+
+const pinata = new PinataSDK({
+  pinataJwt: "PINATA_JWT",
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+```
+
+<Note>The `PINATA_JWT` is a secret key, be sure to initialize the SDK in a secure environment and practice basic variable security practices. If you need to upload from a client environment, consider using signed JWTs</Note>
+
+
+### 3. Upload a File
+
+Use the `upload` method to upload a File object.
+
+<CodeGroup>
+
+```typescript SDK
+import { PinataSDK } from "pinata-web3";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+async function main() {
+  try {
+    const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
+    const upload = await pinata.upload.file(file);
+    console.log(upload);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+await main();
+```
+
+```typescript API
+const JWT = "PINATA_JWT";
+
+async function uploadFile() {
+  try {
+    const text = "Hello World!";
+    const blob = new Blob([text], { type: "text/plain" });
+    const file = new File([blob], "hello-world.txt");
+    const data = new FormData();
+    data.append("file", file);
+
+    const request = await fetch(
+      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${JWT}`,
+        },
+        body: data,
+      }
+    );
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+await pinFileToIPFS();
+```
+</CodeGroup>
+
+You should get a response object like the one below
+
+<CodeGroup>
+
+```typescript SDK
+{
+  IpfsHash: "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq",
+  PinSize: 5,
+  Timestamp: "2024-07-11T23:33:27.665Z",
+}
+```
+
+```typescript API
+{
+  IpfsHash: "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq",
+  PinSize: 5,
+  Timestamp: "2024-07-11T23:33:27.665Z",
+}
+```
+
+</CodeGroup>
+
+The unique thing about IPFS is the CID (IpfsHash) or Content Identifier. Its a unique hash based on the content ofthe file.
+
+### 4. Retrieve a File through a Gateway
+
+Use the `IpfsHash` (aka `cid`) of a file to fetch it through a Gateway or create a URL
+
+<CodeGroup>
+
+```typescript SDK
+import { PinataSDK } from "pinata-web3";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+async function main() {
+  try {
+    const data = await pinata.gateways.get(
+      "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq"
+    );
+    console.log(data)
+
+    const url = await pinata.gateways.convert(
+      "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
+    )
+    console.log(url)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+main();
+```
+
+```typescript API
+const JWT = "YOUR_PINATA_JWT";
+
+async function url() {
+  try {
+    const gateway = "example.mypinata.cloud"
+
+    const cid = "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq"
+
+    const url = `https://${gateway}/ipfs/${cid}`
+
+    console.log(url)
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
+</Accordion>
+
+## Prizes
+
+<Card horizontal title="1st Place: AirPods Max" icon="trophy" >
+</Card>
+
+<Card horizontal title="2nd Place: Apple Watch Series 10" icon="medal" >
+</Card>
+
+<Card horizontal title="3rd Place: Apple HomePod Mini" icon="party-horn" >
+</Card>
+
+## Example Apps
+
+Built specially for UGA Hacks, thedappbook is an example of a fullstack decentralized application.
+
+<Card title="thedappbook" href="https://thedappbook.com" img="https://dweb.mypinata.cloud/ipfs/bafkreih24voz7rvhcugw66ulsl7lpmk7sekq2s52anuezuaykb7qt4swo4">
+  One big wall of posts using Ethereum and IPFS through Pinata
+</Card>
+
+<Card horizontal title="Contracts" icon="github" href="https://github.com/PinataCloud/thedappbook-contracts" >
+  Smart contract handles creating posts and records data to the blockchain, including the author's wallet address, the offchain IPFS URI, and the timestamp of the post.
 </Card>
 
 
-<Card icon="file" href="/quickstart-files" title="Private IPFS">
-  Private IPFS keeps files private by default, where you can grant access to a file by generating temporary URLs. It's great when you want to gate content behind an auth mechanism, whether that's an auth provider or through decentralized technology.
+<Card horizontal title="Client" icon="github" href="https://github.com/PinataCloud/thedappbook-client" >
+  Client allows a user to connect their wallet and write on the wall. Each post has a message and an optional image which are both uploaded to Pinata as a json file. Returned is an IPFS URL that is stored on the contract to optimize space
+</Card>
+
+
+<Card horizontal title="Server" icon="github" href="https://github.com/PinataCloud/thedappbook-server" >
+  Server provides an API endpoint where the client can get a temporary Pinata API key to handle uploads so our admin API key is not exposed on the client.
+</Card>
+
+
+## Tutorials
+
+<CardGroup cols={2}>
+
+<Card img="https://mktg.mypinata.cloud/ipfs/QmZxLu6yEeLVTTsbz5k5UM6DsH5o2wNii2q7YgtTwq7PSz" title="How to Mint NFTs with Foundry, Viem, and Pinata" href="https://pinata.cloud/blog/how-to-mint-nfts-with-foundry-viem-and-pinata/">
+</Card>
+
+<Card title="How to Mint an NFT on Base" img="https://mktg.mypinata.cloud/ipfs/QmTAQ9phy35FSxVvopE47UTU8RkR61qB2YJSLU2GyxNNXM" href="https://pinata.cloud/blog/how-to-mint-an-nft-on-base/">
+</Card>
+
+<Card img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/11/Blog-4.1-1.png" title="How to Use Pinata with Cursor, Zed, and other LLMs" href="https://pinata.cloud/blog/how-to-use-pinata-with-cursor-zed-and-other-llms/">
+</Card>
+
+<Card title="Making Private NFTs" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/781.png" href="https://pinata.cloud/blog/making-private-nfts/">
+</Card>
+
+<Card title="How to Build an NFT Indexer with Ponder and Pinata" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/113.png" href="https://pinata.cloud/blog/how-to-build-an-nft-indexer-with-ponder-and-pinata/">
+</Card>
+
+<Card title="How to Build a Fullstack Mobile App with Expo" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/blog1234.png" href="https://pinata.cloud/blog/how-to-build-a-fullstack-mobile-app-with-expo/">
+</Card>
+
+</CardGroup>
+
+<Card title="More Tutorials" href="https://pinata.cloud/blog"></Card>
+
+## Need Help?
+
+We got troops on the ground! 🫡 Come find us at our table on the 4th floor of the MLC, shoot us an email, or chat with us on [Discord](https://discord.com/channels/1293713095713226784/1303043963447545893)!
+
+<CardGroup cols={2}>
+
+<Card title="Steve Simkins">
+
+Head of Developer Relations, Resident Hillbilly
+
+Email: <a target="_blank" href="mailto:steve@pinata.cloud">steve@pinata.cloud</a>
+<br/>
+<Frame>
+![steve](https://framerusercontent.com/images/2SPglzUVWxExBDdA0lRIOsM92RE.png)
+</Frame>
+</Card>
+
+<Card title="Kyle Tut">
+
+CEO, Vibe Dreamer
+
+Email: No email, v exclusive, find the cowboy hat to chat
+<br/>
+<Frame>
+![kyle](https://framerusercontent.com/images/lL0g66FWklfKTFsnOs4Syuyqiw.png)
+</Frame>
+</Card>
+
+<Card title="Justin Hunter">
+
+VP of Product, Build Wizard
+
+Email: <a target="_blank" href="mailto:justin@pinata.cloud">justin@pinata.cloud</a>
+<br/>
+<br/>
+<Frame>
+![justin](https://framerusercontent.com/images/rBskZ0FXNIHTxYf4Q7QMeNhLZU.png)
+</Frame>
 </Card>
 
 </CardGroup>

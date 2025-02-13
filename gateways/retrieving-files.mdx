@@ -17,7 +17,7 @@ aquamarine-casual-tarantula-177.mypinata.cloud
 
 ## Retrieving Private Files
 
-All content uploaded to Pinata is by default private, and there are a few ways you can view it. One of the simplest ways to fetch content is through the [get](/ipfs-sdk/gateways/get) method in the [SDK](/sdk). All content is referenced by the `cid`, a special identifier given to each file based on the cotnent of that file.
+All content uploaded with Private IPFS is by default private, and there are a few ways you can view it. One of the simplest ways to fetch content is through the [get](/ipfs-sdk/gateways/get) method in the [SDK](/sdk). All content is referenced by the `cid`, a special identifier given to each file based on the cotnent of that file.
 
 ```typescript
 import { PinataSDK } from "pinata";
@@ -132,7 +132,7 @@ async function url() {
 
 ## Retrieving Public Files
 
-If you uploaded or added files to a [public group](/files/file-groups#public-vs-private-groups) then you can access them with the methods mentioned previously, or just by appending the `cid` to the `gateway` url like so:
+If you uploaded or added files to Public IPFS then you can access them with the methods mentioned previously, or just by appending the `cid` to the `gateway` url like so:
 
 ```
 https://example-gateway.mypinata.cloud/files/{cid}

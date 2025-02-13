@@ -2,8 +2,7 @@
 title: "Key-Values"
 ---
 
-
-A unique and powerful feature included with the Files API and IPFS API is the key-value store. Anytime you upload or update a file you can store up to 10 key-value pairs.
+A unique and powerful feature included with the IPFS API and Private IPFS API is the key-value store. Anytime you upload or update a file you can store up to 10 key-value pairs.
 
 <CodeGroup>
 
@@ -208,7 +207,7 @@ async function list() {
 
 ## Updating
 
-The Files API key-value system will automatically detect if you are replacing an existing value for a given key. For example, if you have a key of `env` with a value of `prod`, if you make an update of `env: "dev"` it will replace the old value. If the key does not exist then it will make a new key-value entry.
+The Private IPFS API key-value system will automatically detect if you are replacing an existing value for a given key. For example, if you have a key of `env` with a value of `prod`, if you make an update of `env: "dev"` it will replace the old value. If the key does not exist then it will make a new key-value entry.
 
 <CodeGroup>
 

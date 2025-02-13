@@ -1,24 +1,12 @@
 ---
-title: "File Groups"
+title: "Private Groups"
 ---
 
-Groups allow you to organize your Pinata content through the Pinata App or through the Files API, giving you a clearer picture of what your files are being used for.
+Private Groups allow you to organize your Pinata content through the Pinata App or through the Private IPFS API, giving you a clearer picture of what your files are being used for.
 
-## Public vs Private Groups
+## SDK and API
 
-Groups help determine if a file uploaded through the Files API is private or publicly accessible. All file uploads are private by default, unless a file is:
-
-- Uploaded to a public group
-- Added to a public group
-- Is part of a group that is updated to public
-
-At this point the file can be accessed publicly without a signed URL. For more info read the docs on [retrieving files](/gateways/retrieving-files).
-
-Groups can either be public upon creation or updated after the fact, as laid out below.
-
-## Files SDK and API
-
-With the [Files SDK](/sdk/groups), you can create groups, add files to groups, list details about a group, and more! You can also mange groups using the [Files API](/api-reference/endpoint/create-group).
+With the [Private IPFS SDK](/sdk/groups), you can create groups, add files to groups, list details about a group, and more! You can also mange groups using the [Private IPFS API](/api-reference/endpoint/create-group).
 
 ### Create a Group
 
@@ -339,26 +327,6 @@ const url = "https://api.pinata.cloud/v3/files/groups?name=SDK"
 
 </CodeGroup>
 
-#### isPublic
-
-- Type: `boolean`
-
-Filters groups based on whether they are public or not
-
-<CodeGroup>
-
-```typescript SDK
-const groups = await pinata.groups
-    .list()
-    .isPublic(true)
-```
-
-```typescript API
-const url = "https://api.pinata.cloud/v3/files/groups?isPublic=true"
-```
-
-</CodeGroup>
-
 #### limit
 
 - Type: `number`
@@ -415,7 +383,7 @@ This will return an array of Groups and their respective info:
 
 ### Updating a Group
 
-You can update the name of a group or it's public status using the [update](/sdk/groups/update) method and passing in the `groupId, a new `name` you want to use, or setting the `isPublic` boolean.
+You can update the name of a group using either the SDK or the API.
 
 <CodeGroup>
 
@@ -423,7 +391,6 @@ You can update the name of a group or it's public status using the [update](/sdk
 const groups = await pinata.groups.update({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 	name: "My New Group 2",
-  isPublic: true
 });
 ```
 
@@ -437,7 +404,6 @@ async function group() {
 
     const payload = JSON.stringify({
       name: "My New Group 2",
-      is_public: true
     })
 
     const request = await fetch(

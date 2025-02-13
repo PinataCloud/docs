@@ -2,11 +2,11 @@
 title: "List & Query Files"
 ---
 
-The Files API gives you the ability to query uploaded files based on different filters and attributes such as name, [key-values](/files/key-values), date, and more. This is different from retrieving the actual contents of a file, which you can learn more about [here](/gateways/retrieving-files).
+Private IPFS gives you the ability to query uploaded files based on different filters and attributes such as name, [key-values](/files/key-values), date, and more. This is different from retrieving the actual contents of a file, which you can learn more about [here](/gateways/retrieving-files).
 
 ## Basic Usage
 
-You can either use the [Files SDK](/sdk/data/list) or the [Files API](/api-reference/endpoint/list-files) as see in the examples below.
+You can either use the [Private IPFS SDK](/sdk/data/list) or the [Private IPFS API](/api-reference/endpoint/list-files) as see in the examples below.
 
 
 <CodeGroup>
@@ -208,6 +208,28 @@ const files = await pinata.files
 
 ```typescript API
 const url = "https://api.pinata.cloud/v3/files?mimeType=image/png"
+```
+
+</CodeGroup>
+
+### metdata
+
+- Type: `Record<string | string>`
+
+Filter results based on keyvalue pairs in metadata
+
+<CodeGroup>
+
+```typescript SDK {3}
+const files = await pinata.files
+  .list()
+  .metadata({
+    env: "prod"
+  })
+```
+
+```typescript API
+const url = "https://api.pinata.cloud/v3/files?metadata[env]=prod"
 ```
 
 </CodeGroup>

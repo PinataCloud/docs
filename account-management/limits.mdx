@@ -2,11 +2,11 @@
 title: "Limits"
 ---
 
-The Files API and IPFS API have variying limits that users should be aware of.
+The Private IPFS API and IPFS API have variying limits that users should be aware of.
 
 ## API Limits
 
-API rate limits on both the Files API and IPFS API are currently determined by plan type:
+API rate limits on both the Private IPFS API and IPFS API are currently determined by plan type:
 
 | Plan         | Rate Limit                |
 | ------------ | ------------------------- |
@@ -33,9 +33,9 @@ At this time there are currently no rate limits for users retrieving content fro
 
 ## Upload Size Limits
 
-There differing limits on file sizes between the Files API and IPFS API
+There differing limits on file sizes between the Private IPFS API and IPFS API
 
-### Files API
+### Private IPFS API
 
 Files that are over **100MB** will require using [resumable uploads](/files/uploading-files#resumable-uploads) to complete. If you are using the SDK and the method `upload.file()` this will be handled automatically.
 
