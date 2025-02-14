@@ -8,6 +8,29 @@
     "dark": "#6D6FEB"
   },
   "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "background": {
+    "color": {
+      "light": "#FFFFFF",
+      "dark": "#16141F"
+    }
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:team@pinata.cloud"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Pinata App",
+      "href": "https://app.pinata.cloud"
+    }
+  },
   "navigation": {
     "tabs": [
       {
@@ -19,6 +42,7 @@
               "quickstart",
               {
                 "group": "Frameworks",
+                "icon": "react",
                 "pages": [
                   "frameworks/next-js",
                   "frameworks/react",
@@ -606,29 +630,6 @@
           "icon": "github"
         }
       ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "background": {
-    "color": {
-      "light": "#FFFFFF",
-      "dark": "#16141F"
-    }
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:team@pinata.cloud"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Pinata App",
-      "href": "https://app.pinata.cloud"
     }
   },
   "seo": {
