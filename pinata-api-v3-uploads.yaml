@@ -17,6 +17,7 @@ paths:
       tags:
         - default
       summary: Upload a File
+      description: Upload a file to either Public or Private IPFS
       requestBody:
         content:
           multipart/form-data:
@@ -25,6 +26,13 @@ paths:
               required:
                 - file
               properties:
+                network:
+                  type: string
+                  enum:
+                    - public
+                    - private
+                  description: Determine if the file should be uploaded to either the public or private IPFS network. If not designated it will default to private.
+                  default: private
                 file:
                   type: string
                   format: binary
@@ -41,7 +49,7 @@ paths:
                   additionalProperties:
                     type: string
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -76,6 +84,7 @@ paths:
       tags:
         - default
       summary: Create Signed Upload URL
+      description: Create a temproary signed upload URL, best used for client side uploads
       requestBody:
         content:
           application/json:
@@ -103,7 +112,7 @@ paths:
                   type: string
                   description: Name of the file that will be uploaded
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -126,7 +135,7 @@ paths:
           name: file_id
           in: path
       responses:
-        '200':
+        "200":
           description: Vectorize File Response
           content:
             application/json:
@@ -150,7 +159,7 @@ paths:
           name: file_id
           in: path
       responses:
-        '200':
+        "200":
           description: Vectorize File Response
           content:
             application/json:
@@ -185,7 +194,7 @@ paths:
                   type: string
                   description: Query string
       responses:
-        '200':
+        "200":
           description: Vectorize File Response
           content:
             application/json:
