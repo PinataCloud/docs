@@ -66,28 +66,45 @@
             ]
           },
           {
-            "group": "IPFS",
+            "group": "Files",
             "pages": [
-              "web3/pinning/pinning-files",
-              "web3/pinning/groups",
-              "web3/pinning/listing-files",
-              "web3/pinning/pinata-metadata",
-              "web3/pinning/deleting-files",
-              "web3/pinning/signatures",
+              "files/uploading-files",
+              "files/listing-files",
+              "files/deleting-files",
+              "files/file-groups",
+              "gateways/retrieving-files",
+              "files/key-values",
+              "files/vectors",
+              "web3/pinning/signatures"
+            ]
+          },
+          {
+            "group": "Gateways",
+            "pages": [
+              "web3/gateways/dedicated-ipfs-gateways",
+              "web3/gateways/gateway-access-controls",
+              "web3/gateways/image-optimizations",
               {
-                "group": "Dedicated Gateways",
+                "group": "Plugins",
                 "pages": [
-                  "web3/gateways/dedicated-ipfs-gateways",
-                  "web3/gateways/gateway-access-controls",
-                  "web3/gateways/image-optimizations",
-                  {
-                    "group": "Plugins",
-                    "pages": [
-                      "web3/gateways/plugins/getting-started",
-                      "web3/gateways/plugins/content-addressable",
-                      "web3/gateways/plugins/hot-swaps"
-                    ]
-                  }
+                  "web3/gateways/plugins/getting-started",
+                  "web3/gateways/plugins/content-addressable",
+                  "web3/gateways/plugins/hot-swaps"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Additional Resources",
+            "pages": [
+              {
+                "group": "Tools",
+                "pages": [
+                  "web3/tools/pinata-sdk",
+                  "web3/tools/nextjs-starter",
+                  "web3/tools/pinata-cli",
+                  "web3/tools/pinata-raycast-extension",
+                  "web3/tools/community-sdks"
                 ]
               },
               {
@@ -100,36 +117,6 @@
                   "web3/ipfs-101/how-does-ipfs-work-with-nfts"
                 ]
               },
-              {
-                "group": "Tools",
-                "pages": [
-                  "web3/tools/pinata-sdk",
-                  "web3/tools/nextjs-starter",
-                  "web3/tools/pinata-cli",
-                  "web3/tools/pinata-raycast-extension",
-                  "web3/tools/community-sdks"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Private IPFS",
-            "pages": [
-              "files/uploading-files",
-              "files/file-groups",
-              "files/listing-files",
-              "files/deleting-files",
-              "gateways/retrieving-files",
-              "files/key-values",
-              "files/vectors",
-              "gateways/image-optimizations",
-              "files/hot-swaps",
-              "tools/files-cli"
-            ]
-          },
-          {
-            "group": "Farcaster",
-            "pages": [
               {
                 "group": "Farcaster",
                 "pages": [
