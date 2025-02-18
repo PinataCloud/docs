@@ -1,0 +1,72 @@
+---
+title: "fileArray"
+---
+
+Upload an array of files to Pinata as a folder
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const file1 = new File(["hello world!"], "hello.txt", { type: "text/plain" })
+const file2 = new File(["hello world again!"], "hello2.txt", { type: "text/plain" })
+const upload = await pinata.upload.fileArray([file1, file2])
+```
+
+## Returns
+
+```typescript
+type UploadResponse = {
+	id: string;
+	name: string;
+	cid: string;
+	size: number;
+	number_of_files: number;
+	mime_type: string;
+	user_id: string;
+};
+```
+
+## Parameters
+
+### file
+
+- Type: `File[]` object
+
+Accepts an array of File objects in accordance with the [W3C File API](https://w3c.github.io/FileAPI/#file-section).
+
+```typescript
+const file1 = new File([blob1], "hello1.txt", { type: "text/plain" })
+const file2 = new File([blob2], "hello2.txt", { type: "text/plain" })
+const upload = await pinata.upload.fileArray([file1, file2])
+```
+
+### group (Optional)
+
+- Type: `string`
+
+Upload to a specific group by passing in the `groupId`
+
+```typescript
+const upload = await pinata.upload
+  .fileArray([file1, file2])
+  .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
+```
+
+### key (Optional)
+
+- Type: `string`
+
+Upload a file using a secondary API key generated through `keys.create()`
+
+```typescript
+const upload = await pinata.upload
+  .fileArray([file1, file2])
+  .key("GENERATED_API_JWT")
+```

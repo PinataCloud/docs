@@ -1,0 +1,58 @@
+---
+title: "update"
+---
+
+Update the name of a group
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const groups = await pinata.groups.update({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+	name: "My New Group 2",
+});
+```
+
+## Returns
+
+```typescript
+type GroupResponseItem = {
+    id: string;
+    is_public: boolean;
+    name: string;
+    created_at: string;
+};
+```
+
+## Parameters
+
+### groupId
+
+- Type: `string`
+
+ID for the target Group
+
+```typescript {2}
+const groups = await pinata.groups.update({
+	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
+});
+```
+
+### name (Optional)
+
+- Type: `string`
+
+Updated name for the target group
+
+```typescript {2}
+const groups = await pinata.groups.update({
+	name: "My Group Again",
+});
+```

@@ -71,8 +71,8 @@
               "files/uploading-files",
               "files/listing-files",
               "files/deleting-files",
-              "files/file-groups",
               "gateways/retrieving-files",
+              "files/file-groups",
               "files/key-values",
               "files/vectors",
               "web3/pinning/signatures"
@@ -354,10 +354,10 @@
         ]
       },
       {
-        "tab": "Private IPFS SDK",
+        "tab": "SDK",
         "groups": [
           {
-            "group": "Private IPFS SDK",
+            "group": "SDK",
             "pages": [
               "sdk/getting-started",
               "sdk/config",
@@ -366,45 +366,109 @@
           },
           {
             "group": "Files",
+            "icon": "file",
             "pages": [
-              "sdk/files/list",
-              "sdk/files/update",
-              "sdk/files/delete",
-              "sdk/files/vectorize",
-              "sdk/files/query-vectors",
-              "sdk/files/delete-vectors",
-              "sdk/files/add-swap",
-              "sdk/files/get-swap-history",
-              "sdk/files/delete-swap"
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/files/public/list",
+                  "sdk/files/public/update",
+                  "sdk/files/public/delete",
+                  "sdk/files/public/vectorize",
+                  "sdk/files/public/query-vectors",
+                  "sdk/files/public/delete-vectors",
+                  "sdk/files/public/add-swap",
+                  "sdk/files/public/get-swap-history",
+                  "sdk/files/public/delete-swap"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/files/private/list",
+                  "sdk/files/private/update",
+                  "sdk/files/private/delete",
+                  "sdk/files/private/vectorize",
+                  "sdk/files/private/query-vectors",
+                  "sdk/files/private/delete-vectors",
+                  "sdk/files/private/add-swap",
+                  "sdk/files/private/get-swap-history",
+                  "sdk/files/private/delete-swap"
+                ]
+              }
             ]
           },
           {
             "group": "Upload",
             "pages": [
-              "sdk/upload/file",
-              "sdk/upload/json",
-              "sdk/upload/base64",
-              "sdk/upload/url",
-              "sdk/upload/create-signed-url"
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/upload/public/file",
+                  "sdk/upload/public/json",
+                  "sdk/upload/public/base64",
+                  "sdk/upload/public/url",
+                  "sdk/upload/public/create-signed-url"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/upload/private/file",
+                  "sdk/upload/private/json",
+                  "sdk/upload/private/base64",
+                  "sdk/upload/private/url",
+                  "sdk/upload/private/create-signed-url"
+                ]
+              }
             ]
           },
           {
             "group": "Gateways",
             "pages": [
-              "sdk/gateways/get",
-              "sdk/gateways/create-signed-url"
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/gateways/public/get",
+                  "sdk/gateways/public/convert"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/gateways/private/get",
+                  "sdk/gateways/private/create-signed-url"
+                ]
+              }
             ]
           },
           {
             "group": "Groups",
             "pages": [
-              "sdk/groups/create",
-              "sdk/groups/get",
-              "sdk/groups/list",
-              "sdk/groups/add-files",
-              "sdk/groups/remove-files",
-              "sdk/groups/update",
-              "sdk/groups/delete"
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/groups/public/create",
+                  "sdk/groups/public/get",
+                  "sdk/groups/public/list",
+                  "sdk/groups/public/add-files",
+                  "sdk/groups/public/remove-files",
+                  "sdk/groups/public/update",
+                  "sdk/groups/public/delete"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/groups/private/create",
+                  "sdk/groups/private/get",
+                  "sdk/groups/private/list",
+                  "sdk/groups/private/add-files",
+                  "sdk/groups/private/remove-files",
+                  "sdk/groups/private/update",
+                  "sdk/groups/private/delete"
+                ]
+              }
             ]
           },
           {

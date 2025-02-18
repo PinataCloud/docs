@@ -1,0 +1,123 @@
+---
+title: "createSignedURL"
+---
+
+Create a signed upload URL for a file upload. This method is ideal when you want to authorize server side but upload on the client; check out [this doc](/files/uploading-files#client-side-uploads) for more details.
+
+<Note>
+All the information about the upload such as the name, group, keyvalues, etc. must be part of the signed URL in order for those values to go through. If you have a basic signed URL with no extra parameters and then try to add fields like name, group, etc. they will not go through.
+</Note>
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const signedURL = await pinata.upload.createSignedURL({
+  expires: 30
+});
+
+const upload = await pinata.upload.file(file).url(signedURL)
+```
+
+## Returns
+
+- Type: `string`
+
+The full signed URL
+
+```
+https://uploads.pinata.cloud/v3/files/209bb44c-e987-47c4-a9e3-a88e02d4d8e9?X-Algorithm=PINATA2&X-Date=1734379351&X-Expires=300&X-Method=%5B%22HEAD%22%2C%22PATCH%22%2C%22POST%22%5D&X-User-ID=eb73db21-10fa-4005-b97c-639e19e82d60&X-Signature=<SIGNATURE>
+```
+
+## Parameters
+
+### expires
+
+- Type: `number`
+
+The number of seconds the signed URL should be valid for
+
+
+```typescript {2}
+const url = await pinata.upload.createSignedURL({
+	expires: 30,
+});
+```
+
+### name (Optional)
+
+- Type: `string`
+
+Name for the file to be uploaded
+
+```typescript {3}
+const url = await pinata.upload.createSignedURL({
+	expires: 30,
+	name: "My Cool File"
+});
+```
+
+### groupId (Optional)
+
+- Type: `string`
+
+The target groupId the file would be uploaded to
+
+
+```typescript {3}
+const url = await pinata.upload.createSignedURL({
+	expires: 30,
+	groupId: "ad4bc3bf-8794-49e7-94ff-fea1ce745779"
+});
+```
+
+### keyvalues (Optional)
+
+- Type: `Record<string, string>`
+
+Keyvalue pairs for the uploaded file
+
+```typescript {3-5}
+const url = await pinata.upload.createSignedURL({
+	expires: 30,
+	keyvalues: {
+	  env: "prod"
+	}
+});
+```
+
+### vectorize (Optional)
+
+- Type: `boolean`
+
+Vectorize the file on upload
+
+```typescript {3}
+const url = await pinata.upload.createSignedURL({
+	expires: 30,
+	vectorize: true
+});
+```
+
+
+### date (Optional)
+
+- Type: `number`
+
+A UNIX timestamp of the date a URL is signed
+
+```typescript {1-2,6}
+const date = Math.floor(new Date().getTime() / 1000);
+//date: 1724943711
+
+const url = await pinata.upload.createSignedURL({
+	expires: 30,
+	date: date
+});
+```
