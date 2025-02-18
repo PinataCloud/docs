@@ -18,7 +18,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example.mypinata.cloud",
 });
 
-const update = await pinata.files.queryVectors({
+const update = await pinata.files.public.queryVectors({
   groupId: "52681e41-86f4-407b-8f79-33a7e7e5df68",
   query: "Hello World"
 })
@@ -55,7 +55,7 @@ type GetCIDResponse = {
 ID of the target group to query vectors
 
 ```typescript {2}
-const results = await pinata.files.queryVectors({
+const results = await pinata.files.public.queryVectors({
   groupId: "52681e41-86f4-407b-8f79-33a7e7e5df68",
   query: "Hello World"
 })
@@ -68,7 +68,7 @@ const results = await pinata.files.queryVectors({
 Query string
 
 ```typescript {3}
-const results = await pinata.files.queryVectors({
+const results = await pinata.files.public.queryVectors({
   groupId: "52681e41-86f4-407b-8f79-33a7e7e5df68",
   query: "Hello World"
 })

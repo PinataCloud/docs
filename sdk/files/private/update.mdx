@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example.mypinata.cloud",
 });
 
-const update = await pinata.files.update({
+const update = await pinata.files.private.update({
   id: "52681e41-86f4-407b-8f79-33a7e7e5df68",
   name: "New File Name",
 })
@@ -45,7 +45,7 @@ type FileListItem = {
 ID of the target file to update
 
 ```typescript {2}
-const update = await pinata.files.update({
+const update = await pinata.files.private.update({
   id: "8809812b-cd36-499f-b9b3-a37258a9cd6a",
   name: "New File Name",
 })
@@ -58,7 +58,7 @@ const update = await pinata.files.update({
 Update the name of a file
 
 ```typescript {3}
-const update = await pinata.files.update({
+const update = await pinata.files.private.update({
   id: "8809812b-cd36-499f-b9b3-a37258a9cd6a",
   name: "New File Name"
 })

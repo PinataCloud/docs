@@ -18,7 +18,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example.mypinata.cloud",
 });
 
-const update = await pinata.files
+const update = await pinata.files.public
   .deleteVectors("52681e41-86f4-407b-8f79-33a7e7e5df68")
 ```
 
@@ -39,6 +39,6 @@ type VectorizeFileResponse = {
 ID of the target file to delete vectors
 
 ```typescript {2}
-const update = await pinata.files
+const update = await pinata.files.public
   .deleteVectors("52681e41-86f4-407b-8f79-33a7e7e5df68")
 ```

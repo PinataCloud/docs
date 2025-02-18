@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const swap = await pinata.files.addSwap({
+const swap = await pinata.files.private.addSwap({
   cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
   swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
 })
@@ -40,7 +40,7 @@ Pass in the required parameters below to swap a CID
 This would be the original CID that would be visted
 
 ```typescript {2}
-const swap = await pinata.files.addSwap({
+const swap = await pinata.files.private.addSwap({
   cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
   swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
 })
@@ -53,7 +53,7 @@ const swap = await pinata.files.addSwap({
 This would be the CID you would want the old CID to point to
 
 ```typescript {3}
-const swap = await pinata.files.addSwap({
+const swap = await pinata.files.private.addSwap({
   cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
   swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
 })
