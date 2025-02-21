@@ -267,93 +267,6 @@
         ]
       },
       {
-        "tab": "IPFS SDK",
-        "groups": [
-          {
-            "group": "IPFS SDK",
-            "pages": [
-              "web3/sdk/getting-started",
-              "web3/sdk/config"
-            ]
-          },
-          {
-            "group": "Data",
-            "pages": [
-              "web3/sdk/data/test-authentication",
-              "web3/sdk/data/list-files",
-              "web3/sdk/data/pin-jobs",
-              "web3/sdk/data/unpin",
-              "web3/sdk/data/update-metadata"
-            ]
-          },
-          {
-            "group": "Upload",
-            "pages": [
-              "web3/sdk/upload/file",
-              "web3/sdk/upload/file-array",
-              "web3/sdk/upload/json",
-              "web3/sdk/upload/base64",
-              "web3/sdk/upload/url",
-              "web3/sdk/upload/stream",
-              "web3/sdk/upload/cid"
-            ]
-          },
-          {
-            "group": "Gateways",
-            "pages": [
-              "web3/sdk/gateways/get",
-              "web3/sdk/gateways/convert",
-              "web3/sdk/gateways/swap-cid",
-              "web3/sdk/gateways/swap-history",
-              "web3/sdk/gateways/delete-swap",
-              "web3/sdk/gateways/topUsageAnalytics",
-              "web3/sdk/gateways/dateIntervalAnalytics"
-            ]
-          },
-          {
-            "group": "Signatures",
-            "pages": [
-              "web3/sdk/signatures/add",
-              "web3/sdk/signatures/get",
-              "web3/sdk/signatures/delete"
-            ]
-          },
-          {
-            "group": "Groups",
-            "pages": [
-              "web3/sdk/groups/create",
-              "web3/sdk/groups/add-cids",
-              "web3/sdk/groups/remove-cids",
-              "web3/sdk/groups/get",
-              "web3/sdk/groups/list",
-              "web3/sdk/groups/update",
-              "web3/sdk/groups/delete"
-            ]
-          },
-          {
-            "group": "Keys",
-            "pages": [
-              "web3/sdk/keys/create",
-              "web3/sdk/keys/list",
-              "web3/sdk/keys/revoke"
-            ]
-          },
-          {
-            "group": "Usage",
-            "pages": [
-              "web3/sdk/usage/pinned-file-count",
-              "web3/sdk/usage/total-storage-size"
-            ]
-          },
-          {
-            "group": "Glossary",
-            "pages": [
-              "web3/sdk/types"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "SDK",
         "groups": [
           {
@@ -374,9 +287,6 @@
                   "sdk/files/public/list",
                   "sdk/files/public/update",
                   "sdk/files/public/delete",
-                  "sdk/files/public/vectorize",
-                  "sdk/files/public/query-vectors",
-                  "sdk/files/public/delete-vectors",
                   "sdk/files/public/add-swap",
                   "sdk/files/public/get-swap-history",
                   "sdk/files/public/delete-swap"
@@ -501,10 +411,15 @@
             "version": "v3",
             "groups": [
               {
-                "group": "Files",
+                "group": "Uploads",
                 "pages": [
                   "api-reference/endpoint/upload-a-file",
-                  "api-reference/endpoint/create-signed-upload-url",
+                  "api-reference/endpoint/create-signed-upload-url"
+                ]
+              },
+              {
+                "group": "Files",
+                "pages": [
                   "api-reference/endpoint/list-files",
                   "api-reference/endpoint/get-file-by-id",
                   "api-reference/endpoint/get-signed-url",
@@ -546,9 +461,9 @@
               {
                 "group": "Signatures",
                 "pages": [
-                  "api-reference/endpoint/ipfs/get-signature-for-a-cid",
-                  "api-reference/endpoint/ipfs/add-signature-to-cid",
-                  "api-reference/endpoint/ipfs/remove-signature-from-cid"
+                  "api-reference/endpoint/get-signature-for-a-cid",
+                  "api-reference/endpoint/add-signature-to-cid",
+                  "api-reference/endpoint/remove-signature-from-cid"
                 ]
               },
               {

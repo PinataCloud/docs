@@ -1352,12 +1352,22 @@ paths:
                     - period_start_time: "2024-08-01"
                       requests: 108
                       bandwidth: 42130724
-  /ipfs/signature/{cid}:
+  /files/{network}/signature/{cid}:
     get:
       tags:
         - default
       summary: Get Signature for a CID
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: cid
           in: path
           schema:
@@ -1423,7 +1433,11 @@ paths:
                 signature:
                   type: string
                   description: Signature for the target CID
+                address:
+                  type: string
+                  description: Wallet address that made the signature
               example:
+                address: "0xbC18447255e86f7f6c01C25e82636dDc587Ef9dc"
                 signature: >-
                   0x1ba6c2a8412dc9b0be37b013ea5bddd97251dab4d435cc9c4c7bcf331d4017ca2de07485ad6a15ce60d3700cee802787bc7ede0c112c7843f702bb1e71b750911b
       parameters:
@@ -1434,6 +1448,16 @@ paths:
           required: true
           example: QmXGeVy9dVwfuFJmvbzz8y4dYK1TdxXbDGzwbNuyZ5xXSU
           description: Target CID to add a signature to
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
       responses:
         "200":
           description: OK
@@ -1484,6 +1508,16 @@ paths:
         - default
       summary: Remove Signature from CID
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: cid
           in: path
           schema:
@@ -2476,12 +2510,13 @@ paths:
                 type: object
               example:
                 data: null
-  /files/sign:
+  /files/download_link:
     post:
       tags:
         - Private Files
-      summary: Create Signed URL
-      operationId: createSignedURL
+      summary: Create Download Link
+      description: Only used with Private IPFS. For public see [Gateways](https://docs.pinata.cloud/gateways)
+      operationId: createDownloadLink
       requestBody:
         content:
           application/json:
