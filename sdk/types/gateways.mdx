@@ -2,6 +2,7 @@
 title: Gateways
 ---
 
+### ContentType
 ```typescript
 export type ContentType =
 	| "application/json"
@@ -24,6 +25,7 @@ export type ContentType =
 	| null; // Allow for other MIME types
 ```
 
+### GetCIDResponse
 ```typescript
 export type GetCIDResponse = {
 	data?: JSON | string | Blob | null;
@@ -31,6 +33,7 @@ export type GetCIDResponse = {
 };
 ```
 
+### OptimizeImageOptions
 ```typescript
 export type OptimizeImageOptions = {
 	width?: number;
@@ -47,6 +50,7 @@ export type OptimizeImageOptions = {
 };
 ```
 
+### AccessLinkOptions
 ```typescript
 export type AccessLinkOptions = {
 	cid: string;
@@ -56,6 +60,7 @@ export type AccessLinkOptions = {
 };
 ```
 
+### ContainsCIDResponse
 ```typescript
 export type ContainsCIDResponse = {
 	containsCid: boolean;

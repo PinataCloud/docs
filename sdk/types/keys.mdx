@@ -2,6 +2,7 @@
 title: Keys
 ---
 
+### KeyPermissions
 ```typescript
 export type KeyPermissions = {
 	admin?: boolean;
@@ -9,6 +10,7 @@ export type KeyPermissions = {
 };
 ```
 
+### Endpoints
 ```typescript
 export type Endpoints = {
 	data?: DataEndponts;
@@ -16,6 +18,7 @@ export type Endpoints = {
 };
 ```
 
+### DataEndponts
 ```typescript
 export type DataEndponts = {
 	pinList?: boolean;
@@ -23,6 +26,7 @@ export type DataEndponts = {
 };
 ```
 
+### PinningEndpoints
 ```typescript
 export type PinningEndpoints = {
 	hashMetadata?: boolean;
@@ -36,6 +40,7 @@ export type PinningEndpoints = {
 };
 ```
 
+### KeyOptions
 ```typescript
 export type KeyOptions = {
 	keyName: string;
@@ -44,6 +49,7 @@ export type KeyOptions = {
 };
 ```
 
+### KeyResponse
 ```typescript
 export type KeyResponse = {
 	JWT: string;
@@ -52,6 +58,7 @@ export type KeyResponse = {
 };
 ```
 
+### KeyListQuery
 ```typescript
 export type KeyListQuery = {
 	revoked?: boolean;
@@ -62,6 +69,7 @@ export type KeyListQuery = {
 };
 ```
 
+### KeyListItem
 ```typescript
 export type KeyListItem = {
 	id: string;
@@ -78,6 +86,7 @@ export type KeyListItem = {
 };
 ```
 
+### KeyScopes
 ```typescript
 type KeyScopes = {
 	endpoints: {
@@ -90,6 +99,7 @@ type KeyScopes = {
 };
 ```
 
+### KeyListResponse
 ```typescript
 export type KeyListResponse = {
 	keys: KeyListItem[];
@@ -97,6 +107,7 @@ export type KeyListResponse = {
 };
 ```
 
+### RevokeKeyResponse
 ```typescript
 export type RevokeKeyResponse = {
 	key: string;

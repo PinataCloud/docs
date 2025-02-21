@@ -1,6 +1,8 @@
 ---
 title: Analytics
 ---
+
+### AnalyticsQuery
 ```typescript
 export type AnalyticsQuery = {
 	gateway_domain: string;
@@ -17,6 +19,7 @@ export type AnalyticsQuery = {
 };
 ```
 
+### TopAnalyticsQuery
 ```typescript
 export type TopAnalyticsQuery = AnalyticsQuery & {
 	sort_by: "requests" | "bandwidth";
@@ -30,12 +33,14 @@ export type TopAnalyticsQuery = AnalyticsQuery & {
 };
 ```
 
+### TopAnalyticsResponse
 ```typescript
 export type TopAnalyticsResponse = {
 	data: TopAnalyticsItem[];
 };
 ```
 
+### TopAnalyticsItem
 ```typescript
 export type TopAnalyticsItem = {
 	value: string;
@@ -44,6 +49,7 @@ export type TopAnalyticsItem = {
 };
 ```
 
+### TimeIntervalAnalyticsQuery
 ```typescript
 export type TimeIntervalAnalyticsQuery = AnalyticsQuery & {
 	sort_by?: "requests" | "bandwidth";
@@ -51,6 +57,7 @@ export type TimeIntervalAnalyticsQuery = AnalyticsQuery & {
 };
 ```
 
+### TimePeriodItem
 ```typescript
 export type TimePeriodItem = {
 	period_start_time: string;
@@ -59,6 +66,7 @@ export type TimePeriodItem = {
 };
 ```
 
+### TimeIntervalAnalyticsResponse
 ```typescript
 export type TimeIntervalAnalyticsResponse = {
 	total_requests: number;
@@ -67,6 +75,7 @@ export type TimeIntervalAnalyticsResponse = {
 };
 ```
 
+### UserPinnedDataResponse
 ```typescript
 export type UserPinnedDataResponse = {
 	pin_count: number;

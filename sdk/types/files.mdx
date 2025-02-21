@@ -2,6 +2,7 @@
 title: Files
 ---
 
+### FileObject
 ```typescript
 export type FileObject = {
 	name: string;
@@ -12,10 +13,12 @@ export type FileObject = {
 };
 ```
 
+### JsonBody
 ```typescript
 export type JsonBody = Record<string, unknown>;
 ```
 
+### PinataMetadata
 ```typescript
 export type PinataMetadata = {
 	name?: string;
@@ -23,6 +26,7 @@ export type PinataMetadata = {
 };
 ```
 
+### UpdateFileOptions
 ```typescript
 export type UpdateFileOptions = {
 	id: string;
@@ -31,6 +35,7 @@ export type UpdateFileOptions = {
 };
 ```
 
+### DeleteResponse
 ```typescript
 export type DeleteResponse = {
 	id: string;
@@ -38,6 +43,7 @@ export type DeleteResponse = {
 };
 ```
 
+### FileListItem
 ```typescript
 export type FileListItem = {
 	id: string;
@@ -52,6 +58,7 @@ export type FileListItem = {
 };
 ```
 
+### FileListResponse
 ```typescript
 export type FileListResponse = {
 	files: FileListItem[];
@@ -59,6 +66,7 @@ export type FileListResponse = {
 };
 ```
 
+### FileListQuery
 ```typescript
 export type FileListQuery = {
 	name?: string;
@@ -74,6 +82,7 @@ export type FileListQuery = {
 };
 ```
 
+### PinQueueQuery
 ```typescript
 export type PinQueueQuery = {
 	sort?: "ASC" | "DSC";
@@ -91,6 +100,7 @@ export type PinQueueQuery = {
 };
 ```
 
+### PinQueueItem
 ```typescript
 export type PinQueueItem = {
 	id: string;
@@ -111,6 +121,7 @@ export type PinQueueItem = {
 };
 ```
 
+### PinQueueResponse
 ```typescript
 export type PinQueueResponse = {
 	rows: PinQueueItem[];
@@ -118,6 +129,7 @@ export type PinQueueResponse = {
 };
 ```
 
+### SwapCidOptions
 ```typescript
 export type SwapCidOptions = {
 	cid: string;
@@ -125,6 +137,7 @@ export type SwapCidOptions = {
 };
 ```
 
+### SwapHistoryOptions
 ```typescript
 export type SwapHistoryOptions = {
 	cid: string;
@@ -132,6 +145,7 @@ export type SwapHistoryOptions = {
 };
 ```
 
+### SwapCidResponse
 ```typescript
 export type SwapCidResponse = {
 	mapped_cid: string;
@@ -139,12 +153,14 @@ export type SwapCidResponse = {
 };
 ```
 
+### VectorizeFileResponse
 ```typescript
 export type VectorizeFileResponse = {
 	status: boolean;
 };
 ```
 
+### VectorizeQuery
 ```typescript
 export type VectorizeQuery = {
 	groupId: string;
@@ -153,6 +169,7 @@ export type VectorizeQuery = {
 };
 ```
 
+### VectorQueryMatch
 ```typescript
 export type VectorQueryMatch = {
 	file_id: string;
@@ -161,6 +178,7 @@ export type VectorQueryMatch = {
 };
 ```
 
+### VectorizeQueryResponse
 ```typescript
 export type VectorizeQueryResponse = {
 	count: number;

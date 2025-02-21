@@ -2,6 +2,7 @@
 title: Groups
 ---
 
+### GroupOptions
 ```typescript
 export type GroupOptions = {
 	name: string;
@@ -9,6 +10,7 @@ export type GroupOptions = {
 };
 ```
 
+### UpdateGroupOptions
 ```typescript
 export type UpdateGroupOptions = {
 	groupId: string;
@@ -17,12 +19,14 @@ export type UpdateGroupOptions = {
 };
 ```
 
+### GetGroupOptions
 ```typescript
 export type GetGroupOptions = {
 	groupId: string;
 };
 ```
 
+### GroupListResponse
 ```typescript
 export type GroupListResponse = {
 	groups: GroupResponseItem[];
@@ -30,6 +34,7 @@ export type GroupListResponse = {
 };
 ```
 
+### GroupResponseItem
 ```typescript
 export type GroupResponseItem = {
 	id: string;
@@ -39,6 +44,7 @@ export type GroupResponseItem = {
 };
 ```
 
+### GroupQueryOptions
 ```typescript
 export type GroupQueryOptions = {
 	name?: string;
@@ -48,6 +54,7 @@ export type GroupQueryOptions = {
 };
 ```
 
+### GroupCIDOptions
 ```typescript
 export type GroupCIDOptions = {
 	groupId: string;
@@ -55,6 +62,7 @@ export type GroupCIDOptions = {
 };
 ```
 
+### UpdateGroupFilesResponse
 ```typescript
 export type UpdateGroupFilesResponse = {
 	id: string;
