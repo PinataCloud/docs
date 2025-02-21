@@ -319,6 +319,7 @@
                   "sdk/upload/public/json",
                   "sdk/upload/public/base64",
                   "sdk/upload/public/url",
+                  "sdk/upload/public/cid",
                   "sdk/upload/public/create-signed-url"
                 ]
               },
@@ -398,9 +399,16 @@
             ]
           },
           {
-            "group": "Glossary",
+            "group": "Types",
             "pages": [
-              "sdk/types"
+              "sdk/types/config",
+              "sdk/types/uploads",
+              "sdk/types/files",
+              "sdk/types/groups",
+              "sdk/types/gateways",
+              "sdk/types/analytics",
+              "sdk/types/keys",
+              "sdk/types/signatures"
             ]
           }
         ]

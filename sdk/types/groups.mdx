@@ -1,0 +1,63 @@
+---
+title: Groups
+---
+
+```typescript
+export type GroupOptions = {
+	name: string;
+	isPublic?: boolean;
+};
+```
+
+```typescript
+export type UpdateGroupOptions = {
+	groupId: string;
+	name?: string;
+	isPublic?: boolean;
+};
+```
+
+```typescript
+export type GetGroupOptions = {
+	groupId: string;
+};
+```
+
+```typescript
+export type GroupListResponse = {
+	groups: GroupResponseItem[];
+	next_page_token: string;
+};
+```
+
+```typescript
+export type GroupResponseItem = {
+	id: string;
+	is_public: boolean;
+	name: string;
+	createdAt: string;
+};
+```
+
+```typescript
+export type GroupQueryOptions = {
+	name?: string;
+	limit?: number;
+	pageToken?: string;
+	isPublic?: boolean;
+};
+```
+
+```typescript
+export type GroupCIDOptions = {
+	groupId: string;
+	files: string[];
+};
+```
+
+```typescript
+export type UpdateGroupFilesResponse = {
+	id: string;
+	status: string;
+};
+```

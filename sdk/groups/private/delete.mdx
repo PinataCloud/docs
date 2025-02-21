@@ -2,7 +2,7 @@
 title: "delete"
 ---
 
-Delete a Group
+Delete a private group
 
 ## Usage
 
@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const groups = await pinata.groups.delete({
+const groups = await pinata.groups.private.delete({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 });
 ```
@@ -34,7 +34,7 @@ OK
 ID for the target Group
 
 ```typescript {2}
-const groups = await pinata.groups.delete({
+const groups = await pinata.groups.private.delete({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 });
 ```

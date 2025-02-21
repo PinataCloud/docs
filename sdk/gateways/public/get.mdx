@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const file = await pinata.gateways.get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+const file = await pinata.gateways.public.get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
 ```
 
 ## Returns
@@ -56,15 +56,15 @@ type ContentType =
 Accepts CID or IPFS gateway link.
 
 ```typescript
-const data = await pinata.gateways.get(
+const data = await pinata.gateways.public.get(
 	"bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi/hello-1.txt",
 );
 
-const data = await pinata.gateways.get(
+const data = await pinata.gateways.public.get(
 	"https://ipfs.io/ipfs/bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi/hello-1.txt",
 );
 
-const data = await pinata.gateways.get(
+const data = await pinata.gateways.public.get(
 	"https://bafyreibroegmxohcbvvs3rziqsp3osyn7t5rzot34y6pn5xtewffhtsl4e.ipfs.nftstorage.link/metadata.json",
 );
 ```
@@ -94,7 +94,7 @@ type OptimizeImageOptions = {
 If the content being fetched is an image you can apply image optimizations to the image.
 
 ```typescript
-const data = await pinata.gateways
+const data = await pinata.gateways.public
   .get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
   .optimizeImage({
     width: 500,

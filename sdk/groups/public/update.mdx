@@ -2,7 +2,7 @@
 title: "update"
 ---
 
-Update the name of a group
+Update the name of a public group
 
 ## Usage
 
@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const groups = await pinata.groups.update({
+const groups = await pinata.groups.public.update({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 	name: "My New Group 2",
 });
@@ -25,7 +25,6 @@ const groups = await pinata.groups.update({
 ```typescript
 type GroupResponseItem = {
     id: string;
-    is_public: boolean;
     name: string;
     created_at: string;
 };
@@ -40,7 +39,7 @@ type GroupResponseItem = {
 ID for the target Group
 
 ```typescript {2}
-const groups = await pinata.groups.update({
+const groups = await pinata.groups.public.update({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 });
 ```
@@ -52,7 +51,7 @@ const groups = await pinata.groups.update({
 Updated name for the target group
 
 ```typescript {2}
-const groups = await pinata.groups.update({
+const groups = await pinata.groups.public.update({
 	name: "My Group Again",
 });
 ```

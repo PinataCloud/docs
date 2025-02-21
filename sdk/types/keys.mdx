@@ -1,0 +1,105 @@
+---
+title: Keys
+---
+
+```typescript
+export type KeyPermissions = {
+	admin?: boolean;
+	endpoints?: Endpoints;
+};
+```
+
+```typescript
+export type Endpoints = {
+	data?: DataEndponts;
+	pinning?: PinningEndpoints;
+};
+```
+
+```typescript
+export type DataEndponts = {
+	pinList?: boolean;
+	userPinnedDataTotal?: boolean;
+};
+```
+
+```typescript
+export type PinningEndpoints = {
+	hashMetadata?: boolean;
+	hashPinPolicy?: boolean;
+	pinByHash?: boolean;
+	pinFileToIPFS?: boolean;
+	pinJSONToIPFS?: boolean;
+	pinJobs?: boolean;
+	unpin?: boolean;
+	userPinPolicy?: boolean;
+};
+```
+
+```typescript
+export type KeyOptions = {
+	keyName: string;
+	permissions: KeyPermissions;
+	maxUses?: number;
+};
+```
+
+```typescript
+export type KeyResponse = {
+	JWT: string;
+	pinata_api_key: string;
+	pinata_api_secret: string;
+};
+```
+
+```typescript
+export type KeyListQuery = {
+	revoked?: boolean;
+	limitedUse?: boolean;
+	exhausted?: boolean;
+	name?: string;
+	offset?: number;
+};
+```
+
+```typescript
+export type KeyListItem = {
+	id: string;
+	name: string;
+	key: string;
+	secret: string;
+	max_uses: number;
+	uses: number;
+	user_id: string;
+	scopes: KeyScopes;
+	revoked: boolean;
+	createdAt: string;
+	updatedAt: string;
+};
+```
+
+```typescript
+type KeyScopes = {
+	endpoints: {
+		pinning: {
+			pinFileToIPFS: boolean;
+			pinJSONToIPFS: boolean;
+		};
+	};
+	admin: boolean;
+};
+```
+
+```typescript
+export type KeyListResponse = {
+	keys: KeyListItem[];
+	count: number;
+};
+```
+
+```typescript
+export type RevokeKeyResponse = {
+	key: string;
+	status: string;
+};
+```

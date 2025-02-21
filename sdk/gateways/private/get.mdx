@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const file = await pinata.gateways.get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+const file = await pinata.gateways.private.get("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
 ```
 
 ## Returns
@@ -56,7 +56,7 @@ type ContentType =
 Accepts CID of the file you are trying to fetch
 
 ```typescript
-const data = await pinata.gateways.get(
+const data = await pinata.gateways.private.get(
 	"bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi",
 );
 ```
@@ -84,7 +84,7 @@ type OptimizeImageOptions = {
 If the content being fetched is an image you can apply image optimizations to the image.
 
 ```typescript {3-7}
-const data = await pinata.gateways
+const data = await pinata.gateways.private
   .get("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
   .optimizeImage({
     width: 500,

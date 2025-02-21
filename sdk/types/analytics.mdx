@@ -1,0 +1,76 @@
+---
+title: Analytics
+---
+```typescript
+export type AnalyticsQuery = {
+	gateway_domain: string;
+	start_date: string;
+	end_date: string;
+	cid?: string;
+	file_name?: string;
+	user_agent?: string;
+	country?: string;
+	region?: string;
+	referer?: string;
+	limit?: number;
+	sort_order?: "asc" | "desc";
+};
+```
+
+```typescript
+export type TopAnalyticsQuery = AnalyticsQuery & {
+	sort_by: "requests" | "bandwidth";
+	attribute:
+		| "cid"
+		| "country"
+		| "region"
+		| "user_agent"
+		| "referer"
+		| "file_name";
+};
+```
+
+```typescript
+export type TopAnalyticsResponse = {
+	data: TopAnalyticsItem[];
+};
+```
+
+```typescript
+export type TopAnalyticsItem = {
+	value: string;
+	requests: number;
+	bandwidth: number;
+};
+```
+
+```typescript
+export type TimeIntervalAnalyticsQuery = AnalyticsQuery & {
+	sort_by?: "requests" | "bandwidth";
+	date_interval: "day" | "week";
+};
+```
+
+```typescript
+export type TimePeriodItem = {
+	period_start_time: string;
+	requests: number;
+	bandwidth: number;
+};
+```
+
+```typescript
+export type TimeIntervalAnalyticsResponse = {
+	total_requests: number;
+	total_bandwidth: number;
+	time_periods: TimePeriodItem[];
+};
+```
+
+```typescript
+export type UserPinnedDataResponse = {
+	pin_count: number;
+	pin_size_total: number;
+	pin_size_with_replications_total: number;
+};
+```

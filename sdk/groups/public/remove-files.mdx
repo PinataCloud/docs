@@ -2,7 +2,7 @@
 title: "removeFiles"
 ---
 
-Remove Files from a Group
+Remove public files from a public group
 
 ## Usage
 
@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const group = await pinata.groups.removeFiles({
+const group = await pinata.groups.public.removeFiles({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 	files: [
 	  "7e18c4a4-9501-44de-8f81-403db7de0e39",
@@ -41,7 +41,7 @@ type UpdateGroupFilesResponse[] = {
 ID of the target Group to remove files from
 
 ```typescript {2}
-const group = await pinata.groups.removeFiles({
+const group = await pinata.groups.public.removeFiles({
   groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 	files: [
 	  "7e18c4a4-9501-44de-8f81-403db7de0e39",
@@ -57,7 +57,7 @@ const group = await pinata.groups.removeFiles({
 An array of file IDs as strings that you want to remove from the group
 
 ```typescript {3-6}
-const group = await pinata.groups.removeFiles({
+const group = await pinata.groups.public.removeFiles({
   groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 	files: [
 	  "7e18c4a4-9501-44de-8f81-403db7de0e39",

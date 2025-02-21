@@ -2,7 +2,7 @@
 title: "list"
 ---
 
-List and filter through all Groups
+List and filter through all public groups
 
 ## Usage
 
@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const groups = await pinata.groups
+const groups = await pinata.groups.public
   .list()
 ```
 
@@ -28,7 +28,6 @@ type GroupListResponse = {
 
 type GroupResponseItem = {
     id: string;
-    is_public: boolean;
     name: string;
     created_at: string;
 };
@@ -45,21 +44,9 @@ Filter response with the following additional methods. All filters are optional.
 Filters groups based the group name
 
 ```typescript {3}
-const groups = await pinata.groups
+const groups = await pinata.groups.public
     .list()
     .name("SDK")
-```
-
-### isPublic
-
-- Type: `boolean`
-
-Filters groups based on whether they are public or not
-
-```typescript {3}
-const groups = await pinata.groups
-    .list()
-    .isPublic(true)
 ```
 
 ### limit
@@ -69,7 +56,7 @@ const groups = await pinata.groups
 Limits the number of results
 
 ```typescript {3}
-const groups = await pinata.groups
+const groups = await pinata.groups.public
     .list()
     .limit(10)
 ```
@@ -81,7 +68,7 @@ const groups = await pinata.groups
 Paginates through groups based on a provided page token
 
 ```typescript {3}
-const groups = await pinata.groups
+const groups = await pinata.groups.public
   .list()
   .pageToken("MDE5MWIzZWYtM2U0Zi03YTY5LWE3OTQtOTRhZDE5NjQxMTk0")
 ```
@@ -91,7 +78,7 @@ const groups = await pinata.groups
 The `list` method has an auto pagination feature that is triggered when used inside a `for await` iterator
 
 ```typescript
-for await (const item of pinata.gateways.list()) {
+for await (const item of pinata.gateways.public.list()) {
   console.log(item.name);
 }
 ```

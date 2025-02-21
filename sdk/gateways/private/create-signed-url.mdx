@@ -1,8 +1,8 @@
 ---
-title: "createSignedURL"
+title: "createAccessLink"
 ---
 
-Create a Signed URL for a file
+Creates a temporary access link for a file on private IPFS
 
 ## Usage
 
@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const url = await pinata.gateways.createSignedURL({
+const url = await pinata.gateways.private.createAccessLink({
 	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
 	expires: 30,
 });
@@ -36,10 +36,10 @@ https://example-gateway.mypinata.cloud/files/bafkreib4pqtikzdjlj4zigobmd63lig7u6
 
 - Type: `string`
 
-Accepts CID of the file you are trying to create a signed URL for
+Accepts CID of the file you are trying to create an access link for
 
 ```typescript {2}
-const url = await pinata.gateways.createSignedURL({
+const url = await pinata.gateways.private.createAccessLink({
   cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
 	expires: 30,
 });
@@ -49,11 +49,11 @@ const url = await pinata.gateways.createSignedURL({
 
 - Type: `number`
 
-The number of seconds the signed URL should be valid for
+The number of seconds the access link should be valid for
 
 
 ```typescript {3}
-const url = await pinata.gateways.createSignedURL({
+const url = await pinata.gateways.private.createAcceslink({
 	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
 	expires: 30,
 });
@@ -63,13 +63,13 @@ const url = await pinata.gateways.createSignedURL({
 
 - Type: `number`
 
-A UNIX timestamp of the date a URL is signed
+A UNIX timestamp of the date the link is created
 
 ```typescript {1-2,7}
 const date = Math.floor(new Date().getTime() / 1000);
 //date: 1724943711
 
-const url = await pinata.gateways.createSignedURL({
+const url = await pinata.gateways.private.createAccessLink({
 	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
 	expires: 30,
 	date: date
@@ -83,7 +83,7 @@ const url = await pinata.gateways.createSignedURL({
 Use a Gateway domain other than the default domain from the config
 
 ```typescript {4}
-const url = await pinata.gateways.createSignedURL({
+const url = await pinata.gateways.private.createAccessLink({
 	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
 	expires: 30,
 	gateway: "discordpinnie.mypinata.cloud"
@@ -113,8 +113,8 @@ type OptimizeImageOptions = {
 If the content being fetched is an image you can apply image optimizations to the image.
 
 ```typescript {3-7}
-const data = await pinata.gateways
-  .createSignedURL("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
+const data = await pinata.gateways.private
+  .createAccessLink("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
   .optimizeImage({
     width: 500,
     height: 500,

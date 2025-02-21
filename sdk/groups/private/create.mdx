@@ -2,7 +2,7 @@
 title: "create"
 ---
 
-Create a Group
+Create a private group
 
 ## Usage
 
@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const group = await pinata.groups.create({
+const group = await pinata.groups.private.create({
 	name: "My New Group",
 });
 ```
@@ -24,7 +24,6 @@ const group = await pinata.groups.create({
 ```typescript
 type GroupResponseItem = {
     id: string;
-    is_public: boolean;
     name: string;
     created_at: string;
 };
@@ -39,7 +38,7 @@ type GroupResponseItem = {
 Requires a name for the group to be created
 
 ```typescript {2}
-const group = await pinata.groups.create({
+const group = await pinata.groups.private.create({
 	name: "My New Group",
 });
 ```

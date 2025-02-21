@@ -1,0 +1,170 @@
+---
+title: Files
+---
+
+```typescript
+export type FileObject = {
+	name: string;
+	size: number;
+	type: string;
+	lastModified: number;
+	arrayBuffer: () => Promise<ArrayBuffer>;
+};
+```
+
+```typescript
+export type JsonBody = Record<string, unknown>;
+```
+
+```typescript
+export type PinataMetadata = {
+	name?: string;
+	keyvalues?: Record<string, string>;
+};
+```
+
+```typescript
+export type UpdateFileOptions = {
+	id: string;
+	name?: string;
+	keyvalues?: Record<string, string>;
+};
+```
+
+```typescript
+export type DeleteResponse = {
+	id: string;
+	status: string;
+};
+```
+
+```typescript
+export type FileListItem = {
+	id: string;
+	name: string | null;
+	cid: "pending" | string;
+	size: number;
+	number_of_files: number;
+	mime_type: string;
+	keyvalues: Record<string, string>;
+	group_id: string | null;
+	created_at: string;
+};
+```
+
+```typescript
+export type FileListResponse = {
+	files: FileListItem[];
+	next_page_token: string;
+};
+```
+
+```typescript
+export type FileListQuery = {
+	name?: string;
+	group?: string;
+	noGroup?: boolean;
+	mimeType?: string;
+	cid?: string;
+	cidPending?: boolean;
+	metadata?: Record<string, string>;
+	order?: "ASC" | "DESC";
+	limit?: number;
+	pageToken?: string;
+};
+```
+
+```typescript
+export type PinQueueQuery = {
+	sort?: "ASC" | "DSC";
+	status?:
+		| "prechecking"
+		| "retrieving"
+		| "expired"
+		| "over_free_limit"
+		| "over_max_size"
+		| "invalid_object"
+		| "bad_host_node";
+	ipfs_pin_hash?: string;
+	limit?: number;
+	pageToken?: string;
+};
+```
+
+```typescript
+export type PinQueueItem = {
+	id: string;
+	cid?: string;
+	ipfs_pin_hash?: string;
+	date_queued: string;
+	name: string;
+	status: string;
+	keyvalues: any;
+	host_nodes: string[];
+	pin_policy: {
+		regions: {
+			id: string;
+			desiredReplicationCount: number;
+		}[];
+		version: number;
+	};
+};
+```
+
+```typescript
+export type PinQueueResponse = {
+	rows: PinQueueItem[];
+	next_page_token: string;
+};
+```
+
+```typescript
+export type SwapCidOptions = {
+	cid: string;
+	swapCid: string;
+};
+```
+
+```typescript
+export type SwapHistoryOptions = {
+	cid: string;
+	domain: string;
+};
+```
+
+```typescript
+export type SwapCidResponse = {
+	mapped_cid: string;
+	created_at: string;
+};
+```
+
+```typescript
+export type VectorizeFileResponse = {
+	status: boolean;
+};
+```
+
+```typescript
+export type VectorizeQuery = {
+	groupId: string;
+	query: string;
+	returnFile?: boolean;
+};
+```
+
+```typescript
+export type VectorQueryMatch = {
+	file_id: string;
+	cid: string;
+	score: number;
+};
+```
+
+```typescript
+export type VectorizeQueryResponse = {
+	count: number;
+	matches: VectorQueryMatch[];
+};
+```
+---

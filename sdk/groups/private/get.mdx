@@ -2,7 +2,7 @@
 title: "get"
 ---
 
-Get info for an existing group
+Get info for an existing private group
 
 ## Usage
 
@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const groups = await pinata.groups.get({
+const groups = await pinata.groups.private.get({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 });
 ```
@@ -24,7 +24,6 @@ const groups = await pinata.groups.get({
 ```typescript
 type GroupResponseItem = {
     id: string;
-    is_public: boolean;
     name: string;
     created_at: string;
 };
@@ -39,7 +38,7 @@ type GroupResponseItem = {
 ID for the target Group
 
 ```typescript {2}
-const groups = await pinata.groups.get({
+const groups = await pinata.groups.private.get({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 });
 ```
