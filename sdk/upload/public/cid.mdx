@@ -37,17 +37,17 @@ type PinByCIDResponse = {
 Target CID already on IPFS
 
 ```typescript
-const pin = await pinata.upload.cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+const pin = await pinata.upload.public.cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
 ```
 
 ### addMetadata (Optional)
 
-- Type: [PinataMetadata](../types#pinatametadata)
+- Type: [PinataMetadata](../types/files#pinatametadata)
 
 Add optional metadata to file
 
 ```typescript
-const pin = await pinata.upload
+const pin = await pinata.upload.public
   .cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
   .addMetadata({
     name: "hello.txt",
@@ -64,7 +64,7 @@ const pin = await pinata.upload
 Upload to a specific group by passing in the `groupId`
 
 ```typescript
-const pin = await pinata.upload
+const pin = await pinata.upload.public
   .cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
@@ -76,7 +76,7 @@ const pin = await pinata.upload
 Upload a file using a secondary API key generated through `keys.create()`
 
 ```typescript
-const pin = await pinata.upload
+const pin = await pinata.upload.public
   .cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
   .key("GENERATED_API_JWT")
 ```

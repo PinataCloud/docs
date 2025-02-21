@@ -81,15 +81,15 @@
           {
             "group": "Gateways",
             "pages": [
-              "web3/gateways/dedicated-ipfs-gateways",
-              "web3/gateways/gateway-access-controls",
-              "web3/gateways/image-optimizations",
+              "gateways/dedicated-ipfs-gateways",
+              "gateways/gateway-access-controls",
+              "gateways/image-optimizations",
               {
                 "group": "Plugins",
                 "pages": [
-                  "web3/gateways/plugins/getting-started",
-                  "web3/gateways/plugins/content-addressable",
-                  "web3/gateways/plugins/hot-swaps"
+                  "gateways/plugins/getting-started",
+                  "gateways/plugins/content-addressable",
+                  "gateways/plugins/hot-swaps"
                 ]
               }
             ]
@@ -100,21 +100,22 @@
               {
                 "group": "Tools",
                 "pages": [
-                  "web3/tools/pinata-sdk",
-                  "web3/tools/nextjs-starter",
-                  "web3/tools/pinata-cli",
-                  "web3/tools/pinata-raycast-extension",
-                  "web3/tools/community-sdks"
+                  "tools/pinata-sdk",
+                  "tools/nextjs-starter",
+                  "tools/pinata-cli",
+                  "tools/files-cli",
+                  "tools/pinata-raycast-extension",
+                  "tools/community-sdks"
                 ]
               },
               {
                 "group": "IPFS 101",
                 "pages": [
-                  "web3/ipfs-101/what-is-ipfs",
-                  "web3/ipfs-101/what-is-ipfs-pinning",
-                  "web3/ipfs-101/what-are-cids",
-                  "web3/ipfs-101/what-are-ipfs-gateways",
-                  "web3/ipfs-101/how-does-ipfs-work-with-nfts"
+                  "ipfs-101/what-is-ipfs",
+                  "ipfs-101/what-is-ipfs-pinning",
+                  "ipfs-101/what-are-cids",
+                  "ipfs-101/what-are-ipfs-gateways",
+                  "ipfs-101/how-does-ipfs-work-with-nfts"
                 ]
               },
               {
@@ -123,13 +124,13 @@
                   {
                     "group": "Getting Started",
                     "pages": [
-                      "web3/farcaster/introduction",
-                      "web3/farcaster/farcaster-auth",
-                      "web3/farcaster/farcaster-API",
-                      "web3/farcaster/image-uploads",
-                      "web3/farcaster/frames",
-                      "web3/farcaster/hubs",
-                      "web3/farcaster/fc-dev-calls/index"
+                      "farcaster/introduction",
+                      "farcaster/farcaster-auth",
+                      "farcaster/farcaster-API",
+                      "farcaster/image-uploads",
+                      "farcaster/frames",
+                      "farcaster/hubs",
+                      "farcaster/fc-dev-calls/index"
                     ]
                   },
                   {
@@ -138,11 +139,11 @@
                       {
                         "group": "Farcaster Development Kit",
                         "pages": [
-                          "web3/farcaster/fdk/getting-started",
-                          "web3/farcaster/fdk/farcaster-auth",
-                          "web3/farcaster/fdk/farcaster-writes",
-                          "web3/farcaster/fdk/farcaster-reads",
-                          "web3/farcaster/fdk/farcaster-frames"
+                          "farcaster/fdk/getting-started",
+                          "farcaster/fdk/farcaster-auth",
+                          "farcaster/fdk/farcaster-writes",
+                          "farcaster/fdk/farcaster-reads",
+                          "farcaster/fdk/farcaster-frames"
                         ]
                       }
                     ]
@@ -150,38 +151,38 @@
                   {
                     "group": "Farcaster API",
                     "pages": [
-                      "web3/farcaster/farcaster-api/getting-started",
-                      "web3/farcaster/farcaster-api/endpoint/cast-by-hash",
-                      "web3/farcaster/farcaster-api/endpoint/casts",
-                      "web3/farcaster/farcaster-api/endpoint/send-cast",
-                      "web3/farcaster/farcaster-api/endpoint/delete-cast",
-                      "web3/farcaster/farcaster-api/endpoint/add-reaction-to-cast",
-                      "web3/farcaster/farcaster-api/endpoint/delete-reaction-to-cast",
-                      "web3/farcaster/farcaster-api/endpoint/channels-list",
-                      "web3/farcaster/farcaster-api/endpoint/channel-by-name",
-                      "web3/farcaster/farcaster-api/endpoint/follow-fid",
-                      "web3/farcaster/farcaster-api/endpoint/unfollow-fid",
-                      "web3/farcaster/farcaster-api/endpoint/user-by-fid",
-                      "web3/farcaster/farcaster-api/endpoint/users"
+                      "farcaster/farcaster-api/getting-started",
+                      "farcaster/farcaster-api/endpoint/cast-by-hash",
+                      "farcaster/farcaster-api/endpoint/casts",
+                      "farcaster/farcaster-api/endpoint/send-cast",
+                      "farcaster/farcaster-api/endpoint/delete-cast",
+                      "farcaster/farcaster-api/endpoint/add-reaction-to-cast",
+                      "farcaster/farcaster-api/endpoint/delete-reaction-to-cast",
+                      "farcaster/farcaster-api/endpoint/channels-list",
+                      "farcaster/farcaster-api/endpoint/channel-by-name",
+                      "farcaster/farcaster-api/endpoint/follow-fid",
+                      "farcaster/farcaster-api/endpoint/unfollow-fid",
+                      "farcaster/farcaster-api/endpoint/user-by-fid",
+                      "farcaster/farcaster-api/endpoint/users"
                     ]
                   },
                   {
                     "group": "Farcaster Auth",
                     "pages": [
-                      "web3/farcaster/farcaster-api/auth-getting-started",
-                      "web3/farcaster/farcaster-api/endpoint/signers",
-                      "web3/farcaster/farcaster-api/endpoint/register-signer-with-warpcast",
-                      "web3/farcaster/farcaster-api/endpoint/poll-warpcast-signer",
-                      "web3/farcaster/farcaster-api/endpoint/get-signers"
+                      "farcaster/farcaster-api/auth-getting-started",
+                      "farcaster/farcaster-api/endpoint/signers",
+                      "farcaster/farcaster-api/endpoint/register-signer-with-warpcast",
+                      "farcaster/farcaster-api/endpoint/poll-warpcast-signer",
+                      "farcaster/farcaster-api/endpoint/get-signers"
                     ]
                   },
                   {
                     "group": "Frame Analytics API",
                     "pages": [
-                      "web3/farcaster/frame-analytics-api/getting-started",
-                      "web3/farcaster/frame-analytics-api/send-analytics",
-                      "web3/farcaster/frame-analytics-api/get-interactions",
-                      "web3/farcaster/frame-analytics-api/get-top-interactions"
+                      "farcaster/frame-analytics-api/getting-started",
+                      "farcaster/frame-analytics-api/send-analytics",
+                      "farcaster/frame-analytics-api/get-interactions",
+                      "farcaster/frame-analytics-api/get-top-interactions"
                     ]
                   },
                   {
@@ -190,72 +191,72 @@
                       {
                         "group": "Info",
                         "pages": [
-                          "web3/farcaster/hub-api-reference/endpoint/info/info"
+                          "farcaster/hub-api-reference/endpoint/info/info"
                         ]
                       },
                       {
                         "group": "Casts",
                         "pages": [
-                          "web3/farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-authored-by-an-fid",
-                          "web3/farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-by-parent-casts-fid-and-hash-or-by-the-parents-url",
-                          "web3/farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-that-mention-an-fid",
-                          "web3/farcaster/hub-api-reference/endpoint/casts/get-a-cast-by-its-fid-and-hash"
+                          "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-authored-by-an-fid",
+                          "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-by-parent-casts-fid-and-hash-or-by-the-parents-url",
+                          "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-that-mention-an-fid",
+                          "farcaster/hub-api-reference/endpoint/casts/get-a-cast-by-its-fid-and-hash"
                         ]
                       },
                       {
                         "group": "Reactions",
                         "pages": [
-                          "web3/farcaster/hub-api-reference/endpoint/reactions/get-a-reaction-by-its-created-fid-and-target-cast",
-                          "web3/farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-by-an-fid",
-                          "web3/farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-cast",
-                          "web3/farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-target-url"
+                          "farcaster/hub-api-reference/endpoint/reactions/get-a-reaction-by-its-created-fid-and-target-cast",
+                          "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-by-an-fid",
+                          "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-cast",
+                          "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-target-url"
                         ]
                       },
                       {
                         "group": "Links",
                         "pages": [
-                          "web3/farcaster/hub-api-reference/endpoint/links/get-a-link-by-its-fid-and-target-fid",
-                          "web3/farcaster/hub-api-reference/endpoint/links/get-all-links-to-a-target-fid",
-                          "web3/farcaster/hub-api-reference/endpoint/links/get-all-links-from-a-source-fid"
+                          "farcaster/hub-api-reference/endpoint/links/get-a-link-by-its-fid-and-target-fid",
+                          "farcaster/hub-api-reference/endpoint/links/get-all-links-to-a-target-fid",
+                          "farcaster/hub-api-reference/endpoint/links/get-all-links-from-a-source-fid"
                         ]
                       },
                       {
                         "group": "User Data",
                         "pages": [
-                          "web3/farcaster/hub-api-reference/endpoint/userdata/get-userdata-for-a-fid"
+                          "farcaster/hub-api-reference/endpoint/userdata/get-userdata-for-a-fid"
                         ]
                       },
                       {
                         "group": "Username Proofs",
                         "pages": [
-                          "web3/farcaster/hub-api-reference/endpoint/usernames/get-a-list-of-proofs-provided-by-an-fid",
-                          "web3/farcaster/hub-api-reference/endpoint/usernames/get-an-proof-for-a-username-by-the-farcaster-username"
+                          "farcaster/hub-api-reference/endpoint/usernames/get-a-list-of-proofs-provided-by-an-fid",
+                          "farcaster/hub-api-reference/endpoint/usernames/get-an-proof-for-a-username-by-the-farcaster-username"
                         ]
                       },
                       {
                         "group": "Verifications",
                         "pages": [
-                          "web3/farcaster/hub-api-reference/endpoint/verifications/get-a-list-of-verifications-provided-by-an-fid"
+                          "farcaster/hub-api-reference/endpoint/verifications/get-a-list-of-verifications-provided-by-an-fid"
                         ]
                       },
                       {
                         "group": "FIDs",
                         "pages": [
-                          "web3/farcaster/hub-api-reference/endpoint/fids/get-a-list-of-all-the-fids"
+                          "farcaster/hub-api-reference/endpoint/fids/get-a-list-of-all-the-fids"
                         ]
                       },
                       {
                         "group": "Storage",
                         "pages": [
-                          "web3/farcaster/hub-api-reference/endpoint/storage/get-an-fids-storage-limits"
+                          "farcaster/hub-api-reference/endpoint/storage/get-an-fids-storage-limits"
                         ]
                       },
                       {
                         "group": "Onchain API",
                         "pages": [
-                          "web3/farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-on-chain-events-provided-by-an-fid",
-                          "web3/farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-signers-provided-by-an-fid",
-                          "web3/farcaster/hub-api-reference/endpoint/onchainevents/get-an-on-chain-id-registry-event-for-a-given-address"
+                          "farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-on-chain-events-provided-by-an-fid",
+                          "farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-signers-provided-by-an-fid",
+                          "farcaster/hub-api-reference/endpoint/onchainevents/get-an-on-chain-id-registry-event-for-a-given-address"
                         ]
                       }
                     ]
@@ -636,23 +637,11 @@
     },
     {
       "source": "/pinning/:slug*",
-      "destination": "/web3/pinning/:slug*"
-    },
-    {
-      "source": "/ipfs-101/:slug*",
-      "destination": "/web3/ipfs-101/:slug*"
+      "destination": "/files/uploading-files"
     },
     {
       "source": "/farcaster/:slug*",
       "destination": "/web3/farcaster/:slug*"
-    },
-    {
-      "source": "/sdks/:slug*",
-      "destination": "/web3/tools/:slug*"
-    },
-    {
-      "source": "/ipfs-sdk/:slug*",
-      "destination": "/web3/sdk/:slug*"
     },
     {
       "source": "/quickstart/:slug*",
@@ -677,14 +666,6 @@
     {
       "source": "/farhack",
       "destination": "farcaster/events/farhack"
-    },
-    {
-      "source": "/hackmidwest",
-      "destination": "events/hack-midwest"
-    },
-    {
-      "source": "/dif",
-      "destination": "events/dif"
     },
     {
       "source": "/events/frameworks",

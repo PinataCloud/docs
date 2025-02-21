@@ -10,7 +10,7 @@ With the [Private IPFS SDK](/sdk/groups), you can create groups, add files to gr
 
 ### Create a Group
 
-To create a group you can use the [create](/sdk/groups/create) method and passing in the `name` you want to give a group.
+To create a group you can use the [create](/sdk/groups/public/create) method and passing in the `name` you want to give a group.
 
 <CodeGroup>
 
@@ -85,7 +85,7 @@ This will return the Group info
 
 ### Add or Remove Files from a Group
 
-There are two ways you can add files to a group. The first is to add the file to a group on [upload](/sdk/upload/file).
+There are two ways you can add files to a group. The first is to add the file to a group on [upload](/sdk/upload/public/file).
 
 <CodeGroup>
 
@@ -125,7 +125,7 @@ async function upload() {
 
 </CodeGroup>
 
-Another option is to add files after the fact using the [addFiles](/sdk/groups/add-files) method.
+Another option is to add files after the fact using the [addFiles](/sdk/groups/public/add-files) method.
 
 <CodeGroup>
 
@@ -167,7 +167,7 @@ async function group() {
 
 </CodeGroup>
 
-Removing files can be done the exact same way with the [removeFiles](/sdk/groups/remove-files) method.
+Removing files can be done the exact same way with the [removeFiles](/sdk/groups/public/remove-files) method.
 
 <CodeGroup>
 
@@ -211,7 +211,7 @@ async function group() {
 
 ### Get a Group
 
-To fetch details of an already existing group you can use the [get](/sdk/groups/get) and pass in the `groupId`.
+To fetch details of an already existing group you can use the [get](/sdk/groups/public/get) and pass in the `groupId`.
 
 <CodeGroup>
 
@@ -275,7 +275,7 @@ This will return the same group info received upon creation.
 
 ### List All Groups
 
-If you want to get all Groups or filter through them, you can use the [list](/sdk/groups/list) method.
+If you want to get all Groups or filter through them, you can use the [list](/sdk/groups/public/list) method.
 
 <CodeGroup>
 

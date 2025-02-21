@@ -59,6 +59,23 @@ const upload = await pinata.upload.public
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
 
+### addMetadata (Optional)
+
+- Type: [PinataMetadata](../types/files#pinatametadata)
+
+Add optional metadata to file
+
+```typescript {7-12}
+const upload = await pinata.upload.public
+  .fileArray([file1, file2])
+  .addMetadata({
+    name: "hello.json",
+    keyvalues: {
+      env: "prod"
+    }
+  })
+```
+
 ### key (Optional)
 
 - Type: `string`
