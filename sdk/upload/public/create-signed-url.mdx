@@ -18,11 +18,14 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const signedURL = await pinata.upload.createSignedURL({
-  expires: 30
-});
+const signedURL = await pinata.upload.public
+  .createSignedURL({
+    expires: 30
+  });
 
-const upload = await pinata.upload.file(file).url(signedURL)
+const upload = await pinata.upload.public
+  .file(file)
+  .url(signedURL)
 ```
 
 ## Returns
@@ -45,7 +48,7 @@ The number of seconds the signed URL should be valid for
 
 
 ```typescript {2}
-const url = await pinata.upload.createSignedURL({
+const url = await pinata.upload.public.createSignedURL({
 	expires: 30,
 });
 ```
@@ -57,7 +60,7 @@ const url = await pinata.upload.createSignedURL({
 Name for the file to be uploaded
 
 ```typescript {3}
-const url = await pinata.upload.createSignedURL({
+const url = await pinata.upload.public.createSignedURL({
 	expires: 30,
 	name: "My Cool File"
 });
@@ -71,7 +74,7 @@ The target groupId the file would be uploaded to
 
 
 ```typescript {3}
-const url = await pinata.upload.createSignedURL({
+const url = await pinata.upload.public.createSignedURL({
 	expires: 30,
 	groupId: "ad4bc3bf-8794-49e7-94ff-fea1ce745779"
 });
@@ -84,27 +87,13 @@ const url = await pinata.upload.createSignedURL({
 Keyvalue pairs for the uploaded file
 
 ```typescript {3-5}
-const url = await pinata.upload.createSignedURL({
+const url = await pinata.upload.public.createSignedURL({
 	expires: 30,
 	keyvalues: {
 	  env: "prod"
 	}
 });
 ```
-
-### vectorize (Optional)
-
-- Type: `boolean`
-
-Vectorize the file on upload
-
-```typescript {3}
-const url = await pinata.upload.createSignedURL({
-	expires: 30,
-	vectorize: true
-});
-```
-
 
 ### date (Optional)
 
@@ -116,7 +105,7 @@ A UNIX timestamp of the date a URL is signed
 const date = Math.floor(new Date().getTime() / 1000);
 //date: 1724943711
 
-const url = await pinata.upload.createSignedURL({
+const url = await pinata.upload.public.createSignedURL({
 	expires: 30,
 	date: date
 });

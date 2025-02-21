@@ -2,7 +2,7 @@
 title: "json"
 ---
 
-Upload a JSON object to Pinata
+Upload a JSON object to Private IPFS
 
 ## Usage
 
@@ -44,7 +44,7 @@ type UploadResponse = {
 Accepts an object that is turned into JSON
 
 ```typescript
-const upload = await pinata.upload.json({
+const upload = await pinata.upload.private.json({
     content: "console.log('hello world!)",
     name: "helloworld.ts",
     lang: "ts"
@@ -58,7 +58,7 @@ const upload = await pinata.upload.json({
 Upload to a specific group by passing in the `groupId`
 
 ```typescript {7}
-const upload = await pinata.upload
+const upload = await pinata.upload.private
   .json({
       content: "console.log('hello world!)",
       name: "helloworld.ts",
@@ -74,7 +74,7 @@ const upload = await pinata.upload
 Add optional metadata to file
 
 ```typescript {7-12}
-const upload = await pinata.upload
+const upload = await pinata.upload.private
   .json({
       content: "console.log('hello world!)",
       name: "helloworld.ts",
@@ -99,7 +99,7 @@ const upload = await pinata.upload
 Vectorize a file on upload, requires a group to be used as well.
 
 ```typescript {8}
-const upload = await pinata.upload
+const upload = await pinata.upload.private
   .json({
       content: "console.log('hello world!)",
       name: "helloworld.ts",
@@ -116,7 +116,7 @@ const upload = await pinata.upload
 Pass in a presigned upload URL created with [createSignedURL](./create-signed-url)
 
 ```typescript {3}
-const upload = await pinata.upload
+const upload = await pinata.upload.private
   .json({
     content: "console.log('hello world!)",
     name: "helloworld.ts",
@@ -132,7 +132,7 @@ const upload = await pinata.upload
 Upload a file using a secondary API key generated through `keys.create()`
 
 ```typescript {7}
-const upload = await pinata.upload
+const upload = await pinata.upload.private
     .json({
         content: "console.log('hello world!)",
         name: "helloworld.ts",

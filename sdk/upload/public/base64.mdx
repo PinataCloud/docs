@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const upload = await pinata.upload.base64("SGVsbG8gV29ybGQh")
+const upload = await pinata.upload.public.base64("SGVsbG8gV29ybGQh")
 ```
 
 ## Returns
@@ -40,7 +40,7 @@ type UploadResponse = {
 Accepts a string encoded in base64
 
 ```typescript
-const upload = await pinata.upload.base64("SGVsbG8gV29ybGQh")
+const upload = await pinata.upload.public.base64("SGVsbG8gV29ybGQh")
 ```
 
 ### group (Optional)
@@ -50,7 +50,7 @@ const upload = await pinata.upload.base64("SGVsbG8gV29ybGQh")
 Upload to a specific group by passing in the `groupId`
 
 ```typescript {3}
-const upload = await pinata.upload
+const upload = await pinata.upload.public
   .base64("SGVsbG8gV29ybGQh")
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
@@ -62,7 +62,7 @@ const upload = await pinata.upload
 Add optional metadata to file
 
 ```typescript {3-8}
-const upload = await pinata.upload
+const upload = await pinata.upload.public
   .base64("SGVsbG8gV29ybGQh")
   .addMetadata({
     name: "hello.txt",
@@ -72,23 +72,6 @@ const upload = await pinata.upload
   })
 ```
 
-### vectorize (Optional)
-
-<Warning>
-  The file vectors feature is still in beta. Please contact the team at <a href="mailto:team@pinata.cloud" target="_blank">team@pinata.cloud</a> if you have any issues.
-</Warning>
-
-- Type: `null`
-
-Vectorize a file on upload, requires a group to be used as well.
-
-```typescript {4}
-const upload = await pinata.upload
-  .base64("SGVsbG8gV29ybGQh")
-  .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
-  .vectorize()
-```
-
 ### url (Optional)
 
 - Type: `string`
@@ -96,7 +79,7 @@ const upload = await pinata.upload
 Pass in a presigned upload URL created with [createSignedURL](./create-signed-url)
 
 ```typescript {3}
-const upload = await pinata.upload
+const upload = await pinata.upload.public
   .file(file)
   .url(url)
 ```
@@ -108,7 +91,7 @@ const upload = await pinata.upload
 Upload a file using a secondary API key generated through `keys.create()`
 
 ```typescript {3}
-const upload = await pinata.upload
+const upload = await pinata.upload.public
   .base64("SGVsbG8gV29ybGQh")
   .key("GENERATED_API_JWT")
 ```

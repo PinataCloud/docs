@@ -16,7 +16,7 @@ const pinata = new PinataSDK({
 
 const file1 = new File(["hello world!"], "hello.txt", { type: "text/plain" })
 const file2 = new File(["hello world again!"], "hello2.txt", { type: "text/plain" })
-const upload = await pinata.upload.fileArray([file1, file2])
+const upload = await pinata.upload.public.fileArray([file1, file2])
 ```
 
 ## Returns
@@ -44,7 +44,7 @@ Accepts an array of File objects in accordance with the [W3C File API](https://w
 ```typescript
 const file1 = new File([blob1], "hello1.txt", { type: "text/plain" })
 const file2 = new File([blob2], "hello2.txt", { type: "text/plain" })
-const upload = await pinata.upload.fileArray([file1, file2])
+const upload = await pinata.upload.public.fileArray([file1, file2])
 ```
 
 ### group (Optional)
@@ -53,8 +53,8 @@ const upload = await pinata.upload.fileArray([file1, file2])
 
 Upload to a specific group by passing in the `groupId`
 
-```typescript
-const upload = await pinata.upload
+```typescript {3}
+const upload = await pinata.upload.public
   .fileArray([file1, file2])
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
@@ -65,8 +65,20 @@ const upload = await pinata.upload
 
 Upload a file using a secondary API key generated through `keys.create()`
 
-```typescript
-const upload = await pinata.upload
+```typescript {3}
+const upload = await pinata.upload.public
   .fileArray([file1, file2])
   .key("GENERATED_API_JWT")
+```
+
+### url (Optional)
+
+- Type: `string`
+
+Pass in a presigned upload URL created with [createSignedURL](./create-signed-url)
+
+```typescript {3}
+const upload = await pinata.upload.public
+  .fileArray([file1, file2])
+  .url(url)
 ```

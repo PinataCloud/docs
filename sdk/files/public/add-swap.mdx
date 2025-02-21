@@ -10,13 +10,13 @@ Swap a CID for another using the [Hot Swaps](/gateways/plugins/hot-swaps) gatewa
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
-		pinataJwt: process.env.PINATA_JWT!,
-		pinataGateway: "example-gateway.mypinata.cloud",
+	pinataJwt: process.env.PINATA_JWT!,
+	pinataGateway: "example-gateway.mypinata.cloud",
 });
 
 const swap = await pinata.files.public.addSwap({
-		cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
-		swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
+	cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
+	swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
 })
 ```
 
@@ -41,8 +41,8 @@ This would be the original CID that would be visted
 
 ```typescript {2}
 const swap = await pinata.files.public.addSwap({
-		cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
-		swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
+	cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
+	swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
 })
 ```
 
@@ -54,7 +54,7 @@ This would be the CID you would want the old CID to point to
 
 ```typescript {3}
 const swap = await pinata.files.public.addSwap({
-		cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
-		swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
+	cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
+	swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
 })
 ```

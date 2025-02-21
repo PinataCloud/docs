@@ -2,7 +2,7 @@
 title: "file"
 ---
 
-Upload a single file to Pinata
+Upload a single file to Private IPFS
 
 ## Usage
 
@@ -15,7 +15,7 @@ const pinata = new PinataSDK({
 });
 
 const file = new File(["hello world!"], "hello.txt", { type: "text/plain" })
-const upload = await pinata.upload.file(file)
+const upload = await pinata.upload.private.file(file)
 ```
 
 ### Local Files
@@ -34,7 +34,7 @@ const pinata = new PinataSDK({
 
 const blob = new Blob([fs.readFileSync("./hello-world.txt")]);
 const file = new File([blob], "hello-world.txt", { type: "text/plain"})
-const upload = await pinata.upload.file(file);
+const upload = await pinata.upload.private.file(file);
 ```
 
 ## Returns
@@ -62,14 +62,14 @@ Accepts a File object in accordance with the [W3C File API](https://w3c.github.i
 ```typescript {3}
 const blob = new Blob(["hello world!"], { type: "text/plain" })
 const file = new File([blob], "hello.txt", { type: "text/plain" })
-const upload = await pinata.upload.file(file)
+const upload = await pinata.upload.private.file(file)
 ```
 
 In most environments you can also pass a Blob here as well.
 
 ```typescript {2}
 const blob = new Blob(["hello world!"], { type: "text/plain" })
-const upload = await pinata.upload.file(blob)
+const upload = await pinata.upload.private.file(blob)
 ```
 
 ### group (Optional)
@@ -79,7 +79,7 @@ const upload = await pinata.upload.file(blob)
 Upload to a specific group by passing in the `groupId`
 
 ```typescript {3}
-const upload = await pinata.upload
+const upload = await pinata.upload.private
   .file(file)
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
@@ -91,7 +91,7 @@ const upload = await pinata.upload
 Add optional metadata to file
 
 ```typescript {3-8}
-const upload = await pinata.upload
+const upload = await pinata.upload.private
   .file(file)
   .addMetadata({
     name: "hello.txt",
@@ -112,7 +112,7 @@ const upload = await pinata.upload
 Vectorize a file on upload, requires a group to be used as well.
 
 ```typescript {4}
-const upload = await pinata.upload
+const upload = await pinata.upload.private
   .file(file)
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
   .vectorize()
@@ -125,7 +125,7 @@ const upload = await pinata.upload
 Pass in a presigned upload URL created with [createSignedURL](./create-signed-url)
 
 ```typescript {3}
-const upload = await pinata.upload
+const upload = await pinata.upload.private
   .file(file)
   .url(url)
 ```
@@ -137,7 +137,7 @@ const upload = await pinata.upload
 Upload a file using a secondary API key generated through `keys.create()`
 
 ```typescript {3}
-const upload = await pinata.upload
+const upload = await pinata.upload.private
   .file(file)
   .key("GENERATED_API_JWT")
 ```
