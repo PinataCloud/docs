@@ -1,12 +1,13 @@
 ---
 title: "Groups"
+icon: "ball-pile"
 ---
 
-Private Groups allow you to organize your Pinata content through the Pinata App or through the Private IPFS API, giving you a clearer picture of what your files are being used for.
+Private Groups allow you to organize your Pinata content through the Pinata App, SDK, or API, giving you a clearer picture of what your files are being used for.
 
 ## SDK and API
 
-With the [Private IPFS SDK](/sdk/groups), you can create groups, add files to groups, list details about a group, and more! You can also mange groups using the [Private IPFS API](/api-reference/endpoint/create-group).
+With the [SDK](/sdk/groups/public), you can create groups, add files to groups, list details about a group, and more! You can also mange groups using the [API](/api-reference/endpoint/create-group).
 
 ### Create a Group
 
@@ -22,9 +23,8 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const group = await pinata.groups.create({
+const group = await pinata.groups.public.create({
 	name: "My New Group",
-  isPublic: true
 });
 ```
 
@@ -36,10 +36,9 @@ async function group() {
 
     const payload = JSON.stringify({
       name: "My New Group",
-      isPublic: true
     })
 
-    const request = await fetch("https://api.pinata.cloud/v3/files/groups", {
+    const request = await fetch("https://api.pinata.cloud/v3/groups/public", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -65,7 +64,6 @@ This will return the Group info
 {
   id: "01919976-955f-7d06-bd59-72e80743fb95",
   name: "Test Private Group",
-  is_public: true,
   created_at: "2024-08-28T14:49:31.246596Z"
 }
 ```
@@ -75,7 +73,6 @@ This will return the Group info
   "data": {
     "id": "01919976-955f-7d06-bd59-72e80743fb95",
     "name": "Test Private Group",
-    "public": false,
     "created_at": "2024-08-28T14:49:31.246596Z"
   }
 }
@@ -90,12 +87,12 @@ There are two ways you can add files to a group. The first is to add the file to
 <CodeGroup>
 
 ```typescript SDK {3}
-const upload = await pinata.upload
+const upload = await pinata.upload.public
   .file(file)
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
 
-```typescript API {11}
+```typescript API {13}
 const JWT = "YOUR_PINATA_JWT";
 
 async function upload() {
@@ -105,6 +102,8 @@ async function upload() {
     const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
 
     formData.append("file", file);
+
+    formData.append("network", "public")
 
     formData.append("group", "b07da1ff-efa4-49af-bdea-9d95d8881103")
 
@@ -130,7 +129,7 @@ Another option is to add files after the fact using the [addFiles](/sdk/groups/p
 <CodeGroup>
 
 ```typescript SDK
-const upload = await pinata.groups.addFiles({
+const upload = await pinata.groups.public.addFiles({
   groupId: "b07da1ff-efa4-49af-bdea-9d95d8881103",
   files: [
     "0ed5738f-07e7-4587-81fb-f04f8be15d77",
@@ -150,7 +149,7 @@ async function group() {
     const fileId = "521f23f3-2749-4611-b757-3155b40ff570"
 
     const request = await fetch(
-      `https://api.pinata.cloud/v3/files/groups/${groupId}/ids/${fileId}`,
+      `https://api.pinata.cloud/v3/groups/public/${groupId}/ids/${fileId}`,
     {
       method: "PUT",
       headers: {
@@ -172,7 +171,7 @@ Removing files can be done the exact same way with the [removeFiles](/sdk/groups
 <CodeGroup>
 
 ```typescript SDK
-const upload = await pinata.groups.removeFiles({
+const upload = await pinata.groups.public.removeFiles({
   groupId: "b07da1ff-efa4-49af-bdea-9d95d8881103",
   files: [
     "0ed5738f-07e7-4587-81fb-f04f8be15d77",
@@ -192,7 +191,7 @@ async function group() {
     const fileId = "521f23f3-2749-4611-b757-3155b40ff570"
 
     const request = await fetch(
-      `https://api.pinata.cloud/v3/files/groups/${groupId}/ids/${fileId}`,
+      `https://api.pinata.cloud/v3/groups/public/${groupId}/ids/${fileId}`,
     {
       method: "DELETE",
       headers: {
@@ -216,7 +215,7 @@ To fetch details of an already existing group you can use the [get](/sdk/groups/
 <CodeGroup>
 
 ```typescript SDK
-const groups = await pinata.groups.get({
+const groups = await pinata.groups.public.get({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 });
 ```
@@ -230,7 +229,7 @@ async function group() {
     const groupId = "e0b102e9-d481-4192-ab44-b8f7ff010e9a"
 
     const request = await fetch(
-      `https://api.pinata.cloud/v3/files/groups/${groupId}`,
+      `https://api.pinata.cloud/v3/groups/public/${groupId}`,
     {
       method: "GET",
       headers: {
@@ -253,10 +252,9 @@ This will return the same group info received upon creation.
 
 ```typescript SDK
 {
-    id: "0191997b-ca28-79e8-9dbc-a8044ad3e547",
-    name: "My New Group 5",
-    is_public: false,
-    created_at: "2024-08-28T14:55:12.448504Z",
+  id: "0191997b-ca28-79e8-9dbc-a8044ad3e547",
+  name: "My New Group 5",
+  created_at: "2024-08-28T14:55:12.448504Z",
 }
 ```
 
@@ -265,7 +263,6 @@ This will return the same group info received upon creation.
   "data": {
     "id": "0191997b-ca28-79e8-9dbc-a8044ad3e547",
     "name": "My New Group 5",
-    "is_public": false,
     "created_at": "2024-08-28T14:55:12.448504Z"
   }
 }
@@ -280,7 +277,7 @@ If you want to get all Groups or filter through them, you can use the [list](/sd
 <CodeGroup>
 
 ```typescript SDK
-const groups = await pinata.groups.list()
+const groups = await pinata.groups.public.list()
 ```
 
 ```typescript API
@@ -288,7 +285,7 @@ const JWT = "YOUR_PINATA_JWT";
 
 async function group() {
   try {
-    const url = "https://api.pinata.cloud/v3/files/groups"
+    const url = "https://api.pinata.cloud/v3/groups/public"
     const request = await fetch(url, {
       method: "GET",
       headers: {
@@ -316,13 +313,13 @@ Filters groups based on the group name
 <CodeGroup>
 
 ```typescript SDK
-const groups = await pinata.groups
+const groups = await pinata.groups.public
     .list()
     .name("SDK")
 ```
 
 ```typescript API
-const url = "https://api.pinata.cloud/v3/files/groups?name=SDK"
+const url = "https://api.pinata.cloud/v3/groups/public?name=SDK"
 ```
 
 </CodeGroup>
@@ -336,13 +333,13 @@ Limits the number of results
 <CodeGroup>
 
 ```typescript SDK
-const groups = await pinata.groups
+const groups = await pinata.groups.public
     .list()
     .limit(10)
 ```
 
 ```typescript API
-const url = "https://api.pinata.cloud/v3/files/groups?limit=10"
+const url = "https://api.pinata.cloud/v3/groups/public?limit=10"
 ```
 
 </CodeGroup>
@@ -357,7 +354,6 @@ This will return an array of Groups and their respective info:
     {
       id: "0191997b-ca28-79e8-9dbc-a8044ad3e547",
       name: "My New Group 5",
-      is_public: false,
       created_at: "2024-08-28T14:55:12.448504Z",
     }
   ],
@@ -371,7 +367,6 @@ This will return an array of Groups and their respective info:
     {
       "id": "0191997b-ca28-79e8-9dbc-a8044ad3e547",
       "name": "My New Group 5",
-      "is_public": false,
       "created_at": "2024-08-28T14:55:12.448504Z"
     }
   ],
@@ -388,7 +383,7 @@ You can update the name of a group using either the SDK or the API.
 <CodeGroup>
 
 ```typescript SDK
-const groups = await pinata.groups.update({
+const groups = await pinata.groups.public.update({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 	name: "My New Group 2",
 });
@@ -407,7 +402,7 @@ async function group() {
     })
 
     const request = await fetch(
-      `https://api.pinata.cloud/v3/files/groups/${groupId}`,
+      `https://api.pinata.cloud/v3/groups/public/${groupId}`,
     {
       method: "PUT",
       headers: {
@@ -434,7 +429,6 @@ This will return the updated Group info.
 {
   id: "3778c10d-452e-4def-8299-ee6bc548bdb0",
   name: "My New Group 2",
-  is_public: false,
   created_at: "2024-08-28T20:58:46.96779Z"
 }
 ```
@@ -444,7 +438,6 @@ This will return the updated Group info.
   "data": {
     "id": "01919ac8-a6f5-7e8e-a8a2-6cfe00122b90",
     "name": "Updated Name",
-    "is_public": true,
     "created_at": "2024-08-28T20:58:46.96779Z"
   }
 }
@@ -463,7 +456,7 @@ To delete a Group you can use the [delete](/sdk/groups/delete) method and pass i
 <CodeGroup>
 
 ```typescript SDK
-const groups = await pinata.groups.delete({
+const groups = await pinata.groups.public.delete({
 	groupId: "3778c10d-452e-4def-8299-ee6bc548bdb0",
 });
 ```
@@ -477,7 +470,7 @@ async function group() {
     const groupId = "e0b102e9-d481-4192-ab44-b8f7ff010e9a"
 
     const request = await fetch(
-      `https://api.pinata.cloud/v3/files/groups/${groupId}`,
+      `https://api.pinata.cloud/v3/groups/public/${groupId}`,
     {
       method: "DELETE",
       headers: {

@@ -1,5 +1,6 @@
 ---
 title: "Deleting Files"
+icon: "trash"
 ---
 
 Deleting files from Pinata is simple and easy!
@@ -18,7 +19,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const unpin = await pinata.files.delete([
+const unpin = await pinata.files.public.delete([
   "3c52f1b8-11b1-40d9-849d-5f05a4bbd76d",
   "b72886db-9dd4-434c-a1b2-f9d36781ecee"
 ])
@@ -33,7 +34,7 @@ async function delete() {
     const fileId = "e0b102e9-d481-4192-ab44-b8f7ff010e9a"
 
     const request = await fetch(
-      `https://api.pinata.cloud/v3/files/${fileId}`,
+      `https://api.pinata.cloud/v3/files/public/${fileId}`,
     {
       method: "DELETE",
       headers: {
@@ -65,10 +66,10 @@ const pinata = new PinataSDK({
 async function main() {
 	try {
 		let files = [];
-		for await (const item of pinata.files.list()) {
+		for await (const item of pinata.files.public.list()) {
 			files.push(item.id);
 		}
-		const res = await pinata.files.delete(files);
+		const res = await pinata.files.public.delete(files);
 	} catch (error) {
 		console.log(error);
 	}

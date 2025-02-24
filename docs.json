@@ -386,6 +386,27 @@
             ]
           },
           {
+            "group": "Signatures",
+            "pages": [
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/signatures/public/add",
+                  "sdk/signatures/public/get",
+                  "sdk/signatures/public/delete"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/signatures/private/add",
+                  "sdk/signatures/private/get",
+                  "sdk/signatures/private/delete"
+                ]
+              }
+            ]
+          },
+          {
             "group": "Analytics",
             "pages": [
               "sdk/analytics/requests",

@@ -1,23 +1,22 @@
 ---
 title: "Key-Values"
+icon: "database"
 ---
 
 A unique and powerful feature included with the IPFS API and Private IPFS API is the key-value store. Anytime you upload or update a file you can store up to 10 key-value pairs.
 
 <CodeGroup>
 
-```typescript SDK {3-8}
-const upload = await pinata.upload
+```typescript SDK {3-6}
+const upload = await pinata.upload.public
   .file(file)
-  .addMetadata({
-    keyvalues: {
-      env: "prod",
-      userId: "abc123"
-    }
+  .keyvalues({
+    env: "prod",
+    userId: "abc123"
   })
 ```
 
-```typescript API {11-15,17}
+```typescript API {13-18,20}
 const JWT = "YOUR_PINATA_JWT";
 
 async function upload() {
@@ -27,6 +26,8 @@ async function upload() {
     const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
 
     formData.append("file", file);
+
+    formData.append("network", "public")
 
     const keyvalues = JSON.stringify({
       keyvalues: {
@@ -64,22 +65,20 @@ Creating a new key-value for a file can be done in two ways:
 
 ### Uploading a File
 
-By including the key-values as part of the upload [method](/sdk/upload/file) or [endpoint](/api-reference/endpoint/upload-a-file) and the file and the key-values will be created at the same time.
+By including the key-values as part of the upload [method](/sdk/upload/public/file) or [endpoint](/api-reference/endpoint/upload-a-file) and the file and the key-values will be created at the same time.
 
 <CodeGroup>
 
 ```typescript SDK {3-8}
-const upload = await pinata.upload
+const upload = await pinata.upload.public
   .file(file)
-  .addMetadata({
-    keyvalues: {
-      env: "prod",
-      userId: "abc123"
-    }
+  .keyvalues({
+    env: "prod",
+    userId: "abc123"
   })
 ```
 
-```typescript API {11-15,17}
+```typescript API {13-18,20}
 const JWT = "YOUR_PINATA_JWT";
 
 async function upload() {
@@ -89,6 +88,8 @@ async function upload() {
     const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
 
     formData.append("file", file);
+
+    formData.append("network", "public");
 
     const keyvalues = JSON.stringify({
       keyvalues: {
@@ -118,12 +119,12 @@ async function upload() {
 
 ### Updating an Existing File
 
-If you've already uploaded a file and want to add a key-value you can do so with the update [method](/sdk/files/update) or [endpoint](/api-reference/endpoint/update-file).
+If you've already uploaded a file and want to add a key-value you can do so with the update [method](/sdk/files/public/update) or [endpoint](/api-reference/endpoint/update-file).
 
 <CodeGroup>
 
 ```typescript SDK {3-7}
-const update = await pinata.files.update({
+const update = await pinata.files.public.update({
   id: "2b4ee88d-1032-4e4e-a373-97d1ab127f16", // Target File ID
   keyvalues: {
     env: "prod",
@@ -147,7 +148,7 @@ async function update() {
       }
     })
 
-    const request = await fetch(`https://api.pinata.cloud/v3/files/${fileId}`, {
+    const request = await fetch(`https://api.pinata.cloud/v3/files/public/${fileId}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${JWT}`,
@@ -167,7 +168,7 @@ async function update() {
 
 ## Retrieving
 
-Since key-values exist with files, you can retrieve them by listing files either through the SDK [method](/sdk/files/list) or API [endpoint](/api-reference/endpoint/list-files), and filtering results by key-value. The operator will always be `===`.
+Since key-values exist with files, you can retrieve them by listing files either through the SDK [method](/sdk/files/public/list) or API [endpoint](/api-reference/endpoint/list-files), and filtering results by key-value. The operator will always be `===`.
 
 <Tip>
 You can chain multiple key-value queries together and it will only return files that meet both values.
@@ -176,9 +177,9 @@ You can chain multiple key-value queries together and it will only return files 
 <CodeGroup>
 
 ```typescript SDK {3-5}
-const files = await pinata.files
+const files = await pinata.files.public
   .list()
-  .metadata({
+  .keyvalues({
     user: "abc123"
   })
 ```
@@ -188,7 +189,7 @@ const JWT = "YOUR_PINATA_JWT";
 
 async function list() {
   try {
-    const request = await fetch(`https://api.pinata.cloud/v3/files?metadata[user]=123`, {
+    const request = await fetch(`https://api.pinata.cloud/v3/files/public?metadata[user]=123`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${JWT}`,
@@ -207,12 +208,12 @@ async function list() {
 
 ## Updating
 
-The Private IPFS API key-value system will automatically detect if you are replacing an existing value for a given key. For example, if you have a key of `env` with a value of `prod`, if you make an update of `env: "dev"` it will replace the old value. If the key does not exist then it will make a new key-value entry.
+The key-value system will automatically detect if you are replacing an existing value for a given key. For example, if you have a key of `env` with a value of `prod`, if you make an update of `env: "dev"` it will replace the old value. If the key does not exist then it will make a new key-value entry.
 
 <CodeGroup>
 
 ```typescript SDK {4}
-const update = await pinata.files.update({
+const update = await pinata.files.public.update({
   id: "2b4ee88d-1032-4e4e-a373-97d1ab127f16", // Target File ID
   keyvalues: {
     env: "dev", // Previously `prod`
@@ -234,7 +235,7 @@ async function update() {
       }
     })
 
-    const request = await fetch(`https://api.pinata.cloud/v3/files/${fileId}`, {
+    const request = await fetch(`https://api.pinata.cloud/v3/files/public/${fileId}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${JWT}`,
@@ -258,7 +259,7 @@ You can remove a key-value entry by making the value `null`.
 <CodeGroup>
 
 ```typescript SDK {4}
-const update = await pinata.files.update({
+const update = await pinata.files.public.update({
   id: "2b4ee88d-1032-4e4e-a373-97d1ab127f16", // Target File ID
   keyvalues: {
     env: null, // Deletes the `env` key-value entry
@@ -280,7 +281,7 @@ async function update() {
       }
     })
 
-    const request = await fetch(`https://api.pinata.cloud/v3/files/${fileId}`, {
+    const request = await fetch(`https://api.pinata.cloud/v3/files/public/${fileId}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${JWT}`,
