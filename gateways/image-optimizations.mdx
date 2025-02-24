@@ -1,10 +1,7 @@
 ---
 title: "Image Optimizations"
 slug: "image-optimizations"
-excerpt: ""
-hidden: false
-createdAt: "Tue Jul 18 2023 11:30:52 GMT+0000 (Coordinated Universal Time)"
-updatedAt: "Fri Dec 08 2023 19:08:18 GMT+0000 (Coordinated Universal Time)"
+icon: "image"
 ---
 
 Pinata image optimizations provides image optimization functionality directly through your [Gateway](/gateways/retrieving-files). These capabilities that can significantly improve the load time and experience when viewing image content.
@@ -116,7 +113,7 @@ type OptimizeImageOptions = {
 ```
 
 ```typescript
-const data = await pinata.gateways
+const data = await pinata.gateways.public
   .get("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4")
   .optimizeImage({
     width: 500,

@@ -1,12 +1,7 @@
 ---
 title: "Dedicated IPFS Gateways"
 slug: "dedicated-ipfs-gateways"
-excerpt: ""
-hidden: false
-metadata:
-  robots: "index"
-createdAt: "Tue Jul 18 2023 11:23:21 GMT+0000 (Coordinated Universal Time)"
-updatedAt: "Tue Sep 12 2023 17:08:02 GMT+0000 (Coordinated Universal Time)"
+icon: "globe-pointer"
 ---
 
 Dedicated Gateways are the fastest way to fetch content from IPFS, and are the ideal tool when building decentralized applications. When you create a Pinata account, you'll automatically have a Dedicated Gateway created for you! To see it, simply visit the [Gateways Page](https://app.pinata.cloud/gateway).
@@ -33,7 +28,7 @@ To view content through your gateway, grab the CID of the file you'd like to vie
 
 Simple as that!
 
-You can also fetch the data programatically using the [get](/ipfs-sdk/gateways/get) method in the [IPFS SDK](/ipfs-sdk).
+You can also fetch the data programatically using the [get](/sdk/gateways/public/get) method in the [SDK](/sdk).
 
 ```typescript
 import { PinataSDK } from "pinata-web3";
@@ -43,7 +38,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const file = await pinata.gateways.get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+const file = await pinata.gateways.public.get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
 ```
 
 ## Restricted vs Open
@@ -72,16 +67,23 @@ ipfs://QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng
 https://ipfs.io/ipfs/QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng
 ```
 
-Pinata provides a tool designed to assist you in scenarios like this. It can take IPFS urls, whether they are the protocol standard (`ipfs://`) or another gateway (`https://ipfs.io`), and turn them into your specified Dedicated Gateway. Check it out with the link below!
+The Pinata SDK is designed to assist you in scenarios like this. It can take IPFS urls, whether they are the protocol standard (`ipfs://`) or another gateway (`https://ipfs.io`), and turn them into your specified Dedicated Gateway.
 
-<Note>
-  [IPFS Gateway Tools](https://github.com/PinataCloud/ipfs-gateway-tools)
-</Note>
+```typescript
+import { PinataSDK } from "pinata-web3";
 
-<img
-  style={{ width: "100%", borderRadius: "0.5rem" }}
-  src="https://docs.mypinata.cloud/ipfs/bafybeifr3wqllx2ajg6dvmisoftbkv2zbkoglhp7bky4wlbxrohgqm6tom"
-/>
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const url = await pinata.gateways.public
+  .convert("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+
+// Optionally add a different gateway prefix
+// const url = await pinata.gateways.public
+//   .convert("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng", "https://ipfs.io")
+```
 
 ## Adding a Custom Domain
 

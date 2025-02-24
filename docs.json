@@ -86,6 +86,7 @@
               "gateways/image-optimizations",
               {
                 "group": "Plugins",
+                "icon": "puzzle-piece-simple",
                 "pages": [
                   "gateways/plugins/getting-started",
                   "gateways/plugins/content-addressable",
