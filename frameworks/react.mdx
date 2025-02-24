@@ -91,7 +91,9 @@ In the `src/App.tsx` file take out the boiler plate code and use the following. 
 
 <Warning>Uploading files like this will expose your API keys!</Warning>
 
-```typescript src/App.tsx
+<CodeGroup>
+
+```typescript src/App.tsx - Single File
 import { useState } from "react";
 import { pinata } from "./utils/config"
 
@@ -121,6 +123,67 @@ function App() {
 
 export default App;
 ```
+
+```typescript src/App.tsx - Folders
+import { useState } from "react";
+
+function App() {
+  const [selectedFile, setSelectedFile]: any = useState();
+  const changeHandler = (event: any) => {
+    setSelectedFile(event.target.files);
+  };
+
+  const handleSubmission = async () => {
+    try {
+      const formData = new FormData();
+      Array.from(selectedFile).forEach((file) => {
+        formData.append("file", file);
+      });
+      const metadata = JSON.stringify({
+        name: "File name",
+      });
+      formData.append("pinataMetadata", metadata);
+
+      const options = JSON.stringify({
+        cidVersion: 0,
+      });
+      formData.append("pinataOptions", options);
+
+      const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+          },
+          body: formData,
+        }
+      );
+      const resData = await res.json();
+      console.log(resData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <label className="form-label"> Choose File</label>
+      <input
+        directory=""
+        webkitdirectory=""
+        type="file"
+        onChange={changeHandler}
+      />
+      <button onClick={handleSubmission}>Submit</button>
+    </>
+  );
+}
+
+export default App;
+```
+
+</CodeGroup>
 
 ### Retrieve Content
 

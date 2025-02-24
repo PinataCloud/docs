@@ -29,9 +29,15 @@ type UploadResponse = {
 	name: string;
 	cid: string;
 	size: number;
+	created_at: string;
 	number_of_files: number;
 	mime_type: string;
-	user_id: string;
+	group_id: string | null;
+	keyvalues: {
+		[key: string]: string;
+	};
+	vectorized: boolean;
+	network: string;
 };
 ```
 
@@ -60,32 +66,45 @@ Upload to a specific group by passing in the `groupId`
 ```typescript {7}
 const upload = await pinata.upload.public
   .json({
-      content: "console.log('hello world!)",
-      name: "helloworld.ts",
-      lang: "ts"
+    content: "console.log('hello world!)",
+    name: "helloworld.ts",
+    lang: "ts"
   })
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
 
-### addMetadata (Optional)
+### keyvalues (Optional)
 
-- Type: [PinataMetadata](../types/files#pinatametadata)
+- Type: `Record<string, string>`
 
-Add optional metadata to file
+Add optional keyvalues to file
 
-```typescript {7-12}
+```typescript {3-8}
 const upload = await pinata.upload.public
   .json({
-      content: "console.log('hello world!)",
-      name: "helloworld.ts",
-      lang: "ts"
+    content: "console.log('hello world!)",
+    name: "helloworld.ts",
+    lang: "ts"
   })
-  .addMetadata({
-    name: "hello.json",
-    keyvalues: {
-      env: "prod"
-    }
+  .keyvalues({
+    env: "prod"
   })
+```
+
+### name (Optional)
+
+- Type: `string`
+
+Add optional name to file
+
+```typescript {3-8}
+const upload = await pinata.upload.public
+  .json({
+    content: "console.log('hello world!)",
+    name: "helloworld.ts",
+    lang: "ts"
+  })
+  .name("metadata.json")
 ```
 
 ### url (Optional)

@@ -40,21 +40,30 @@ Target CID already on IPFS
 const pin = await pinata.upload.public.cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
 ```
 
-### addMetadata (Optional)
+### keyvalues (Optional)
 
-- Type: [PinataMetadata](../types/files#pinatametadata)
+- Type: `Record<string, string>`
 
-Add optional metadata to file
+Add optional keyvalues to file
 
-```typescript
-const pin = await pinata.upload.public
+```typescript {3-8}
+const upload = await pinata.upload.public
   .cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
-  .addMetadata({
-    name: "hello.txt",
-    keyValues: {
-      whimsey: 100
-    }
+  .keyvalues({
+    env: "prod"
   })
+```
+
+### name (Optional)
+
+- Type: `string`
+
+Add optional name to file
+
+```typescript {3-8}
+const upload = await pinata.upload.public
+  .cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+  .name("hello.txt")
 ```
 
 ### group (Optional)

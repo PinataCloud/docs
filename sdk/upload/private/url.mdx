@@ -25,9 +25,15 @@ type UploadResponse = {
 	name: string;
 	cid: string;
 	size: number;
+	created_at: string;
 	number_of_files: number;
 	mime_type: string;
-	user_id: string;
+	group_id: string | null;
+	keyvalues: {
+		[key: string]: string;
+	};
+	vectorized: boolean;
+	network: string;
 };
 ```
 
@@ -55,21 +61,30 @@ const upload = await pinata.upload.private
   .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
 ```
 
-### addMetadata (Optional)
+### keyvalues (Optional)
 
-- Type: [PinataMetadata](../types/files#pinatametadata)
+- Type: `Record<string, string>`
 
-Add optional metadata to file
+Add optional keyvalues to file
 
 ```typescript {3-8}
 const upload = await pinata.upload.private
   .url("https://i.imgur.com/u4mGk5b.gif")
-  .addMetadata({
-    name: "pinnie.gif",
-    keyvalues: {
-      env: "prod"
-    }
+  .keyvalues({
+    env: "prod"
   })
+```
+
+### name (Optional)
+
+- Type: `string`
+
+Add optional name to file
+
+```typescript {3-8}
+const upload = await pinata.upload.private
+  .url("https://i.imgur.com/u4mGk5b.gif")
+  .name("pinnie.gif")
 ```
 
 ### vectorize (Optional)

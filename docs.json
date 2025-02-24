@@ -75,7 +75,7 @@
               "files/file-groups",
               "files/key-values",
               "files/vectors",
-              "web3/pinning/signatures"
+              "files/signatures"
             ]
           },
           {
@@ -317,6 +317,7 @@
                 "group": "public",
                 "pages": [
                   "sdk/upload/public/file",
+                  "sdk/upload/public/file-array",
                   "sdk/upload/public/json",
                   "sdk/upload/public/base64",
                   "sdk/upload/public/url",
