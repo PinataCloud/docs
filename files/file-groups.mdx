@@ -41,7 +41,7 @@ async function group() {
     const request = await fetch("https://api.pinata.cloud/v3/groups/public", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
         Authorization: `Bearer ${JWT}`,
       },
       body: payload,
@@ -406,7 +406,7 @@ async function group() {
     {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
         Authorization: `Bearer ${JWT}`,
       },
       body: payload

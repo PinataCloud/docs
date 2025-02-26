@@ -66,13 +66,14 @@ const files = await pinata.files.public.list()
 const files = await pinata.files.private.list()
 ```
 
-```typescript {6-7} API
+```typescript {6,8} API
 const JWT = "YOUR_PINATA_JWT";
 
 async function files() {
   try {
     // Designate network to list either public or private files
     const network = "public"
+
     const url = `https://api.pinata.cloud/v3/files/${network}`,
 
     const request = await fetch(url, {
@@ -90,6 +91,54 @@ async function files() {
 ```
 
 </CodeGroup>
+
+### Groups
+
+<CodeGroup>
+
+```typescript SDK
+// Create a public group
+const group = await pinata.groups.public.create({
+	name: "My Public Group",
+});
+
+// Create a private group
+const group = await pinata.groups.private.create({
+	name: "My Private Group",
+});
+```
+
+```typescript {5,7} API
+const JWT = "YOUR_PINATA_JWT";
+
+async function group() {
+  try {
+    const network = "public"
+
+    const endpoint = `https://api.pinata.cloud/v3/groups/${network}`
+
+    const payload = JSON.stringify({
+      name: "My Public Group",
+    })
+
+    const request = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: payload,
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
 
 ## Accessing Private Files
 
@@ -143,3 +192,28 @@ async function createAccessLink() {
 ```
 
 </CodeGroup>
+
+## Example Apps
+
+Pinata has built several example apps and tutorials you can reference to see how Private IPFS enables token gated experiences in blockchain and crpto contexts.
+
+<CardGroup cols={2}>
+
+<Card img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/781.png" title="Making Private NFTs" href="https://pinata.cloud/blog/making-private-nfts/">
+  By using Private IPFS you can gate acceess to files based on NFT ownership
+</Card>
+
+<Card img="https://www.pinata.cloud/blog/content/images/size/w2000/format/avif/2024/10/Blog-19.png" title="How to Build a Farcaster Native Gumroad on Base" href="https://www.pinata.cloud/blog/how-to-build-a-farcaster-native-gumroad-on-base/">
+  Sell digital content inside Farcaster frames and keeping it secure through Private IPFS
+</Card>
+
+<Card img="https://www.pinata.cloud/blog/content/images/size/w2000/format/avif/2025/01/1112.png" title="How To Build Simple Logging For Your Crypto App With Private IPFS" href="https://www.pinata.cloud/blog/how-to-build-simple-logging-for-your-crypto-app-with-private-ipfs/">
+  Add simple yet private logging to your crypto app using Private IPFS
+</Card>
+
+<Card img="https://www.pinata.cloud/blog/content/images/size/w2000/format/avif/2024/10/Blog-20.png" title="Building a Macintosh-Inspired Retro File System in the Browser" href="https://www.pinata.cloud/blog/building-a-macintosh-inspired-retro-file-system-in-the-browser/">
+  See the possibilities of file management using Groups and Private IPFS
+</Card>
+
+
+</CardGroup>
