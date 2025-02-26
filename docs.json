@@ -74,6 +74,7 @@
               "gateways/retrieving-files",
               "files/file-groups",
               "files/key-values",
+              "files/private-ipfs",
               "files/vectors",
               "files/signatures"
             ]
