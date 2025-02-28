@@ -1,6 +1,6 @@
 ---
-title: 'Introduction'
-description: 'Getting started with the Pinata API'
+title: "Introduction"
+description: "Getting started with the Pinata API"
 ---
 
 Welcome to the Pinata API Reference! Before you can do anything in the API, you'll need some API Keys.
@@ -9,12 +9,17 @@ Welcome to the Pinata API Reference! Before you can do anything in the API, you'
 
 Visit the [Pinata API Keys](https://app.pinata.cloud/developers/api-keys) page to generate new keys.
 
-<img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeics3mmzqr2qf27wczrf2r47qojlgfaiahbq277kilr4ykkdgoydqa" />
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmZY4xv8YQ2ttsiYL3XEyq4hGAZ7P7ddjyYguiYkrZBim2"
+/>
 
-In the New Key modal you can choose if you want the key to be an Admin key and have full access over every endpoint, or scope the keys by selecting which endpoints you want to use. You can also give it a limited number of uses, and be sure to give it a name to keep track of it. Once you have that filled out click "Create Key" and it will show you the `pinata_api_key`, `pinata_api_secret_key`, and the `JWT`. It's best to click "Copy All" and keep the API key data safe and secure. 
+In the 'New Key' modal, you can choose if you want the key to be an Admin key and have full access over every endpoint, or scope the keys by selecting which endpoints you want to use. You can also give it a limited number of uses, so be sure to give it a name to keep track of it. Once you have that filled out, click "Generate API Key" and it will show you the `pinata_api_key`, `pinata_api_secret_key`, and the `JWT`. It's best to click "Copy All" and keep the API key data safe and secure.
 
-<Warning>Once API keys have been created, you will not be able to see the secret or JWT again</Warning>
-
+<Warning>
+  Once API keys have been created, you will not be able to see the secret or JWT
+  again
+</Warning>
 
 Once you have created your keys you can go ahead and try testing them! Try to paste this into your terminal with your `JWT`
 
@@ -25,10 +30,10 @@ curl --request GET \
      --header 'authorization: Bearer YOUR_PINATA_JWT'
 ```
 
-If successful you should see this! 
+If successful you should see this!
 
 ```shell bash
-{  
-  "message": "Congratulations! You are communicating with the Pinata API!"  
+{
+  "message": "Congratulations! You are communicating with the Pinata API!"
 }
 ```

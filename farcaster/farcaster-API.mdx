@@ -1,0 +1,97 @@
+---
+title: "Farcaster API"
+slug: "farcaster-api"
+---
+
+Welcome to the Pinata Farcaster API! The Farcaster API is a free to use API that references the Pinata Hub replicator database, so instead of using the [Hub API](../hub-api-reference/introduction.mdx) you can get much easier to use data at much faster speeds.
+
+To get started you will need a Pinata API Key! 
+
+## API Keys
+
+Visit the [Pinata API Keys](https://app.pinata.cloud/developers/api-keys) page to generate new keys.
+
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmZY4xv8YQ2ttsiYL3XEyq4hGAZ7P7ddjyYguiYkrZBim2"
+/>
+
+In the 'New Key' modal, you can choose if you want the key to be an Admin key and have full access over every endpoint, or scope the keys by selecting which endpoints you want to use. You can also give it a limited number of uses, so be sure to give it a name to keep track of it. Once you have that filled out, click "Generate API Key" and it will show you the `pinata_api_key`, `pinata_api_secret_key`, and the `JWT`. It's best to click "Copy All" and keep the API key data safe and secure.
+
+<Warning>
+  Once API keys have been created, you will not be able to see the secret or JWT
+  again
+</Warning>
+
+Once you have created your keys you can go ahead and try testing them! Try to paste this into your terminal with your `JWT`
+
+```bash
+curl --request GET \
+     --url https://api.pinata.cloud/v3/farcaster/users/1 \
+     --header 'accept: application/json' \
+     --header 'authorization: Bearer YOUR_PINATA_JWT'
+```
+
+If successful you should see something like this!
+
+```json 200
+{
+  "data": {
+    "fid": 1,
+    "custody_address": "0x8773442740c17c9d0f0b87022c722f9a136206ed",
+    "recovery_address": "0x00000000fcb080a4d6c39a9354da9eb9bc104cd7",
+    "following_count": 2,
+    "follower_count": 7945,
+    "verifications": ["0x86924c37a93734e8611eb081238928a9d18a63c0"],
+    "bio": "A sufficiently decentralized social network. farcaster.xyz",
+    "display_name": "Farcaster",
+    "pfp_url": "https://i.imgur.com/I2rEbPF.png",
+    "username": "farcaster"
+  }
+}
+```
+
+## Endpoints Overview
+
+### [/casts](/farcaster/api-reference/endpoint/cast-by-hash)
+
+This endpoint is great for fetching a particular cast or by combining with query parameters to get specific lists of casts.
+
+#### Casts by FID
+
+<ParamField query="/casts?fid=6023">
+  Returns all the casts from user FID `6023`
+</ParamField>
+
+#### Casts by Following
+
+<ParamField query="/casts?fid=6023&following=true">
+  Returns all the casts from users that FID `6023` is following
+</ParamField>
+
+#### Casts by Channel
+
+<ParamField query="/casts?channel=https://warpcast.com/~/channel/pinata">
+  Returns all the casts from a specific channel, e.g. `https://warpcast.com/~/channel/pinata`
+</ParamField>
+
+### [/channels](/farcaster/api-reference/endpoint/channel-by-name)
+
+The `/channels` endpoint can be used to fetch info about a specific channel or fetch a list of channels
+
+### [/users](/farcaster/api-reference/endpoint/user-by-fid)
+
+This endpoint is similar to `/casts` in that you can either fetch a specific user by FID or you can combine multiple query parameters to get specific lists of users.
+
+#### Users Following FID
+
+<ParamField query="/users?fid=6023&followers=true">
+  Returns all the users following a specific FID
+</ParamField>
+
+
+#### Users FID Following
+
+<ParamField query="/users?fid=6023&following=true">
+  Returns all the users a specific FID is following
+</ParamField>

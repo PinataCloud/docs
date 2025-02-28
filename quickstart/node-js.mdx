@@ -11,15 +11,23 @@ This Node.js quickstart should get you up and running with your standard backend
 
 Pinata offers developer keys for various scenarios. The most common scenario is normal IPFS actions (pinning content, unpinning, listing content, etc). These actions happen through the core Pinata API, and are documented in the [Pinata API Reference](ref:pinningpinfiletoipfs).
 
-To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key. 
+To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key.
 
-<Note>If you are just getting started we recommend using Admin privileges, then move to scope keys as you better understand your needs</Note>
+<Note>
+  If you are just getting started, we recommend using Admin privileges, then
+  move to scope keys as you better understand your needs
+</Note>
 
-<img style={{ borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeiagb7ld573mjoz54urwul5qpohrfrc6o6m6nrgrgqpd6enakg6qx4" />
+<img
+  style={{ borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/QmZY4xv8YQ2ttsiYL3XEyq4hGAZ7P7ddjyYguiYkrZBim2"
+/>
 
-Once you have created the keys you will be shown your API Key Info. This will contain your **Api Key**, **API Secret**, and your **JWT**. Click "Copy All" and save them somewhere safe! 
+Once you have created the keys you will be shown your API Key Info. This will contain your **Api Key**, **API Secret**, and your **JWT**. Click "Copy All" and save them somewhere safe!
 
-<Note>The API keys are only shown once, be sure to copy them somewhere safe!</Note>
+<Note>
+  The API keys are only shown once, be sure to copy them somewhere safe!
+</Note>
 
 ## Setup a Node.js Project
 
@@ -41,44 +49,49 @@ Inside the `hello-world.txt` you can put whatever you'd like such as `Hello from
 
 Once we have our initial project setup we can put the following code into our `index.js` file.
 
-<Note>For simplicity use the Pinata JWT you received when creating your API keys!</Note>
-
+<Note>
+  For simplicity use the Pinata JWT you received when creating your API keys!
+</Note>
 
 ```javascript index.js
-const axios = require('axios')
-const FormData = require('form-data')
-const fs = require('fs')
-const JWT = 'PASTE_YOUR_PINATA_JWT'
+const axios = require("axios");
+const FormData = require("form-data");
+const fs = require("fs");
+const JWT = "PASTE_YOUR_PINATA_JWT";
 
 async function main() {
-  try{
-  const formData = new FormData();
-  
-  const file = fs.createReadStream("./hello.txt")
-  formData.append('file', file)
-  
-  const pinataMetadata = JSON.stringify({
-    name: 'File name',
-  });
-  formData.append('pinataMetadata', pinataMetadata);
-  
-  const pinataOptions = JSON.stringify({
-    cidVersion: 1,
-  })
-  formData.append('pinataOptions', pinataOptions);
+  try {
+    const formData = new FormData();
 
-    const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
-      headers: {
-        Authorization: `Bearer ${JWT}`
-      }
+    const file = fs.createReadStream("./hello.txt");
+    formData.append("file", file);
+
+    const pinataMetadata = JSON.stringify({
+      name: "File name",
     });
+    formData.append("pinataMetadata", pinataMetadata);
+
+    const pinataOptions = JSON.stringify({
+      cidVersion: 1,
+    });
+    formData.append("pinataOptions", pinataOptions);
+
+    const res = await axios.post(
+      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${JWT}`,
+        },
+      }
+    );
     console.log(res.data);
   } catch (error) {
     console.log(error);
   }
 }
 
-main()
+main();
 ```
 
 After uploading a file you should get a response that looks like this
@@ -99,7 +112,7 @@ With the `IpfsHash` you can view the file or fetch the data using an IPFS Gatewa
 async function main() {
   try {
     const res = await fetch(
-      "https://mygateway.mypinata.cloud/ipfs/bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4",
+      "https://mygateway.mypinata.cloud/ipfs/bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
     );
     const resData = await res.text();
     console.log(resData);

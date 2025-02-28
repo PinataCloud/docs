@@ -5,6 +5,7 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
+  "theme": "venus",
   "metadata": {
     "og:image": "https://docs.mypinata.cloud/ipfs/bafybeibj3a47gxdgkjfrfs6b2n3prsjbvk2lx3twp4lfahgcrfddkxukwu?filename=og.png",
     "twitter:image": "https://docs.mypinata.cloud/ipfs/bafybeibj3a47gxdgkjfrfs6b2n3prsjbvk2lx3twp4lfahgcrfddkxukwu?filename=og.png",
@@ -26,6 +27,10 @@
     }
   },
   "topbarLinks": [
+    {
+      "name": "Provide Feedback",
+      "url": "https://tally.so/r/mRz0ap"
+    },
     {
       "name": "Support",
       "url": "mailto:team@pinata.cloud"
@@ -78,17 +83,17 @@
             "quickstart/react",
             "quickstart/node-js"
           ]
-        },
-        {
-          "group": "Account Management",
-          "pages": [
-            "account-management/api-keys",
-            "account-management/workspaces",
-            "account-management/farcaster",
-            "account-management/billing",
-            "account-management/limits"
-          ]
         }
+      ]
+    },
+    {
+      "group": "Account Management",
+      "pages": [
+        "account-management/api-keys",
+        "account-management/workspaces",
+        "account-management/farcaster",
+        "account-management/billing",
+        "account-management/limits"
       ]
     },
     {
@@ -105,6 +110,7 @@
       "group": "Pinning",
       "pages": [
         "pinning/pinning-files",
+        "pinning/groups",
         "pinning/listing-files",
         "pinning/pinata-metadata",
         "pinning/deleting-files"
@@ -137,6 +143,18 @@
       ]
     },
     {
+      "group": "Groups",
+      "pages": [
+        "api-reference/endpoint/create-group",
+        "api-reference/endpoint/get-a-group",
+        "api-reference/endpoint/list-groups",
+        "api-reference/endpoint/update-group",
+        "api-reference/endpoint/add-cids-to-group",
+        "api-reference/endpoint/remove-cids-from-a-group",
+        "api-reference/endpoint/delete-group"
+      ]
+    },
+    {
       "group": "Pinning by CID",
       "pages": [
         "api-reference/endpoint/pin-by-cid",
@@ -149,7 +167,15 @@
       "pages": [
         "api-reference/endpoint/generate-pinata-api-key",
         "api-reference/endpoint/list-api-keys",
-        "api-reference/endpoint/revoke-api-key"
+        "api-reference/endpoint/revoke-api-key",
+        {
+          "group": "V3 (beta)",
+          "pages": [
+            "api-reference/endpoint/v3-create-api-key",
+            "api-reference/endpoint/v3-list-api-keys",
+            "api-reference/endpoint/v3-revoke-api-key"
+          ]
+        }
       ]
     },
     {
@@ -164,89 +190,138 @@
     },
     {
       "group": "Get Started",
-      "pages": ["farcaster/introduction", "farcaster/hubs", "farcaster/frames"]
+      "pages": [
+        "farcaster/introduction",
+        "farcaster/farcaster-auth",
+        "farcaster/farcaster-API",
+        "farcaster/image-uploads",
+        "farcaster/frames",
+        "farcaster/hubs",
+        "farcaster/fc-dev-calls/index"
+      ]
     },
     {
       "group": "Dev Tools",
-      "pages": ["farcaster/fdk"]
+      "pages": [
+        {
+          "group": "Farcaster Development Kit",
+          "pages": [
+            "farcaster/fdk/getting-started",
+            "farcaster/fdk/farcaster-auth",
+            "farcaster/fdk/farcaster-writes",
+            "farcaster/fdk/farcaster-reads",
+            "farcaster/fdk/farcaster-frames"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Farcaster API",
+      "pages": [
+        "farcaster/farcaster-api/getting-started",
+        "farcaster/farcaster-api/endpoint/cast-by-hash",
+        "farcaster/farcaster-api/endpoint/casts",
+        "farcaster/farcaster-api/endpoint/send-cast",
+        "farcaster/farcaster-api/endpoint/delete-cast",
+        "farcaster/farcaster-api/endpoint/add-reaction-to-cast",
+        "farcaster/farcaster-api/endpoint/delete-reaction-to-cast",
+        "farcaster/farcaster-api/endpoint/channels-list",
+        "farcaster/farcaster-api/endpoint/channel-by-name",
+        "farcaster/farcaster-api/endpoint/follow-fid",
+        "farcaster/farcaster-api/endpoint/unfollow-fid",
+        "farcaster/farcaster-api/endpoint/user-by-fid",
+        "farcaster/farcaster-api/endpoint/users"
+      ]
+    },
+    {
+      "group": "Farcaster Auth",
+      "pages": [
+        "farcaster/farcaster-api/auth-getting-started",
+        "farcaster/farcaster-api/endpoint/signers",
+        "farcaster/farcaster-api/endpoint/register-signer-with-warpcast",
+        "farcaster/farcaster-api/endpoint/poll-warpcast-signer",
+        "farcaster/farcaster-api/endpoint/get-signers"
+      ]
+    },
+    {
+      "group": "Frame Analytics API",
+      "pages": [
+        "farcaster/frame-analytics-api/getting-started",
+        "farcaster/frame-analytics-api/send-analytics",
+        "farcaster/frame-analytics-api/get-interactions",
+        "farcaster/frame-analytics-api/get-top-interactions"
+      ]
     },
     {
       "group": "Hub API Reference",
       "pages": [
         {
           "group": "Info",
-          "pages": ["farcaster/api-reference/endpoint/info/info"]
+          "pages": ["farcaster/hub-api-reference/endpoint/info/info"]
         },
         {
           "group": "Casts",
           "pages": [
-            "farcaster/api-reference/endpoint/casts/fetch-all-casts-authored-by-an-fid",
-            "farcaster/api-reference/endpoint/casts/fetch-all-casts-by-parent-casts-fid-and-hash-or-by-the-parents-url",
-            "farcaster/api-reference/endpoint/casts/fetch-all-casts-that-mention-an-fid",
-            "farcaster/api-reference/endpoint/casts/get-a-cast-by-its-fid-and-hash"
+            "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-authored-by-an-fid",
+            "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-by-parent-casts-fid-and-hash-or-by-the-parents-url",
+            "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-that-mention-an-fid",
+            "farcaster/hub-api-reference/endpoint/casts/get-a-cast-by-its-fid-and-hash"
           ]
         },
         {
           "group": "Reactions",
           "pages": [
-            "farcaster/api-reference/endpoint/reactions/get-a-reaction-by-its-created-fid-and-target-cast",
-            "farcaster/api-reference/endpoint/reactions/get-all-reactions-by-an-fid",
-            "farcaster/api-reference/endpoint/reactions/get-all-reactions-to-a-cast",
-            "farcaster/api-reference/endpoint/reactions/get-all-reactions-to-a-target-url"
+            "farcaster/hub-api-reference/endpoint/reactions/get-a-reaction-by-its-created-fid-and-target-cast",
+            "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-by-an-fid",
+            "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-cast",
+            "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-target-url"
           ]
         },
         {
           "group": "Links",
           "pages": [
-            "farcaster/api-reference/endpoint/links/get-a-link-by-its-fid-and-target-fid",
-            "farcaster/api-reference/endpoint/links/get-all-links-to-a-target-fid",
-            "farcaster/api-reference/endpoint/links/get-all-links-from-a-source-fid"
+            "farcaster/hub-api-reference/endpoint/links/get-a-link-by-its-fid-and-target-fid",
+            "farcaster/hub-api-reference/endpoint/links/get-all-links-to-a-target-fid",
+            "farcaster/hub-api-reference/endpoint/links/get-all-links-from-a-source-fid"
           ]
         },
         {
           "group": "User Data",
           "pages": [
-            "farcaster/api-reference/endpoint/userdata/get-userdata-for-a-fid"
+            "farcaster/hub-api-reference/endpoint/userdata/get-userdata-for-a-fid"
           ]
         },
         {
           "group": "Username Proofs",
           "pages": [
-            "farcaster/api-reference/endpoint/usernames/get-a-list-of-proofs-provided-by-an-fid",
-            "farcaster/api-reference/endpoint/usernames/get-an-proof-for-a-username-by-the-farcaster-username"
+            "farcaster/hub-api-reference/endpoint/usernames/get-a-list-of-proofs-provided-by-an-fid",
+            "farcaster/hub-api-reference/endpoint/usernames/get-an-proof-for-a-username-by-the-farcaster-username"
           ]
         },
         {
           "group": "Verifications",
           "pages": [
-            "farcaster/api-reference/endpoint/verifications/get-a-list-of-verifications-provided-by-an-fid"
+            "farcaster/hub-api-reference/endpoint/verifications/get-a-list-of-verifications-provided-by-an-fid"
           ]
         },
         {
           "group": "FIDs",
           "pages": [
-            "farcaster/api-reference/endpoint/fids/get-a-list-of-all-the-fids"
+            "farcaster/hub-api-reference/endpoint/fids/get-a-list-of-all-the-fids"
           ]
         },
         {
           "group": "Storage",
           "pages": [
-            "farcaster/api-reference/endpoint/storage/get-an-fids-storage-limits"
+            "farcaster/hub-api-reference/endpoint/storage/get-an-fids-storage-limits"
           ]
         },
         {
           "group": "Onchain API",
           "pages": [
-            "farcaster/api-reference/endpoint/onchainevents/get-a-list-of-on-chain-events-provided-by-an-fid",
-            "farcaster/api-reference/endpoint/onchainevents/get-a-list-of-signers-provided-by-an-fid",
-            "farcaster/api-reference/endpoint/onchainevents/get-an-on-chain-id-registry-event-for-a-given-address"
-          ]
-        },
-        {
-          "group": "Events",
-          "pages": [
-            "farcaster/api-reference/endpoint/hubevents/get-a-page-of-hub-events",
-            "farcaster/api-reference/endpoint/hubevents/get-an-event-by-its-id"
+            "farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-on-chain-events-provided-by-an-fid",
+            "farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-signers-provided-by-an-fid",
+            "farcaster/hub-api-reference/endpoint/onchainevents/get-an-on-chain-id-registry-event-for-a-given-address"
           ]
         }
       ]
@@ -265,5 +340,31 @@
   },
   "feedback": {
     "suggestEdit": true
-  }
+  },
+  "redirects": [
+    {
+      "source": "/farcaster/api-reference/:slug*",
+      "destination": "/farcaster/farcaster-api/:slug*"
+    },
+    {
+      "source": "/farcaster/farcaster-API",
+      "destination": "/farcaster/farcaster-api"
+    },
+    {
+      "source": "/frameworks",
+      "destination": "/farcaster/events/frameworks"
+    },
+    {
+      "source": "/farcaster/fdk",
+      "destination": "/farcaster/fdk/getting-started"
+    },
+    {
+      "source": "/farhack",
+      "destination": "farcaster/events/farhack"
+    },
+    {
+      "source": "/events/frameworks",
+      "destination": "farcaster/events/frameworks"
+    }
+  ]
 }

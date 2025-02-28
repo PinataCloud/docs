@@ -1,0 +1,67 @@
+---
+title: "Farcaster Dev Call Notes"
+description: "June 20th, 2024"
+---
+
+
+# Farcaster Topics
+
+---
+
+### Longer Casts (FIP-16) — @sanjay, @v
+
+- FIP is released: [https://github.com/farcasterxyz/protocol/discussions/182](https://github.com/farcasterxyz/protocol/discussions/182)
+    - 5% of new casts are long casts
+    - Thanks to everyone who helped get it out
+
+### Storage Reduction - @wazzymandias
+
+- Hub size is 130 GB+, like 500GB in 6-12 months.
+    - Makes it more expensive and challenging from an infra perspective
+- Proposed FIP — reduce storage unit size by 20% keep cost the same.
+    - To help combat the hub size, protocol can either increase the cost of a storage unit, or reduce the amount of storage currently in a unit for the same price
+    - Proposed FIP is for the latter, reducing storage. Thought behind this is that increasing the storage cost would hinder good growth, vs airdrop farmers who won’t really care about costs since there is a reward behind it.
+
+### Hubble — @Sanjay
+
+- [L](https://github.com/farcasterxyz/protocol/discussions/169)ink defragmentation is fully rolled out as of yesterday.
+    - Hub operators will not notice any difference
+    - Please report any issues you might have
+- Number of nodes up to 4,000+. Measuring and improving sync.
+    - Appear to be legitimate hubs that can be seen so far
+    - A lot of work will go into Sync improvements for hubs as it will be a problem when the number of hubs continue to grow
+    - Also will look into a scoring mechanism to trim out any hubs that are not performant enough
+
+### External Cast Data — @vrypan, @df
+
+- Initial proposal from vrypan and df.
+- Warpcast proposing expanding scope to support a few types (polls, articles, payments).
+    - Articles: like pulling a paragraph article into a feed
+    - Polls: Twitter level interactivity and integration
+    - Payments: Making in feed payments smoother
+- Horsefacts working on prototypes and design, should have something to share this week.
+
+### Decentralized Channels — @dwr
+
+- Narrowcast experiment
+    - Trying to improve volume quality content, textual being of importance
+    - Longer artifacts usually generate discussion and would like to see more people use them
+    - Some people have not posted in channels because it would be shown to all followers, so narrowcasts can be a way to openly share those casts that stay in channels
+    - Running the experiment for another week to see how it goes but trend is upward
+
+# Warpcast Updates
+
+---
+
+### Feed Improvements — @akshaan, @cmlad.eth
+
+- Replies have been brought into feed.
+    - If there is a reply from someone you follow you will see it in the feed
+    - It also applies if you are not following the OG poster but you do follow the person who is replying
+    - There are some small improvements to ML model
+    - Working on spacing authors, so you don’t see 2 casts from the same author within 15 casts
+- Channel content experiment hasn’t worked as well, exploring more ideas here.
+    - Tried to add highly engaged content from channels you follow but from authors you don’t follow
+    - Average quality was varied, need to find a better way to rank before injecting into the feed
+- Working on keyword muting.
+    - Possibly early next week will introduce the ability to mute key words
