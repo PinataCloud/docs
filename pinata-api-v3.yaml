@@ -2510,7 +2510,7 @@ paths:
                 type: object
               example:
                 data: null
-  /files/download_link:
+  /files/private/download_link:
     post:
       tags:
         - Private Files
