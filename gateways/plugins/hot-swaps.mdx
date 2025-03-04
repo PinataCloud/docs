@@ -8,7 +8,7 @@ The Hot Swaps plugin can be used to "redirect" a CID to another CID. This can be
 
 While it may seem like this undermines the benefits of IPFS' imutable content system, it should be made clear that this only works on a per gateway level for those who install it. Additionally:
 - Any CID can be called by another gateway to view the original content
-- Pinata has an [SDK method](/sdk/files/public/swap-history) and [API endpoint](/api-reference/endpoint/get-swap-history) that any Pinata user can call to check the history of a swap
+- Pinata has an [SDK method](/sdk/files/public/get-swap-history) and [API endpoint](/api-reference/endpoint/get-swap-history) that any Pinata user can call to check the history of a swap
 - All gateway requests that have the hot swap plugin installed and are serving a swapped CID will have a header of `etag` that will have the CID that is currently being directed to.
 
 To demonstrate how this plugin works, consider the following example:

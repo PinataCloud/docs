@@ -33,7 +33,7 @@ To upload the content you can either do a simple upload through the Pinata App b
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeieub2mj5ywdneuj44j5fkmty4i6twvu57qdnvsbrxofplqwld77vq" />
 
-Or you can upload through the [SDK](/ipfs-sdk) using a script like this:
+Or you can upload through the [SDK](/sdk) using a script like this:
 
 ```typescript
 const { PinataSDK } = require("pinata")
@@ -83,7 +83,7 @@ You'll notice that we are using the IPFS protocol URL for the image link. There 
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/bafybeigooboyucupcfkiii6xc76nscv6rpo5v4vh4u5optsbbmddyx6or4" />
 
-Once you have that file filled out you will want to save it as something like `metadata.json` (this might be different if you are making a large project using folders). Then you can upload the metadata file to Pinata using the app like before, or if you are using the API we have a [JSON endpoint](/api-reference/endpoint/pin-json-to-ipfs) you can use to simplify the process, like so:
+Once you have that file filled out you will want to save it as something like `metadata.json` (this might be different if you are making a large project using folders). Then you can upload the metadata file to Pinata using the app like before, or if you are using the API we have a [JSON endpoint](/api-reference/endpoint/ipfs/pin-json-to-ipfs) you can use to simplify the process, like so:
 
 ```typescript
 import { PinataSDK } from "pinata";

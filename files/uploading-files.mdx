@@ -8,7 +8,7 @@ icon: "file-arrow-up"
   src="https://docs.mypinata.cloud/ipfs/QmaHVPUAt5iqhCGHgMcbyRh4dkcoFNod8B38ZUaZ3urxRU?img-format=webp"
 />
 
-At the core of Pinata's services is our IPFS APIs which allow you to upload files to either public or private IPFS. You can read more about the difference between the two [here](/files/public-private).
+At the core of Pinata's services is our IPFS APIs which allow you to upload files to either public or private IPFS. You can read more about the difference between the two [here](/files/private-ipfs).
 
 Let's look at the multiple ways you can upload files!
 
@@ -411,7 +411,7 @@ async function upload() {
 
 ### JSON
 
-Pinata makes it easy to upload JSON objects using the [json](/ipfs-sdk/upload/public/json) method.
+Pinata makes it easy to upload JSON objects using the [json](/sdk/upload/public/json) method.
 
 <CodeGroup>
 
@@ -529,7 +529,7 @@ async function upload() {
 
 ### Folders
 
-The SDK can accept an array of files using the [fileArray](/ipfs-sdk/upload/file-array) method. Folders can also be uploaded via the API by creating an array of files and mapping over them to add them to the form data. This is different then having a single `file` entry and having multiple files for that one entry, which does not work.
+The SDK can accept an array of files using the [fileArray](/sdk/upload/public/file-array) method. Folders can also be uploaded via the API by creating an array of files and mapping over them to add them to the form data. This is different then having a single `file` entry and having multiple files for that one entry, which does not work.
 
 <Warning>
   Folder uploads are currently only supported on Public IPFS
@@ -684,7 +684,7 @@ pinDirectoryToIPFS();
 <br/>
 
 <Info>
-We also have other tools like the [Pinata CLI](/sdks/pinata-cli) or [Next.js Starter](/sdks/nextjs-starter) which can be used to upload using [API Keys](/account-management/api-keys)!
+We also have other tools like the [Pinata IPFS CLI](/tools/ipfs-cli) which can be used to upload using [API Keys](/account-managemnet/api-keys)!
 </Info>
 
 
@@ -867,7 +867,7 @@ Another way you can upload content to Pinata is by transferring content that is 
   src="https://docs.mypinata.cloud/ipfs/QmSFV8REjEZ3DuRAxcmLck5DNrGpqrGRJcSApGihUNXq5n"
 />
 
-Or you can pin by CID with the SDK using the [cid](/ipfs-sdk/upload/cid) method.
+Or you can pin by CID with the SDK using the [cid](/sdk/upload/public/cid) method.
 
 ```typescript
 import { PinataSDK } from "pinata-web3";
@@ -880,7 +880,7 @@ const pinata = new PinataSDK({
 const pin = await pinata.upload.public.cid("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
 ```
 
-This will result in a `request_id` and Pinata will start looking for the file. Progress can be checked by using the [pinJobs](/ipfs-sdk/data/pin-jobs) method.
+This will result in a `request_id` and Pinata will start looking for the file. Progress can be checked by using the [queue](/sdk/files/public/queue) method.
 
 ```typescript
 import { PinataSDK } from "pinata-web3";

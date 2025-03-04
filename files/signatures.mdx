@@ -4,7 +4,7 @@ description: "Learn how to use Pinata to cryptographically sign CIDs"
 icon: "file-signature"
 ---
 
-In a post-AI world it will become more and more evident that every piece of content will need a cryptographic signature to verify it's authenticity. Pinata is taking steps in this direction with the [Signatures API](/sdk/signatures) and the [Content Addressable Gateway Plugin](/gateways/plugins/content-addressable).
+In a post-AI world it will become more and more evident that every piece of content will need a cryptographic signature to verify it's authenticity. Pinata is taking steps in this direction with the [Signatures API](/sdk/signatures/public) and the [Content Addressable Gateway Plugin](/gateways/plugins/content-addressable).
 
 ## Signature Standard
 
@@ -147,7 +147,7 @@ In order to attach a signature to a CID the following requirements must be met:
 - The CID being signed was first uploaded by the signer
 - The CID must not already have an existing signature with Pinata
 
-After creating the signature with the previous step you can add it to the CID with the [add](/ipfs-sdk/signatures/add) method in the SDK.
+After creating the signature with the previous step you can add it to the CID with the [add](/sdk/signatures/public/add) method in the SDK.
 
 ```typescript
 import { PinataSDK } from "pinata-web3";
@@ -166,7 +166,7 @@ const signature = await pinata.signatures.public.add({
 
 ## Getting a Signature for a CID
 
-There are two ways you can an existing signature for a CID: the [get](/ipfs-sdk/signatures/get) method in the SDK or the [Content Addressable Gateway Plugin](/gateways/plugins/content-addressable).
+There are two ways you can an existing signature for a CID: the [get](/sdk/signatures/public/get) method in the SDK or the [Content Addressable Gateway Plugin](/gateways/plugins/content-addressable).
 
 ### Content Addressable Gateway Plugin
 

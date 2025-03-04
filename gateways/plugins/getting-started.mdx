@@ -72,7 +72,7 @@ const plugins = await fetch("https://api.pinata.cloud/v3/ipfs/plugins_marketplac
 ```
 </CodeGroup>
 
-To install one you can make a request to [/ipfs/gateway_plugins/:gateway_id](/api-reference/endpoint/install-gateway-plugin) by using the [gateway_id](/api-reference/endpoint/list-gateways) as a path parameter and the `plugin_id` as body of the request.
+To install one you can make a request to [/ipfs/gateway_plugins/:gateway_id](/api-reference/endpoint/ipfs/install-gateway-plugin) by using the [gateway_id](/api-reference/endpoint/ipfs/list-gateways) as a path parameter and the `plugin_id` as body of the request.
 
 <CodeGroup>
 ```typescript Install Plugin
@@ -102,7 +102,7 @@ const installPlugin = await fetch(`https://api.pinata.cloud/v3/ipfs/gateway_plug
 ```
 </CodeGroup>
 
-You can confirm the plugin is installed by using [/ipfs/gateway_plugins/:gateway_id](/api-reference/endpoint/list-installed-plugins-for-gateway)
+You can confirm the plugin is installed by using [/ipfs/gateway_plugins/:gateway_id](/api-reference/endpoint/ipfs/list-installed-plugins-for-gateway)
 
 <CodeGroup>
 ```typescript Get Plugins for Gateway
@@ -152,7 +152,7 @@ Then locate the target gateway and plugin, then click the action item on the rig
 
 ### Pinata API
 
-To uninstall a plug from the API you can use the [/ipfs/gateway_plugins/:gateway_id/plugin/:plugin_id](/api-reference/endpoint/uninstall-gateway-plugin) endpoint, where the `gateway_id` is the target gateway and the `plugin_id` is the target plugin to uninstall.
+To uninstall a plug from the API you can use the [/ipfs/gateway_plugins/:gateway_id/plugin/:plugin_id](/api-reference/endpoint/ipfs/uninstall-gateway-plugin) endpoint, where the `gateway_id` is the target gateway and the `plugin_id` is the target plugin to uninstall.
 
 ```typescript Install Plugin
 const gatewayId = "8673cd80-bf53-4bca-b684-bec1d6bdf004"
