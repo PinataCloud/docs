@@ -76,7 +76,8 @@
               "files/key-values",
               "files/private-ipfs",
               "files/vectors",
-              "files/signatures"
+              "files/signatures",
+              "tools/ipfs-cli"
             ]
           },
           {
@@ -99,19 +100,10 @@
           {
             "group": "Additional Resources",
             "pages": [
-              {
-                "group": "Tools",
-                "pages": [
-                  "tools/pinata-sdk",
-                  "tools/nextjs-starter",
-                  "tools/pinata-cli",
-                  "tools/files-cli",
-                  "tools/pinata-raycast-extension",
-                  "tools/community-sdks"
-                ]
-              },
+              "tools/community-sdks",
               {
                 "group": "IPFS 101",
+                "icon": "cube",
                 "pages": [
                   "ipfs-101/what-is-ipfs",
                   "ipfs-101/what-is-ipfs-pinning",
@@ -122,6 +114,7 @@
               },
               {
                 "group": "Farcaster",
+                "icon": "archway",
                 "pages": [
                   {
                     "group": "Getting Started",
