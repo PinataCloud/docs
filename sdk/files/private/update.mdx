@@ -63,3 +63,18 @@ const update = await pinata.files.private.update({
   name: "New File Name"
 })
 ```
+
+### keyvalues (Optional)
+
+- Type: `string`
+
+Update the name of a file
+
+```typescript {3-5}
+const update = await pinata.files.private.update({
+  id: "8809812b-cd36-499f-b9b3-a37258a9cd6a",
+  keyvalues: {
+    env: "prod"
+  }
+})
+```
