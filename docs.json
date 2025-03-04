@@ -628,9 +628,7 @@
   "seo": {
     "metatags": {
       "og:image": "https://docs.mypinata.cloud/ipfs/bafkreicvhjv5mipe2mk4uiq77tg5ykl7qevnj43ubonhtfj5jcseflxvsm",
-      "twitter:image": "https://docs.mypinata.cloud/ipfs/bafkreicvhjv5mipe2mk4uiq77tg5ykl7qevnj43ubonhtfj5jcseflxvsm",
-      "og:image:width": "1200",
-      "og:image:height": "630"
+      "twitter:image": "https://docs.mypinata.cloud/ipfs/bafkreicvhjv5mipe2mk4uiq77tg5ykl7qevnj43ubonhtfj5jcseflxvsm"
     },
     "indexing": "navigable"
   },
