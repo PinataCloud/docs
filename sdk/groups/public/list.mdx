@@ -1,0 +1,84 @@
+---
+title: "list"
+---
+
+List and filter through all public groups
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const groups = await pinata.groups.public
+  .list()
+```
+
+## Returns
+
+```typescript
+type GroupListResponse = {
+  groups: GroupResponseItem[];
+  next_page_token: string;
+};
+
+type GroupResponseItem = {
+    id: string;
+    name: string;
+    created_at: string;
+};
+```
+
+## Parameters
+
+Filter response with the following additional methods. All filters are optional.
+
+### name
+
+- Type: `string`
+
+Filters groups based the group name
+
+```typescript {3}
+const groups = await pinata.groups.public
+    .list()
+    .name("SDK")
+```
+
+### limit
+
+- Type: `number`
+
+Limits the number of results
+
+```typescript {3}
+const groups = await pinata.groups.public
+    .list()
+    .limit(10)
+```
+
+### pageToken
+
+- Type: `string`
+
+Paginates through groups based on a provided page token
+
+```typescript {3}
+const groups = await pinata.groups.public
+  .list()
+  .pageToken("MDE5MWIzZWYtM2U0Zi03YTY5LWE3OTQtOTRhZDE5NjQxMTk0")
+```
+
+## Auto Paginate
+
+The `list` method has an auto pagination feature that is triggered when used inside a `for await` iterator
+
+```typescript
+for await (const item of pinata.gateways.public.list()) {
+  console.log(item.name);
+}
+```

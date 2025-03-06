@@ -1,0 +1,104 @@
+---
+title: "get"
+---
+
+Retrieve a file from IPFS through the config's `pinataGateway`
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata-web3";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const file = await pinata.gateways.public.get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+```
+
+## Returns
+
+Returns the data from the CID in the form of `JSON`, `string`, or `Blob` as well as the `ContentType`
+
+```typescript
+type GetCIDResponse = {
+  data?: JSON | string | Blob | null;
+  contentType: ContentType;
+};
+
+type ContentType =
+  | "application/json"
+  | "application/xml"
+  | "text/plain"
+  | "text/html"
+  | "text/css"
+  | "text/javascript"
+  | "application/javascript"
+  | "image/jpeg"
+  | "image/png"
+  | "image/gif"
+  | "image/svg+xml"
+  | "audio/mpeg"
+  | "audio/ogg"
+  | "video/mp4"
+  | "application/pdf"
+  | "application/octet-stream"
+  | string;
+```
+
+## Parameters
+
+### cid
+
+- Type: `string`
+
+Accepts CID or IPFS gateway link.
+
+```typescript
+const data = await pinata.gateways.public.get(
+	"bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi/hello-1.txt",
+);
+
+const data = await pinata.gateways.public.get(
+	"https://ipfs.io/ipfs/bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi/hello-1.txt",
+);
+
+const data = await pinata.gateways.public.get(
+	"https://bafyreibroegmxohcbvvs3rziqsp3osyn7t5rzot34y6pn5xtewffhtsl4e.ipfs.nftstorage.link/metadata.json",
+);
+```
+
+## Methods
+
+### optimizeImage (Optional)
+
+- Type: [OptimizeImageOptions](/sdk/types#optimizeimageoptions)
+
+```typescript
+type OptimizeImageOptions = {
+  width?: number;
+  height?: number;
+  dpr?: number;
+  fit?: "scaleDown" | "contain" | "cover" | "crop" | "pad";
+  gravity?: "auto" | "side" | string;
+  quality?: number;
+  format?: "auto" | "webp";
+  animation?: boolean;
+  sharpen?: number;
+  onError?: boolean;
+  metadata?: "keep" | "copyright" | "none";
+};
+```
+
+If the content being fetched is an image you can apply image optimizations to the image.
+
+```typescript
+const data = await pinata.gateways.public
+  .get("QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng")
+  .optimizeImage({
+    width: 500,
+    height: 500,
+    format: "webp"
+  })
+```

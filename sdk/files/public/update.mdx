@@ -1,0 +1,80 @@
+---
+title: "update"
+---
+
+Update information for an existing file
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example.mypinata.cloud",
+});
+
+const update = await pinata.files.public.update({
+  id: "52681e41-86f4-407b-8f79-33a7e7e5df68",
+  name: "New File Name",
+})
+```
+
+## Returns
+
+```typescript
+type FileListItem = {
+	id: string;
+	name: string | null;
+	cid: "pending" | string;
+	size: number;
+	numberOfFiles: number;
+	mimeType: string;
+	groupId: string;
+	updatedAt: string;
+	createdAt: string;
+};
+```
+
+## Parameters
+
+### id
+
+- Type: `string`
+
+ID of the target file to update
+
+```typescript {2}
+const update = await pinata.files.public.update({
+  id: "8809812b-cd36-499f-b9b3-a37258a9cd6a",
+  name: "New File Name",
+})
+```
+
+### name (Optional)
+
+- Type: `string`
+
+Update the name of a file
+
+```typescript {3}
+const update = await pinata.files.public.update({
+  id: "8809812b-cd36-499f-b9b3-a37258a9cd6a",
+  name: "New File Name"
+})
+```
+
+### keyvalues (Optional)
+
+- Type: `string`
+
+Update the name of a file
+
+```typescript {3-5}
+const update = await pinata.files.public.update({
+  id: "8809812b-cd36-499f-b9b3-a37258a9cd6a",
+  keyvalues: {
+    env: "prod"
+  }
+})
+```

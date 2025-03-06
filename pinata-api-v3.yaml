@@ -1352,12 +1352,22 @@ paths:
                     - period_start_time: "2024-08-01"
                       requests: 108
                       bandwidth: 42130724
-  /ipfs/signature/{cid}:
+  /files/{network}/signature/{cid}:
     get:
       tags:
         - default
       summary: Get Signature for a CID
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: cid
           in: path
           schema:
@@ -1423,7 +1433,11 @@ paths:
                 signature:
                   type: string
                   description: Signature for the target CID
+                address:
+                  type: string
+                  description: Wallet address that made the signature
               example:
+                address: "0xbC18447255e86f7f6c01C25e82636dDc587Ef9dc"
                 signature: >-
                   0x1ba6c2a8412dc9b0be37b013ea5bddd97251dab4d435cc9c4c7bcf331d4017ca2de07485ad6a15ce60d3700cee802787bc7ede0c112c7843f702bb1e71b750911b
       parameters:
@@ -1434,6 +1448,16 @@ paths:
           required: true
           example: QmXGeVy9dVwfuFJmvbzz8y4dYK1TdxXbDGzwbNuyZ5xXSU
           description: Target CID to add a signature to
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
       responses:
         "200":
           description: OK
@@ -1484,6 +1508,16 @@ paths:
         - default
       summary: Remove Signature from CID
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: cid
           in: path
           schema:
@@ -2090,13 +2124,21 @@ paths:
                 type: object
               example:
                 data: null
-  /files:
+  /files/{network}:
     get:
-      tags:
-        - Private Files
       summary: List Files
       operationId: listFiles
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: name
           in: query
           schema:
@@ -2224,13 +2266,21 @@ paths:
                         whimsey: "true"
                       created_at: "2024-08-27T14:57:51.485934Z"
                   next_page_token: MDE5MTk0NTctYzJjNi03NzBlLTkzOTEtOGM3MmM0ZjQxZjY0
-  /files/{id}:
+  /files/{network}/{id}:
     get:
-      tags:
-        - Private Files
       summary: Get File by ID
       operationId: getFile
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           schema:
@@ -2305,8 +2355,6 @@ paths:
                     whimsey: "true"
                   created_at: "2024-08-27T14:57:51.485934Z"
     put:
-      tags:
-        - Private Files
       summary: Update File
       operationId: updateFile
       requestBody:
@@ -2325,6 +2373,16 @@ paths:
               example:
                 name: Hello Files API
       parameters:
+        - name: network
+          description: Target a file on either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           schema:
@@ -2399,11 +2457,19 @@ paths:
                     whimsey: "true"
                   created_at: "2024-08-27T14:57:51.485934Z"
     delete:
-      tags:
-        - Private Files
       summary: Delete File by ID
       operationId: deleteFile
       parameters:
+        - name: network
+          description: Target a file on either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           schema:
@@ -2444,12 +2510,13 @@ paths:
                 type: object
               example:
                 data: null
-  /files/sign:
+  /files/private/download_link:
     post:
       tags:
         - Private Files
-      summary: Create Signed URL
-      operationId: createSignedURL
+      summary: Create Download Link
+      description: Only used with Private IPFS. For public see [Gateways](https://docs.pinata.cloud/gateways)
+      operationId: createDownloadLink
       requestBody:
         content:
           application/json:
@@ -2513,12 +2580,23 @@ paths:
               example:
                 data: >-
                   https://blush-fast-impala-660.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm?X-Algorithm=PINATA1&X-Date=1724875300&X-Expires=500000&X-Method=GET&X-Signature=example-signature
-  /files/groups:
+  /groups/{network}:
     post:
       tags:
         - Groups
       summary: Create Group
       operationId: createGroup
+      parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
       requestBody:
         content:
           application/json:
@@ -2672,13 +2750,23 @@ paths:
                       is_public: false
                       created_at: "2024-08-28T14:49:31.246596Z"
                   next_page_token: MDE5MTk5NzYtOTU1Zi03ZDA2LWJkNTktNzJlODA3NDNmYjk1
-  /files/groups/{id}:
+  /groups/{network}/{id}:
     get:
       tags:
         - Groups
       summary: Get Group
       operationId: getGroup
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           schema:
@@ -2756,6 +2844,16 @@ paths:
                 name: Updated Name
                 is_public: true
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           description: The ID of the target group
@@ -2819,6 +2917,16 @@ paths:
       summary: Delete Group
       operationId: deleteGroup
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           schema:
@@ -2859,13 +2967,23 @@ paths:
                 type: object
               example:
                 data: null
-  /files/groups/{id}/ids/{file_id}:
+  /groups/{network}/{id}/ids/{file_id}:
     put:
       tags:
         - Groups
       summary: Add File To Group
       operationId: addFileToGroup
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           description: The ID of the target group
@@ -2923,6 +3041,16 @@ paths:
       summary: Remove File From Group
       operationId: removeFileFromGroup
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           description: The ID of the target group
@@ -2974,7 +3102,7 @@ paths:
                     type: object
               example:
                 data: null
-  /files/swap/{cid}:
+  /files/{network}/swap/{cid}:
     put:
       tags:
         - Swaps
@@ -2994,6 +3122,16 @@ paths:
               example:
                 swap_cid: bafkreig4zcnmqa23zff3ye7tuef6wrlq3aimffzm22axfeh3ddmawzlzz4
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: cid
           in: path
           schema:
@@ -3053,6 +3191,16 @@ paths:
       summary: Get Swap History
       operationId: get-swap
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: domain
           in: query
           schema:
@@ -3121,6 +3269,16 @@ paths:
       summary: Remove Swap
       operationId: delete-swap
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: cid
           in: path
           schema:

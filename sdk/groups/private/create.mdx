@@ -1,0 +1,44 @@
+---
+title: "create"
+---
+
+Create a private group
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const group = await pinata.groups.private.create({
+	name: "My New Group",
+});
+```
+
+## Returns
+
+```typescript
+type GroupResponseItem = {
+    id: string;
+    name: string;
+    created_at: string;
+};
+```
+
+## Parameters
+
+### name
+
+- Type: `string`
+
+Requires a name for the group to be created
+
+```typescript {2}
+const group = await pinata.groups.private.create({
+	name: "My New Group",
+});
+```

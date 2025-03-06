@@ -1,0 +1,161 @@
+---
+title: "json"
+---
+
+Upload a JSON object to Private IPFS
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const upload = await pinata.upload.json({
+    content: "console.log('hello world!)",
+    name: "helloworld.ts",
+    lang: "ts"
+})
+```
+
+## Returns
+
+```typescript
+type UploadResponse = {
+	id: string;
+	name: string;
+	cid: string;
+	size: number;
+	created_at: string;
+	number_of_files: number;
+	mime_type: string;
+	group_id: string | null;
+	keyvalues: {
+		[key: string]: string;
+	};
+	vectorized: boolean;
+	network: string;
+};
+```
+
+## Parameters
+
+### JSON
+
+- Type: `Record<string, unknown>`
+
+Accepts an object that is turned into JSON
+
+```typescript
+const upload = await pinata.upload.private.json({
+    content: "console.log('hello world!)",
+    name: "helloworld.ts",
+    lang: "ts"
+})
+```
+
+### group (Optional)
+
+- Type: `string`
+
+Upload to a specific group by passing in the `groupId`
+
+```typescript {7}
+const upload = await pinata.upload.private
+  .json({
+    content: "console.log('hello world!)",
+    name: "helloworld.ts",
+    lang: "ts"
+  })
+  .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
+```
+
+### keyvalues (Optional)
+
+- Type: `Record<string, string>`
+
+Add optional keyvalues to file
+
+```typescript {3-8}
+const upload = await pinata.upload.private
+  .json({
+    content: "console.log('hello world!)",
+    name: "helloworld.ts",
+    lang: "ts"
+  })
+  .keyvalues({
+    env: "prod"
+  })
+```
+
+### name (Optional)
+
+- Type: `string`
+
+Add optional name to file
+
+```typescript {3-8}
+const upload = await pinata.upload.private
+  .json({
+    content: "console.log('hello world!)",
+    name: "helloworld.ts",
+    lang: "ts"
+  })
+  .name("metadata.json")
+```
+
+### vectorize (Optional)
+
+<Warning>
+  The file vectors feature is still in beta. Please contact the team at <a href="mailto:team@pinata.cloud" target="_blank">team@pinata.cloud</a> if you have any issues.
+</Warning>
+
+- Type: `null`
+
+Vectorize a file on upload, requires a group to be used as well.
+
+```typescript {8}
+const upload = await pinata.upload.private
+  .json({
+      content: "console.log('hello world!)",
+      name: "helloworld.ts",
+      lang: "ts"
+  })
+  .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
+  .vectorize()
+```
+
+### url (Optional)
+
+- Type: `string`
+
+Pass in a presigned upload URL created with [createSignedURL](./create-signed-url)
+
+```typescript {3}
+const upload = await pinata.upload.private
+  .json({
+    content: "console.log('hello world!)",
+    name: "helloworld.ts",
+    lang: "ts"
+  })
+  .url(url)
+```
+
+### key (Optional)
+
+- Type: `string`
+
+Upload a file using a secondary API key generated through `keys.create()`
+
+```typescript {7}
+const upload = await pinata.upload.private
+    .json({
+        content: "console.log('hello world!)",
+        name: "helloworld.ts",
+        lang: "ts"
+    })
+  .key("GENERATED_API_JWT")
+```

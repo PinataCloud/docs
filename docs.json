@@ -1,0 +1,703 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Pinata Docs",
+  "colors": {
+    "primary": "#6D6FEB",
+    "light": "#5F61EA",
+    "dark": "#6D6FEB"
+  },
+  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "background": {
+    "color": {
+      "light": "#FFFFFF",
+      "dark": "#16141F"
+    }
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:team@pinata.cloud"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Pinata App",
+      "href": "https://app.pinata.cloud"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "quickstart",
+              {
+                "group": "Frameworks",
+                "icon": "react",
+                "pages": [
+                  "frameworks/next-js",
+                  "frameworks/react",
+                  "frameworks/sveltekit",
+                  "frameworks/astro",
+                  "frameworks/remix",
+                  "frameworks/node-js"
+                ]
+              },
+              "llm-docs"
+            ]
+          },
+          {
+            "group": "Account Management",
+            "pages": [
+              "account-management/api-keys",
+              "account-management/workspaces",
+              "account-management/webhooks",
+              "account-management/billing",
+              "account-management/limits"
+            ]
+          },
+          {
+            "group": "Files",
+            "pages": [
+              "files/uploading-files",
+              "files/listing-files",
+              "files/deleting-files",
+              "gateways/retrieving-files",
+              "files/file-groups",
+              "files/key-values",
+              "files/private-ipfs",
+              "files/vectors",
+              "files/signatures",
+              "tools/ipfs-cli"
+            ]
+          },
+          {
+            "group": "Gateways",
+            "pages": [
+              "gateways/dedicated-ipfs-gateways",
+              "gateways/gateway-access-controls",
+              "gateways/image-optimizations",
+              {
+                "group": "Plugins",
+                "icon": "puzzle-piece-simple",
+                "pages": [
+                  "gateways/plugins/getting-started",
+                  "gateways/plugins/content-addressable",
+                  "gateways/plugins/hot-swaps"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Additional Resources",
+            "pages": [
+              "tools/community-sdks",
+              {
+                "group": "IPFS 101",
+                "icon": "cube",
+                "pages": [
+                  "ipfs-101/what-is-ipfs",
+                  "ipfs-101/what-is-ipfs-pinning",
+                  "ipfs-101/what-are-cids",
+                  "ipfs-101/what-are-ipfs-gateways",
+                  "ipfs-101/how-does-ipfs-work-with-nfts"
+                ]
+              },
+              {
+                "group": "Farcaster",
+                "icon": "archway",
+                "pages": [
+                  {
+                    "group": "Getting Started",
+                    "pages": [
+                      "farcaster/introduction",
+                      "farcaster/farcaster-auth",
+                      "farcaster/farcaster-API",
+                      "farcaster/image-uploads",
+                      "farcaster/frames",
+                      "farcaster/hubs",
+                      "farcaster/fc-dev-calls/index"
+                    ]
+                  },
+                  {
+                    "group": "Dev Tools",
+                    "pages": [
+                      {
+                        "group": "Farcaster Development Kit",
+                        "pages": [
+                          "farcaster/fdk/getting-started",
+                          "farcaster/fdk/farcaster-auth",
+                          "farcaster/fdk/farcaster-writes",
+                          "farcaster/fdk/farcaster-reads",
+                          "farcaster/fdk/farcaster-frames"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Farcaster API",
+                    "pages": [
+                      "farcaster/farcaster-api/getting-started",
+                      "farcaster/farcaster-api/endpoint/cast-by-hash",
+                      "farcaster/farcaster-api/endpoint/casts",
+                      "farcaster/farcaster-api/endpoint/send-cast",
+                      "farcaster/farcaster-api/endpoint/delete-cast",
+                      "farcaster/farcaster-api/endpoint/add-reaction-to-cast",
+                      "farcaster/farcaster-api/endpoint/delete-reaction-to-cast",
+                      "farcaster/farcaster-api/endpoint/channels-list",
+                      "farcaster/farcaster-api/endpoint/channel-by-name",
+                      "farcaster/farcaster-api/endpoint/follow-fid",
+                      "farcaster/farcaster-api/endpoint/unfollow-fid",
+                      "farcaster/farcaster-api/endpoint/user-by-fid",
+                      "farcaster/farcaster-api/endpoint/users"
+                    ]
+                  },
+                  {
+                    "group": "Farcaster Auth",
+                    "pages": [
+                      "farcaster/farcaster-api/auth-getting-started",
+                      "farcaster/farcaster-api/endpoint/signers",
+                      "farcaster/farcaster-api/endpoint/register-signer-with-warpcast",
+                      "farcaster/farcaster-api/endpoint/poll-warpcast-signer",
+                      "farcaster/farcaster-api/endpoint/get-signers"
+                    ]
+                  },
+                  {
+                    "group": "Frame Analytics API",
+                    "pages": [
+                      "farcaster/frame-analytics-api/getting-started",
+                      "farcaster/frame-analytics-api/send-analytics",
+                      "farcaster/frame-analytics-api/get-interactions",
+                      "farcaster/frame-analytics-api/get-top-interactions"
+                    ]
+                  },
+                  {
+                    "group": "Hub API Reference",
+                    "pages": [
+                      {
+                        "group": "Info",
+                        "pages": [
+                          "farcaster/hub-api-reference/endpoint/info/info"
+                        ]
+                      },
+                      {
+                        "group": "Casts",
+                        "pages": [
+                          "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-authored-by-an-fid",
+                          "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-by-parent-casts-fid-and-hash-or-by-the-parents-url",
+                          "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-that-mention-an-fid",
+                          "farcaster/hub-api-reference/endpoint/casts/get-a-cast-by-its-fid-and-hash"
+                        ]
+                      },
+                      {
+                        "group": "Reactions",
+                        "pages": [
+                          "farcaster/hub-api-reference/endpoint/reactions/get-a-reaction-by-its-created-fid-and-target-cast",
+                          "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-by-an-fid",
+                          "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-cast",
+                          "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-target-url"
+                        ]
+                      },
+                      {
+                        "group": "Links",
+                        "pages": [
+                          "farcaster/hub-api-reference/endpoint/links/get-a-link-by-its-fid-and-target-fid",
+                          "farcaster/hub-api-reference/endpoint/links/get-all-links-to-a-target-fid",
+                          "farcaster/hub-api-reference/endpoint/links/get-all-links-from-a-source-fid"
+                        ]
+                      },
+                      {
+                        "group": "User Data",
+                        "pages": [
+                          "farcaster/hub-api-reference/endpoint/userdata/get-userdata-for-a-fid"
+                        ]
+                      },
+                      {
+                        "group": "Username Proofs",
+                        "pages": [
+                          "farcaster/hub-api-reference/endpoint/usernames/get-a-list-of-proofs-provided-by-an-fid",
+                          "farcaster/hub-api-reference/endpoint/usernames/get-an-proof-for-a-username-by-the-farcaster-username"
+                        ]
+                      },
+                      {
+                        "group": "Verifications",
+                        "pages": [
+                          "farcaster/hub-api-reference/endpoint/verifications/get-a-list-of-verifications-provided-by-an-fid"
+                        ]
+                      },
+                      {
+                        "group": "FIDs",
+                        "pages": [
+                          "farcaster/hub-api-reference/endpoint/fids/get-a-list-of-all-the-fids"
+                        ]
+                      },
+                      {
+                        "group": "Storage",
+                        "pages": [
+                          "farcaster/hub-api-reference/endpoint/storage/get-an-fids-storage-limits"
+                        ]
+                      },
+                      {
+                        "group": "Onchain API",
+                        "pages": [
+                          "farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-on-chain-events-provided-by-an-fid",
+                          "farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-signers-provided-by-an-fid",
+                          "farcaster/hub-api-reference/endpoint/onchainevents/get-an-on-chain-id-registry-event-for-a-given-address"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "SDK",
+        "groups": [
+          {
+            "group": "SDK",
+            "pages": [
+              "sdk/getting-started",
+              "sdk/v2-migration-guide",
+              "sdk/config",
+              "sdk/test-authentication"
+            ]
+          },
+          {
+            "group": "Files",
+            "icon": "file",
+            "pages": [
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/files/public/list",
+                  "sdk/files/public/update",
+                  "sdk/files/public/delete",
+                  "sdk/files/public/add-swap",
+                  "sdk/files/public/get-swap-history",
+                  "sdk/files/public/delete-swap",
+                  "sdk/files/public/queue"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/files/private/list",
+                  "sdk/files/private/update",
+                  "sdk/files/private/delete",
+                  "sdk/files/private/vectorize",
+                  "sdk/files/private/query-vectors",
+                  "sdk/files/private/delete-vectors",
+                  "sdk/files/private/add-swap",
+                  "sdk/files/private/get-swap-history",
+                  "sdk/files/private/delete-swap"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Upload",
+            "pages": [
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/upload/public/file",
+                  "sdk/upload/public/file-array",
+                  "sdk/upload/public/json",
+                  "sdk/upload/public/base64",
+                  "sdk/upload/public/url",
+                  "sdk/upload/public/cid",
+                  "sdk/upload/public/create-signed-url"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/upload/private/file",
+                  "sdk/upload/private/json",
+                  "sdk/upload/private/base64",
+                  "sdk/upload/private/url",
+                  "sdk/upload/private/create-signed-url"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Gateways",
+            "pages": [
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/gateways/public/get",
+                  "sdk/gateways/public/convert"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/gateways/private/get",
+                  "sdk/gateways/private/create-signed-url"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Groups",
+            "pages": [
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/groups/public/create",
+                  "sdk/groups/public/get",
+                  "sdk/groups/public/list",
+                  "sdk/groups/public/add-files",
+                  "sdk/groups/public/remove-files",
+                  "sdk/groups/public/update",
+                  "sdk/groups/public/delete"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/groups/private/create",
+                  "sdk/groups/private/get",
+                  "sdk/groups/private/list",
+                  "sdk/groups/private/add-files",
+                  "sdk/groups/private/remove-files",
+                  "sdk/groups/private/update",
+                  "sdk/groups/private/delete"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Signatures",
+            "pages": [
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/signatures/public/add",
+                  "sdk/signatures/public/get",
+                  "sdk/signatures/public/delete"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/signatures/private/add",
+                  "sdk/signatures/private/get",
+                  "sdk/signatures/private/delete"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Analytics",
+            "pages": [
+              "sdk/analytics/requests",
+              "sdk/analytics/bandwidth"
+            ]
+          },
+          {
+            "group": "Keys",
+            "pages": [
+              "sdk/keys/create",
+              "sdk/keys/list",
+              "sdk/keys/revoke"
+            ]
+          },
+          {
+            "group": "Types",
+            "pages": [
+              "sdk/types/config",
+              "sdk/types/uploads",
+              "sdk/types/files",
+              "sdk/types/groups",
+              "sdk/types/gateways",
+              "sdk/types/analytics",
+              "sdk/types/keys",
+              "sdk/types/signatures"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "versions": [
+          {
+            "version": "v3",
+            "groups": [
+              {
+                "group": "Uploads",
+                "pages": [
+                  "api-reference/endpoint/upload-a-file",
+                  "api-reference/endpoint/create-signed-upload-url"
+                ]
+              },
+              {
+                "group": "Files",
+                "pages": [
+                  "api-reference/endpoint/list-files",
+                  "api-reference/endpoint/get-file-by-id",
+                  "api-reference/endpoint/get-signed-url",
+                  "api-reference/endpoint/update-file",
+                  "api-reference/endpoint/delete-file-by-id",
+                  "api-reference/endpoint/vectorize-file",
+                  "api-reference/endpoint/query-file-vectors",
+                  "api-reference/endpoint/delete-file-vectors"
+                ]
+              },
+              {
+                "group": "Groups",
+                "pages": [
+                  "api-reference/endpoint/create-group",
+                  "api-reference/endpoint/get-group",
+                  "api-reference/endpoint/list-groups",
+                  "api-reference/endpoint/add-file-to-group",
+                  "api-reference/endpoint/remove-file-from-group",
+                  "api-reference/endpoint/update-group",
+                  "api-reference/endpoint/delete-group"
+                ]
+              },
+              {
+                "group": "Swaps",
+                "pages": [
+                  "api-reference/endpoint/add-swap",
+                  "api-reference/endpoint/get-swap-history",
+                  "api-reference/endpoint/remove-swap"
+                ]
+              },
+              {
+                "group": "API Keys",
+                "pages": [
+                  "api-reference/endpoint/v3-create-api-key",
+                  "api-reference/endpoint/v3-list-api-keys",
+                  "api-reference/endpoint/v3-revoke-api-key"
+                ]
+              },
+              {
+                "group": "Signatures",
+                "pages": [
+                  "api-reference/endpoint/get-signature-for-a-cid",
+                  "api-reference/endpoint/add-signature-to-cid",
+                  "api-reference/endpoint/remove-signature-from-cid"
+                ]
+              },
+              {
+                "group": "Gateways",
+                "pages": [
+                  {
+                    "group": "General",
+                    "pages": [
+                      "api-reference/endpoint/ipfs/list-gateways",
+                      "api-reference/endpoint/ipfs/gateway-details",
+                      "api-reference/endpoint/ipfs/gateway-domain-available",
+                      "api-reference/endpoint/ipfs/create-gateway",
+                      "api-reference/endpoint/ipfs/delete-gateway"
+                    ]
+                  },
+                  {
+                    "group": "Custom Domains",
+                    "pages": [
+                      "api-reference/endpoint/ipfs/gateway-custom-domain-details",
+                      "api-reference/endpoint/ipfs/create-custom-domain-for-gateway",
+                      "api-reference/endpoint/ipfs/delete-gateway-custom-domain"
+                    ]
+                  },
+                  {
+                    "group": "Access Controls",
+                    "pages": [
+                      "api-reference/endpoint/ipfs/create-gateway-key-restriction",
+                      "api-reference/endpoint/ipfs/create-gateway-ip-address-restriction",
+                      "api-reference/endpoint/ipfs/create-gateway-host-origin-restriction",
+                      "api-reference/endpoint/ipfs/revoke-gateway-key",
+                      "api-reference/endpoint/ipfs/revoke-ip-address-restricton",
+                      "api-reference/endpoint/ipfs/revoke-host-origin-restriction"
+                    ]
+                  },
+                  {
+                    "group": "Gateway Analytics",
+                    "pages": [
+                      "api-reference/endpoint/ipfs/top-gateway-analytics",
+                      "api-reference/endpoint/ipfs/time-interval-gateway-analytics"
+                    ]
+                  },
+                  {
+                    "group": "Gateway Plugins",
+                    "pages": [
+                      "api-reference/endpoint/ipfs/list-marketplace-plugins",
+                      "api-reference/endpoint/ipfs/get-marketplace-plugin-details",
+                      "api-reference/endpoint/ipfs/list-installed-plugins-for-gateway",
+                      "api-reference/endpoint/ipfs/install-gateway-plugin",
+                      "api-reference/endpoint/ipfs/list-gateway-plugins",
+                      "api-reference/endpoint/ipfs/uninstall-gateway-plugin"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "version": "legacy",
+            "groups": [
+              {
+                "group": "API Documentation",
+                "pages": [
+                  "api-reference/introduction"
+                ]
+              },
+              {
+                "group": "Authentication",
+                "pages": [
+                  "api-reference/endpoint/ipfs/test-authentication"
+                ]
+              },
+              {
+                "group": "Pinning",
+                "pages": [
+                  "api-reference/endpoint/ipfs/pin-file-to-ipfs",
+                  "api-reference/endpoint/ipfs/pin-json-to-ipfs",
+                  "api-reference/endpoint/ipfs/list-files",
+                  "api-reference/endpoint/ipfs/update-file-metadata",
+                  "api-reference/endpoint/ipfs/unpin-file"
+                ]
+              },
+              {
+                "group": "Groups",
+                "pages": [
+                  "api-reference/endpoint/ipfs/create-group",
+                  "api-reference/endpoint/ipfs/get-a-group",
+                  "api-reference/endpoint/ipfs/list-groups",
+                  "api-reference/endpoint/ipfs/update-group",
+                  "api-reference/endpoint/ipfs/add-cids-to-group",
+                  "api-reference/endpoint/ipfs/remove-cids-from-a-group",
+                  "api-reference/endpoint/ipfs/delete-group"
+                ]
+              },
+              {
+                "group": "Pinning by CID",
+                "pages": [
+                  "api-reference/endpoint/ipfs/pin-by-cid",
+                  "api-reference/endpoint/ipfs/list-pin-by-cid-jobs",
+                  "api-reference/pinning-service-api"
+                ]
+              },
+              {
+                "group": "Keys",
+                "pages": [
+                  "api-reference/endpoint/ipfs/generate-pinata-api-key",
+                  "api-reference/endpoint/ipfs/list-api-keys",
+                  "api-reference/endpoint/ipfs/revoke-api-key"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "API Keys",
+          "href": "https://app.pinata.cloud/developers/api-keys",
+          "icon": "key-skeleton-left-right"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://pinata.cloud/blog",
+          "icon": "newspaper"
+        },
+        {
+          "anchor": "Community",
+          "href": "https://github.com/PinataCloud",
+          "icon": "github"
+        }
+      ]
+    }
+  },
+  "seo": {
+    "metatags": {
+      "og:image": "https://docs.mypinata.cloud/ipfs/bafkreicvhjv5mipe2mk4uiq77tg5ykl7qevnj43ubonhtfj5jcseflxvsm",
+      "twitter:image": "https://docs.mypinata.cloud/ipfs/bafkreicvhjv5mipe2mk4uiq77tg5ykl7qevnj43ubonhtfj5jcseflxvsm"
+    },
+    "indexing": "navigable"
+  },
+  "footer": {
+    "socials": {
+      "website": "https://warpcast.com/~/channel/pinata",
+      "twitter": "https://twitter.com/pinatacloud",
+      "github": "https://github.com/PinataCloud",
+      "linkedin": "https://www.linkedin.com/company/pinatacloud"
+    }
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-5RMPXG14TE"
+    }
+  },
+  "redirects": [
+    {
+      "source": "/sdk",
+      "destination": "/sdk/getting-started"
+    },
+    {
+      "source": "/pinning/:slug*",
+      "destination": "/files/uploading-files"
+    },
+    {
+      "source": "/farcaster/:slug*",
+      "destination": "/web3/farcaster/:slug*"
+    },
+    {
+      "source": "/quickstart/:slug*",
+      "destination": "/frameworks/:slug*"
+    },
+    {
+      "source": "/farcaster/api-reference/:slug*",
+      "destination": "/farcaster/farcaster-api/:slug*"
+    },
+    {
+      "source": "/farcaster/farcaster-API",
+      "destination": "/farcaster/farcaster-api"
+    },
+    {
+      "source": "/frameworks",
+      "destination": "/farcaster/events/frameworks"
+    },
+    {
+      "source": "/farcaster/fdk",
+      "destination": "/farcaster/fdk/getting-started"
+    },
+    {
+      "source": "/farhack",
+      "destination": "farcaster/events/farhack"
+    },
+    {
+      "source": "/events/frameworks",
+      "destination": "farcaster/events/frameworks"
+    },
+    {
+      "source": "/hackutd",
+      "destination": "/events/hackutd"
+    },
+    {
+      "source": "/ugahacks",
+      "destination": "/events/ugahacks"
+    },
+    {
+      "source": "/web3/account-management/limits",
+      "destination": "account-management/limits"
+    }
+  ]
+}

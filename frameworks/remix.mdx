@@ -1,6 +1,7 @@
 ---
 title: "Remix"
 description: "Get started using Pinata with Remix"
+icon: "compact-disc"
 ---
 
 This guide will walk you through setting up Pinata in a Remix app.
@@ -38,18 +39,151 @@ The gateway domains are randomly generated and might look something like this:
 aquamarine-casual-tarantula-177.mypinata.cloud
 ```
 
-## Select Setup
+## Startup Remix Project
 
-Pinata offers two different APIs you can choose from:
+We can start a Remix app by entering the command below into the terminal
 
-<CardGroup cols={2}>
+```bash
+npx create-remix@latest pinata-remix
+```
 
-<Card icon="cube" color="#00cc92" href="/frameworks/remix-ipfs" title="Public IPFS">
-  The IPFS API has been Pinata's bread and butter for over five years, and is specially designed to work with Web3 applications such a DeFi, NFTs, Gaming, and more! Keep in mind since IPFS is a peer-to-peer protocol, any files uploaded through this API will be public.
-</Card>
+After it's finished installed we'll want to `cd` into the project and install the `pinata` SDK.
 
-<Card icon="file" href="/frameworks/remix-files" title="Private IPFS">
-  Private IPFS keeps files private by default, where you can grant access to a file by generating temporary URLs. It's great when you want to gate content behind an auth mechanism, whether that's an auth provider or through decentralized technology.
-</Card>
+```bash
+cd pinata-remix && npm i pinata
+```
 
-</CardGroup>
+Now let's make a file called `.env` file in the root of the project with the following variables:
+
+```
+PINATA_JWT= # The Pinata JWT API key we got earlier
+GATEWAY_URL= # The Gateway domain we grabbed earlier, formatting just as we copied it from the app
+```
+
+## Setup Pinata
+
+Make a folder in the root of the project called `utils`, and inside make a file called `pinata.ts` with the following code:
+
+```typescript
+import { PinataSDK } from "pinata";
+
+export const pinata = new PinataSDK({
+	pinataJwt: process.env.PINATA_JWT,
+	pinataGateway: process.env.GATEWAY_URL,
+});
+```
+
+This will create an instance of the SDK we can use throughout the app.
+
+## Upload Form and Server Action
+
+In the `app/routes` directory we can remove the boilerplate code and replace it with the code below.
+
+```typescript app/routes/_index.tsx
+import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Form, useActionData, useNavigation } from "@remix-run/react";
+import { pinata } from "utils/config";
+
+export const meta: MetaFunction = () => {
+	return [
+		{ title: "Remix + Pinata" },
+		{ name: "description", content: "Upload files on Remix with Pinata!" },
+	];
+};
+
+// Server side action to handle our upload
+export const action = async ({ request }: ActionFunctionArgs) => {
+	const formData = await request.formData();
+	const file = formData.get("file") as File;
+	const { cid } = await pinata.upload.public.file(file);
+	const url = await pinata.gateways.public.convert(cid);
+	return json({ url });
+};
+
+export default function Index() {
+	const actionData = useActionData<typeof action>();
+	const navigation = useNavigation();
+	const isSubmitting = navigation.state === "submitting";
+
+	return (
+		<div className="font-sans p-4 flex flex-col gap-4 justify-center items-center min-h-screen max-w-[500px] mx-auto">
+			<h1 className="text-3xl font-bold">Remix + Pinata</h1>
+			<Form
+				encType="multipart/form-data"
+				method="post"
+				className="flex flex-col gap-4"
+			>
+				<input type="file" name="file" className="" />
+				<button
+					className="bg-[#582CD6] text-white rounded-md p-2"
+					type="submit"
+				>
+					{isSubmitting ? "Uploading..." : "Upload"}
+				</button>
+			</Form>
+			{actionData?.url && (
+				<div className="mt-4">
+					<a
+						href={actionData.url}
+						target="_blank"
+						rel="noreferrer"
+						className="text-[#582CD6] underline"
+					>
+						{actionData.url}
+					</a>
+				</div>
+			)}
+		</div>
+	);
+}
+```
+
+Let's walk through what's happening here. To start we have our client side markup:
+
+```typescript
+<div className="font-sans p-4 flex flex-col gap-4 justify-center items-center min-h-screen max-w-[500px] mx-auto">
+			<h1 className="text-3xl font-bold">Remix + Pinata</h1>
+			<Form
+				encType="multipart/form-data"
+				method="post"
+				className="flex flex-col gap-4"
+			>
+				<input type="file" name="file" className="" />
+				<button
+					className="bg-[#582CD6] text-white rounded-md p-2"
+					type="submit"
+				>
+					{isSubmitting ? "Uploading..." : "Upload"}
+				</button>
+			</Form>
+			{actionData?.url && (
+				<div className="mt-4">
+					<a
+						href={actionData.url}
+						target="_blank"
+						rel="noreferrer"
+						className="text-[#582CD6] underline"
+					>
+						{actionData.url}
+					</a>
+				</div>
+			)}
+		</div>
+```
+
+This is a simple `Form` element provided by Remix which lets us make a submission to a server action. The most important piece to notice here is the `encType="multipart/form-data"`, which is crucial to make file / multipart requests work in Remix!
+
+Then we have our server action:
+
+```typescript
+export const action = async ({ request }: ActionFunctionArgs) => {
+	const formData = await request.formData();
+	const file = formData.get("file") as File;
+	const { cid } = await pinata.upload.public.file(file);
+	const url = await pinata.gateways.public.convert(cid);
+	return json({ url });
+};
+```
+
+This will be the default endpoint used when we submit our form. It will parse the incoming `formData`, get the `file` attached, and then we upload it to Pinata using `pinata.upload.public.file()`. From that method we deconstruct the result and return the `cid` which we can use in `convert`. This will make a URL we can return to the client and make accessible to the user, and in our case the `<a>` tag that links to the content.

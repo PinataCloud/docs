@@ -1,0 +1,223 @@
+---
+title: "Private IPFS"
+icon: "lock"
+---
+
+IPFS has traditionally been a fully public network, so anything you pin can be accessed by anyone if they have the CID. While this is a benefit for a majority of blockchain applications, there are still cases where true privacy is needed. This is why Pinata has built Private IPFS, a new service that allows you to keep content private and only share when authorized.
+
+## Private vs Public Network
+
+Everything in the SDK and API have been separated by two networks: `public` and `private`. This means files and groups will be in separate resources and will be accessed by designating the network in either the SDK method or API route.
+
+### Uploading
+
+<CodeGroup>
+
+```typescript SDK
+// Uploads a file to Public IPFS
+const publicUpload = await pinata.upload.public.file(file)
+
+// Uploads a file to Private IPFS
+const privateUpload = await pinata.upload.private.file(file)
+```
+
+```typescript {11} API
+const JWT = "PINATA_JWT";
+
+async function uploadFile() {
+  try {
+    const text = "Hello World!";
+    const blob = new Blob([text], { type: "text/plain" });
+    const file = new File([blob], "hello-world.txt");
+    const data = new FormData();
+    data.append("file", file);
+    // Upload a file to Public IPFS
+    data.append("network", "public")
+
+    const request = await fetch(
+      "https://uploads.pinata.cloud/v3/files",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${JWT}`,
+        },
+        body: data,
+      }
+    );
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
+### Listing and Querying
+
+<CodeGroup>
+
+```typescript SDK
+// List public files
+const files = await pinata.files.public.list()
+
+// List private files
+const files = await pinata.files.private.list()
+```
+
+```typescript {6,8} API
+const JWT = "YOUR_PINATA_JWT";
+
+async function files() {
+  try {
+    // Designate network to list either public or private files
+    const network = "public"
+
+    const url = `https://api.pinata.cloud/v3/files/${network}`,
+
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      }
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
+### Groups
+
+<CodeGroup>
+
+```typescript SDK
+// Create a public group
+const group = await pinata.groups.public.create({
+	name: "My Public Group",
+});
+
+// Create a private group
+const group = await pinata.groups.private.create({
+	name: "My Private Group",
+});
+```
+
+```typescript {5,7} API
+const JWT = "YOUR_PINATA_JWT";
+
+async function group() {
+  try {
+    const network = "public"
+
+    const endpoint = `https://api.pinata.cloud/v3/groups/${network}`
+
+    const payload = JSON.stringify({
+      name: "My Public Group",
+    })
+
+    const request = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: payload,
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
+
+## Accessing Private Files
+
+With Public IPFS you can simply access a file through an IPFS Gateway with a CID. Since Private IPFS does not announce to the public IPFS network the only way you can access them is with a temporary access link. This can be generated with either the SDK or the API and set to expire after a designated number of seconds.
+
+<CodeGroup>
+
+```typescript SDK
+const url = await pinata.gateways.private.createAccessLink({
+	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq", // CID of the file to access
+	expires: 30, // Number of seconds the link is valid for
+});
+```
+
+```typescript API
+const JWT = "YOUR_PINATA_JWT";
+
+async function createAccessLink() {
+  try {
+
+    // Endpoint for creating access links
+    const url = "https://api.pinata.cloud/v3/files/download_link"
+
+    // CID of the file you want to access
+    const cid = "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4"
+
+    // Current Date
+  	const date = Math.floor(new Date().getTime() / 1000);
+
+    const data = JSON.stringify({
+      url: `https://example.mypinata.cloud/files/${cid}`, // Gateway URL for the file using /files/ in the path
+      expires: 180, // Number of seconds the link will be valid for
+      date: date, // Current date of request
+      method: "GET" // GET for accessing file
+    })
+
+    const request = await fetch(url, {
+      method: "POSt",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+        "Content-Type": "application/json"
+      },
+      body: data
+    });
+    const response = await request.json();
+    return response.data
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
+## Example Apps
+
+Pinata has built several example apps and tutorials you can reference to see how Private IPFS enables token gated experiences in blockchain and crpto contexts.
+
+<Card horizontal title="PinataCloud/concealmint-client" href="https://github.com/PinataCloud/concealmint-client" icon="github">
+  GitHub repo for [CONCEALMINT](https://concealmint.com), an app for creating and access Private NFTs
+</Card>
+
+<CardGroup cols={2}>
+
+<Card img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/781.png" title="Making Private NFTs" href="https://pinata.cloud/blog/making-private-nfts/">
+  By using Private IPFS you can gate acceess to files based on NFT ownership
+</Card>
+
+<Card img="https://www.pinata.cloud/blog/content/images/size/w2000/format/avif/2024/10/Blog-19.png" title="How to Build a Farcaster Native Gumroad on Base" href="https://www.pinata.cloud/blog/how-to-build-a-farcaster-native-gumroad-on-base/">
+  Sell digital content inside Farcaster frames and keeping it secure through Private IPFS
+</Card>
+
+<Card img="https://www.pinata.cloud/blog/content/images/size/w2000/format/avif/2025/01/1112.png" title="How To Build Simple Logging For Your Crypto App With Private IPFS" href="https://www.pinata.cloud/blog/how-to-build-simple-logging-for-your-crypto-app-with-private-ipfs/">
+  Add simple yet private logging to your crypto app using Private IPFS
+</Card>
+
+<Card img="https://www.pinata.cloud/blog/content/images/size/w2000/format/avif/2024/10/Blog-20.png" title="Building a Macintosh-Inspired Retro File System in the Browser" href="https://www.pinata.cloud/blog/building-a-macintosh-inspired-retro-file-system-in-the-browser/">
+  See the possibilities of file management using Groups and Private IPFS
+</Card>
+
+
+</CardGroup>

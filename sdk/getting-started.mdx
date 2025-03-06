@@ -6,11 +6,7 @@ description: "Get up and running with the Private IPFS SDK"
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/QmQi9QEuMfsoxVPqhDQdppdyD6HSrUDsaKK5hdTvT1nikw?img-format=webp" />
 
-The Private IPFS SDK is an all-in-one tool for everything you might need, from uploading content, using Gateways, even user or group management!
-
-<Warning>
-Looking for our Public IPFS SDK? You can find it [here](/web3/sdk)!
-</Warning>
+The IPFS SDK is an all-in-one tool for everything you might need, from uploading content, using Gateways, even user or group management!
 
 ## 1. Installation and Setup
 
@@ -64,7 +60,7 @@ const pinata = new PinataSDK({
 async function main() {
   try {
     const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
-    const upload = await pinata.upload.file(file);
+    const upload = await pinata.upload.public.file(file);
     console.log(upload);
   } catch (error) {
     console.log(error);
@@ -84,16 +80,15 @@ This will return an object like the following
     size: 12,
     number_of_files: 1,
     mime_type: "text/plain;charset=utf-8",
-    user_id: "cb7c7bd8-7deb-479d-8750-34a20f2adb3b",
     group_id: null,
 }
 ```
 
 ## 3. Retrieve a File
 
-Use the `cid` of a file to fetch it through a Gateway, or create a signed URL.
+Use the `cid` of a file to fetch it through a Gateway or create a URL to access it
 
-```typescript {13-16}
+```typescript {10,13}
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
@@ -103,13 +98,10 @@ const pinata = new PinataSDK({
 
 async function main() {
   try {
-    const data = await pinata.gateways.get("bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq");
+    const data = await pinata.gateways.public.get("bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq");
     console.log(data)
 
-    const url = await pinata.gateways.createSignedURL({
-       	cid: "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
-    	expires: 1800,
-    })
+    const url = await pinata.gateways.public.convert("bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq")
     console.log(url)
 
   } catch (error) {
