@@ -101,12 +101,16 @@ You will get window asking for a valid IP Address which will allow any requests 
 
 ### Host Origin
 
-With the Host Origin restriction, you can make sure your gateway can only be used on a specific domain (for example, 'app.pinata.cloud'). To get started, click on "Add Host Origin."
+With the Host Origin restriction, you can make sure your gateway can only be used on a specific domain (for example, 'https://app.pinata.cloud'). To get started, click on "Add Host Origin."
 
 <img
   style={{ width: "100%", borderRadius: "0.5rem" }}
   src="https://docs.mypinata.cloud/ipfs/QmNyi2fS4ZaUcUearndZXUH5nqkdwnZMLNGVx9bZKDFMTS"
 />
+
+<Warning>
+  Make sure you include the `https://` protocol prefix in the URL and that there are no trailing slashes! To test localhost use the IP Access control with your public facing IP.
+</Warning>
 
 After that, you can add the domain you would like your gateway to be used from!
 
