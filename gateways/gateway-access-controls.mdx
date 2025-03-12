@@ -108,16 +108,16 @@ With the Host Origin restriction, you can make sure your gateway can only be use
   src="https://docs.mypinata.cloud/ipfs/QmNyi2fS4ZaUcUearndZXUH5nqkdwnZMLNGVx9bZKDFMTS"
 />
 
-<Warning>
-  Make sure you include the `https://` protocol prefix in the URL and that there are no trailing slashes! To test localhost use the IP Access control with your public facing IP.
-</Warning>
-
 After that, you can add the domain you would like your gateway to be used from!
 
 <img
   style={{ width: "100%", borderRadius: "0.5rem" }}
   src="https://docs.mypinata.cloud/ipfs/QmYU2A1KHT7mBcHHqKuT4Ygt6LSqvEyJYkjzMw1nCGwRWx"
 />
+
+<Warning>
+  Make sure you include the `https://` protocol prefix in the URL and that there are no trailing slashes! To test localhost use the IP Access control with your public facing IP.
+</Warning>
 
 Keep in mind, if you are rendering content on the client side using Host Origins, you will need to include a `crossorigin` tag in your `img`, `video`, `audio`, `link`, or `script` elements. Here is an example with an img element in React:
 
