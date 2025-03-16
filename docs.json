@@ -656,28 +656,8 @@
       "destination": "/files/uploading-files"
     },
     {
-      "source": "/farcaster/:slug*",
-      "destination": "/web3/farcaster/:slug*"
-    },
-    {
-      "source": "/quickstart/:slug*",
-      "destination": "/frameworks/:slug*"
-    },
-    {
-      "source": "/farcaster/api-reference/:slug*",
-      "destination": "/farcaster/farcaster-api/:slug*"
-    },
-    {
-      "source": "/farcaster/farcaster-API",
-      "destination": "/farcaster/farcaster-api"
-    },
-    {
       "source": "/frameworks",
       "destination": "/farcaster/events/frameworks"
-    },
-    {
-      "source": "/farcaster/fdk",
-      "destination": "/farcaster/fdk/getting-started"
     },
     {
       "source": "/farhack",
