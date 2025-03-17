@@ -1,0 +1,40 @@
+
+---
+title: "deletePinRequest"
+---
+
+Delete an existing Pin by CID request
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const deletedFiles = await pinata.files.public.deletePinRequest("4ad9d3d1-4ab4-464c-a42a-3027fc39a546")
+```
+
+## Returns
+
+```typescript
+OK
+```
+
+## Parameters
+
+### id
+
+- Type: `string`
+
+The request id of the pin by CID request, can be located with `queue`
+
+```typescript
+const unpin = await pinata.files.public
+  .deletePinRequest(
+    "5e3011c0-f242-46b8-ad8d-2141bba23096"
+  )
+```
