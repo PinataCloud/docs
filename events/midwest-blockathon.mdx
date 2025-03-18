@@ -1,0 +1,396 @@
+---
+title: "Midwest Blockathon"
+description: "Everything you need to start hacking with Pinata"
+'og:image': "https://dweb.mypinata.cloud/ipfs/bafybeiddzixjmwioazvyokgd4kjep45tuvosgeizenekk2ifrcznqsfb5m"
+---
+
+![cover](/assets/blockathon.png)
+
+Welcome to the Pinata Midwest Blockathon cheat sheet! This doc will have everything you need to know about:
+- Getting Started with Pinata
+- Challenge and Prizes
+- Tutorials and Guides
+
+## What is Pinata?
+
+Pinata makes decentralized file uploads easy for developers who need fast and zero-setup soltuions. Our primary product, the IPFS API, makes it as simple as one line of code to upload a file:
+
+```typescript
+const { IpfsHash } = await pinata.upload.public.file(file)
+
+// bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq
+```
+
+Retreiving files is just as easy!
+
+```typescript
+const { data, contentType } = await pinata.gateways.public.get(
+  "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq"
+)
+```
+
+Built on years of experience with IPFS, Pinata has scaled companies to serve high volumes of requests and bandwidth, as well as developers who are just starting out. We want to help build the future of the web through decentralizedd applications!
+
+## Pinata Challenge
+
+Build the best use case of Pinata's APIs or SDKs. Can involve blockchain or crypto but is not a requirement. Pinata will judge based on:
+- Real world usefulness of the app
+- How integral Pinata was to building the app
+- Pure creativity used in the final product
+
+
+## Quickstart
+
+**[Sign up for a free account](https://app.pinata.cloud/register)**
+
+<Info>
+Almost all of our features are on the free account, but if you find yourself limited and need a paid account contact <a target="_blank" href="mailto:steve@pinata.cloud">steve@pinata.cloud</a>
+</Info>
+
+<CardGroup cols={3}>
+  <Card
+    horizontal
+    title="Next.Js"
+    href="/frameworks/next-js"
+    icon={
+    <svg width="800px" height="800px" class="h-6 w-6" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid"><g><path d="M119.616813,0.0688905149 C119.066276,0.118932037 117.314565,0.294077364 115.738025,0.419181169 C79.3775171,3.69690087 45.3192571,23.3131775 23.7481916,53.4631946 C11.7364614,70.2271045 4.05395894,89.2428829 1.15112414,109.384595 C0.12512219,116.415429 0,118.492153 0,128.025062 C0,137.557972 0.12512219,139.634696 1.15112414,146.665529 C8.10791789,194.730411 42.3163245,235.11392 88.7116325,250.076335 C97.0197458,252.753556 105.778299,254.580072 115.738025,255.680985 C119.616813,256.106338 136.383187,256.106338 140.261975,255.680985 C157.453763,253.779407 172.017986,249.525878 186.382014,242.194795 C188.584164,241.068861 189.00958,240.768612 188.709286,240.518404 C188.509091,240.36828 179.124927,227.782837 167.86393,212.570214 L147.393939,184.922273 L121.743891,146.965779 C107.630108,126.098464 96.0187683,109.034305 95.9186706,109.034305 C95.8185728,109.009284 95.7184751,125.873277 95.6684262,146.465363 C95.5933529,182.52028 95.5683284,183.971484 95.1178886,184.82219 C94.4672532,186.048207 93.9667644,186.548623 92.915738,187.099079 C92.114956,187.499411 91.4142717,187.574474 87.6355816,187.574474 L83.3063539,187.574474 L82.1552297,186.848872 C81.4044966,186.373477 80.8539589,185.747958 80.4785924,185.022356 L79.9530792,183.896422 L80.0031281,133.729796 L80.0782014,83.5381493 L80.8539589,82.5623397 C81.25435,82.0369037 82.1051808,81.3613431 82.7057674,81.0360732 C83.7317693,80.535658 84.1321603,80.4856165 88.4613881,80.4856165 C93.5663734,80.4856165 94.4172043,80.6857826 95.7434995,82.1369867 C96.1188661,82.5373189 110.007429,103.454675 126.623656,128.650581 C143.239883,153.846488 165.962072,188.250034 177.122972,205.139048 L197.392766,235.839522 L198.418768,235.163961 C207.502639,229.259062 217.112023,220.852086 224.719453,212.09482 C240.910264,193.504394 251.345455,170.835585 254.848876,146.665529 C255.874878,139.634696 256,137.557972 256,128.025062 C256,118.492153 255.874878,116.415429 254.848876,109.384595 C247.892082,61.3197135 213.683675,20.9362052 167.288368,5.97379012 C159.105376,3.32158945 150.396872,1.49507389 140.637341,0.394160408 C138.234995,0.143952798 121.693842,-0.131275573 119.616813,0.0688905149 L119.616813,0.0688905149 Z M172.017986,77.4831252 C173.219159,78.0836234 174.195112,79.2345784 174.545455,80.435575 C174.74565,81.0861148 174.795699,94.9976579 174.74565,126.348671 L174.670577,171.336 L166.73783,159.17591 L158.780059,147.01582 L158.780059,114.313685 C158.780059,93.1711423 158.880156,81.2862808 159.030303,80.7108033 C159.430694,79.3096407 160.306549,78.2087272 161.507722,77.5581875 C162.533724,77.0327515 162.909091,76.98271 166.837928,76.98271 C170.541544,76.98271 171.19218,77.0327515 172.017986,77.4831252 Z"></path></g></svg>
+    }
+    >
+    Quickstart
+  </Card>
+  <Card
+    horizontal
+    title="React"
+    href="/frameworks/react"
+    icon={
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" width="28" height="32" viewBox="0 0 256 256"><path fill="#00D8FF" d="M210.483 73.824a172 172 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171 171 0 0 0-6.375 5.848a156 156 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a171 171 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a146 146 0 0 0 6.921 2.165a168 168 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a146 146 0 0 0 5.342-4.923a168 168 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145 145 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844m-6.365 70.984q-2.102.694-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14m-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a157 157 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345q.785 3.162 1.386 6.193M87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a157 157 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a135 135 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94M50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a135 135 0 0 1-6.318-1.979m12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144 144 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160 160 0 0 1-1.76-7.887m110.427 27.268a348 348 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381 381 0 0 0-7.365-13.322m-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322 322 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18M82.802 87.83a323 323 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a322 322 0 0 0-7.848 12.897m8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321 321 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147m37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486m52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382 382 0 0 0 7.859-13.026a347 347 0 0 0 7.425-13.565m-16.898 8.101a359 359 0 0 1-12.281 19.815a329 329 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310 310 0 0 1-12.513-19.846h.001a307 307 0 0 1-10.923-20.627a310 310 0 0 1 10.89-20.637l-.001.001a307 307 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329 329 0 0 1 12.335 19.695a359 359 0 0 1 11.036 20.54a330 330 0 0 1-11 20.722m22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026q-.518 2.504-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a161 161 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3M128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86"/></svg>
+    }
+  >
+    Quickstart
+  </Card>
+  <Card
+    horizontal
+    title="Node.js"
+    href="/frameworks/node-js"
+    icon={
+    <svg class="h-6 w-6" height="289" preserveAspectRatio="xMidYMid" viewBox="0 0 256 289" width="256" xmlns="http://www.w3.org/2000/svg"><path d="m127.999999 288.463771c-3.975155 0-7.6853-1.060043-11.130435-2.915115l-35.2463756-20.935818c-5.3002084-2.915114-2.650103-3.975156-1.0600426-4.505177 7.1552801-2.385091 8.4803317-2.915114 15.900623-7.15528.7950291-.53002 1.8550717-.265009 2.650103.265011l27.0310552 16.165632c1.060043.530021 2.385094.530021 3.180126 0l105.739129-61.21739c1.060043-.530023 1.590063-1.590063 1.590063-2.915115v-122.1697723c0-1.3250538-.53002-2.3850941-1.590063-2.9151143l-105.739129-60.9523818c-1.060043-.5300201-2.385094-.5300201-3.180126 0l-105.7391316 60.9523818c-1.0600403.5300202-1.5900605 1.8550717-1.5900605 2.9151143v122.1697723c0 1.060041.5300202 2.385092 1.5900605 2.915115l28.8861293 16.695652c15.6356117 7.950309 25.4409949-1.325052 25.4409949-10.600415v-120.579712c0-1.5900605 1.3250515-3.1801232 3.1801232-3.1801232h13.5155288c1.5900627 0 3.1801232 1.3250515 3.1801232 3.1801232v120.579712c0 20.935818-11.3954436 33.126293-31.2712211 33.126293-6.0952375 0-10.8654235 0-24.3809523-6.625258l-27.8260867-15.90062c-6.89026889-3.975157-11.1304347-11.395446-11.1304347-19.345758v-122.1697723c0-7.9503092 4.24016581-15.3706005 11.1304347-19.3457551l105.7391293-61.21739308c6.62526-3.71014336 15.635612-3.71014336 22.260872 0l105.739129 61.21739308c6.890269 3.9751546 11.130435 11.3954459 11.130435 19.3457551v122.1697723c0 7.950312-4.240166 15.370601-11.130435 19.345758l-105.739129 61.21739c-3.445137 1.590063-7.420291 2.385095-11.130437 2.385095zm32.596275-84.008283c-46.376813 0-55.917185-21.200829-55.917185-39.221533 0-1.590062 1.325052-3.180123 3.180123-3.180123h13.78054c1.590061 0 2.915112 1.06004 2.915112 2.650103 2.120083 14.045549 8.215323 20.935818 36.306419 20.935818 22.260871 0 31.801243-5.035197 31.801243-16.960663 0-6.890269-2.650103-11.925466-37.366461-15.370601-28.886127-2.915114-46.90683-9.275363-46.90683-32.331263 0-21.4658385 18.020703-34.1863359 48.231884-34.1863359 33.921324 0 50.616976 11.6604571 52.737059 37.1014499 0 .795031-.265011 1.590063-.795031 2.385094-.53002.53002-1.325052 1.06004-2.120083 1.06004h-13.780538c-1.325051 0-2.650103-1.06004-2.915114-2.385092-3.180123-14.575569-11.395446-19.345757-33.126293-19.345757-24.380954 0-27.296066 8.480332-27.296066 14.84058 0 7.685301 3.445134 10.070395 36.306418 14.310561 32.596273 4.240165 47.966873 10.335403 47.966873 33.126292-.265011 23.320912-19.345755 36.57143-53.00207 36.57143z" fill="#539e43"></path></svg>
+    }
+    >
+    Quickstart
+  </Card>
+  <Card
+    horizontal
+    title="Svelte"
+    href="/frameworks/sveltekit"
+    icon={
+    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" width="26.6" height="32" viewBox="0 0 256 308"><path fill="#FF3E00" d="M239.682 40.707C211.113-.182 154.69-12.301 113.895 13.69L42.247 59.356a82.2 82.2 0 0 0-37.135 55.056a86.57 86.57 0 0 0 8.536 55.576a82.4 82.4 0 0 0-12.296 30.719a87.6 87.6 0 0 0 14.964 66.244c28.574 40.893 84.997 53.007 125.787 27.016l71.648-45.664a82.18 82.18 0 0 0 37.135-55.057a86.6 86.6 0 0 0-8.53-55.577a82.4 82.4 0 0 0 12.29-30.718a87.57 87.57 0 0 0-14.963-66.244"/><path fill="#FFF" d="M106.889 270.841c-23.102 6.007-47.497-3.036-61.103-22.648a52.7 52.7 0 0 1-9.003-39.85a50 50 0 0 1 1.713-6.693l1.35-4.115l3.671 2.697a92.5 92.5 0 0 0 28.036 14.007l2.663.808l-.245 2.659a16.07 16.07 0 0 0 2.89 10.656a17.14 17.14 0 0 0 18.397 6.828a15.8 15.8 0 0 0 4.403-1.935l71.67-45.672a14.92 14.92 0 0 0 6.734-9.977a15.92 15.92 0 0 0-2.713-12.011a17.16 17.16 0 0 0-18.404-6.832a15.8 15.8 0 0 0-4.396 1.933l-27.35 17.434a52.3 52.3 0 0 1-14.553 6.391c-23.101 6.007-47.497-3.036-61.101-22.649a52.68 52.68 0 0 1-9.004-39.849a49.43 49.43 0 0 1 22.34-33.114l71.664-45.677a52.2 52.2 0 0 1 14.563-6.398c23.101-6.007 47.497 3.036 61.101 22.648a52.7 52.7 0 0 1 9.004 39.85a51 51 0 0 1-1.713 6.692l-1.35 4.116l-3.67-2.693a92.4 92.4 0 0 0-28.037-14.013l-2.664-.809l.246-2.658a16.1 16.1 0 0 0-2.89-10.656a17.14 17.14 0 0 0-18.398-6.828a15.8 15.8 0 0 0-4.402 1.935l-71.67 45.674a14.9 14.9 0 0 0-6.73 9.975a15.9 15.9 0 0 0 2.709 12.012a17.16 17.16 0 0 0 18.404 6.832a15.8 15.8 0 0 0 4.402-1.935l27.345-17.427a52.2 52.2 0 0 1 14.552-6.397c23.101-6.006 47.497 3.037 61.102 22.65a52.68 52.68 0 0 1 9.003 39.848a49.45 49.45 0 0 1-22.34 33.12l-71.664 45.673a52.2 52.2 0 0 1-14.563 6.398"/></svg>
+    }
+    >
+    Quickstart
+    </Card>
+    <Card
+      horizontal
+      title="Astro"
+      href="/frameworks/astro"
+      icon={
+      <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="url(#vscodeIconsFileTypeAstro0)" d="M11.025 20.499c-.532 1.75-.154 4.184 1.105 5.331v-.042l.042-.112c.154-.741.756-1.203 1.526-1.175c.713.014 1.12.392 1.217 1.217c.042.308.042.616.056.938v.098c0 .7.196 1.371.588 1.959c.35.56.84.993 1.497 1.287l-.028-.056l-.028-.112c-.49-1.469-.14-2.49 1.147-3.358l.392-.266l.868-.573a4.25 4.25 0 0 0 1.791-3.037c.07-.532 0-1.05-.154-1.553l-.21.14c-1.945 1.035-4.17 1.4-6.325.98c-1.301-.197-2.56-.56-3.498-1.652z"/><path fill="#fff" d="M4.925 20.191s3.736-1.82 7.486-1.82l2.84-8.759c.098-.42.406-.7.756-.7s.644.28.756.714l2.826 8.746c4.45 0 7.487 1.82 7.487 1.82L20.709 2.84c-.168-.518-.49-.84-.896-.84h-7.612c-.406 0-.7.322-.896.84z"/><defs><linearGradient id="vscodeIconsFileTypeAstro0" x1="8.19" x2="16.91" y1="23" y2="18.89" gradientTransform="translate(-.673 -2.198)scale(1.3993)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#D83333"/><stop offset="1" stop-color="#F041FF"/></linearGradient></defs></svg>
+      }
+      >
+      Quickstart
+      </Card>
+
+  <Card
+    horizontal
+    title="Remix"
+    href="/frameworks/remix"
+    icon={
+    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#888888" d="M21.511 18.508c.216 2.773.216 4.073.216 5.492H15.31c0-.309.006-.592.011-.878c.018-.892.036-1.821-.109-3.698c-.19-2.747-1.374-3.358-3.55-3.358H1.574v-5H11.97c2.748 0 4.122-.835 4.122-3.049c0-1.946-1.374-3.125-4.122-3.125H1.573V0h11.541c6.221 0 9.313 2.938 9.313 7.632c0 3.511-2.176 5.8-5.114 6.182c2.48.497 3.93 1.909 4.198 4.694M1.573 24v-3.727h6.784c1.133 0 1.379.84 1.379 1.342V24Z"/></svg>
+    }
+    >
+    Quickstart
+    </Card>
+
+</CardGroup>
+
+
+
+<Accordion title="Getting Started with Pinata">
+
+### 1. Get API key and Gateway URL
+
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/bafybeics3mmzqr2qf27wczrf2r47qojlgfaiahbq277kilr4ykkdgoydqa"
+/>
+
+Inside the [Pinata App](https://app.pinata.cloud) select "API Keys" from the sidebar, then click "New Key" in the top right. We would recommend starting with Admin privileges and unlimited uses to start. You will receive a `pinata_api_key`, `pinata_api_secret`, and a `JWT`. The JWT is the most common authentication method and what we'll be using below.
+
+Next you will want to grab your Gateway domain by clicking the Gateways tab in the sidebar. You should see it listed in the format `fun-llama-300.mypinata.cloud` and you will want to copy it exactly like that.
+
+
+### 2. Install and Setup SDK
+
+In the root of your project run the install command with your package manager of choice.
+
+<CodeGroup>
+
+```bash npm
+npm i pinata-web3
+```
+
+```bash pnpm
+pnpm i pinata-web3
+```
+
+```bash yarn
+yarn add pinata-web3
+```
+
+```bash bun
+bun i pinata-web3
+```
+
+</CodeGroup>
+
+Import and initialize the SDK in your codebase with the API key and Gateway from the previous step
+
+```typescript
+import { PinataSDK } from "pinata-web3";
+
+const pinata = new PinataSDK({
+  pinataJwt: "PINATA_JWT",
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+```
+
+<Note>The `PINATA_JWT` is a secret key, be sure to initialize the SDK in a secure environment and practice basic variable security practices. If you need to upload from a client environment, consider using signed JWTs</Note>
+
+
+### 3. Upload a File
+
+Use the `upload` method to upload a File object.
+
+<CodeGroup>
+
+```typescript SDK
+import { PinataSDK } from "pinata-web3";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+async function main() {
+  try {
+    const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
+    const upload = await pinata.upload.file(file);
+    console.log(upload);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+await main();
+```
+
+```typescript API
+const JWT = "PINATA_JWT";
+
+async function uploadFile() {
+  try {
+    const text = "Hello World!";
+    const blob = new Blob([text], { type: "text/plain" });
+    const file = new File([blob], "hello-world.txt");
+    const data = new FormData();
+    data.append("file", file);
+
+    const request = await fetch(
+      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${JWT}`,
+        },
+        body: data,
+      }
+    );
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+await pinFileToIPFS();
+```
+</CodeGroup>
+
+You should get a response object like the one below
+
+<CodeGroup>
+
+```typescript SDK
+{
+  IpfsHash: "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq",
+  PinSize: 5,
+  Timestamp: "2024-07-11T23:33:27.665Z",
+}
+```
+
+```typescript API
+{
+  IpfsHash: "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq",
+  PinSize: 5,
+  Timestamp: "2024-07-11T23:33:27.665Z",
+}
+```
+
+</CodeGroup>
+
+The unique thing about IPFS is the CID (IpfsHash) or Content Identifier. Its a unique hash based on the content ofthe file.
+
+### 4. Retrieve a File through a Gateway
+
+Use the `IpfsHash` (aka `cid`) of a file to fetch it through a Gateway or create a URL
+
+<CodeGroup>
+
+```typescript SDK
+import { PinataSDK } from "pinata-web3";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+async function main() {
+  try {
+    const data = await pinata.gateways.get(
+      "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq"
+    );
+    console.log(data)
+
+    const url = await pinata.gateways.convert(
+      "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
+    )
+    console.log(url)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+main();
+```
+
+```typescript API
+const JWT = "YOUR_PINATA_JWT";
+
+async function url() {
+  try {
+    const gateway = "example.mypinata.cloud"
+
+    const cid = "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq"
+
+    const url = `https://${gateway}/ipfs/${cid}`
+
+    console.log(url)
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
+</Accordion>
+
+## Prizes
+
+<Card horizontal title="1st Place: AirPods Max" icon="trophy" >
+</Card>
+
+<Card horizontal title="2nd Place: Apple Watch Series 10" icon="medal" >
+</Card>
+
+<Card horizontal title="3rd Place: Apple HomePod Mini" icon="party-horn" >
+</Card>
+
+## Example Apps
+
+Built specially for UGA Hacks, thedappbook is an example of a fullstack decentralized application.
+
+<Card title="thedappbook" href="https://thedappbook.com" img="https://dweb.mypinata.cloud/ipfs/bafkreih24voz7rvhcugw66ulsl7lpmk7sekq2s52anuezuaykb7qt4swo4">
+  One big wall of posts using Ethereum and IPFS through Pinata
+</Card>
+
+<Card horizontal title="Contracts" icon="github" href="https://github.com/PinataCloud/thedappbook-contracts" >
+  Smart contract handles creating posts and records data to the blockchain, including the author's wallet address, the offchain IPFS URI, and the timestamp of the post.
+</Card>
+
+
+<Card horizontal title="Client" icon="github" href="https://github.com/PinataCloud/thedappbook-client" >
+  Client allows a user to connect their wallet and write on the wall. Each post has a message and an optional image which are both uploaded to Pinata as a json file. Returned is an IPFS URL that is stored on the contract to optimize space
+</Card>
+
+
+<Card horizontal title="Server" icon="github" href="https://github.com/PinataCloud/thedappbook-server" >
+  Server provides an API endpoint where the client can get a temporary Pinata API key to handle uploads so our admin API key is not exposed on the client.
+</Card>
+
+
+## Tutorials
+
+<CardGroup cols={2}>
+
+<Card img="https://mktg.mypinata.cloud/ipfs/QmZxLu6yEeLVTTsbz5k5UM6DsH5o2wNii2q7YgtTwq7PSz" title="How to Mint NFTs with Foundry, Viem, and Pinata" href="https://pinata.cloud/blog/how-to-mint-nfts-with-foundry-viem-and-pinata/">
+</Card>
+
+<Card title="How to Mint an NFT on Base" img="https://mktg.mypinata.cloud/ipfs/QmTAQ9phy35FSxVvopE47UTU8RkR61qB2YJSLU2GyxNNXM" href="https://pinata.cloud/blog/how-to-mint-an-nft-on-base/">
+</Card>
+
+<Card img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/11/Blog-4.1-1.png" title="How to Use Pinata with Cursor, Zed, and other LLMs" href="https://pinata.cloud/blog/how-to-use-pinata-with-cursor-zed-and-other-llms/">
+</Card>
+
+<Card title="Making Private NFTs" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/781.png" href="https://pinata.cloud/blog/making-private-nfts/">
+</Card>
+
+<Card title="How to Build an NFT Indexer with Ponder and Pinata" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/113.png" href="https://pinata.cloud/blog/how-to-build-an-nft-indexer-with-ponder-and-pinata/">
+</Card>
+
+<Card title="How to Build a Fullstack Mobile App with Expo" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/blog1234.png" href="https://pinata.cloud/blog/how-to-build-a-fullstack-mobile-app-with-expo/">
+</Card>
+
+</CardGroup>
+
+<Card title="More Tutorials" href="https://pinata.cloud/blog"></Card>
+
+## Need Help?
+
+We got troops on the ground! 🫡 Come find us at our table, shoot us an email, or chat with us on [Discord](https://discord.com/channels/1293713095713226784/1303043963447545893)!
+
+<CardGroup cols={2}>
+
+<Card title="Steve Simkins">
+
+Head of Developer Relations, Resident Hillbilly
+
+Email: <a target="_blank" href="mailto:steve@pinata.cloud">steve@pinata.cloud</a>
+<br/>
+<Frame>
+![steve](https://framerusercontent.com/images/2SPglzUVWxExBDdA0lRIOsM92RE.png)
+</Frame>
+</Card>
+
+<Card title="Kyle Tut">
+
+CEO, Vibe Dreamer
+
+Email: No email, v exclusive, find the cowboy hat to chat
+<br/>
+<Frame>
+![kyle](https://framerusercontent.com/images/lL0g66FWklfKTFsnOs4Syuyqiw.png)
+</Frame>
+</Card>
+
+
+</CardGroup>

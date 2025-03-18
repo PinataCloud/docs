@@ -664,6 +664,14 @@
       "destination": "farcaster/events/farhack"
     },
     {
+      "source": "/midwestblock",
+      "destination": "events/midwest-blockathon"
+    },
+    {
+      "source": "/blockathon",
+      "destination": "events/midwest-blockathon"
+    },
+    {
       "source": "/events/frameworks",
       "destination": "farcaster/events/frameworks"
     },
