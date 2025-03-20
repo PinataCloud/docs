@@ -33,15 +33,27 @@ Built on years of experience with IPFS, Pinata has scaled companies to serve hig
 
 ## Pinata Challenge
 
-Build the best use case of Pinata's APIs or SDKs. Can involve blockchain or crypto but is not a requirement. Pinata will judge based on:
+Build the best use case of Pinata's APIs or SDKs in combination with blockchain. Pinata will judge based on:
 - Real world usefulness of the app
 - How integral Pinata was to building the app
+- Extensive use of Pinata features
 - Pure creativity used in the final product
+
+## Prizes
+
+<Card horizontal title="1st Place: $500 per Team Member" icon="trophy" >
+</Card>
+
+<Card horizontal title="2nd Place: $350 per Team Member" icon="medal" >
+</Card>
+
+<Card horizontal title="3rd Place: $250 per Team Member" icon="party-horn" >
+</Card>
 
 
 ## Quickstart
 
-**[Sign up for a free account](https://app.pinata.cloud/register)**
+<Card horizontal title="Sign Up for a Free Account!" icon="user-plus" href="https://app.pinata.cloud/register"></Card>
 
 <Info>
 Almost all of our features are on the free account, but if you find yourself limited and need a paid account contact <a target="_blank" href="mailto:steve@pinata.cloud">steve@pinata.cloud</a>
@@ -135,19 +147,19 @@ In the root of your project run the install command with your package manager of
 <CodeGroup>
 
 ```bash npm
-npm i pinata-web3
+npm i pinata
 ```
 
 ```bash pnpm
-pnpm i pinata-web3
+pnpm i pinata
 ```
 
 ```bash yarn
-yarn add pinata-web3
+yarn add pinata
 ```
 
 ```bash bun
-bun i pinata-web3
+bun i pinata
 ```
 
 </CodeGroup>
@@ -155,7 +167,7 @@ bun i pinata-web3
 Import and initialize the SDK in your codebase with the API key and Gateway from the previous step
 
 ```typescript
-import { PinataSDK } from "pinata-web3";
+import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
   pinataJwt: "PINATA_JWT",
@@ -173,7 +185,7 @@ Use the `upload` method to upload a File object.
 <CodeGroup>
 
 ```typescript SDK
-import { PinataSDK } from "pinata-web3";
+import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -183,7 +195,7 @@ const pinata = new PinataSDK({
 async function main() {
   try {
     const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
-    const upload = await pinata.upload.file(file);
+    const upload = await pinata.upload.public.file(file);
     console.log(upload);
   } catch (error) {
     console.log(error);
@@ -198,14 +210,13 @@ const JWT = "PINATA_JWT";
 
 async function uploadFile() {
   try {
-    const text = "Hello World!";
-    const blob = new Blob([text], { type: "text/plain" });
-    const file = new File([blob], "hello-world.txt");
+    const file = new File(["Hello World!"], "hello-world.txt");
     const data = new FormData();
     data.append("file", file);
+    data.append("network", "public");
 
     const request = await fetch(
-      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      "https://uploads.pinata.cloud/v3/files",
       {
         method: "POST",
         headers: {
@@ -231,17 +242,27 @@ You should get a response object like the one below
 
 ```typescript SDK
 {
-  IpfsHash: "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq",
-  PinSize: 5,
-  Timestamp: "2024-07-11T23:33:27.665Z",
+    id: "349f1bb2-5d59-4cab-9966-e94c028a05b7",
+    name: "file.txt",
+    cid: "bafybeihgxdzljxb26q6nf3r3eifqeedsvt2eubqtskghpme66cgjyw4fra",
+    size: 4682779,
+    number_of_files: 1,
+    mime_type: "text/plain",
+    group_id: null
 }
 ```
 
 ```typescript API
 {
-  IpfsHash: "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq",
-  PinSize: 5,
-  Timestamp: "2024-07-11T23:33:27.665Z",
+  data: {
+      id: "349f1bb2-5d59-4cab-9966-e94c028a05b7",
+      name: "file.txt",
+      cid: "bafybeihgxdzljxb26q6nf3r3eifqeedsvt2eubqtskghpme66cgjyw4fra",
+      size: 4682779,
+      number_of_files: 1,
+      mime_type: "text/plain",
+      group_id: null
+  }
 }
 ```
 
@@ -251,7 +272,7 @@ The unique thing about IPFS is the CID (IpfsHash) or Content Identifier. Its a u
 
 ### 4. Retrieve a File through a Gateway
 
-Use the `IpfsHash` (aka `cid`) of a file to fetch it through a Gateway or create a URL
+Use the `cid` of a file to fetch it through a Gateway or create a URL
 
 <CodeGroup>
 
@@ -265,12 +286,12 @@ const pinata = new PinataSDK({
 
 async function main() {
   try {
-    const data = await pinata.gateways.get(
+    const data = await pinata.gateways.public.get(
       "bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq"
     );
     console.log(data)
 
-    const url = await pinata.gateways.convert(
+    const url = await pinata.gateways.public.convert(
       "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq",
     )
     console.log(url)
@@ -303,17 +324,6 @@ async function url() {
 </CodeGroup>
 
 </Accordion>
-
-## Prizes
-
-<Card horizontal title="1st Place: AirPods Max" icon="trophy" >
-</Card>
-
-<Card horizontal title="2nd Place: Apple Watch Series 10" icon="medal" >
-</Card>
-
-<Card horizontal title="3rd Place: Apple HomePod Mini" icon="party-horn" >
-</Card>
 
 ## Example Apps
 
