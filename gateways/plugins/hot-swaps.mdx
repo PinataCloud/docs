@@ -36,7 +36,7 @@ async function main() {
     console.log("This is the new CID hash: ", CID2);
 
     // Create the swap, so when we visit CID1 we will get the content of CID2
-    const swap = await pinata.files.public.swapCid({
+    const swap = await pinata.files.public.addSwap({
       cid: CID1,
       swapCid: CID2,
     });
@@ -69,7 +69,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const swap = await pinata.files.public.swapCid({
+const swap = await pinata.files.public.addSwap({
   cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
   swapCid: "bafkreihumyr3bgxulu45ghws33xokwjm5o7xnkkgakaz66ldtylwiecnhu"
 })
@@ -78,7 +78,7 @@ const swap = await pinata.files.public.swapCid({
 You can fetch the history of CID swaps using the `swapHistory` method, passing in the `cid` of the original CID and the `domain` of the gateway that has the Hot Swaps plugin installed.
 
 ```typescript
-const history = await pinata.files.public.swapHistory({
+const history = await pinata.files.public.getSwapHistory({
   cid: "bafkreibbvdqf5ekc2crouowv7vtjbcmbjoiysegslmmqc6jrxbaa43xske",
   domain: "discordpinnie.mypinata.cloud"
 })
