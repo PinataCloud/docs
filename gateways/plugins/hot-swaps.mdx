@@ -14,7 +14,7 @@ While it may seem like this undermines the benefits of IPFS' imutable content sy
 To demonstrate how this plugin works, consider the following example:
 
 ```typescript
-import { PinataSDK } from "pinata-web3";
+import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -62,7 +62,7 @@ Follow the steps in the [Getting Started](/gateways/plugins/getting-started) gui
 After installing the plugin you can then make CID swaps and have them reflect when making Gateway requests. The first parameter `cid` will be the original CID, and `swapCid` will be the content you want it to point to instead.
 
 ```typescript
-import { PinataSDK } from "pinata-web3";
+import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
