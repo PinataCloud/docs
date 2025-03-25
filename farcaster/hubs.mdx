@@ -3,7 +3,7 @@ title: "Hubs"
 slug: "hubs"
 ---
 
-Hubs are peer to peer servers that work together to download and serve both onchain and offchain data for the Farcaster network. They are key to keeping the network running and for allowing developers to build apps on top of Farcaster. Any time you need to access data from Farcaster such as messages, users, or events, you'll need to access it in the form of a Hub. Sometimes this might take place in the raw [Hub API](/farcaster/api-reference) or through an abstraction.
+Hubs are peer to peer servers that work together to download and serve both onchain and offchain data for the Farcaster network. They are key to keeping the network running and for allowing developers to build apps on top of Farcaster. Any time you need to access data from Farcaster such as messages, users, or events, you'll need to access it in the form of a Hub. Sometimes this might take place in the raw [Hub API](/farcaster/hub-api-reference) or through an abstraction.
 
 Pinata offers free to use Hubs that can be accessed via **API**:
 
@@ -29,7 +29,7 @@ For more info on how to use the Hub API, check out our [Hub API Reference](/farc
 
 ### Hub gRPC
 
-The gRPC endpoint can be used inside the [hub-nodejs](https://github.com/farcasterxyz/hub-monorepo/tree/main/packages/hub-nodejs) library and provides a level of abstraction. 
+The gRPC endpoint can be used inside the [hub-nodejs](https://github.com/farcasterxyz/hub-monorepo/tree/main/packages/hub-nodejs) library and provides a level of abstraction.
 
 ```javascript
 import { getSSLHubRpcClient } from '@farcaster/hub-nodejs';
