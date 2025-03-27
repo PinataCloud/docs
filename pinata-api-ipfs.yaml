@@ -805,6 +805,7 @@ paths:
               - over_max_size
               - invalid_object
               - bad_host_node
+              - backfilled
           examples:
             default:
               value: retrieving
