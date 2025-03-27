@@ -902,6 +902,7 @@ All possible filters are included in the API reference below, but these are the 
   - `searching` Pinata is actively searching for your content on the IPFS network. This may take some time if your content is isolated.
   - `retrieving` Pinata has located your content and is now in the process of retrieving it.
   - `expired` Pinata wasn't able to find your content after a day of searching the IPFS network. Please make sure your content is hosted on the IPFS network before trying to pin again.
+  - `backfilled` Pinata can only search 250 files at a time per account, so if you have more than 250 items in your queue then the extra items will sit in a backfilled status. Once the queue goes down it will automatically start working on the next items in the backfill queue.
   - `over_free_limit` Pinning this object would put you over the free tier limit. Please add a credit card to continue pinning content.
   - `over_max_size` This object is too large of an item to pin. If you're seeing this, please contact us for a more custom solution.
   - `invalid_object` The object you're attempting to pin isn't readable by IPFS nodes. Please contact us if you receive this, as we'd like to better understand what you're attempting to pin.
