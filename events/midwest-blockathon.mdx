@@ -13,10 +13,10 @@ Welcome to the Pinata Midwest Blockathon cheat sheet! This doc will have everyth
 
 ## What is Pinata?
 
-Pinata makes decentralized file uploads easy for developers who need fast and zero-setup soltuions. Our primary product, the IPFS API, makes it as simple as one line of code to upload a file:
+Pinata makes decentralized file uploads easy for developers who need fast and zero-setup soltuions. Our primary product, the IPFS API and SDK, makes it as simple as one line of code to upload a file:
 
 ```typescript
-const { IpfsHash } = await pinata.upload.public.file(file)
+const { cid } = await pinata.upload.public.file(file)
 
 // bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq
 ```
@@ -273,7 +273,7 @@ Use the `cid` of a file to fetch it through a Gateway or create a URL
 <CodeGroup>
 
 ```typescript SDK
-import { PinataSDK } from "pinata-web3";
+import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
