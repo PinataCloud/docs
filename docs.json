@@ -393,7 +393,8 @@
                   "api-reference/endpoint/delete-file-by-id",
                   "api-reference/endpoint/vectorize-file",
                   "api-reference/endpoint/query-file-vectors",
-                  "api-reference/endpoint/delete-file-vectors"
+                  "api-reference/endpoint/delete-file-vectors",
+                  "api-reference/endpoint/pin-by-cid"
                 ]
               },
               {
