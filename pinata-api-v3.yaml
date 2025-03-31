@@ -2596,6 +2596,113 @@ paths:
                         type: array
                         items:
                           type: string
+    get:
+      summary: Query Pin Requests
+      description: Query existing pin by CID requests
+      operationId: queryPinRequests
+      parameters:
+        - name: order
+          description: Change the order of the results by date_queued
+          in: query
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+          example: ASC
+        - name: status
+          description: Filter pin by CID status
+          in: query
+          schema:
+            type: string
+            enum:
+              - prechecking
+              - backfilled
+              - retreiving
+              - expired
+              - searching
+              - over_free_limit
+              - over_max_size
+              - invalid_object
+              - bad_host_node
+        - name: cid
+          description: Filter queue by CID
+          in: query
+          schema:
+            type: string
+          example: QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng
+        - name: limit
+          description: Limit the number of results returned when querying the queue
+          in: query
+          schema:
+            type: string
+          example: 10
+        - name: pageToken
+          description: Paginate through pin by cid request results
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:04:00 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "303"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 5cda7fd04bb31bc8c6bd461089fcfa1c
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      jobs:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            cid:
+                              type: string
+                            name:
+                              type: string
+                            status:
+                              type: string
+                            keyvalues:
+                              type: object
+                            host_nodes:
+                              type: array
+                              items:
+                                type: string
+                            group_id:
+                              type: string
+                            date_queued:
+                              type: string
+                      next_page_token:
+                        type: string
   /files/private/download_link:
     post:
       tags:
