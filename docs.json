@@ -393,9 +393,7 @@
                   "api-reference/endpoint/delete-file-by-id",
                   "api-reference/endpoint/vectorize-file",
                   "api-reference/endpoint/query-file-vectors",
-                  "api-reference/endpoint/delete-file-vectors",
-                  "api-reference/endpoint/pin-by-cid",
-                  "api-reference/endpoint/query-pin-requests"
+                  "api-reference/endpoint/delete-file-vectors"
                 ]
               },
               {
@@ -408,6 +406,14 @@
                   "api-reference/endpoint/remove-file-from-group",
                   "api-reference/endpoint/update-group",
                   "api-reference/endpoint/delete-group"
+                ]
+              },
+              {
+                "group": "Pin by CID",
+                "pages": [
+                  "api-reference/endpoint/pin-by-cid",
+                  "api-reference/endpoint/query-pin-requests",
+                  "api-reference/endpoint/cancel-pin-by-cid"
                 ]
               },
               {

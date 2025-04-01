@@ -2703,6 +2703,52 @@ paths:
                               type: string
                       next_page_token:
                         type: string
+  /files/public/pin_by_cid/{id}:
+    delete:
+      summary: Cancel Request
+      description: Cancel and existing pin_by_cid request
+      operationId: cancelPinByCID
+      parameters:
+        - name: id
+          description: ID of the pin_by_cid request
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:04:00 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "303"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 5cda7fd04bb31bc8c6bd461089fcfa1c
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
   /files/private/download_link:
     post:
       tags:
