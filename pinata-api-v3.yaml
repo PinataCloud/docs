@@ -128,6 +128,7 @@ paths:
                       type: object
                       description: |
                         ### Legacy endpoints
+                        These properties are to be used with [legacy endpoints](/api-reference/endpoint/ipfs/pin-file-to-ipfs), any V3 endpoints should use `resources` instead
                       properties:
                         data:
                           type: object
