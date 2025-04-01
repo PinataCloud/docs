@@ -1025,7 +1025,7 @@ paths:
                 type: object
               example:
                 data: null
-  /ipfs/gateway_analytics_top:
+  /analytics/gateways/top:
     get:
       tags:
         - Gateway Analytics
@@ -1173,7 +1173,7 @@ paths:
                       bafybeiegx7bgm5gpiutivw6e234gflheqjmp7hxlxfkihd3zdfx6omocia
                     requests: 1341
                     bandwidth: 287310699
-  /ipfs/gateway_analytics_time_series:
+  /analytics/gateways/time_series:
     get:
       tags:
         - Gateway Analytics
