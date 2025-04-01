@@ -17,7 +17,8 @@ paths:
       tags:
         - default
       summary: Upload a File
-      description: Upload a file to either Public or Private IPFS
+      description: |
+        `org:files:write`
       requestBody:
         content:
           multipart/form-data:
@@ -84,7 +85,8 @@ paths:
       tags:
         - default
       summary: Create Signed Upload URL
-      description: Create a temproary signed upload URL, best used for client side uploads
+      description: |
+        `org:files:write`
       requestBody:
         content:
           application/json:
@@ -126,7 +128,8 @@ paths:
       tags:
         - Private Files
       summary: Vectorize a File
-      description: Vectorize an existing file. File must already be part of a group.
+      description: |
+        `org:write`
       parameters:
         - schema:
             type: string
@@ -150,7 +153,8 @@ paths:
       tags:
         - Private Files
       summary: Delete File Vectors
-      description: Delete file vectors for an existing file.
+      description: |
+        `org:write`
       parameters:
         - schema:
             type: string
@@ -175,7 +179,8 @@ paths:
       tags:
         - Private Files
       summary: Query File Vectors
-      description: Query file vectors for a given group
+      description: |
+        `org:write`
       parameters:
         - schema:
             type: string
