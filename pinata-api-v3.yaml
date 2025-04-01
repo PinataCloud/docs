@@ -12,7 +12,7 @@ components:
 security:
   - bearerAuth: []
 paths:
-  /pinata/keys:
+  /api_keys:
     get:
       tags:
         - default
@@ -115,6 +115,11 @@ paths:
                     admin:
                       type: boolean
                       description: Provides full access to permissions
+                    resources:
+                      type: array
+                      description: Provide an array of scopes in the form `org:<RESOURCE>:<PERMISSION>`. Resources include `files`, `groups`, `gateways`, and `analytics`. Permissions are either `read` or `write` (`write` includes `read` permissions)
+                      items:
+                        type: string
                     endpoints:
                       type: object
                       properties:
@@ -144,12 +149,8 @@ paths:
                               type: boolean
                             userPinPolicy:
                               type: boolean
-                maxUses:
-                  type: integer
-                  description: Maximum number of uses for the API key
               required:
                 - keyName
-                - permissions
               example:
                 keyname: A test
                 permissions:
@@ -189,8 +190,8 @@ paths:
                 pinata_api_key: key
                 pinata_api_secret: >-
                   secret
-  /pinata/keys/{key}:
-    put:
+  /api_keys/{key}:
+    delete:
       tags:
         - default
       summary: Revoke API Key
