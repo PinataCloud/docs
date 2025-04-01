@@ -18,6 +18,14 @@
       "dark": "#16141F"
     }
   },
+  "contextual": {
+    "options": [
+      "chatgpt",
+      "claude",
+      "copy",
+      "view"
+    ]
+  },
   "navbar": {
     "links": [
       {
