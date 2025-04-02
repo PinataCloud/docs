@@ -102,6 +102,14 @@ paths:
                 expires:
                   type: number
                   description: How long the URL is valid for in sconds after signing based on the date parameter
+                max_file_size:
+                  type: number
+                  description: Restrict the max size of a file upload in `bytes`
+                allow_mime_types:
+                  type: array
+                  description: Array of allowed mime types for a file upload, includes wildcards `"image/*"`
+                  items:
+                    type: string
                 group_id:
                   type: string
                   description: ID of the group that the file will be uploaded to
