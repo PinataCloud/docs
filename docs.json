@@ -385,6 +385,12 @@
             "version": "v3",
             "groups": [
               {
+                "group": "API Documentation",
+                "pages": [
+                  "api-reference/introduction"
+                ]
+              },
+              {
                 "group": "Uploads",
                 "pages": [
                   "api-reference/endpoint/upload-a-file",
