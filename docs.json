@@ -77,6 +77,7 @@
             "group": "Files",
             "pages": [
               "files/uploading-files",
+              "files/presigned-uploads",
               "files/listing-files",
               "files/deleting-files",
               "gateways/retrieving-files",

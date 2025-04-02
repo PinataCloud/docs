@@ -1,0 +1,228 @@
+---
+title: "Hono"
+icon: "fire"
+---
+
+[Hono](https://hono.dev) is a lightweight web framework for Deno and Node.js. It is designed to be fast, simple, and easy to use.
+
+## Installation
+
+### Create an API Key and get Gateway URL
+
+To create an API key, visit the [Keys Page](https://app.pinata.cloud/developers/keys) and click the "New Key" button in the top right. Once you do that you can select if you want your key to be admin or if you want to scope the privileges of the keys to certain endpoints or limit the number of uses. Make those selections, then give the key a name at the bottom, and click create key.
+
+<Note>
+We highly encourage scoping keys if you are planning to expose them in a client side environment
+</Note>
+
+<img
+  style={{ borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/bafybeignh2yy7bp7qpts5vi46prbjd6lbz23lmtbfcgvpcwc5rjkudrfta"
+/>
+
+Once you have created the keys, you will be shown your API Key Info. This will contain your **Api Key**, **API Secret**, and your **JWT**. Click "Copy All" and save them somewhere safe!
+
+<Note>
+  The API keys are only shown once, so be sure to copy them somewhere safe!
+</Note>
+
+After you have your API key, you will want to get your Gateway domain. When you create a Pinata account, you'll automatically have a Gateway created for you! To see it, simply visit the [Gateways Page](https://app.pinata.cloud/gateway) see it listed there.
+
+<img
+  style={{ width: "100%", borderRadius: "0.5rem" }}
+  src="https://docs.mypinata.cloud/ipfs/bafkreiaedels7u6z6f3dwgmp5t25a2o74xt2kqe4kf72tk6orri7hrbfy4"
+/>
+
+The gateway domains are randomly generated and might look something like this:
+
+```
+aquamarine-casual-tarantula-177.mypinata.cloud
+```
+
+### Start up React Project
+
+Run the command below to make a new React project:
+
+```bash
+npm create vite@latest
+```
+
+Give the project a name and select the React framework. Then `cd` into the project and install `pinata`.
+
+```bash
+npm i pinata
+```
+
+After making the project, create a `.env.local` file in the root of the project and put in the following variables:
+
+```
+VITE_PINATA_JWT=
+VITE_GATEWAY_URL=
+```
+
+Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `mydomain.mypinata.cloud`.
+
+### Setup Pinata
+
+Create a directory called `utils` in the `src` folder of the project and then make a file called `config.ts` inside of it. In that file we'll export an instance of the Files SDK that we can use throughout the rest of the app.
+
+```typescript src/utils/config.ts
+import { PinataSDK } from "pinata"
+
+export const pinata = new PinataSDK({
+  pinataJwt: `${import.meta.env.VITE_PINATA_JWT}`,
+  pinataGateway: `${import.meta.env.VITE_GATEWAY_URL}`
+})
+```
+
+### Create Upload Form
+
+Next we'll want to make an upload form on the client side that will allow someone to select a file and upload it.
+
+In the `src/App.tsx` file take out the boiler plate code and use the following. Switch between tabs if you want to see how you would handle folder uploads.
+
+<Warning>Uploading files like this will expose your API keys!</Warning>
+
+<CodeGroup>
+
+```typescript src/App.tsx - Single File
+import { useState } from "react";
+import { pinata } from "./utils/config"
+
+function App() {
+  const [selectedFile, setSelectedFile]: any = useState();
+  const changeHandler = (event: any) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleSubmission = async () => {
+    try {
+      const upload = await pinata.upload.public.file(selectedFile)
+      console.log(upload);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <label className="form-label"> Choose File</label>
+      <input type="file" onChange={changeHandler} />
+      <button onClick={handleSubmission}>Submit</button>
+    </>
+  );
+}
+
+export default App;
+```
+
+```typescript src/App.tsx - Folders
+import { useState } from "react";
+
+function App() {
+  const [selectedFile, setSelectedFile]: any = useState();
+  const changeHandler = (event: any) => {
+    setSelectedFile(event.target.files);
+  };
+
+  const handleSubmission = async () => {
+    try {
+      const formData = new FormData();
+      Array.from(selectedFile).forEach((file) => {
+        formData.append("file", file);
+      });
+      const metadata = JSON.stringify({
+        name: "File name",
+      });
+      formData.append("pinataMetadata", metadata);
+
+      const options = JSON.stringify({
+        cidVersion: 0,
+      });
+      formData.append("pinataOptions", options);
+
+      const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+          },
+          body: formData,
+        }
+      );
+      const resData = await res.json();
+      console.log(resData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <label className="form-label"> Choose File</label>
+      <input
+        directory=""
+        webkitdirectory=""
+        type="file"
+        onChange={changeHandler}
+      />
+      <button onClick={handleSubmission}>Submit</button>
+    </>
+  );
+}
+
+export default App;
+```
+
+</CodeGroup>
+
+### Retrieve Content
+
+After we have uploaded the file and get the CID back we can create a URL for the file to either download it or render it in our app. For this example we will assume the file is an image, but Pinata supports any kind of file type.
+
+We can do this by adding the following code to our `App.tsx` file.
+
+```typescript src/App.tsx
+import { useState } from "react";
+import { pinata } from "./utils/config"
+
+function App() {
+  const [selectedFile, setSelectedFile]: any = useState();
+  const [url, setUrl]: any = useState();
+
+  const changeHandler = (event: any) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleSubmission = async () => {
+    try {
+      const upload = await pinata.upload.public.file(selectedFile)
+      console.log(upload);
+      const gatewayUrl = await pinata.gateways.public.covert(upload.cid)
+      setUrl(gatewayUrl)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <label className="form-label"> Choose File</label>
+      <input
+        type="file"
+        onChange={changeHandler}
+      />
+      <button onClick={handleSubmission}>Submit</button>
+      {url && (
+        <img
+          src={url}
+          alt="uploaded image"
+        />
+      )}
+    </>
+  );
+}
+
+export default App;
+```
