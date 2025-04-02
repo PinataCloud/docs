@@ -66,6 +66,35 @@ const url = await pinata.upload.public.createSignedURL({
 });
 ```
 
+### mimeTypes (Optional)
+
+- Type: `string[]`
+
+Specify allowed file mime types and prevent uploads from files that do not match. Accepts wildcard mime types as well.
+
+```typescript {3-6}
+const url = await pinata.upload.public.createSignedURL({
+	expires: 30,
+	mimeTypes: [
+	  "image/*",
+		"application/json"
+	]
+});
+```
+
+### maxFileSize (Optional)
+
+- Type: `number`
+
+Restrict upload to a specified file size in `bytes`
+
+```typescript {3}
+const url = await pinata.upload.public.createSignedURL({
+	expires: 30,
+	maxFileSize: 50000 // 50kb
+});
+```
+
 ### groupId (Optional)
 
 - Type: `string`
