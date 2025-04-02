@@ -1,6 +1,6 @@
 ---
 title: "Getting Started"
-description: "Get up and running with the Private IPFS SDK"
+description: "Get up and running with the Pinata IPFS SDK"
 'og:image': "https://docs.mypinata.cloud/ipfs/QmQi9QEuMfsoxVPqhDQdppdyD6HSrUDsaKK5hdTvT1nikw?filename=og.png"
 ---
 
@@ -59,7 +59,7 @@ const pinata = new PinataSDK({
 
 async function main() {
   try {
-    const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
+    const file = new File(["hello world!"], "hello.txt", { type: "text/plain" });
     const upload = await pinata.upload.public.file(file);
     console.log(upload);
   } catch (error) {
@@ -74,13 +74,16 @@ This will return an object like the following
 
 ```typescript
 {
-    id: "41bc6820-43d3-46f8-a9e0-e53e8adea2e8",
-    name: "hello.txt",
-    cid: "bafkreid7qoywk77r7rj3slobqfekdvs57qwuwh5d2z3sqsw52iabe3mqne",
-    size: 12,
-    number_of_files: 1,
-    mime_type: "text/plain;charset=utf-8",
-    group_id: null,
+  id: "0195f815-5c5e-716d-9240-d3ae380e2002",
+  group_id: null,
+  name: "hello.txt",
+  cid: "bafkreidvbhs33ighmljlvr7zbv2ywwzcmp5adtf4kqvlly67cy56bdtmve",
+  created_at: "2025-04-02T19:58:24.616Z",
+  size: 12,
+  number_of_files: 1,
+  mime_type: "text/plain",
+  vectorized: false,
+  network: "public",
 }
 ```
 
