@@ -207,7 +207,7 @@ function App() {
     try {
       const upload = await pinata.upload.public.file(selectedFile)
       console.log(upload);
-      const gatewayUrl = await pinata.gateways.public.covert(upload.cid)
+      const gatewayUrl = await pinata.gateways.public.convert(upload.cid)
       setUrl(gatewayUrl)
     } catch (error) {
       console.log(error);
