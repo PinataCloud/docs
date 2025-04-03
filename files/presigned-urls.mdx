@@ -5,6 +5,15 @@ icon: signature
 
 There are situations where you may need to upload a file client side instead of server side, but doing so might risk exposing an API key. To solve this you can create a presigned upload URL on the server and then pass it to the client for it to be consumed. Creating signed upload URLs can be done with either the [Files SDK](/sdk/upload/public/create-signed-url) or the [API](/api-reference/endpoint/create-signed-upload-url), and you can designate how long the URL is valid for, how large the file can be, the type of file allowed, or extra metadata like a name and [keyvalues](/files/key-files).
 
+For a more robust example, check out our guides on Hono and React!
+
+<CardGroup cols={2}>
+<Card href="/frameworks/hono" horizontal icon="fire" title="Hono Guide">
+</Card>
+<Card href="/frameworks/react" horizontal icon="react" title="React Guide">
+</Card>
+</CardGroup>
+
 ## Usage
 
 Setting up a server side API endpoint might look something like this:
@@ -13,7 +22,7 @@ Setting up a server side API endpoint might look something like this:
 
 ```typescript SDK
 import { type NextRequest, NextResponse } from "next/server";
-import { pinata } from "@/utils/config"; // Import the Files SDK instance
+import { pinata } from "@/utils/config"; // Import the Pinata SDK instance
 
 export const dynamic = "force-dynamic";
 
