@@ -1,9 +1,11 @@
 ---
-title: Presigned Uploads
+title: Presigned URLs
 icon: signature
 ---
 
 There are situations where you may need to upload a file client side instead of server side, but doing so might risk exposing an API key. To solve this you can create a presigned upload URL on the server and then pass it to the client for it to be consumed. Creating signed upload URLs can be done with either the [Files SDK](/sdk/upload/public/create-signed-url) or the [API](/api-reference/endpoint/create-signed-upload-url), and you can designate how long the URL is valid for, how large the file can be, the type of file allowed, or extra metadata like a name and [keyvalues](/files/key-files).
+
+## Usage
 
 Setting up a server side API endpoint might look something like this:
 
@@ -20,8 +22,8 @@ export async function GET() {
   try {
     const url = await pinata.upload.public.createSignedURL({
       expires: 30, // The only required param
-      mimeTypes: ["image/*"],
-      maxFileSize: 5000000
+      mimeTypes: ["text/*"], // Optional restriction for certain file types
+      maxFileSize: 5000000 // Optional file size limit
     })
     return NextResponse.json({ url: url }, { status: 200 }); // Returns the signed upload URL
   } catch (error) {
@@ -42,9 +44,10 @@ export async function GET() {
     // Prepare payload data for request
     const data = JSON.stringify({
       network: "public",
-      expires: 30,
-      filename: "Client file",
-      group_id: "my-group-id"
+      expires: 30, // Number of seconds the signed url is good for
+      filename: "Client file", // Optional name
+      allow_mime_types: [ "text/*" ], // Optional array of allowed file types
+      max_file_size: 5000000 // optional max file size
     })
     // send request and parse response
     const urlRequest = await fetch("https://uploads.pinata.cloud/v3/files/sign", {
@@ -75,7 +78,7 @@ Then back on the client side code, you can upload using the signed URL instead o
 <CodeGroup>
 
 ```typescript SDK {3}
-const urlRequest = await fetch("/api/url"); // Fetches the temporary upload URL
+const urlRequest = await fetch("/api/url"); // Fetches the temporary upload URL from your server
 const urlResponse = await urlRequest.json(); // Parse response
 const upload = await pinata.upload.public
   .file(file)
@@ -108,3 +111,106 @@ async function upload() {
 ```
 
 </CodeGroup>
+
+## Reference
+
+Below are the availble parameters for presigned URLs
+
+### expires
+
+- Type: `number`
+
+The number of seconds the signed URL should be valid for
+
+```typescript {2}
+const url = await pinata.upload.public.createSignedURL({
+	expires: 30,
+});
+```
+
+### name (Optional)
+
+- Type: `string`
+
+Name for the file to be uploaded
+
+```typescript {3}
+const url = await pinata.upload.public.createSignedURL({
+	expires: 30,
+	name: "My Cool File"
+});
+```
+
+### mimeTypes (Optional)
+
+- Type: `string[]`
+
+Specify allowed file mime types and prevent uploads from files that do not match. Accepts wildcard mime types as well.
+
+```typescript {3-6}
+const url = await pinata.upload.public.createSignedURL({
+	expires: 30,
+	mimeTypes: [
+	  "image/*",
+		"application/json"
+	]
+});
+```
+
+### maxFileSize (Optional)
+
+- Type: `number`
+
+Restrict upload to a specified file size in `bytes`
+
+```typescript {3}
+const url = await pinata.upload.public.createSignedURL({
+	expires: 30,
+	maxFileSize: 50000 // 50kb
+});
+```
+
+### groupId (Optional)
+
+- Type: `string`
+
+The target groupId the file would be uploaded to
+
+
+```typescript {3}
+const url = await pinata.upload.public.createSignedURL({
+	expires: 30,
+	groupId: "ad4bc3bf-8794-49e7-94ff-fea1ce745779"
+});
+```
+
+### keyvalues (Optional)
+
+- Type: `Record<string, string>`
+
+Keyvalue pairs for the uploaded file
+
+```typescript {3-5}
+const url = await pinata.upload.public.createSignedURL({
+	expires: 30,
+	keyvalues: {
+	  env: "prod"
+	}
+});
+```
+
+### date (Optional)
+
+- Type: `number`
+
+A UNIX timestamp of the date a URL is signed
+
+```typescript {1-2,6}
+const date = Math.floor(new Date().getTime() / 1000);
+//date: 1724943711
+
+const url = await pinata.upload.public.createSignedURL({
+	expires: 30,
+	date: date
+});
+```
