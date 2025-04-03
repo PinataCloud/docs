@@ -8,6 +8,10 @@ The `pinata@1.x` package became a Private IPFS only SDK and the Public IPFS SDK 
 
 The `pinata` package was originally just for Private IPFS but now supports both Public and Private IPFS in `pinata@2.x`.
 
+### API Keys
+
+If you happened to be using a scoped API key for [legacy endpoints](/api-reference/endpoint/ipfs/pin-file-to-ipfs) like `pinFileToIPFS` or `pinJSONToIPFS` then you will need to create a new API key for the V2 SDK which uses the new [V3 endpoints](/api-reference/introduction). If you want to scope your endpoint for the new API you can use the [API docs for key creation](/api-reference/endpoint/v3-create-api-key) to do so.
+
 ### Installation and Initialization
 
 Install the latest version by running the following command:
