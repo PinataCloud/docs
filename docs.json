@@ -53,8 +53,8 @@
                 "icon": "react",
                 "pages": [
                   "frameworks/next-js",
-                  "frameworks/react",
                   "frameworks/hono",
+                  "frameworks/react",
                   "frameworks/sveltekit",
                   "frameworks/astro",
                   "frameworks/remix",
