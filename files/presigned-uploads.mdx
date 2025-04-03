@@ -3,7 +3,7 @@ title: Presigned Uploads
 icon: signature
 ---
 
-There are situations where you may need to upload a file client side instead of server side. A great example is in Next.js where there is a 4MB file size restriction for files passed through Next's API routes. To solve this you can create a presigned upload URL on the server and then pass it to the client for it to be consumed. This way your admin API key stays safe and secure behind a server. Creating signed upload URLs can be done with either the [Files SDK](/sdk/upload/public/create-signed-url) or the [API](/api-reference/endpoint/create-signed-upload-url), and you can designate how long the URL is valid for or if there is other infromation you want to include such as metadata or a group ID.
+There are situations where you may need to upload a file client side instead of server side, but doing so might risk exposing an API key. To solve this you can create a presigned upload URL on the server and then pass it to the client for it to be consumed. Creating signed upload URLs can be done with either the [Files SDK](/sdk/upload/public/create-signed-url) or the [API](/api-reference/endpoint/create-signed-upload-url), and you can designate how long the URL is valid for, how large the file can be, the type of file allowed, or extra metadata like a name and [keyvalues](/files/key-files).
 
 Setting up a server side API endpoint might look something like this:
 
@@ -20,8 +20,8 @@ export async function GET() {
   try {
     const url = await pinata.upload.public.createSignedURL({
       expires: 30, // The only required param
-      name: "Client File",
-      group: "my-group-id"
+      mimeTypes: ["image/*"],
+      maxFileSize: 5000000
     })
     return NextResponse.json({ url: url }, { status: 200 }); // Returns the signed upload URL
   } catch (error) {
