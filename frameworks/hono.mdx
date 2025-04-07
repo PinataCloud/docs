@@ -87,7 +87,7 @@ app.get('/presigned_url', async (c) => {
 
   const pinata = new PinataSDK({
     pinataJwt: c.env.PINATA_JWT,
-    pinataGatewayUrl: c.env.GATEWAY_URL
+    pinataGateway: c.env.GATEWAY_URL
   })
 
   const url = await pinata.upload.public.createSignedURL({
