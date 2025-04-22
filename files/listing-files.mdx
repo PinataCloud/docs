@@ -172,6 +172,26 @@ const url = "https://api.pinata.cloud/v3/files/public?group=5b56981c-7e5b-4dff-a
 
 </CodeGroup>
 
+### noGroup
+
+- Type: `boolean`
+
+Filter results to only show files that are not part of a group
+
+<CodeGroup>
+
+```typescript SDK {3}
+const files = await pinata.files.public
+		.list()
+		.noGroup(true)
+```
+
+```typescript API
+const url = "https://api.pinata.cloud/v3/files/public?group=null"
+```
+
+</CodeGroup>
+
 ### cid
 
 - Type: `string`
