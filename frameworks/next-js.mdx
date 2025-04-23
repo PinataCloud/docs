@@ -64,7 +64,7 @@ After making the project, create a `.env.local` file in the root of the project 
 
 ```
 PINATA_JWT=
-NEXT_PUBLIC_GATEWAY_URL=
+PINATA_GATEWAY=
 ```
 
 Use the `JWT` from the API key creation in the previous step as well as the `Gateway Domain`. The format of the Gateway domain should be `mydomain.mypinata.cloud`.
@@ -80,7 +80,7 @@ import { PinataSDK } from "pinata"
 
 export const pinata = new PinataSDK({
   pinataJwt: `${process.env.PINATA_JWT}`,
-  pinataGateway: `${process.env.NEXT_PUBLIC_GATEWAY_URL}`
+  pinataGateway: `${process.env.PINATA_GATEWAY}`
 })
 ```
 
