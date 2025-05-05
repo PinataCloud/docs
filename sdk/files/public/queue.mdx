@@ -54,8 +54,8 @@ Filter results with the following methods. All filters are optional.
 Filter by `cid`
 
 ```typescript
-const jobs = await pinata
-  .pinJobs()
+const jobs = await pinata.files.public
+  .queue()
   .cid('bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4')
 ```
 
@@ -66,8 +66,8 @@ const jobs = await pinata
 Filter by current status
 
 ```typescript
-const jobs = await pinata
-  .pinJobs()
+const jobs = await pinata.files.public
+  .queue()
   .status("prechecking")
 ```
 
@@ -78,8 +78,8 @@ const jobs = await pinata
 Order results by either ascending or descending by submission
 
 ```typescript
-const jobs = await pinata
-  .pinJobs()
+const jobs = await pinata.files.public
+  .queue()
   .sort("ASC")
 ```
 
@@ -90,20 +90,20 @@ const jobs = await pinata
 Limit the number of results. Default is `10`, max is `250`
 
 ```typescript
-const jobs = await pinata
-  .pinJobs()
+const jobs = await pinata.files.public
+  .queue()
   .pageLimit(100)
 ```
 
-### pageToken (coming soon)
+### pageToken
 
 - Type: `string`
 
 Paginate through results
 
 ```typescript
-const jobs = await pinata
-  .pinJobs()
+const jobs = await pinata.files.public
+  .queue()
   .pageToken("TOKEN")
 ```
 
