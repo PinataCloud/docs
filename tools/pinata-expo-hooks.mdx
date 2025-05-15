@@ -90,6 +90,7 @@ export type UploadOptions = {
 	name?: string;
 	keyvalues?: Record<string, string>;
 	groupId?: string;
+	chunkSize?: number; // Defaults to 1014 * 256 * 20 * 10 (~52MB)
 };
 ```
 
