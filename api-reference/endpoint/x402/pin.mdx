@@ -1,0 +1,78 @@
+---
+title: "Upload a File"
+openapi: /pinata-x402-api-v1.yaml post /pin/{network}
+---
+
+## Cost
+
+| Price          | Duration           |
+| -------------- | ------------------ |
+| $0.10/GB \* 12 | Pins for 12 months |
+
+## Example Usage
+
+In order to access these endpoints you will need to use either [`x402-axios`](https://www.npmjs.com/package/x402-axios) or [`x402-fetch`](https://www.npmjs.com/package/x402-fetch). Once installed you will also need either [Viem](https://viem.sh) or a Coinbase developer account. From there you can create an `account` locally or through the CDP Wallet API.
+
+When you make a request to one of the Pinata x402 endpoints it will return a 402 error saying payment is required. Then the `fetchWithPayment` method from the fetch or axios library will make a second requst for the requested payment amount. After payment is settled then you can use the returned presigned URL to upload the file to Pinata.
+
+```typescript
+import { wrapFetchWithPayment, decodeXPaymentResponse } from "x402-fetch";
+import { account } from "./viem";
+
+const fetchWithPayment = wrapFetchWithPayment(fetch, account);
+
+const url = "https://402.pinata.cloud/v1/pin/public";
+
+fetchWithPayment(url, {
+  method: "POST",
+  body: JSON.stringify({
+    fileSize: 5000000,
+  }),
+})
+  .then(async (response) => {
+    const body = (await response.json()) as { url: string };
+    console.log(body);
+
+    const uuid = crypto.randomUUID();
+
+    const file = new File([`Paid and pinned by 402.pinata.cloud: ${uuid}`], "file.txt");
+
+    const data = new FormData();
+    data.append("network", "public");
+    data.append("file", file);
+
+    const uploadReq = await fetch(body.url, {
+      method: "POST",
+      body: data,
+    });
+
+    const uploadRes = await uploadReq.json();
+    console.log(uploadRes);
+  })
+  .catch((error) => {
+    console.error(error.response?.data?.error);
+  });
+```
+
+Uploading files to Public IPFS means you can access them through a gateway like `https://gateway.pinata.cloud/ipfs/:CID`. If you upload a file as `private` then it will not be accessible on public IPFS, so in order to access it you need to create a temporary access URL. This flow is similar to the previous one, except you would provide the CID that you uploded previously that you would like to access. After a successful payment the server will return a URL you can access the file with.
+
+```typescript
+import { wrapFetchWithPayment, decodeXPaymentResponse } from "x402-fetch";
+import { account } from "./viem";
+
+const fetchWithPayment = wrapFetchWithPayment(fetch, account);
+
+const url =
+  "https://402.pinata.cloud/v1/retrieve/private/bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4";
+
+fetchWithPayment(url, {
+  method: "GET",
+})
+  .then(async (response) => {
+    const body = (await response.json()) as { url: string };
+    console.log(body);
+  })
+  .catch((error) => {
+    console.error(error.response?.data?.error);
+  });
+```

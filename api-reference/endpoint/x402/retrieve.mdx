@@ -1,0 +1,38 @@
+---
+title: "Retrieve a Private File"
+openapi: /pinata-x402-api-v1.yaml get /retrieve/private/{cid}
+---
+
+
+## Cost
+
+| Price | Duration |
+| ----- | -------- |
+| $0.0001 | Per request |
+
+## Example Usage
+
+If you upload a file as `private` then it will not be accessible on public IPFS, so in order to access it you need to create a temporary access URL. This flow is similar to the previous one, except you would provide the CID that you uploded previously that you would like to access. After a successful payment the server will return a URL you can access the file with.
+
+```typescript
+import { wrapFetchWithPayment, decodeXPaymentResponse } from "x402-fetch";
+import { account } from "./viem";
+
+const fetchWithPayment = wrapFetchWithPayment(fetch, account);
+
+const url =
+	"https://402.pinata.cloud/v1/retrieve/private/bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4";
+
+fetchWithPayment(url, {
+	method: "GET",
+})
+	.then(async (response) => {
+
+		const body = (await response.json()) as { url: string };
+		console.log(body);
+
+	})
+	.catch((error) => {
+		console.error(error.response?.data?.error);
+	});
+```

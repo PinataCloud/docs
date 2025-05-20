@@ -1,0 +1,91 @@
+openapi: 3.0.0
+info:
+  title: Pinata x402
+  description: x402 compatible endpoints for uploading and retrieving files on IPFS
+  version: 1.0.0
+servers:
+  - url: https://402.pinata.cloud/v1
+    description: Production server
+paths:
+  /pin/{network}:
+    post:
+      summary: Upload a file to Public or Private IPFS
+      description: Uploads a file to Pinata's public IPFS network
+      parameters:
+        - name: network
+          description: Upload to either public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - fileSize
+              properties:
+                fileSize:
+                  type: integer
+                  description: Size of the file to be uploaded in bytes
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: The signed URL for file upload
+        "400":
+          description: Bad request
+      security:
+        - x402Payment: []
+
+  /retrieve/private/{cid}:
+    get:
+      summary: Retrieve private file
+      description: Retrieves a private file from IPFS by its CID
+      operationId: retrievePrivateFile
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Content Identifier (CID) of the file
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: URL to access the private file
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Server error
+      security:
+        - x402Payment: []
+
+components:
+  securitySchemes:
+    x402Payment:
+      type: apiKey
+      name: X-PAYMENT
+      in: header
+      description: Base64 encoded x402 payment payload
