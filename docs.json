@@ -575,7 +575,8 @@
   "seo": {
     "metatags": {
       "og:image": "https://docs.mypinata.cloud/ipfs/bafkreicvhjv5mipe2mk4uiq77tg5ykl7qevnj43ubonhtfj5jcseflxvsm",
-      "twitter:image": "https://docs.mypinata.cloud/ipfs/bafkreicvhjv5mipe2mk4uiq77tg5ykl7qevnj43ubonhtfj5jcseflxvsm"
+      "twitter:image": "https://docs.mypinata.cloud/ipfs/bafkreicvhjv5mipe2mk4uiq77tg5ykl7qevnj43ubonhtfj5jcseflxvsm",
+      "theme-color": "#16141F"
     },
     "indexing": "navigable"
   },
