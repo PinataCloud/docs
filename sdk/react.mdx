@@ -1,0 +1,229 @@
+---
+title: "React Hooks"
+description: "A collection of React hooks to use with Pinata"
+icon: "react"
+---
+
+Included with the Pinata SDK is the `pinata/react` package which comes with a hook you can use to upload files and a convert helper function for converting CIDs into IPFS Gateway URLs.
+
+## Installation
+
+Install the Pinata SDK
+
+```bash
+npm i pinata
+```
+
+## Usage
+
+Import at the top of your desired page or component
+
+```typescript
+import { useUpload, convert } from "pinata/react";
+```
+
+Inside your page or component use the hook to extract methods and state
+
+```typescript
+const {
+	upload, // Method to upload a file using a presigned URL
+	progress, // Progress state as integer
+	loading, // Boolean uploading state
+	uploadResponse, // Either full Upload Response or just a CID if you use Resumable Uploads
+	error, // Error state
+	pause, // Pause upload method
+	resume, // Resume upload method
+	cancel, // Cancel current upload method
+} = useUpload();
+```
+
+<Note>
+Keep in mind that states like `pause`, `resume`, or `progress` are only available on files over 100MB that automatically engage resumable uploads through TUS.
+</Note>
+
+Return types for `useUpload`
+
+```typescript
+export type UseUploadReturn = {
+	progress: number;
+	loading: boolean;
+	error: Error | null;
+	uploadResponse: UploadResult | null;
+	upload: (
+		file: File,
+		network: "public" | "private",
+		url: string,
+		options?: UploadOptions,
+	) => Promise<void>;
+	pause: () => void;
+	resume: () => void;
+	cancel: () => void;
+};
+```
+
+To upload a file you must already have a server setup that returns a [Presigned URL](/files/presigned-urls). Then you can pass it into the `upload` method like so.
+
+```typescript
+await upload(file, "public", "presigned_URL", {
+  metadata: {
+  	name: file.name || "Upload from React",
+  	keyvalues: {
+  		app: "React",
+  		timestamp: Date.now().toString(),
+  	},
+  }
+});
+```
+
+<Tip>
+  [Learn how to send Presigned URLs from your server](/frameworks/hono)
+</Tip>
+
+Below are the available `UploadOptions` that can be passed into `upload`
+
+```typescript
+export type UploadOptions = {
+	metadata?: PinataMetadata;
+	groupId?: string;
+	chunkSize?: number; // Defaults to 1014 * 256 * 20 * 10 (~52MB)
+};
+```
+
+Once a file is uploaded the `uploadResponse` will contain either the full upload response or just the CID if your file was over 100MB and utilized TUS resumable uploads.
+
+The `convert` helper can be used to turn a CID into a URL like so:
+
+```typescript
+const ipfsLink = await convert(uploadResponse.cid, "https://gateway.pinata.cloud");
+// https://gateway.pinata.cloud/ipfs/CID
+```
+
+Below is a full example of implementing the `useUpload` hook with progress and abilities to pause and resume the upload.
+
+```typescript
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import pinataLogo from "/pinnie.png";
+import "./App.css";
+import { useUpload, convert } from "pinata/react";
+
+function App() {
+  const [file, setFile] = useState<File | null>(null);
+  const [link, setLink] = useState("");
+
+  const { upload, uploadResponse, loading, error, progress, pause, resume, cancel } = useUpload();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!file) return;
+
+    const urlRes = await fetch(`${import.meta.env.VITE_SERVER_URL}/presigned_url`);
+    const urlData = await urlRes.json();
+
+    try {
+      // Use the upload function from useUpload hook
+      await upload(file, "public", urlData.url, {
+        metadata: {
+          name: file.name || "Upload from Web",
+          keyvalues: {
+            app: "Pinata Web Demo",
+            timestamp: Date.now().toString(),
+          },
+        },
+      });
+    } catch (uploadError) {
+      console.error("Upload error:", uploadError);
+    }
+  };
+
+  // Set the link when upload is successful
+  if (uploadResponse && !link) {
+    async function setIpfsLink() {
+      let ipfsLink: string = "";
+      if (typeof uploadResponse === "string") {
+        ipfsLink = await convert(uploadResponse, "https://gateway.pinata.cloud");
+      } else if (uploadResponse) {
+        ipfsLink = await convert(uploadResponse.cid, "https://gateway.pinata.cloud");
+      }
+      setLink(ipfsLink);
+    }
+    setIpfsLink();
+  }
+
+  // Get upload status message
+  const getStatusMessage = () => {
+    if (loading) return `Uploading file to Pinata...`;
+    if (error) return `Upload error: ${error?.message || "Unknown error"}`;
+    return "";
+  };
+
+  return (
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+        <a href="https://pinata.cloud" target="_blank">
+          <img src={pinataLogo} className="logo pinata" alt="Pinata logo" />
+        </a>
+      </div>
+      <h1>Vite + React + Pinata</h1>
+      <div className="card">
+        <input type="file" onChange={handleFileChange} />
+        <button onClick={handleUpload} disabled={!file || loading}>
+          {loading ? "Uploading..." : "Upload to Pinata"}
+        </button>
+
+        {loading && (
+          <div className="upload-status-container">
+            <p>{getStatusMessage()}</p>
+
+            <div className="upload-controls-container">
+              {progress < 100 && (
+                <>
+                  <button onClick={pause} className="control-button pause">
+                    Pause
+                  </button>
+                  <button onClick={resume} className="control-button resume">
+                    Resume
+                  </button>
+                  <button onClick={cancel} className="control-button cancel">
+                    Cancel
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
+        {!loading && getStatusMessage() && <p>{getStatusMessage()}</p>}
+
+        {link && (
+          <div className="success-container">
+            <p className="success-title">Upload Complete!</p>
+            <a href={link} target="_blank" className="view-link">
+              View File
+            </a>
+          </div>
+        )}
+      </div>
+      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+    </>
+  );
+}
+
+export default App;
+```
+
+## Questions
+
+Please [contact us](mailto:steve@pinata.cloud) if you have any issues!

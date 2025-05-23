@@ -218,12 +218,7 @@
         "groups": [
           {
             "group": "SDK",
-            "pages": [
-              "sdk/getting-started",
-              "sdk/v2-migration-guide",
-              "sdk/config",
-              "sdk/test-authentication"
-            ]
+            "pages": ["sdk/getting-started", "sdk/v2-migration-guide", "sdk/config", "sdk/react"]
           },
           {
             "group": "Files",
