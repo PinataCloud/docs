@@ -26,6 +26,7 @@ paths:
               type: object
               required:
                 - file
+                - network
               properties:
                 network:
                   type: string
