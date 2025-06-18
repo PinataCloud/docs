@@ -144,7 +144,7 @@ const pinata = new PinataSDK({
 
 async function main() {
   try {
-    const file = await pinata.gateways.get("bafkreiac3t35fklpiwqonav2vj4x2dh6x2zugkdu7dsh6zkaq5jr33lcwy")
+    const file = await pinata.gateways.public.get("bafkreiac3t35fklpiwqonav2vj4x2dh6x2zugkdu7dsh6zkaq5jr33lcwy")
     console.log(file.data)
   } catch (error) {
     console.log(error);
