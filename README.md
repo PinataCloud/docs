@@ -25,3 +25,5 @@ mintlify dev
 ## Publishing Changes
 
 Submit a pull request with your changes and one of the Pinata Team maintainers will review and either request more edits or merge it into main.
+
+
