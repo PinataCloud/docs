@@ -126,88 +126,6 @@
                   "ipfs-101/what-are-ipfs-gateways",
                   "ipfs-101/how-does-ipfs-work-with-nfts"
                 ]
-              },
-              {
-                "group": "Farcaster",
-                "icon": "archway",
-                "pages": [
-                  "farcaster/introduction",
-                  "farcaster/hubs",
-                  {
-                    "group": "Hub API Reference",
-                    "pages": [
-                      {
-                        "group": "Info",
-                        "pages": ["farcaster/hub-api-reference/endpoint/info/info"]
-                      },
-                      {
-                        "group": "Casts",
-                        "pages": [
-                          "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-authored-by-an-fid",
-                          "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-by-parent-casts-fid-and-hash-or-by-the-parents-url",
-                          "farcaster/hub-api-reference/endpoint/casts/fetch-all-casts-that-mention-an-fid",
-                          "farcaster/hub-api-reference/endpoint/casts/get-a-cast-by-its-fid-and-hash"
-                        ]
-                      },
-                      {
-                        "group": "Reactions",
-                        "pages": [
-                          "farcaster/hub-api-reference/endpoint/reactions/get-a-reaction-by-its-created-fid-and-target-cast",
-                          "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-by-an-fid",
-                          "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-cast",
-                          "farcaster/hub-api-reference/endpoint/reactions/get-all-reactions-to-a-target-url"
-                        ]
-                      },
-                      {
-                        "group": "Links",
-                        "pages": [
-                          "farcaster/hub-api-reference/endpoint/links/get-a-link-by-its-fid-and-target-fid",
-                          "farcaster/hub-api-reference/endpoint/links/get-all-links-to-a-target-fid",
-                          "farcaster/hub-api-reference/endpoint/links/get-all-links-from-a-source-fid"
-                        ]
-                      },
-                      {
-                        "group": "User Data",
-                        "pages": [
-                          "farcaster/hub-api-reference/endpoint/userdata/get-userdata-for-a-fid"
-                        ]
-                      },
-                      {
-                        "group": "Username Proofs",
-                        "pages": [
-                          "farcaster/hub-api-reference/endpoint/usernames/get-a-list-of-proofs-provided-by-an-fid",
-                          "farcaster/hub-api-reference/endpoint/usernames/get-an-proof-for-a-username-by-the-farcaster-username"
-                        ]
-                      },
-                      {
-                        "group": "Verifications",
-                        "pages": [
-                          "farcaster/hub-api-reference/endpoint/verifications/get-a-list-of-verifications-provided-by-an-fid"
-                        ]
-                      },
-                      {
-                        "group": "FIDs",
-                        "pages": [
-                          "farcaster/hub-api-reference/endpoint/fids/get-a-list-of-all-the-fids"
-                        ]
-                      },
-                      {
-                        "group": "Storage",
-                        "pages": [
-                          "farcaster/hub-api-reference/endpoint/storage/get-an-fids-storage-limits"
-                        ]
-                      },
-                      {
-                        "group": "Onchain API",
-                        "pages": [
-                          "farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-on-chain-events-provided-by-an-fid",
-                          "farcaster/hub-api-reference/endpoint/onchainevents/get-a-list-of-signers-provided-by-an-fid",
-                          "farcaster/hub-api-reference/endpoint/onchainevents/get-an-on-chain-id-registry-event-for-a-given-address"
-                        ]
-                      }
-                    ]
-                  }
-                ]
               }
             ]
           }
@@ -597,14 +515,7 @@
       "source": "/pinning/:slug*",
       "destination": "/files/uploading-files"
     },
-    {
-      "source": "/frameworks",
-      "destination": "/farcaster/events/frameworks"
-    },
-    {
-      "source": "/farhack",
-      "destination": "farcaster/events/farhack"
-    },
+  
     {
       "source": "/midwestblock",
       "destination": "events/midwest-blockathon"
@@ -612,10 +523,6 @@
     {
       "source": "/blockathon",
       "destination": "events/midwest-blockathon"
-    },
-    {
-      "source": "/events/frameworks",
-      "destination": "farcaster/events/frameworks"
     },
     {
       "source": "/hackutd",
