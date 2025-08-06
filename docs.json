@@ -56,7 +56,8 @@
                   "frameworks/node-js"
                 ]
               },
-              "llm-docs"
+              "llm-docs",
+              "mcp-docs"
             ]
           },
           {
