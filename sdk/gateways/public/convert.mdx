@@ -14,7 +14,7 @@ const pinata = new PinataSDK({
   pinataGateway: "example-gateway.mypinata.cloud",
 });
 
-const url = await pinata.gateways.public.convert(
+const url = await pinata.gateways.convert(
   "ipfs://QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng"
 );
 ```
@@ -34,15 +34,15 @@ string
 Accepts CID or IPFS gateway link.
 
 ```typescript
-const url = await pinata.gateways.public.convert(
+const url = await pinata.gateways.convert(
 	"bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi/hello-1.txt",
 );
 
-const url = await pinata.gateways.public.convert(
+const url = await pinata.gateways.convert(
 	"https://ipfs.io/ipfs/bafybeibo5zcqeorhqxczodrx52rn7byyrwfvwthz5dspnjlbkd7zkugefi/hello-1.txt",
 );
 
-const url = await pinata.gateways.public.convert(
+const url = await pinata.gateways.convert(
 	"https://bafyreibroegmxohcbvvs3rziqsp3osyn7t5rzot34y6pn5xtewffhtsl4e.ipfs.nftstorage.link/metadata.json",
 );
 ```
@@ -54,7 +54,7 @@ const url = await pinata.gateways.public.convert(
 Use a different gateway prefix than the config default
 
 ```typescript
-const url = await pinata.gateways.public.convert(
+const url = await pinata.gateways.convert(
 	"QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng",
 	"https://ipfs.io"
 );
