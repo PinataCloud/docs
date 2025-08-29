@@ -54,7 +54,7 @@ fetchWithPayment(url, {
   });
 ```
 
-Uploading files to Public IPFS means you can access them through a gateway like `https://gateway.pinata.cloud/ipfs/:CID`. If you upload a file as `private` then it will not be accessible on public IPFS, so in order to access it you need to create a temporary access URL. This flow is similar to the previous one, except you would provide the CID that you uploded previously that you would like to access. After a successful payment the server will return a URL you can access the file with.
+Uploading files to Public IPFS means you can access them through a gateway like `https://ipfs.io/ipfs/:CID`. If you upload a file as `private` then it will not be accessible on public IPFS, so in order to access it you need to create a temporary access URL. This flow is similar to the previous one, except you would provide the CID that you uploded previously that you would like to access. After a successful payment the server will return a URL you can access the file with.
 
 ```typescript
 import { wrapFetchWithPayment, decodeXPaymentResponse } from "x402-fetch";

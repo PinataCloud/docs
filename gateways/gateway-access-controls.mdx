@@ -6,6 +6,8 @@ icon: "shield-keyhole"
 
 Pinata's Dedicated Gateways make it possible to fetch and serve IPFS content quickly and reliably, however there can be security risks in exposing an open gateway to the world. That's why Pinata has created Gateway Access Controls. These controls will allow you to further limit your gateway, making sure only your platform is using it. This is accomplished with **Gateway Keys, IP Address Restrictions,** and **Host Origin Restrictions.**
 
+By default, your Dedicated Gateway is restricted, it will only serve content pinned to your account. When you add an Access Control, your gateway becomes open and will be able to serve any content from IPFS, but only when requests meet your security requirements.
+
 ## Restricted vs Open
 
 When working with IPFS Gateways the behavior usually falls into two categories: Restricted or Open.
@@ -22,7 +24,7 @@ Restricted means the gateway can only load content that is pinned to that user's
 
 <img style={{ width: '100%', borderRadius: '0.5rem'}} src="https://docs.mypinata.cloud/ipfs/QmZAWTtEXeyGiTg6fjWmV4Chyrj7hZH59LMhUaB8AYJ3Er" />
 
-Open means the gateway can access any content on IPFS. An example might be a public gateway like `gateway.pinata.cloud` which are open to everyone, however might have rate limiting to keep them from crashing under heavy usage.
+Open means the gateway can access any content on IPFS, not just pinned content. An example might be a public gateway like `ipfs.io/ipfs/` which is open to everyone, but has heavy rate limiting. For Dedicated Gateways, you achieve this open state by adding Access Controls.
 
 ### Why Access Controls?
 
