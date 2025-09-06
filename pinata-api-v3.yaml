@@ -3439,13 +3439,13 @@ paths:
             schema:
               type: object
               required:
-                - swap_cid
+                - swapCid
               properties:
-                swap_cid:
+                swapCid:
                   type: string
                   description: The CID you want to redirect to
               example:
-                swap_cid: bafkreig4zcnmqa23zff3ye7tuef6wrlq3aimffzm22axfeh3ddmawzlzz4
+                swapCid: bafkreig4zcnmqa23zff3ye7tuef6wrlq3aimffzm22axfeh3ddmawzlzz4
       parameters:
         - name: network
           description: Target either the public or private IPFS network
