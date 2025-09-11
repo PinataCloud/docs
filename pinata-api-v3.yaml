@@ -1,4 +1,6 @@
 openapi: 3.0.0
+x-mcp:
+  enabled: true
 info:
   title: Pinata V3 API
   version: 1.0.0
