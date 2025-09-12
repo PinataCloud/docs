@@ -140,3 +140,15 @@ const upload = await pinata.upload.public
   .file(file)
   .key("GENERATED_API_JWT")
 ```
+
+### car (Optional)
+
+- Type: `boolean`
+
+Upload a file as a raw CAR file
+
+```typescript {3}
+const upload = await pinata.upload.private
+  .file(file)
+  .car(true)
+```
