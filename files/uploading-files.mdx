@@ -910,17 +910,16 @@ async function upload() {
 
 </CodeGroup>
 
-**Requirements**
+Requirements
 
   - Paid plan required - CAR uploads are not available on free plans
   - Public network only - CAR files cannot be uploaded as private content
   - Valid structure - Files must be properly formatted CAR files with valid IPFS blocks
   - Single Root CID - Pinata does not support CAR files with multiple root CIDs
 
-**Upload Process**
+Upload Process
 
-CAR file processing is **asynchronous**. After a successful CAR file upload, Pinata will validate the CAR file structure and IPFS blocks and prepare the file for indexing into the IPFS network. A notifcation will be sent via webhook to indicate wether the CAR file was successfully indexed and available on the network. 
-
+CAR file processing is **asynchronous**. After a successful upload, Pinata validates the CAR file structure and IPFS blocks before preparing the file for indexing. A webhook notification is then sent to report the outcome, indicating whether the CAR file was successfully imported or if the process failed.
 
 ## Pin by CID
 
