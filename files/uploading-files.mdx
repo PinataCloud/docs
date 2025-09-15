@@ -861,6 +861,65 @@ async function resumeUpload(file) {
 }
 ```
 
+## Upload by CAR File 
+
+You can upload content to Pinata using a raw CAR file. A **CAR (Content Addressed Archive)** file bundles together IPFS blocks in a portable format.
+
+To upload a CAR file, set the `car` parameter to **true** in your upload request. CAR file uploads are supported across all Pinata upload methods.
+
+<CodeGroup>
+
+```typescript SDK {4}
+const upload = await pinata.upload.public
+  .file(file)
+  .name("test.car")
+  .car()
+```
+
+```typescript API {15}
+const JWT = "YOUR_PINATA_JWT";
+
+async function upload() {
+  try {
+    const formData = new FormData();
+
+    const file = new File(["test_car"], "test.car", { type: "application/vnd.ipld.car" });
+
+    formData.append("file", file);
+
+    formData.append("network", "public");
+
+    formData.append("name", "test.car");
+
+    formData.append("car", "true");
+
+    const request = await fetch("https://uploads.pinata.cloud/v3/files", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: formData,
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
+Requirements
+
+  - Paid plan required - CAR uploads are not available on free plans
+  - Public network only - CAR files cannot be uploaded as private content
+  - Valid structure - Files must be properly formatted CAR files with valid IPFS blocks
+  - Single Root CID - Pinata does not support CAR files with multiple root CIDs
+
+File Availability
+
+CAR file processing is **asynchronous**. After a successful upload, Pinata validates the CAR file structure and IPFS blocks before preparing the file for indexing. A webhook notification is then sent to report the outcome, indicating whether the CAR file was successfully imported or if the process failed.
 
 ## Pin by CID
 
