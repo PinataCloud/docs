@@ -57,7 +57,7 @@ npx create-next-app@latest
 After the project is created `cd` into the repo and install `pinata`
 
 ```bash
-npm i pinata
+npm i pinata server-only
 ```
 
 After making the project, create a `.env.local` file in the root of the project and put in the following variables:
@@ -71,11 +71,14 @@ Use the `JWT` from the API key creation in the previous step as well as the `Gat
 
 ### Setup Pinata
 
-Create a directory called `utils` in the root of the project and then make a file called `config.ts` inside of it. In that file we'll export an instance of the Files SDK that we can use throughout the rest of the app.
+Create a directory called `utils` in the root of the project and then make a file called `server-config.ts` inside of it. In that file we'll export an instance of the Files SDK that we can use for server-side operations.
 
-```typescript utils/config.ts
-"server only"
+<Warning>
+  Never expose your JWT to the client side! Always keep JWT in server-only files and never prefix it with `NEXT_PUBLIC_`. The `import "server-only"` package will ensure this file can never be imported on the client side.
+</Warning>
 
+```typescript utils/server-config.ts
+import "server-only"
 import { PinataSDK } from "pinata"
 
 export const pinata = new PinataSDK({
@@ -142,10 +145,17 @@ export default function Home() {
 This will take a file from the client side and upload it through an API route we are going to make next.
 
 <Note>
-  Next.js does have a file size limitation for what can be passed through the
-  API routes, so if you need more than the limit then it is advised to make
-  signed JWTs by following [this
-  guide](https://www.pinata.cloud/blog/how-to-upload-to-ipfs-from-the-frontend-with-signed-jwts).
+  Next.js API routes have a default body size limit of 4MB on Vercel. For larger files, use the client-side setup below with signed URLs, or configure the limit in your `next.config.js`:
+  
+  ```javascript next.config.js
+  module.exports = {
+    api: {
+      bodyParser: {
+        sizeLimit: '10mb',
+      },
+    },
+  }
+  ```
 </Note>
 
 ### Create API Route
@@ -156,12 +166,21 @@ Once you have created that file you can paste in the following code.
 
 ```typescript app/api/files/route.ts
 import { NextResponse, type NextRequest } from "next/server";
-import { pinata } from "@/utils/config"
+import { pinata } from "@/utils/server-config"
 
 export async function POST(request: NextRequest) {
   try {
     const data = await request.formData();
     const file: File | null = data.get("file") as unknown as File;
+    
+    // Validate file exists
+    if (!file || file.size === 0) {
+      return NextResponse.json(
+        { error: "No file provided" },
+        { status: 400 }
+      );
+    }
+    
     const { cid } = await pinata.upload.public.file(file)
     const url = await pinata.gateways.public.convert(cid);
     return NextResponse.json(url, { status: 200 });
@@ -209,7 +228,7 @@ npx create-next-app@latest
 After the project is created `cd` into the repo and install `pinata`
 
 ```bash
-npm i pinata
+npm i pinata server-only
 ```
 
 After making the project, create a `.env.local` file in the root of the project and put in the following variables:
@@ -223,11 +242,12 @@ Use the `JWT` from the API key creation in the previous step as well as the `Gat
 
 ### Setup Pinata
 
-Create a directory called `utils` in the root of the project and then make a file called `config.ts` inside of it. In that file we'll export an instance of the Files SDK that we can use throughout the rest of the app.
+For the client-side upload approach, we need to set up our server configuration and client utilities:
 
-```typescript utils/config.ts
-"server only"
+1. **Server Config** - Contains the JWT for API routes (never expose this to the client):
 
+```typescript utils/server-config.ts
+import "server-only"
 import { PinataSDK } from "pinata"
 
 export const pinata = new PinataSDK({
@@ -235,6 +255,27 @@ export const pinata = new PinataSDK({
   pinataGateway: `${process.env.NEXT_PUBLIC_GATEWAY_URL}`
 })
 ```
+
+2. **Client Utils** - Initialize SDK without JWT for client operations and add a helper for gateway URLs:
+
+```typescript utils/pinata-client.ts
+import { PinataSDK } from "pinata"
+
+// Initialize without JWT - only for public operations
+export const pinata = new PinataSDK({
+  pinataGateway: `${process.env.NEXT_PUBLIC_GATEWAY_URL}`
+})
+
+// Helper function to construct gateway URLs
+export function createGatewayUrl(cid: string): string {
+  const gatewayUrl = process.env.NEXT_PUBLIC_GATEWAY_URL;
+  return `https://${gatewayUrl}/ipfs/${cid}`;
+}
+```
+
+<Warning>
+  Never expose your JWT to the client side! The client SDK instance should only be initialized with the public gateway URL. Authentication for uploads happens through signed URLs from your API routes.
+</Warning>
 
 ### Create API Route
 
@@ -244,7 +285,7 @@ Once you have created that file you can paste in the following code.
 
 ```typescript app/api/url/route.ts
 import { NextResponse } from "next/server";
-import { pinata } from "@/utils/config"
+import { pinata } from "@/utils/server-config"
 
 export const dynamic = "force-dynamic";
 
@@ -274,7 +315,7 @@ In the `/app/page.tsx` file take out the boiler plate code and use the following
 "use client";
 
 import { useState } from "react";
-import { pinata } from "@/utils/config";
+import { pinata } from "@/utils/pinata-client";
 
 export default function Home() {
   const [file, setFile] = useState<File>();
@@ -317,13 +358,13 @@ export default function Home() {
 }
 ```
 
-The main thing to understand here is that we are able to use the `url()` method in combination with our upload methods which passes in the signed upload url instead of trying to access the admin key. We can take the response and create a URL to access the file.
+The main thing to understand here is that we use the Pinata SDK's `url()` method to upload with the signed URL, which handles the authentication securely. The SDK on the client doesn't have a JWT, so it can only perform uploads through these signed URLs from your API. We then use our helper function to construct the gateway URL from the returned CID.
 
 ```typescript app/page.tsx
 "use client";
 
 import { useState } from "react";
-import { pinata } from "@/utils/config";
+import { pinata, createGatewayUrl } from "@/utils/pinata-client";
 
 export default function Home() {
 	const [file, setFile] = useState<File>();
@@ -339,11 +380,11 @@ export default function Home() {
 		try {
 			setUploading(true);
 			const urlRequest = await fetch("/api/url"); // Fetches the temporary upload URL
-      const urlResponse = await urlRequest.json(); // Parse response
-      const upload = await pinata.upload.public
-        .file(file)
-        .url(urlResponse.url); // Upload the file with the signed URL
-      const fileUrl = await pinata.gateways.public.convert(upload.cid)
+			const urlResponse = await urlRequest.json(); // Parse response
+			const upload = await pinata.upload.public
+				.file(file)
+				.url(urlResponse.url); // Upload the file with the signed URL
+			const fileUrl = createGatewayUrl(upload.cid);
 			setUrl(fileUrl);
 			setUploading(false);
 		} catch (e) {
