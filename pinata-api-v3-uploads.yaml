@@ -50,6 +50,9 @@ paths:
                   description: Add additional key value metadata to files upon upload
                   additionalProperties:
                     type: string
+                car:
+                  type: boolean
+                  description: Upload a file as a raw CAR file (only supported for public network)
       responses:
         "200":
           description: Successful response
