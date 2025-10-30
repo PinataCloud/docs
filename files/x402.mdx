@@ -6,20 +6,17 @@ title: "Introduction"
   x402 requires a feature flag to be enabled on your Pinata account. Contact team@pinata.cloud to request access.
 </Note>
 
-Pinata has implemented x402 support to allow content creators to monetize private IPFS files through programmable payment instructions.
+Pinata's x402 enables you to monetize your private IPFS files by receiving USDC payments directly to your wallet. You set the price, you receive the payment.
 
 <Note>
   x402 is currently available through the Pinata API v3. SDK support coming soon.
-</Note>
-
-<Note>
-  Pinata currently supports x402 protocol version 1. Support for v2 will be added when released.
 </Note>
 
 ## Overview
 
 Pinata's x402 implementation enables:
 - **Monetization of private IPFS content** using Payment Instructions
+- **You receive payments directly** to your wallet address. Payments go to you, not Pinata.
 - **Flexible payment requirements** configurable per file or group of files
 - **USDC payments** on Base (mainnet) and Base Sepolia (testnet)
 - **Gateway-level enforcement** through the x402 protocol
@@ -75,7 +72,7 @@ Attach payment instructions to your private files:
 2. **Create** a Payment Instruction with your desired payment requirements
 3. **Attach** the CID of your private file to the Payment Instruction
 4. **Share** your x402 gateway URL: `https://your-gateway.mypinata.cloud/x402/cid/{cid}`
-5. **Buyers** make USDC payments via Coinbase Facilitator to access content
+5. **Requesters** make USDC payments through your gateway to access content
 
 <Note>
   You must use your own dedicated Pinata gateway domain. Replace `your-gateway.mypinata.cloud` with your actual gateway domain throughout these examples.
@@ -92,7 +89,7 @@ curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
     "name": "Premium Content",
     "payment_requirements": [{
       "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-      "pay_to": "0xYourWalletAddress",
+      "pay_to": "0xYourWalletAddress",  // YOU receive payments here
       "network": "base",
       "description": "Access fee",
       "max_amount_required": "10000"
@@ -107,6 +104,16 @@ curl -X PUT https://api.pinata.cloud/v3/x402/payment_instructions/{instruction_i
 # 3. Share the x402 gateway URL
 # https://your-gateway.mypinata.cloud/x402/cid/{cid}
 ```
+
+## Why Use Payment Instructions
+
+The Payment Instructions API enables you to monetize your private content by setting custom payment requirements and receiving payments directly to your wallet.
+
+Key benefits:
+- **You get paid** for your content. Set your own prices and receive USDC payments directly.
+- **Flexible pricing** for different files or groups of files
+- **Reusable payment instructions** that can be attached to multiple CIDs
+- **Full control** over payment requirements, pricing, and access
 
 ## Legacy Endpoints
 

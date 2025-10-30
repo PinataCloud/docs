@@ -4,6 +4,8 @@ title: "Quick Start"
 
 Get started monetizing your private IPFS files with x402 in just a few minutes.
 
+With x402, you monetize your private files by setting payment requirements. Payments go directly to your wallet. You control the price and receive the funds.
+
 <Note>
   Before starting, ensure the x402 feature flag is enabled on your account. Contact team@pinata.cloud if you need access.
 </Note>
@@ -42,7 +44,7 @@ curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
     "payment_requirements": [
       {
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "pay_to": "YOUR_WALLET_ADDRESS",
+        "pay_to": "YOUR_WALLET_ADDRESS",  // YOU receive payments here
         "network": "base",
         "description": "Access fee",
         "max_amount_required": "10000"
@@ -51,7 +53,30 @@ curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
   }'
 ```
 
-**Payment Amount:** The `max_amount_required` is in the token's smallest unit. For USDC (6 decimals), `"10000"` = 0.01 USDC.
+**Understanding Payment Amounts:** Token amounts use the smallest unit of the token. For reference, Ethereum uses 18 decimals:
+
+**Ethereum Units (for reference, assuming ETH = $4,000):**
+| Unit | Wei Value | ETH Value | USD Value |
+|------|-----------|-----------|-----------|
+| 1 wei | 1 | 0.000000000000000001 | $0.000000000000004 |
+| 1,000 wei | 1,000 | 0.000000000000001 | $0.000000000004 |
+| 1,000,000 wei | 1,000,000 | 0.000000000001 | $0.000000004 |
+| 1 gwei | 1,000,000,000 | 0.000000001 | $0.000004 |
+| 1,000 gwei | 1,000,000,000,000 | 0.000001 | $0.004 |
+| 100,000 gwei | 100,000,000,000,000 | 0.0001 | $0.40 |
+| 250,000 gwei | 250,000,000,000,000 | 0.00025 | $1.00 |
+
+**USDC uses 6 decimals** (not 18). The `max_amount_required` uses USDC's smallest unit. To convert USD to the token amount, multiply by 1,000,000:
+
+| USD Amount | `max_amount_required` | Calculation |
+|------------|----------------------|-------------|
+| $0.01 | `"10000"` | $0.01 × 1,000,000 |
+| $0.10 | `"100000"` | $0.10 × 1,000,000 |
+| $1.00 | `"1000000"` | $1.00 × 1,000,000 |
+| $5.00 | `"5000000"` | $5.00 × 1,000,000 |
+| $10.00 | `"10000000"` | $10.00 × 1,000,000 |
+
+**Formula:** USD Amount × 1,000,000 = token amount
 
 **Networks:**
 - Production: Use `"base"` with `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
@@ -74,7 +99,7 @@ Replace:
 
 ## Step 4: Share Your Monetized Content
 
-Your file is now monetized! Share this URL with buyers:
+Your file is now monetized! Share this URL with requesters:
 
 ```
 https://your-gateway.mypinata.cloud/x402/cid/{cid}
@@ -86,7 +111,7 @@ https://your-gateway.mypinata.cloud/x402/cid/{cid}
 
 ## Step 5: Test the Payment Flow
 
-When someone accesses your URL without payment, they'll receive a 402 response with payment requirements:
+When a requester accesses your URL without payment, the gateway returns a 402 response with payment requirements:
 
 ```bash
 curl https://your-gateway.mypinata.cloud/x402/cid/{cid}
@@ -108,14 +133,14 @@ Response:
 }
 ```
 
-After payment is made (via Coinbase Facilitator), buyers can access the file by including the payment proof in the `X-Payment` header.
+After payment is made, requesters can access the file by including the payment proof in the `X-Payment` header.
 
 ## Next Steps
 
 - **Manage Multiple Files**: Attach multiple CIDs to the same payment instruction
 - **Update Pricing**: Use the [Update Payment Instruction](/api-reference/endpoint/x402/payment-instructions-update) endpoint
 - **Monitor Access**: Check your gateway analytics to track paid downloads
-- **Buyer Guide**: Learn how buyers access paid content in the [Accessing Paid Content](/files/x402-accessing-paid-content) guide
+- **Requester Guide**: Learn how requesters access paid content in the [Accessing Paid Content](/files/x402-accessing-paid-content) guide
 
 ## Common Issues
 

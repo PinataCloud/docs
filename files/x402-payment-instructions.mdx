@@ -2,7 +2,9 @@
 title: "Payment Instructions Guide"
 ---
 
-Payment Instructions are the core mechanism for monetizing private IPFS content through the x402 protocol. This guide covers how to create, manage, and use Payment Instructions to monetize your content.
+Payment Instructions are the core mechanism for monetizing private IPFS content through the x402 protocol. You define payment requirements, attach them to your private files, and receive payments directly to your wallet when requesters access your content.
+
+This guide covers how to create, manage, and use Payment Instructions to monetize your content.
 
 ## Prerequisites
 
@@ -89,7 +91,7 @@ curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
     "payment_requirements": [
       {
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "pay_to": "0x6135561038E7C676473431842e586C8248276AED",
+        "pay_to": "0x6135561038E7C676473431842e586C8248276AED",  // YOU receive payments here
         "network": "base",
         "description": "Access fee",
         "max_amount_required": "10000"
@@ -194,7 +196,7 @@ curl -X DELETE https://api.pinata.cloud/v3/x402/payment_instructions/{instructio
 
 ## Gateway Behavior
 
-When a buyer accesses your x402 gateway URL:
+When a requester accesses your x402 gateway URL without payment, the gateway returns payment requirements:
 
 ### Without Payment (402 Response)
 
@@ -223,16 +225,40 @@ When a buyer accesses your x402 gateway URL:
 
 The gateway:
 1. Validates the `X-Payment` header
-2. Verifies payment with Coinbase Facilitator
+2. Verifies the payment proof
 3. Checks amount, recipient, and network match requirements
 4. Serves the private content
-5. Settles the transaction on-chain
 
 ## Best Practices
 
 ### Payment Amounts
 
-- Amounts are in smallest unit (e.g., `"10000"` = 0.01 USDC with 6 decimals)
+Token amounts use the smallest unit of the token. For reference, Ethereum uses 18 decimals:
+
+**Ethereum Units (for reference, assuming ETH = $4,000):**
+| Unit | Wei Value | ETH Value | USD Value |
+|------|-----------|-----------|-----------|
+| 1 wei | 1 | 0.000000000000000001 | $0.000000000000004 |
+| 1,000 wei | 1,000 | 0.000000000000001 | $0.000000000004 |
+| 1,000,000 wei | 1,000,000 | 0.000000000001 | $0.000000004 |
+| 1 gwei | 1,000,000,000 | 0.000000001 | $0.000004 |
+| 1,000 gwei | 1,000,000,000,000 | 0.000001 | $0.004 |
+| 100,000 gwei | 100,000,000,000,000 | 0.0001 | $0.40 |
+| 250,000 gwei | 250,000,000,000,000 | 0.00025 | $1.00 |
+
+**USDC uses 6 decimals** (not 18). The `max_amount_required` uses USDC's smallest unit. To convert USD to the token amount, multiply by 1,000,000:
+
+| USD Amount | `max_amount_required` | Calculation |
+|------------|----------------------|-------------|
+| $0.01 | `"10000"` | $0.01 × 1,000,000 |
+| $0.10 | `"100000"` | $0.10 × 1,000,000 |
+| $1.00 | `"1000000"` | $1.00 × 1,000,000 |
+| $5.00 | `"5000000"` | $5.00 × 1,000,000 |
+| $10.00 | `"10000000"` | $10.00 × 1,000,000 |
+
+**Formula:** USD Amount × 1,000,000 = token amount
+
+**Tips:**
 - Consider transaction costs when setting minimum amounts
 - Test on Base Sepolia before deploying to mainnet
 
@@ -245,7 +271,7 @@ The gateway:
 ### Security Considerations
 
 - Only private files can be monetized
-- Ensure your `pay_to` address is correct
+- Ensure your `pay_to` address is correct. **You receive payments directly to this address.**
 - Test payment flows on testnet first
 - Monitor your gateway analytics
 
