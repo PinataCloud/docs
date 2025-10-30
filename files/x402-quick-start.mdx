@@ -1,0 +1,128 @@
+---
+title: "Quick Start"
+---
+
+Get started monetizing your private IPFS files with x402 in just a few minutes.
+
+<Note>
+  Before starting, ensure the x402 feature flag is enabled on your account. Contact team@pinata.cloud if you need access.
+</Note>
+
+## Prerequisites
+
+- Pinata account with x402 feature flag enabled
+- API JWT from [Pinata App](https://app.pinata.cloud/developers/api-keys)
+- Private file uploaded to Pinata
+- Ethereum wallet address to receive payments
+
+## Step 1: Upload a Private File
+
+First, upload a file to Private IPFS:
+
+```bash
+curl -X POST https://uploads.pinata.cloud/v3/files \
+  -H "Authorization: Bearer YOUR_JWT" \
+  -F "file=@your-file.pdf" \
+  -F "network=private"
+```
+
+Save the returned `cid` for the next step.
+
+## Step 2: Create a Payment Instruction
+
+Define your payment requirements:
+
+```bash
+curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
+  -H "Authorization: Bearer YOUR_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Premium Content Access",
+    "description": "One-time payment for file access",
+    "payment_requirements": [
+      {
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "pay_to": "YOUR_WALLET_ADDRESS",
+        "network": "base",
+        "description": "Access fee",
+        "max_amount_required": "10000"
+      }
+    ]
+  }'
+```
+
+**Payment Amount:** The `max_amount_required` is in the token's smallest unit. For USDC (6 decimals), `"10000"` = 0.01 USDC.
+
+**Networks:**
+- Production: Use `"base"` with `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
+- Testing: Use `"base-sepolia"` with `0x036CbD53842c5426634e7929541eC2318f3dCF7e`
+
+Save the returned `id` for the next step.
+
+## Step 3: Attach CID to Payment Instruction
+
+Link your private file to the payment instruction:
+
+```bash
+curl -X PUT https://api.pinata.cloud/v3/x402/payment_instructions/{instruction_id}/cids/{cid} \
+  -H "Authorization: Bearer YOUR_JWT"
+```
+
+Replace:
+- `{instruction_id}` with the ID from Step 2
+- `{cid}` with the CID from Step 1
+
+## Step 4: Share Your Monetized Content
+
+Your file is now monetized! Share this URL with buyers:
+
+```
+https://your-gateway.mypinata.cloud/x402/cid/{cid}
+```
+
+<Note>
+  Replace `your-gateway.mypinata.cloud` with your actual dedicated Pinata gateway domain (e.g., `my-gateway.mypinata.cloud`), and `{cid}` with your file's CID.
+</Note>
+
+## Step 5: Test the Payment Flow
+
+When someone accesses your URL without payment, they'll receive a 402 response with payment requirements:
+
+```bash
+curl https://your-gateway.mypinata.cloud/x402/cid/{cid}
+```
+
+Response:
+```json
+{
+  "x402Version": 1,
+  "accepts": [{
+    "scheme": "exact",
+    "network": "base",
+    "maxAmountRequired": "10000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payTo": "YOUR_WALLET_ADDRESS",
+    "resource": "https://your-gateway.mypinata.cloud/x402/cid/{cid}"
+  }],
+  "error": "Provide a valid X-Payment header to access this content"
+}
+```
+
+After payment is made (via Coinbase Facilitator), buyers can access the file by including the payment proof in the `X-Payment` header.
+
+## Next Steps
+
+- **Manage Multiple Files**: Attach multiple CIDs to the same payment instruction
+- **Update Pricing**: Use the [Update Payment Instruction](/api-reference/endpoint/x402/payment-instructions-update) endpoint
+- **Monitor Access**: Check your gateway analytics to track paid downloads
+- **Buyer Guide**: Learn how buyers access paid content in the [Accessing Paid Content](/files/x402-accessing-paid-content) guide
+
+## Common Issues
+
+**404 Not Found**: Verify the CID is private and correctly attached to a payment instruction
+
+**403 Forbidden**: Check that your API key has the required permissions (`OrgFilesWrite`)
+
+**409 Conflict**: If deleting a payment instruction fails, remove all CID attachments first
+
+Need help? Contact team@pinata.cloud

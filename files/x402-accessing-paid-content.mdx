@@ -1,0 +1,250 @@
+---
+title: "Accessing Paid Content"
+---
+
+Learn how to access x402-protected content as a buyer or consumer.
+
+## Overview
+
+When you try to access x402-protected content, the gateway will return payment requirements if you haven't paid. After making a payment through Coinbase Facilitator, you'll receive a payment proof that grants access to the content.
+
+## The Payment Flow
+
+<Note>
+  You must use your own dedicated Pinata gateway domain for x402. Replace `your-gateway.mypinata.cloud` in all examples with your actual gateway domain (e.g., `my-gateway.mypinata.cloud`).
+</Note>
+
+### Step 1: Request the Content
+
+Make a GET request to the x402 gateway URL:
+
+```bash
+curl https://your-gateway.mypinata.cloud/x402/cid/bafkreih...
+```
+
+### Step 2: Receive Payment Requirements (402 Response)
+
+The gateway returns HTTP 402 with payment details:
+
+```json
+{
+  "x402Version": 1,
+  "accepts": [
+    {
+      "scheme": "exact",
+      "network": "base",
+      "maxAmountRequired": "10000",
+      "resource": "https://your-gateway.mypinata.cloud/x402/cid/bafkreih...",
+      "description": "Access fee",
+      "mimeType": "application/json",
+      "payTo": "0x6135561038E7C676473431842e586C8248276AED",
+      "maxTimeoutSeconds": 60,
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "extra": {
+        "name": "USD Coin",
+        "version": "2"
+      }
+    }
+  ],
+  "error": "Provide a valid X-Payment header to access this content"
+}
+```
+
+**Key Fields:**
+- `network`: Blockchain network (e.g., `base`)
+- `asset`: Token contract address (USDC on Base)
+- `payTo`: Recipient wallet address
+- `maxAmountRequired`: Payment amount in smallest unit (e.g., `10000` = 0.01 USDC)
+
+### Step 3: Make Payment via Coinbase Facilitator
+
+The payment is processed through Coinbase Facilitator, which handles:
+1. USDC transfer authorization
+2. Payment verification
+3. Transaction settlement on-chain
+
+### Step 4: Access Content with Payment Proof
+
+After successful payment, include the `X-Payment` header in your request:
+
+```bash
+curl https://your-gateway.mypinata.cloud/x402/cid/bafkreih... \
+  -H "X-Payment: eyJ4NDAyVmVyc2lvbiI6MSwic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3..."
+```
+
+The gateway will:
+1. Validate the `X-Payment` header
+2. Verify payment with Coinbase Facilitator
+3. Check that amount, recipient, and network match
+4. Serve the private content
+5. Settle the transaction on-chain
+
+**Successful Response:**
+```
+HTTP/200 OK
+Content-Type: application/json
+
+{
+  "your": "content"
+}
+```
+
+## Using x402 Libraries
+
+The x402 protocol has client libraries that automate the payment flow:
+
+### x402-fetch
+
+```typescript
+import { wrapFetchWithPayment } from "x402-fetch";
+import { account } from "./viem"; // Your Viem account
+
+const fetchWithPayment = wrapFetchWithPayment(fetch, account);
+
+// Automatically handles 402 response and payment
+const response = await fetchWithPayment(
+  "https://your-gateway.mypinata.cloud/x402/cid/bafkreih..."
+);
+
+const content = await response.json();
+console.log(content);
+```
+
+### x402-axios
+
+```typescript
+import { wrapAxiosWithPayment } from "x402-axios";
+import axios from "axios";
+import { account } from "./viem"; // Your Viem account
+
+const axiosWithPayment = wrapAxiosWithPayment(axios, account);
+
+// Automatically handles 402 response and payment
+const response = await axiosWithPayment.get(
+  "https://your-gateway.mypinata.cloud/x402/cid/bafkreih..."
+);
+
+console.log(response.data);
+```
+
+## Setting Up Your Wallet
+
+Both libraries require a Viem account or Coinbase Developer Platform wallet:
+
+### Option 1: Viem Local Account
+
+```typescript
+import { privateKeyToAccount } from "viem/accounts";
+
+const account = privateKeyToAccount("0xYOUR_PRIVATE_KEY");
+```
+
+### Option 2: Coinbase CDP Wallet
+
+```typescript
+import { Coinbase, Wallet } from "@coinbase/coinbase-sdk";
+
+const coinbase = new Coinbase({
+  apiKeyName: "YOUR_API_KEY_NAME",
+  privateKey: "YOUR_PRIVATE_KEY",
+});
+
+const wallet = await Wallet.create();
+const account = await wallet.getDefaultAddress();
+```
+
+## Payment Verification
+
+The gateway verifies payments by:
+
+1. **Decoding the X-Payment header**: Contains authorization and signature
+2. **Calling Coinbase Facilitator verify endpoint**: Validates the payment proof
+3. **Checking payment details**: Ensures amount, recipient, network, and token match requirements
+4. **Serving content**: If verification passes
+5. **Settling transaction**: Finalizes the payment on-chain
+
+## Understanding Payment Amounts
+
+USDC uses 6 decimals, so amounts are in "micro-USDC":
+
+| Display Amount | `max_amount_required` Value |
+|----------------|---------------------------|
+| $0.01 USDC | `10000` |
+| $0.10 USDC | `100000` |
+| $1.00 USDC | `1000000` |
+| $10.00 USDC | `10000000` |
+
+## Error Handling
+
+### 402 Payment Required
+Payment has not been made yet. Follow the payment flow above.
+
+### 403 Forbidden
+Payment proof is invalid or expired. Try making a new payment.
+
+### 404 Not Found
+The CID doesn't exist or isn't attached to a payment instruction.
+
+### 500 Internal Server Error
+Gateway or facilitator error. Contact the content creator.
+
+## Network Support
+
+| Network | Status | Token | Use Case |
+|---------|--------|-------|----------|
+| Base (Mainnet) | ✅ Available | USDC (`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`) | Production |
+| Base Sepolia (Testnet) | ✅ Available | USDC (`0x036CbD53842c5426634e7929541eC2318f3dCF7e`) | Testing |
+
+## Best Practices
+
+1. **Handle 402 responses gracefully**: Display payment requirements to users clearly
+2. **Use the x402 libraries**: They handle the complex payment flow automatically
+3. **Test on Base Sepolia first**: Verify your integration before using mainnet
+4. **Store payment proofs**: If you need to access content multiple times (check expiry)
+5. **Monitor your USDC balance**: Ensure you have enough for payments
+
+## Example: Complete Integration
+
+```typescript
+import { wrapFetchWithPayment } from "x402-fetch";
+import { privateKeyToAccount } from "viem/accounts";
+
+// Set up your wallet
+const account = privateKeyToAccount(process.env.PRIVATE_KEY);
+const fetchWithPayment = wrapFetchWithPayment(fetch, account);
+
+// Access paid content
+async function accessPaidContent(cid: string) {
+  try {
+    const url = `https://your-gateway.mypinata.cloud/x402/cid/${cid}`;
+
+    const response = await fetchWithPayment(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const content = await response.json();
+    console.log("Content accessed successfully:", content);
+
+    return content;
+  } catch (error) {
+    console.error("Failed to access content:", error);
+    throw error;
+  }
+}
+
+// Usage
+accessPaidContent("bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4");
+```
+
+## Resources
+
+- [x402-fetch NPM Package](https://www.npmjs.com/package/x402-fetch)
+- [x402-axios NPM Package](https://www.npmjs.com/package/x402-axios)
+- [Viem Documentation](https://viem.sh)
+- [Coinbase Developer Platform](https://docs.cdp.coinbase.com/)
+
+## Support
+
+Need help accessing paid content? Contact the content creator or reach out to team@pinata.cloud.

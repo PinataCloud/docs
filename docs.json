@@ -84,12 +84,14 @@
               "files/signatures",
               "tools/ipfs-cli",
               {
-                "group": "x402",
+                "group": "x402 Monetization",
                 "icon": "sparkle",
                 "pages": [
                   "files/x402",
-                  "api-reference/endpoint/x402/pin",
-                  "api-reference/endpoint/x402/retrieve"
+                  "files/x402-quick-start",
+                  "files/x402-payment-instructions",
+                  "files/x402-accessing-paid-content",
+                  "files/x402-legacy"
                 ]
               }
             ]
@@ -405,6 +407,36 @@
                       "api-reference/endpoint/ipfs/install-gateway-plugin",
                       "api-reference/endpoint/ipfs/list-gateway-plugins",
                       "api-reference/endpoint/ipfs/uninstall-gateway-plugin"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "x402",
+                "pages": [
+                  {
+                    "group": "Payment Instructions",
+                    "pages": [
+                      "api-reference/endpoint/x402/payment-instructions-list",
+                      "api-reference/endpoint/x402/payment-instructions-create",
+                      "api-reference/endpoint/x402/payment-instructions-get",
+                      "api-reference/endpoint/x402/payment-instructions-update",
+                      "api-reference/endpoint/x402/payment-instructions-delete"
+                    ]
+                  },
+                  {
+                    "group": "CID Management",
+                    "pages": [
+                      "api-reference/endpoint/x402/cids-list",
+                      "api-reference/endpoint/x402/cids-add",
+                      "api-reference/endpoint/x402/cids-remove"
+                    ]
+                  },
+                  {
+                    "group": "Legacy",
+                    "pages": [
+                      "api-reference/endpoint/x402/legacy-pin",
+                      "api-reference/endpoint/x402/legacy-retrieve"
                     ]
                   }
                 ]

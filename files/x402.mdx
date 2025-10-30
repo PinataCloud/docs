@@ -2,19 +2,121 @@
 title: "Introduction"
 ---
 
-<Warning>
-  Pinata's x402 server is still in beta, [please report any issues you have](mailto:steve@pinata.cloud)
-</Warning>
+<Note>
+  x402 requires a feature flag to be enabled on your Pinata account. Contact team@pinata.cloud to request access.
+</Note>
 
-[Coinbase](https://coinbase.com) has introuced a new protocol called [x402](https://x402.org) that allows providers to add crypto paywalls to endpoints, as well as allow agents to buy access to said endpoint without the need of an API key. Pinata has built an experimental server that allows anyone using x402 to pin files to IPFS or get access to files on [Private IPFS](/files/private-ipfs).
+Pinata has implemented x402 support to allow content creators to monetize private IPFS files through programmable payment instructions.
 
-## Endpoints
+<Note>
+  x402 is currently available through the Pinata API v3. SDK support coming soon.
+</Note>
+
+<Note>
+  Pinata currently supports x402 protocol version 1. Support for v2 will be added when released.
+</Note>
+
+## Overview
+
+Pinata's x402 implementation enables:
+- **Monetization of private IPFS content** using Payment Instructions
+- **Flexible payment requirements** configurable per file or group of files
+- **USDC payments** on Base (mainnet) and Base Sepolia (testnet)
+- **Gateway-level enforcement** through the x402 protocol
+
+## Network Configuration
+
+| Network | USDC Token Address | Use Case |
+|---------|-------------------|----------|
+| Base (Mainnet) | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` | Production monetization |
+| Base Sepolia (Testnet) | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` | Testing payment flows |
+
+## Payment Instructions API
+
+Create and manage payment requirements for your private content:
 
 <CardGroup cols={2}>
-  <Card title="/pin" horizontal icon="upload" href="/api-reference/endpoint/x402/pin">
+  <Card title="List Instructions" icon="list" href="/api-reference/endpoint/x402/payment-instructions-list">
+    View all payment instructions
+  </Card>
+  <Card title="Create Instruction" icon="plus" href="/api-reference/endpoint/x402/payment-instructions-create">
+    Define new payment requirements
+  </Card>
+  <Card title="Get Instruction" icon="eye" href="/api-reference/endpoint/x402/payment-instructions-get">
+    Retrieve instruction details
+  </Card>
+  <Card title="Update Instruction" icon="pen" href="/api-reference/endpoint/x402/payment-instructions-update">
+    Modify payment requirements
+  </Card>
+  <Card title="Delete Instruction" icon="trash" href="/api-reference/endpoint/x402/payment-instructions-delete">
+    Remove payment instructions
+  </Card>
+</CardGroup>
+
+## CID Management
+
+Attach payment instructions to your private files:
+
+<CardGroup cols={3}>
+  <Card title="List CIDs" icon="folder" href="/api-reference/endpoint/x402/cids-list">
+    View attached CIDs
+  </Card>
+  <Card title="Add CID" icon="link" href="/api-reference/endpoint/x402/cids-add">
+    Attach CID to instruction
+  </Card>
+  <Card title="Remove CID" icon="unlink" href="/api-reference/endpoint/x402/cids-remove">
+    Detach CID from instruction
+  </Card>
+</CardGroup>
+
+## How It Works
+
+1. **Upload** a private file to Pinata IPFS
+2. **Create** a Payment Instruction with your desired payment requirements
+3. **Attach** the CID of your private file to the Payment Instruction
+4. **Share** your x402 gateway URL: `https://your-gateway.mypinata.cloud/x402/cid/{cid}`
+5. **Buyers** make USDC payments via Coinbase Facilitator to access content
+
+<Note>
+  You must use your own dedicated Pinata gateway domain. Replace `your-gateway.mypinata.cloud` with your actual gateway domain throughout these examples.
+</Note>
+
+## Example Workflow
+
+```bash
+# 1. Create a payment instruction
+curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
+  -H "Authorization: Bearer YOUR_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Premium Content",
+    "payment_requirements": [{
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "pay_to": "0xYourWalletAddress",
+      "network": "base",
+      "description": "Access fee",
+      "max_amount_required": "10000"
+    }]
+  }'
+# Returns: {"data": {"id": "019a2b6a-...", ...}}
+
+# 2. Attach CID to payment instruction
+curl -X PUT https://api.pinata.cloud/v3/x402/payment_instructions/{instruction_id}/cids/{cid} \
+  -H "Authorization: Bearer YOUR_JWT"
+
+# 3. Share the x402 gateway URL
+# https://your-gateway.mypinata.cloud/x402/cid/{cid}
+```
+
+## Legacy Endpoints
+
+These endpoints are maintained for backward compatibility:
+
+<CardGroup cols={2}>
+  <Card title="/pin (Legacy)" horizontal icon="upload" href="/api-reference/endpoint/x402/legacy-pin">
     Upload to either Public or Private IPFS
   </Card>
-  <Card title="/retrieve" horizontal icon="download" href="/api-reference/endpoint/x402/retrieve">
+  <Card title="/retrieve (Legacy)" horizontal icon="download" href="/api-reference/endpoint/x402/legacy-retrieve">
     Access a file on Private IPFS
   </Card>
 </CardGroup>
