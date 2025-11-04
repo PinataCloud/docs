@@ -83,45 +83,11 @@ Content-Type: application/json
 
 ## Using x402 Libraries
 
-The x402 protocol has client libraries that automate the payment flow:
-
-### x402-fetch
-
-```typescript
-import { wrapFetchWithPayment } from "x402-fetch";
-import { account } from "./viem"; // Your Viem account
-
-const fetchWithPayment = wrapFetchWithPayment(fetch, account);
-
-// Automatically handles 402 response and payment
-const response = await fetchWithPayment(
-  "https://your-gateway.mypinata.cloud/x402/cid/bafkreih..."
-);
-
-const content = await response.json();
-console.log(content);
-```
-
-### x402-axios
-
-```typescript
-import { wrapAxiosWithPayment } from "x402-axios";
-import axios from "axios";
-import { account } from "./viem"; // Your Viem account
-
-const axiosWithPayment = wrapAxiosWithPayment(axios, account);
-
-// Automatically handles 402 response and payment
-const response = await axiosWithPayment.get(
-  "https://your-gateway.mypinata.cloud/x402/cid/bafkreih..."
-);
-
-console.log(response.data);
-```
+The x402 protocol has client libraries that automate the payment flow. First, set up your wallet:
 
 ## Setting Up Your Wallet
 
-Both libraries require a Viem account or Coinbase Developer Platform wallet:
+The x402 libraries require a Viem account or Coinbase Developer Platform wallet:
 
 ### Option 1: Viem Local Account
 
@@ -145,6 +111,48 @@ const wallet = await Wallet.create();
 const account = await wallet.getDefaultAddress();
 ```
 
+## Using the Libraries
+
+Once you have your wallet set up, use the x402 libraries to access paid content:
+
+### x402-fetch
+
+```typescript
+import { wrapFetchWithPayment } from "x402-fetch";
+import { privateKeyToAccount } from "viem/accounts";
+
+// Set up your wallet
+const account = privateKeyToAccount("0xYOUR_PRIVATE_KEY");
+const fetchWithPayment = wrapFetchWithPayment(fetch, account);
+
+// Automatically handles 402 response and payment
+const response = await fetchWithPayment(
+  "https://your-gateway.mypinata.cloud/x402/cid/bafkreih..."
+);
+
+const content = await response.json();
+console.log(content);
+```
+
+### x402-axios
+
+```typescript
+import { wrapAxiosWithPayment } from "x402-axios";
+import axios from "axios";
+import { privateKeyToAccount } from "viem/accounts";
+
+// Set up your wallet
+const account = privateKeyToAccount("0xYOUR_PRIVATE_KEY");
+const axiosWithPayment = wrapAxiosWithPayment(axios, account);
+
+// Automatically handles 402 response and payment
+const response = await axiosWithPayment.get(
+  "https://your-gateway.mypinata.cloud/x402/cid/bafkreih..."
+);
+
+console.log(response.data);
+```
+
 ## Technical Details (Optional)
 
 <Note>
@@ -153,20 +161,7 @@ const account = await wallet.getDefaultAddress();
 
 ## Understanding Payment Amounts
 
-Token amounts use the smallest unit of the token. For reference, Ethereum uses 18 decimals:
-
-**Ethereum Units (for reference, assuming ETH = $4,000):**
-| Unit | Wei Value | ETH Value | USD Value |
-|------|-----------|-----------|-----------|
-| 1 wei | 1 | 0.000000000000000001 | $0.000000000000004 |
-| 1,000 wei | 1,000 | 0.000000000000001 | $0.000000000004 |
-| 1,000,000 wei | 1,000,000 | 0.000000000001 | $0.000000004 |
-| 1 gwei | 1,000,000,000 | 0.000000001 | $0.000004 |
-| 1,000 gwei | 1,000,000,000,000 | 0.000001 | $0.004 |
-| 100,000 gwei | 100,000,000,000,000 | 0.0001 | $0.40 |
-| 250,000 gwei | 250,000,000,000,000 | 0.00025 | $1.00 |
-
-**USDC uses 6 decimals** (not 18), so amounts use the token's smallest unit:
+USDC uses 6 decimals, so amounts use the token's smallest unit:
 
 | USD Amount | `maxAmountRequired` | Calculation |
 |------------|-------------------|-------------|

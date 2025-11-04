@@ -68,12 +68,37 @@ Currently supported configurations:
 
 First, upload your file as private to Pinata:
 
-```bash
+<CodeGroup>
+
+```bash cURL
 curl -X POST https://uploads.pinata.cloud/v3/files \
   -H "Authorization: Bearer YOUR_JWT" \
   -F "file=@premium-content.pdf" \
   -F "network=private"
 ```
+
+```typescript TypeScript
+const JWT = "YOUR_PINATA_JWT";
+
+const formData = new FormData();
+const file = new File(["file contents"], "premium-content.pdf", {
+  type: "application/pdf",
+});
+formData.append("file", file);
+formData.append("network", "private");
+
+const upload = await fetch("https://uploads.pinata.cloud/v3/files", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${JWT}`,
+  },
+  body: formData,
+});
+const { data } = await upload.json();
+const cid = data.cid;
+```
+
+</CodeGroup>
 
 **Important:** The file must be uploaded to the `private` network to be monetized with x402.
 
@@ -81,7 +106,9 @@ curl -X POST https://uploads.pinata.cloud/v3/files \
 
 Create a payment instruction with your desired requirements:
 
-```bash
+<CodeGroup>
+
+```bash cURL
 curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
   -H "Authorization: Bearer YOUR_JWT" \
   -H "Content-Type: application/json" \
@@ -91,7 +118,7 @@ curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
     "payment_requirements": [
       {
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "pay_to": "0x6135561038E7C676473431842e586C8248276AED",  // YOU receive payments here
+        "pay_to": "0x6135561038E7C676473431842e586C8248276AED",
         "network": "base",
         "description": "Access fee",
         "max_amount_required": "10000"
@@ -100,14 +127,64 @@ curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
   }'
 ```
 
+```typescript TypeScript
+const JWT = "YOUR_PINATA_JWT";
+
+const instruction = await fetch(
+  "https://api.pinata.cloud/v3/x402/payment_instructions",
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: "Premium PDF Access",
+      description: "One-time payment for PDF access",
+      payment_requirements: [
+        {
+          asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          pay_to: "0x6135561038E7C676473431842e586C8248276AED", // YOU receive payments here
+          network: "base",
+          description: "Access fee",
+          max_amount_required: "10000",
+        },
+      ],
+    }),
+  }
+);
+const { data } = await instruction.json();
+const instructionId = data.id;
+```
+
+</CodeGroup>
+
 ### Step 3: Attach CID to Payment Instruction
 
 Link your private file to the payment instruction:
 
-```bash
+<CodeGroup>
+
+```bash cURL
 curl -X PUT https://api.pinata.cloud/v3/x402/payment_instructions/{instruction_id}/cids/{cid} \
   -H "Authorization: Bearer YOUR_JWT"
 ```
+
+```typescript TypeScript
+const JWT = "YOUR_PINATA_JWT";
+
+await fetch(
+  `https://api.pinata.cloud/v3/x402/payment_instructions/${instructionId}/cids/${cid}`,
+  {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+    },
+  }
+);
+```
+
+</CodeGroup>
 
 ### Step 4: Share x402 Gateway URL
 
@@ -122,10 +199,28 @@ https://your-gateway.mypinata.cloud/x402/cid/{cid}
 
 View all your payment instructions with pagination:
 
-```bash
+<CodeGroup>
+
+```bash cURL
 curl -X GET "https://api.pinata.cloud/v3/x402/payment_instructions?limit=20" \
   -H "Authorization: Bearer YOUR_JWT"
 ```
+
+```typescript TypeScript
+const JWT = "YOUR_PINATA_JWT";
+
+const list = await fetch(
+  "https://api.pinata.cloud/v3/x402/payment_instructions?limit=20",
+  {
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+    },
+  }
+);
+const instructions = await list.json();
+```
+
+</CodeGroup>
 
 Filter by specific criteria:
 - `?cid=bafkreih...` - Find instruction for a specific CID
@@ -136,7 +231,9 @@ Filter by specific criteria:
 
 Modify payment requirements for all attached CIDs:
 
-```bash
+<CodeGroup>
+
+```bash cURL
 curl -X PATCH https://api.pinata.cloud/v3/x402/payment_instructions/{id} \
   -H "Authorization: Bearer YOUR_JWT" \
   -H "Content-Type: application/json" \
@@ -152,11 +249,40 @@ curl -X PATCH https://api.pinata.cloud/v3/x402/payment_instructions/{id} \
   }'
 ```
 
+```typescript TypeScript
+const JWT = "YOUR_PINATA_JWT";
+
+const update = await fetch(
+  `https://api.pinata.cloud/v3/x402/payment_instructions/${id}`,
+  {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      payment_requirements: [
+        {
+          asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          pay_to: "0x6135561038E7C676473431842e586C8248276AED",
+          network: "base",
+          max_amount_required: "50000",
+        },
+      ],
+    }),
+  }
+);
+```
+
+</CodeGroup>
+
 ### Deleting Instructions
 
 Before deleting, remove all CID attachments:
 
-```bash
+<CodeGroup>
+
+```bash cURL
 # 1. List attached CIDs
 curl -X GET https://api.pinata.cloud/v3/x402/payment_instructions/{id}/cids \
   -H "Authorization: Bearer YOUR_JWT"
@@ -170,6 +296,47 @@ curl -X DELETE https://api.pinata.cloud/v3/x402/payment_instructions/{id} \
   -H "Authorization: Bearer YOUR_JWT"
 ```
 
+```typescript TypeScript
+const JWT = "YOUR_PINATA_JWT";
+
+// 1. List attached CIDs
+const listCids = await fetch(
+  `https://api.pinata.cloud/v3/x402/payment_instructions/${id}/cids`,
+  {
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+    },
+  }
+);
+const { data: cids } = await listCids.json();
+
+// 2. Remove each CID
+for (const cid of cids) {
+  await fetch(
+    `https://api.pinata.cloud/v3/x402/payment_instructions/${id}/cids/${cid}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+    }
+  );
+}
+
+// 3. Delete the instruction
+await fetch(
+  `https://api.pinata.cloud/v3/x402/payment_instructions/${id}`,
+  {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+    },
+  }
+);
+```
+
+</CodeGroup>
+
 ## CID Management
 
 ### One-to-Many Relationship
@@ -180,7 +347,9 @@ curl -X DELETE https://api.pinata.cloud/v3/x402/payment_instructions/{id} \
 
 ### Managing CID Attachments
 
-```bash
+<CodeGroup>
+
+```bash cURL
 # List all CIDs for an instruction
 curl -X GET https://api.pinata.cloud/v3/x402/payment_instructions/{instruction_id}/cids \
   -H "Authorization: Bearer YOUR_JWT"
@@ -193,6 +362,44 @@ curl -X PUT https://api.pinata.cloud/v3/x402/payment_instructions/{instruction_i
 curl -X DELETE https://api.pinata.cloud/v3/x402/payment_instructions/{instruction_id}/cids/{cid} \
   -H "Authorization: Bearer YOUR_JWT"
 ```
+
+```typescript TypeScript
+const JWT = "YOUR_PINATA_JWT";
+
+// List all CIDs for an instruction
+const listCids = await fetch(
+  `https://api.pinata.cloud/v3/x402/payment_instructions/${instructionId}/cids`,
+  {
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+    },
+  }
+);
+
+// Add a CID
+await fetch(
+  `https://api.pinata.cloud/v3/x402/payment_instructions/${instructionId}/cids/${cid}`,
+  {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+    },
+  }
+);
+
+// Remove a CID
+await fetch(
+  `https://api.pinata.cloud/v3/x402/payment_instructions/${instructionId}/cids/${cid}`,
+  {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+    },
+  }
+);
+```
+
+</CodeGroup>
 
 ## Gateway Behavior
 
@@ -233,20 +440,7 @@ The gateway:
 
 ### Payment Amounts
 
-Token amounts use the smallest unit of the token. For reference, Ethereum uses 18 decimals:
-
-**Ethereum Units (for reference, assuming ETH = $4,000):**
-| Unit | Wei Value | ETH Value | USD Value |
-|------|-----------|-----------|-----------|
-| 1 wei | 1 | 0.000000000000000001 | $0.000000000000004 |
-| 1,000 wei | 1,000 | 0.000000000000001 | $0.000000000004 |
-| 1,000,000 wei | 1,000,000 | 0.000000000001 | $0.000000004 |
-| 1 gwei | 1,000,000,000 | 0.000000001 | $0.000004 |
-| 1,000 gwei | 1,000,000,000,000 | 0.000001 | $0.004 |
-| 100,000 gwei | 100,000,000,000,000 | 0.0001 | $0.40 |
-| 250,000 gwei | 250,000,000,000,000 | 0.00025 | $1.00 |
-
-**USDC uses 6 decimals** (not 18). The `max_amount_required` uses USDC's smallest unit. To convert USD to the token amount, multiply by 1,000,000:
+The `max_amount_required` uses USDC's smallest unit. USDC has 6 decimals, so to convert USD to the token amount, multiply by 1,000,000:
 
 | USD Amount | `max_amount_required` | Calculation |
 |------------|----------------------|-------------|

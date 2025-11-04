@@ -80,7 +80,9 @@ Attach payment instructions to your private files:
 
 ## Example Workflow
 
-```bash
+<CodeGroup>
+
+```bash cURL
 # 1. Create a payment instruction
 curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
   -H "Authorization: Bearer YOUR_JWT" \
@@ -89,13 +91,12 @@ curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
     "name": "Premium Content",
     "payment_requirements": [{
       "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-      "pay_to": "0xYourWalletAddress",  // YOU receive payments here
+      "pay_to": "0xYourWalletAddress",
       "network": "base",
       "description": "Access fee",
       "max_amount_required": "10000"
     }]
   }'
-# Returns: {"data": {"id": "019a2b6a-...", ...}}
 
 # 2. Attach CID to payment instruction
 curl -X PUT https://api.pinata.cloud/v3/x402/payment_instructions/{instruction_id}/cids/{cid} \
@@ -104,6 +105,52 @@ curl -X PUT https://api.pinata.cloud/v3/x402/payment_instructions/{instruction_i
 # 3. Share the x402 gateway URL
 # https://your-gateway.mypinata.cloud/x402/cid/{cid}
 ```
+
+```typescript TypeScript
+const JWT = "YOUR_PINATA_JWT";
+
+// 1. Create a payment instruction
+const createInstruction = await fetch(
+  "https://api.pinata.cloud/v3/x402/payment_instructions",
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: "Premium Content",
+      payment_requirements: [
+        {
+          asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          pay_to: "0xYourWalletAddress", // YOU receive payments here
+          network: "base",
+          description: "Access fee",
+          max_amount_required: "10000",
+        },
+      ],
+    }),
+  }
+);
+const instruction = await createInstruction.json();
+const instructionId = instruction.data.id;
+
+// 2. Attach CID to payment instruction
+await fetch(
+  `https://api.pinata.cloud/v3/x402/payment_instructions/${instructionId}/cids/${cid}`,
+  {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${JWT}`,
+    },
+  }
+);
+
+// 3. Share the x402 gateway URL
+// https://your-gateway.mypinata.cloud/x402/cid/{cid}
+```
+
+</CodeGroup>
 
 ## Why Use Payment Instructions
 
