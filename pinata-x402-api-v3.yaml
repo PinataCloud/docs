@@ -1,0 +1,425 @@
+openapi: 3.0.0
+info:
+  title: Pinata x402 Payment Instructions API
+  description: API for managing x402 payment instructions and CID associations
+  version: 3.0.0
+servers:
+  - url: https://api.pinata.cloud/v3
+    description: Production server
+paths:
+  /x402/payment_instructions:
+    get:
+      summary: List Payment Instructions
+      description: Returns a paginated list of payment instructions
+      operationId: listPaymentInstructions
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 10
+          description: Number of items to return
+        - name: pageToken
+          in: query
+          schema:
+            type: string
+          description: Token for pagination
+        - name: cid
+          in: query
+          schema:
+            type: string
+          description: Filter by CID mapped (returns max 1 payment instruction)
+        - name: name
+          in: query
+          schema:
+            type: string
+          description: Filter by name
+        - name: id
+          in: query
+          schema:
+            type: string
+          description: Filter by ID
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      payment_instructions:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/PaymentInstruction'
+                      next_page_token:
+                        type: string
+                        description: Token for next page (omitted on last page)
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      security:
+        - bearerAuth: []
+    
+    post:
+      summary: Create Payment Instruction
+      description: Creates a new payment instruction
+      operationId: createPaymentInstruction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - payment_requirements
+              properties:
+                name:
+                  type: string
+                  description: Name of the payment instruction
+                description:
+                  type: string
+                  description: Description of the payment instruction
+                payment_requirements:
+                  type: array
+                  minItems: 1
+                  items:
+                    $ref: '#/components/schemas/PaymentRequirement'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PaymentInstruction'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      security:
+        - bearerAuth: []
+
+  /x402/payment_instructions/{id}:
+    get:
+      summary: Get Payment Instruction
+      description: Retrieves a specific payment instruction by ID
+      operationId: getPaymentInstruction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Payment instruction ID
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PaymentInstruction'
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+      security:
+        - bearerAuth: []
+    
+    patch:
+      summary: Update Payment Instruction
+      description: Updates an existing payment instruction
+      operationId: updatePaymentInstruction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Payment instruction ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              minProperties: 1
+              properties:
+                name:
+                  type: string
+                  description: Name of the payment instruction
+                description:
+                  type: string
+                  description: Description of the payment instruction
+                payment_requirements:
+                  type: array
+                  minItems: 1
+                  items:
+                    $ref: '#/components/schemas/PaymentRequirement'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PaymentInstruction'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+      security:
+        - bearerAuth: []
+    
+    delete:
+      summary: Delete Payment Instruction
+      description: Deletes a payment instruction (soft delete). All CID mappings must be deleted first.
+      operationId: deletePaymentInstruction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Payment instruction ID
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    nullable: true
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+        "409":
+          description: Conflict - CID mappings still exist
+      security:
+        - bearerAuth: []
+
+  /x402/payment_instructions/{id}/cids:
+    get:
+      summary: List CIDs for Payment Instruction
+      description: Returns a paginated list of CIDs associated with a payment instruction
+      operationId: listCIDs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Payment instruction ID
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 20
+          description: Number of items to return
+        - name: pageToken
+          in: query
+          schema:
+            type: string
+          description: Token for pagination
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      cids:
+                        type: array
+                        items:
+                          type: string
+                      next_page_token:
+                        type: string
+                        description: Token for next page (omitted on last page)
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+      security:
+        - bearerAuth: []
+
+  /x402/payment_instructions/{id}/cids/{cid}:
+    put:
+      summary: Add CID to Payment Instruction
+      description: Associates a CID with a payment instruction
+      operationId: addCID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Payment instruction ID
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Content Identifier (CID)
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      payment_instruction_id:
+                        type: string
+                      cid:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-time
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+      security:
+        - bearerAuth: []
+    
+    delete:
+      summary: Remove CID from Payment Instruction
+      description: Removes a CID association from a payment instruction
+      operationId: removeCID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Payment instruction ID
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Content Identifier (CID)
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    nullable: true
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+      security:
+        - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Pinata API JWT token
+  
+  schemas:
+    PaymentRequirement:
+      type: object
+      required:
+        - asset
+        - pay_to
+        - network
+        - max_amount_required
+      properties:
+        asset:
+          type: string
+          pattern: ^0x[a-fA-F0-9]+$
+          description: Token contract address (must start with 0x)
+        pay_to:
+          type: string
+          pattern: ^0x[a-fA-F0-9]+$
+          description: Ethereum address to receive payment (must start with 0x)
+        network:
+          type: string
+          enum:
+            - base
+            - base-sepolia
+          description: Network for payment
+        description:
+          type: string
+          maxLength: 255
+          description: Optional description
+        max_amount_required:
+          type: string
+          description: Maximum amount required for payment
+    
+    PaymentInstruction:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+        version:
+          type: integer
+          description: Version number
+        payment_requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentRequirement'
+        name:
+          type: string
+          description: Name of the payment instruction
+        description:
+          type: string
+          description: Description of the payment instruction
+        created_at:
+          type: string
+          format: date-time
+          description: Creation timestamp
