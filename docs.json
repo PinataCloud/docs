@@ -87,11 +87,11 @@
                 "group": "x402 Monetization",
                 "icon": "sparkle",
                 "pages": [
-                  "files/x402",
-                  "files/x402-quick-start",
-                  "files/x402-payment-instructions",
-                  "files/x402-accessing-paid-content",
-                  "files/x402-legacy"
+                  "files/x402/intro",
+                  "files/x402/x402-quick-start",
+                  "files/x402/x402-payment-instructions",
+                  "files/x402/x402-accessing-paid-content",
+                  "files/x402/x402"
                 ]
               }
             ]
@@ -433,10 +433,10 @@
                     ]
                   },
                   {
-                    "group": "Legacy",
+                    "group": "x402",
                     "pages": [
-                      "api-reference/endpoint/x402/legacy-pin",
-                      "api-reference/endpoint/x402/legacy-retrieve"
+                      "api-reference/endpoint/x402/pin",
+                      "api-reference/endpoint/x402/retrieve"
                     ]
                   }
                 ]
@@ -533,6 +533,13 @@
       "linkedin": "https://www.linkedin.com/company/pinatacloud"
     }
   },
+  "openapi": [
+    "pinata-api-v3.yaml",
+    "pinata-api-ipfs.yaml",
+    "pinata-x402-api-v1.yaml",
+    "pinata-x402-api-v3.yaml",
+    "pinata-api-v3-uploads.yaml"
+  ],
   "integrations": {
     "ga4": {
       "measurementId": "G-5RMPXG14TE"
