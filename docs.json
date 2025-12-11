@@ -19,7 +19,12 @@
     }
   },
   "contextual": {
-    "options": ["claude", "chatgpt", "copy", "view"]
+    "options": [
+      "claude",
+      "chatgpt",
+      "copy",
+      "view"
+    ]
   },
   "navbar": {
     "links": [
@@ -84,14 +89,19 @@
               "files/signatures",
               "tools/ipfs-cli",
               {
-                "group": "x402 Monetization",
+                "group": "x402",
                 "icon": "sparkle",
                 "pages": [
-                  "files/x402/intro",
-                  "files/x402/x402-quick-start",
-                  "files/x402/x402-payment-instructions",
-                  "files/x402/x402-accessing-paid-content",
-                  "files/x402/x402"
+                  {
+                    "group": "x402 Monetization",
+                    "pages": [
+                      "files/x402/intro",
+                      "files/x402/x402-quick-start",
+                      "files/x402/x402-payment-instructions",
+                      "files/x402/x402-accessing-paid-content"
+                    ]
+                  },
+                  "files/x402/x402-services"
                 ]
               }
             ]
@@ -138,7 +148,12 @@
         "groups": [
           {
             "group": "SDK",
-            "pages": ["sdk/getting-started", "sdk/v2-migration-guide", "sdk/config", "sdk/react"]
+            "pages": [
+              "sdk/getting-started",
+              "sdk/v2-migration-guide",
+              "sdk/config",
+              "sdk/react"
+            ]
           },
           {
             "group": "Files",
@@ -204,11 +219,17 @@
             "pages": [
               {
                 "group": "public",
-                "pages": ["sdk/gateways/public/get", "sdk/gateways/public/convert"]
+                "pages": [
+                  "sdk/gateways/public/get",
+                  "sdk/gateways/public/convert"
+                ]
               },
               {
                 "group": "private",
-                "pages": ["sdk/gateways/private/get", "sdk/gateways/private/create-signed-url"]
+                "pages": [
+                  "sdk/gateways/private/get",
+                  "sdk/gateways/private/create-signed-url"
+                ]
               }
             ]
           },
@@ -264,11 +285,18 @@
           },
           {
             "group": "Analytics",
-            "pages": ["sdk/analytics/requests", "sdk/analytics/bandwidth"]
+            "pages": [
+              "sdk/analytics/requests",
+              "sdk/analytics/bandwidth"
+            ]
           },
           {
             "group": "Keys",
-            "pages": ["sdk/keys/create", "sdk/keys/list", "sdk/keys/revoke"]
+            "pages": [
+              "sdk/keys/create",
+              "sdk/keys/list",
+              "sdk/keys/revoke"
+            ]
           },
           {
             "group": "Types",
@@ -293,7 +321,9 @@
             "groups": [
               {
                 "group": "API Documentation",
-                "pages": ["api-reference/introduction"]
+                "pages": [
+                  "api-reference/introduction"
+                ]
               },
               {
                 "group": "Uploads",
@@ -415,25 +445,30 @@
                 "group": "x402",
                 "pages": [
                   {
-                    "group": "Payment Instructions",
+                    "group": "x402 Monetization",
                     "pages": [
-                      "api-reference/endpoint/x402/payment-instructions-list",
-                      "api-reference/endpoint/x402/payment-instructions-create",
-                      "api-reference/endpoint/x402/payment-instructions-get",
-                      "api-reference/endpoint/x402/payment-instructions-update",
-                      "api-reference/endpoint/x402/payment-instructions-delete"
+                      {
+                        "group": "Payment Instructions",
+                        "pages": [
+                          "api-reference/endpoint/x402/payment-instructions-list",
+                          "api-reference/endpoint/x402/payment-instructions-create",
+                          "api-reference/endpoint/x402/payment-instructions-get",
+                          "api-reference/endpoint/x402/payment-instructions-update",
+                          "api-reference/endpoint/x402/payment-instructions-delete"
+                        ]
+                      },
+                      {
+                        "group": "CID Management",
+                        "pages": [
+                          "api-reference/endpoint/x402/cids-list",
+                          "api-reference/endpoint/x402/cids-add",
+                          "api-reference/endpoint/x402/cids-remove"
+                        ]
+                      }
                     ]
                   },
                   {
-                    "group": "CID Management",
-                    "pages": [
-                      "api-reference/endpoint/x402/cids-list",
-                      "api-reference/endpoint/x402/cids-add",
-                      "api-reference/endpoint/x402/cids-remove"
-                    ]
-                  },
-                  {
-                    "group": "x402",
+                    "group": "x402 Services",
                     "pages": [
                       "api-reference/endpoint/x402/pin",
                       "api-reference/endpoint/x402/retrieve"
@@ -448,11 +483,15 @@
             "groups": [
               {
                 "group": "API Documentation",
-                "pages": ["api-reference/introduction"]
+                "pages": [
+                  "api-reference/introduction"
+                ]
               },
               {
                 "group": "Authentication",
-                "pages": ["api-reference/endpoint/ipfs/test-authentication"]
+                "pages": [
+                  "api-reference/endpoint/ipfs/test-authentication"
+                ]
               },
               {
                 "group": "Pinning",
@@ -554,7 +593,6 @@
       "source": "/pinning/:slug*",
       "destination": "/files/uploading-files"
     },
-  
     {
       "source": "/midwestblock",
       "destination": "events/midwest-blockathon"
