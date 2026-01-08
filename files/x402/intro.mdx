@@ -8,15 +8,11 @@ title: "Introduction"
 
 Pinata's x402 enables you to monetize your private IPFS files by receiving USDC payments directly to your wallet. You set the price, you receive the payment.
 
-<Note>
-  x402 is currently available through the Pinata API v3. SDK support coming soon.
-</Note>
-
 ## Overview
 
 Pinata's x402 implementation enables:
 - **Monetization of private IPFS content** using Payment Instructions
-- **You receive payments directly** to your wallet address. Payments go to you, not Pinata.
+- **You receive payments directly** to your wallet address. Payments go to you.
 - **Flexible payment requirements** configurable per file or group of files
 - **USDC payments** on Base (mainnet) and Base Sepolia (testnet)
 - **Gateway-level enforcement** through the x402 protocol
@@ -27,44 +23,6 @@ Pinata's x402 implementation enables:
 |---------|-------------------|----------|
 | Base (Mainnet) | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` | Production monetization |
 | Base Sepolia (Testnet) | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` | Testing payment flows |
-
-## Payment Instructions API
-
-Create and manage payment requirements for your private content:
-
-<CardGroup cols={2}>
-  <Card title="List Instructions" icon="list" href="/api-reference/endpoint/x402/payment-instructions-list">
-    View all payment instructions
-  </Card>
-  <Card title="Create Instruction" icon="plus" href="/api-reference/endpoint/x402/payment-instructions-create">
-    Define new payment requirements
-  </Card>
-  <Card title="Get Instruction" icon="eye" href="/api-reference/endpoint/x402/payment-instructions-get">
-    Retrieve instruction details
-  </Card>
-  <Card title="Update Instruction" icon="pen" href="/api-reference/endpoint/x402/payment-instructions-update">
-    Modify payment requirements
-  </Card>
-  <Card title="Delete Instruction" icon="trash" href="/api-reference/endpoint/x402/payment-instructions-delete">
-    Remove payment instructions
-  </Card>
-</CardGroup>
-
-## CID Management
-
-Attach payment instructions to your private files:
-
-<CardGroup cols={3}>
-  <Card title="List CIDs" icon="folder" href="/api-reference/endpoint/x402/cids-list">
-    View attached CIDs
-  </Card>
-  <Card title="Add CID" icon="link" href="/api-reference/endpoint/x402/cids-add">
-    Attach CID to instruction
-  </Card>
-  <Card title="Remove CID" icon="unlink" href="/api-reference/endpoint/x402/cids-remove">
-    Detach CID from instruction
-  </Card>
-</CardGroup>
 
 ## How It Works
 
@@ -80,84 +38,66 @@ Attach payment instructions to your private files:
 
 ## Example Workflow
 
-<CodeGroup>
+```typescript
+import { PinataSDK } from "pinata";
 
-```bash cURL
-# 1. Create a payment instruction
-curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
-  -H "Authorization: Bearer YOUR_JWT" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Premium Content",
-    "payment_requirements": [{
-      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-      "pay_to": "0xYourWalletAddress",
-      "network": "base",
-      "description": "Access fee",
-      "max_amount_required": "10000"
-    }]
-  }'
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "your-gateway.mypinata.cloud",
+});
 
-# 2. Attach CID to payment instruction
-curl -X PUT https://api.pinata.cloud/v3/x402/payment_instructions/{instruction_id}/cids/{cid} \
-  -H "Authorization: Bearer YOUR_JWT"
+// 1. Upload a private file
+const file = new File(["premium content"], "content.pdf", { type: "application/pdf" });
+const upload = await pinata.upload.private.file(file);
 
-# 3. Share the x402 gateway URL
-# https://your-gateway.mypinata.cloud/x402/cid/{cid}
-```
-
-```typescript TypeScript
-const JWT = "YOUR_PINATA_JWT";
-
-// 1. Create a payment instruction
-const createInstruction = await fetch(
-  "https://api.pinata.cloud/v3/x402/payment_instructions",
-  {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${JWT}`,
-      "Content-Type": "application/json",
+// 2. Create a payment instruction
+const instruction = await pinata.x402.createPaymentInstruction({
+  name: "Premium Content",
+  payment_requirements: [
+    {
+      asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      pay_to: "0xYourWalletAddress", // YOU receive payments here
+      network: "base",
+      description: "Access fee",
+      max_amount_required: "10000", // $0.01 in USDC
     },
-    body: JSON.stringify({
-      name: "Premium Content",
-      payment_requirements: [
-        {
-          asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-          pay_to: "0xYourWalletAddress", // YOU receive payments here
-          network: "base",
-          description: "Access fee",
-          max_amount_required: "10000",
-        },
-      ],
-    }),
-  }
-);
-const instruction = await createInstruction.json();
-const instructionId = instruction.data.id;
+  ],
+});
 
-// 2. Attach CID to payment instruction
-await fetch(
-  `https://api.pinata.cloud/v3/x402/payment_instructions/${instructionId}/cids/${cid}`,
-  {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${JWT}`,
-    },
-  }
-);
+// 3. Attach CID to payment instruction
+await pinata.x402.addCid(instruction.data.id, upload.cid);
 
-// 3. Share the x402 gateway URL
+// 4. Share the x402 gateway URL
 // https://your-gateway.mypinata.cloud/x402/cid/{cid}
 ```
 
-</CodeGroup>
-
 ## Why Use Payment Instructions
 
-The Payment Instructions API enables you to monetize your private content by setting custom payment requirements and receiving payments directly to your wallet.
+Payment Instructions enable you to monetize your private content by setting custom payment requirements and receiving payments directly to your wallet.
 
 Key benefits:
 - **You get paid** for your content. Set your own prices and receive USDC payments directly.
 - **Flexible pricing** for different files or groups of files
 - **Reusable payment instructions** that can be attached to multiple CIDs
 - **Full control** over payment requirements, pricing, and access
+
+## SDK Reference
+
+<CardGroup cols={2}>
+  <Card title="x402 Overview" icon="sparkle" href="/sdk/x402/index">
+    Get started with x402 monetization
+  </Card>
+  <Card title="Payment Instructions" icon="code" href="/sdk/x402/payment-instructions/list">
+    Create and manage payment instructions
+  </Card>
+  <Card title="CID Management" icon="link" href="/sdk/x402/cids/list">
+    Attach CIDs to payment instructions
+  </Card>
+  <Card title="Types" icon="brackets-curly" href="/sdk/types/x402">
+    TypeScript type definitions
+  </Card>
+</CardGroup>
+
+## API Reference
+
+For direct API access, see the [x402 API documentation](/api-reference/endpoint/x402/payment-instructions-list).

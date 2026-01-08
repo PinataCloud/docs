@@ -1,0 +1,110 @@
+---
+title: "list"
+---
+
+List and filter payment instructions for x402 monetization
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const instructions = await pinata.x402.listPaymentInstructions();
+```
+
+## Returns
+
+```typescript
+type PaymentInstructionListResponse = {
+  data: {
+    payment_instructions: PaymentInstruction[];
+    next_page_token?: string;
+  };
+};
+
+type PaymentInstruction = {
+  id: string;
+  version: number;
+  payment_requirements: PaymentRequirement[];
+  name: string;
+  description?: string;
+  created_at: string;
+};
+
+type PaymentRequirement = {
+  asset: string;
+  pay_to: string;
+  network: "base" | "base-sepolia";
+  max_amount_required: string;
+  description?: string;
+};
+```
+
+## Parameters
+
+Filter response with the following optional parameters.
+
+### limit
+
+- Type: `number`
+
+Limit the number of results returned
+
+```typescript {2-4}
+const instructions = await pinata.x402.listPaymentInstructions({
+  limit: 10,
+});
+```
+
+### pageToken
+
+- Type: `string`
+
+Paginate through results using a page token from a previous response
+
+```typescript {2-4}
+const instructions = await pinata.x402.listPaymentInstructions({
+  pageToken: "MDE5MWIzZWYtM2U0Zi03YTY5LWE3OTQtOTRhZDE5NjQxMTk0",
+});
+```
+
+### cid
+
+- Type: `string`
+
+Filter payment instructions by associated CID
+
+```typescript {2-4}
+const instructions = await pinata.x402.listPaymentInstructions({
+  cid: "bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4",
+});
+```
+
+### name
+
+- Type: `string`
+
+Filter payment instructions by name
+
+```typescript {2-4}
+const instructions = await pinata.x402.listPaymentInstructions({
+  name: "Premium Content",
+});
+```
+
+### id
+
+- Type: `string`
+
+Filter by specific payment instruction ID
+
+```typescript {2-4}
+const instructions = await pinata.x402.listPaymentInstructions({
+  id: "01234567-89ab-cdef-0123-456789abcdef",
+});
+```

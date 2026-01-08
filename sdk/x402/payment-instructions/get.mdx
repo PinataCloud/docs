@@ -1,0 +1,59 @@
+---
+title: "get"
+---
+
+Retrieve a specific payment instruction by ID
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const instruction = await pinata.x402.getPaymentInstruction(
+  "01234567-89ab-cdef-0123-456789abcdef"
+);
+```
+
+## Returns
+
+```typescript
+type PaymentInstructionResponse = {
+  data: PaymentInstruction;
+};
+
+type PaymentInstruction = {
+  id: string;
+  version: number;
+  payment_requirements: PaymentRequirement[];
+  name: string;
+  description?: string;
+  created_at: string;
+};
+
+type PaymentRequirement = {
+  asset: string;
+  pay_to: string;
+  network: "base" | "base-sepolia";
+  max_amount_required: string;
+  description?: string;
+};
+```
+
+## Parameters
+
+### id (required)
+
+- Type: `string`
+
+The unique identifier of the payment instruction to retrieve
+
+```typescript
+const instruction = await pinata.x402.getPaymentInstruction(
+  "01234567-89ab-cdef-0123-456789abcdef"
+);
+```
