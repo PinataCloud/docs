@@ -51,17 +51,17 @@ const instruction = await pinata.x402.createPaymentInstruction({
       pay_to: "YOUR_WALLET_ADDRESS", // YOU receive payments here
       network: "base",
       description: "Access fee",
-      max_amount_required: "10000", // $0.01 in USDC
+      amount: "10000", // $0.01 in USDC
     },
   ],
 });
 const instructionId = instruction.data.id;
 ```
 
-**Understanding Payment Amounts:** The `max_amount_required` uses USDC's smallest unit. USDC has 6 decimals, so to convert USD to the token amount, multiply by 1,000,000:
+**Understanding Payment Amounts:** The `amount` uses USDC's smallest unit. USDC has 6 decimals, so to convert USD to the token amount, multiply by 1,000,000:
 
-| USD Amount | `max_amount_required` | Calculation |
-|------------|----------------------|-------------|
+| USD Amount | `amount` | Calculation |
+|------------|----------|-------------|
 | $0.01 | `"10000"` | $0.01 × 1,000,000 |
 | $0.10 | `"100000"` | $0.10 × 1,000,000 |
 | $1.00 | `"1000000"` | $1.00 × 1,000,000 |
@@ -71,8 +71,8 @@ const instructionId = instruction.data.id;
 **Formula:** USD Amount × 1,000,000 = token amount
 
 **Networks:**
-- Production: Use `"base"` with `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
-- Testing: Use `"base-sepolia"` with `0x036CbD53842c5426634e7929541eC2318f3dCF7e`
+- Production: Use `"base"` (or `"eip155:8453"`) with `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
+- Testing: Use `"base-sepolia"` (or `"eip155:84532"`) with `0x036CbD53842c5426634e7929541eC2318f3dCF7e`
 
 Save the returned `id` for the next step.
 

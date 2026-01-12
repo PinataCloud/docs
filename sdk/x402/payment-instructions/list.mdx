@@ -39,8 +39,8 @@ type PaymentInstruction = {
 type PaymentRequirement = {
   asset: string;
   pay_to: string;
-  network: "base" | "base-sepolia";
-  max_amount_required: string;
+  network: "base" | "base-sepolia" | "eip155:8453" | "eip155:84532";
+  amount: string;
   description?: string;
 };
 ```

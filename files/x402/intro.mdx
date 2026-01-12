@@ -59,7 +59,7 @@ const instruction = await pinata.x402.createPaymentInstruction({
       pay_to: "0xYourWalletAddress", // YOU receive payments here
       network: "base",
       description: "Access fee",
-      max_amount_required: "10000", // $0.01 in USDC
+      amount: "10000", // $0.01 in USDC
     },
   ],
 });

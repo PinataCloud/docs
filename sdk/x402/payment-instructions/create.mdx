@@ -21,7 +21,7 @@ const instruction = await pinata.x402.createPaymentInstruction({
       asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC on Base
       pay_to: "0x1234567890abcdef1234567890abcdef12345678",
       network: "base",
-      max_amount_required: "10000", // $0.01 in USDC (6 decimals)
+      amount: "10000", // $0.01 in USDC (6 decimals)
     },
   ],
 });
@@ -46,8 +46,8 @@ type PaymentInstruction = {
 type PaymentRequirement = {
   asset: string;
   pay_to: string;
-  network: "base" | "base-sepolia";
-  max_amount_required: string;
+  network: "base" | "base-sepolia" | "eip155:8453" | "eip155:84532";
+  amount: string;
   description?: string;
 };
 ```
@@ -68,7 +68,7 @@ const instruction = await pinata.x402.createPaymentInstruction({
       asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC on Base
       pay_to: "0x1234567890abcdef1234567890abcdef12345678",
       network: "base",
-      max_amount_required: "10000", // $0.01 in USDC (6 decimals)
+      amount: "10000", // $0.01 in USDC (6 decimals)
     },
   ],
 });
@@ -88,7 +88,7 @@ const instruction = await pinata.x402.createPaymentInstruction({
       asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC on Base
       pay_to: "0x1234567890abcdef1234567890abcdef12345678",
       network: "base",
-      max_amount_required: "10000", // $0.01 in USDC (6 decimals)
+      amount: "10000", // $0.01 in USDC (6 decimals)
     },
   ],
 });
@@ -100,8 +100,8 @@ const instruction = await pinata.x402.createPaymentInstruction({
 |----------|------|----------|-------------|
 | `asset` | `string` | Yes | The USDC token contract address for the network |
 | `pay_to` | `string` | Yes | The wallet address to receive payments |
-| `network` | `"base"` \| `"base-sepolia"` | Yes | The blockchain network |
-| `max_amount_required` | `string` | Yes | The maximum amount required for access |
+| `network` | `"base"` \| `"base-sepolia"` \| `"eip155:8453"` \| `"eip155:84532"` | Yes | The blockchain network |
+| `amount` | `string` | Yes | The maximum amount required for access |
 | `description` | `string` | No | Optional description for this requirement |
 
 ### description
@@ -118,7 +118,7 @@ const instruction = await pinata.x402.createPaymentInstruction({
       asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC on Base
       pay_to: "0x1234567890abcdef1234567890abcdef12345678",
       network: "base",
-      max_amount_required: "10000", // $0.01 in USDC (6 decimals)
+      amount: "10000", // $0.01 in USDC (6 decimals)
     },
   ],
   description: "Access to exclusive premium content",

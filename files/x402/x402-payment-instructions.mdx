@@ -38,8 +38,8 @@ type PaymentInstruction = {
 type PaymentRequirement = {
   asset: string;           // USDC token contract address
   pay_to: string;          // Your wallet address
-  network: "base" | "base-sepolia";
-  max_amount_required: string;  // Amount in USDC smallest units
+  network: "base" | "base-sepolia" | "eip155:8453" | "eip155:84532";
+  amount: string;          // Amount in USDC smallest units
   description?: string;
 };
 ```
@@ -101,7 +101,7 @@ const instruction = await pinata.x402.createPaymentInstruction({
       pay_to: "0x6135561038E7C676473431842e586C8248276AED", // YOU receive payments here
       network: "base",
       description: "Access fee",
-      max_amount_required: "10000", // $0.01 in USDC
+      amount: "10000", // $0.01 in USDC
     },
   ],
 });
@@ -163,7 +163,7 @@ const updated = await pinata.x402.updatePaymentInstruction(instructionId, {
       asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
       pay_to: "0x6135561038E7C676473431842e586C8248276AED",
       network: "base",
-      max_amount_required: "50000", // Updated to $0.05
+      amount: "50000", // Updated to $0.05
     },
   ],
 });
@@ -246,10 +246,10 @@ The gateway:
 
 ### Payment Amounts
 
-The `max_amount_required` uses USDC's smallest unit. USDC has 6 decimals, so to convert USD to the token amount, multiply by 1,000,000:
+The `amount` uses USDC's smallest unit. USDC has 6 decimals, so to convert USD to the token amount, multiply by 1,000,000:
 
-| USD Amount | `max_amount_required` | Calculation |
-|------------|----------------------|-------------|
+| USD Amount | `amount` | Calculation |
+|------------|----------|-------------|
 | $0.01 | `"10000"` | $0.01 × 1,000,000 |
 | $0.10 | `"100000"` | $0.10 × 1,000,000 |
 | $1.00 | `"1000000"` | $1.00 × 1,000,000 |
@@ -284,8 +284,8 @@ The `max_amount_required` uses USDC's smallest unit. USDC has 6 decimals, so to 
 
 **400 Bad Request when creating instruction**
 - Check `asset` and `pay_to` addresses start with `0x`
-- Verify `network` is either `base` or `base-sepolia`
-- Ensure `max_amount_required` is provided
+- Verify `network` is `base`, `base-sepolia`, `eip155:8453`, or `eip155:84532`
+- Ensure `amount` is provided
 
 **404 Not Found when accessing CID**
 - Verify the CID exists and is private
