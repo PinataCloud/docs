@@ -376,7 +376,7 @@ components:
         - asset
         - pay_to
         - network
-        - max_amount_required
+        - amount
       properties:
         asset:
           type: string
@@ -391,14 +391,16 @@ components:
           enum:
             - base
             - base-sepolia
-          description: Network for payment
+            - "eip155:8453"
+            - "eip155:84532"
+          description: Network for payment (accepts friendly names or EIP-155 chain IDs)
         description:
           type: string
           maxLength: 255
           description: Optional description
-        max_amount_required:
+        amount:
           type: string
-          description: Maximum amount required for payment
+          description: Amount required for payment in smallest token unit
     
     PaymentInstruction:
       type: object

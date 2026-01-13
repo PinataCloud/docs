@@ -299,6 +299,31 @@
             ]
           },
           {
+            "group": "x402 Monetization",
+            "icon": "sparkle",
+            "pages": [
+              "sdk/x402/index",
+              {
+                "group": "Payment Instructions",
+                "pages": [
+                  "sdk/x402/payment-instructions/list",
+                  "sdk/x402/payment-instructions/create",
+                  "sdk/x402/payment-instructions/get",
+                  "sdk/x402/payment-instructions/update",
+                  "sdk/x402/payment-instructions/delete"
+                ]
+              },
+              {
+                "group": "CIDs",
+                "pages": [
+                  "sdk/x402/cids/list",
+                  "sdk/x402/cids/add",
+                  "sdk/x402/cids/remove"
+                ]
+              }
+            ]
+          },
+          {
             "group": "Types",
             "pages": [
               "sdk/types/config",
@@ -308,7 +333,8 @@
               "sdk/types/gateways",
               "sdk/types/analytics",
               "sdk/types/keys",
-              "sdk/types/signatures"
+              "sdk/types/signatures",
+              "sdk/types/x402"
             ]
           }
         ]

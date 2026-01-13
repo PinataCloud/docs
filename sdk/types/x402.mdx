@@ -1,0 +1,192 @@
+---
+title: "x402"
+---
+
+Types for x402 monetization features
+
+## PaymentRequirement
+
+Defines a single payment requirement within a payment instruction.
+
+```typescript
+type PaymentRequirement = {
+  asset: string;
+  pay_to: string;
+  network: "base" | "base-sepolia" | "eip155:8453" | "eip155:84532";
+  amount: string;
+  description?: string;
+};
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `asset` | `string` | The USDC token contract address for the network (e.g., `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` for Base) |
+| `pay_to` | `string` | The wallet address to receive payments |
+| `network` | `"base"` \| `"base-sepolia"` \| `"eip155:8453"` \| `"eip155:84532"` | The blockchain network for transactions. Accepts friendly names or EIP-155 chain IDs |
+| `amount` | `string` | The amount required in USDC smallest units (6 decimals). Example: `"10000"` = $0.01 |
+| `description` | `string` | Optional description for this requirement |
+
+## PaymentInstruction
+
+Represents a complete payment instruction with all its requirements.
+
+```typescript
+type PaymentInstruction = {
+  id: string;
+  version: number;
+  payment_requirements: PaymentRequirement[];
+  name: string;
+  description?: string;
+  created_at: string;
+};
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `id` | `string` | Unique identifier for the payment instruction |
+| `version` | `number` | Version number of the instruction |
+| `payment_requirements` | `PaymentRequirement[]` | Array of payment requirements |
+| `name` | `string` | Name of the payment instruction |
+| `description` | `string` | Optional description |
+| `created_at` | `string` | ISO timestamp of creation |
+
+## CreatePaymentInstructionRequest
+
+Request body for creating a new payment instruction.
+
+```typescript
+type CreatePaymentInstructionRequest = {
+  name: string;
+  payment_requirements: PaymentRequirement[];
+  description?: string;
+};
+```
+
+## UpdatePaymentInstructionRequest
+
+Request body for updating an existing payment instruction.
+
+```typescript
+type UpdatePaymentInstructionRequest = {
+  name?: string;
+  payment_requirements?: PaymentRequirement[];
+  description?: string;
+};
+```
+
+## PaymentInstructionListQuery
+
+Query parameters for listing payment instructions.
+
+```typescript
+type PaymentInstructionListQuery = {
+  limit?: number;
+  pageToken?: string;
+  cid?: string;
+  name?: string;
+  id?: string;
+};
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `limit` | `number` | Maximum number of results to return |
+| `pageToken` | `string` | Pagination token for next page |
+| `cid` | `string` | Filter by associated CID |
+| `name` | `string` | Filter by instruction name |
+| `id` | `string` | Filter by instruction ID |
+
+## PaymentInstructionListResponse
+
+Response structure for listing payment instructions.
+
+```typescript
+type PaymentInstructionListResponse = {
+  data: {
+    payment_instructions: PaymentInstruction[];
+    next_page_token?: string;
+  };
+};
+```
+
+## PaymentInstructionResponse
+
+Response structure for single payment instruction operations.
+
+```typescript
+type PaymentInstructionResponse = {
+  data: PaymentInstruction;
+};
+```
+
+## PaymentInstructionDeleteResponse
+
+Response structure for delete operations.
+
+```typescript
+type PaymentInstructionDeleteResponse = {
+  data: {};
+};
+```
+
+## CidListQuery
+
+Query parameters for listing CIDs associated with a payment instruction.
+
+```typescript
+type CidListQuery = {
+  limit?: number;
+  pageToken?: string;
+};
+```
+
+## CidListResponse
+
+Response structure for listing CIDs.
+
+```typescript
+type CidListResponse = {
+  data: {
+    cids: string[];
+    next_page_token?: string;
+  };
+};
+```
+
+## CidAssociation
+
+Represents a CID associated with a payment instruction.
+
+```typescript
+type CidAssociation = {
+  payment_instruction_id: string;
+  cid: string;
+  created_at: string;
+};
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `payment_instruction_id` | `string` | ID of the associated payment instruction |
+| `cid` | `string` | The IPFS CID |
+| `created_at` | `string` | ISO timestamp of when the association was created |
+
+## CidAssociationResponse
+
+Response structure for adding a CID to a payment instruction.
+
+```typescript
+type CidAssociationResponse = {
+  data: CidAssociation;
+};
+```
+
+## CidRemoveResponse
+
+Response structure for removing a CID from a payment instruction.
+
+```typescript
+type CidRemoveResponse = {
+  data: {};
+};
+```

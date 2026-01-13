@@ -7,51 +7,33 @@ Get started monetizing your private IPFS files with x402 in just a few minutes.
 With x402, you monetize your private files by setting payment requirements. Payments go directly to your wallet. You control the price and receive the funds.
 
 <Note>
-  Before starting, ensure the x402 feature flag is enabled on your account. Contact team@pinata.cloud if you need access.
+  x402 is available on paid Pinata accounts. [Upgrade your account](https://app.pinata.cloud/billing) to access x402 monetization features.
 </Note>
 
 ## Prerequisites
 
-- Pinata account with x402 feature flag enabled
-- API JWT from [Pinata App](https://app.pinata.cloud/developers/api-keys)
-- Private file uploaded to Pinata
+- Paid Pinata account
+- [Pinata SDK](/sdk/getting-started) installed
 - Ethereum wallet address to receive payments
 
 ## Step 1: Upload a Private File
 
 First, upload a file to Private IPFS:
 
-<CodeGroup>
+```typescript
+import { PinataSDK } from "pinata";
 
-```bash cURL
-curl -X POST https://uploads.pinata.cloud/v3/files \
-  -H "Authorization: Bearer YOUR_JWT" \
-  -F "file=@your-file.pdf" \
-  -F "network=private"
-```
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "your-gateway.mypinata.cloud",
+});
 
-```typescript TypeScript
-const JWT = "YOUR_PINATA_JWT";
-
-const formData = new FormData();
 const file = new File(["file contents"], "your-file.pdf", {
   type: "application/pdf",
 });
-formData.append("file", file);
-formData.append("network", "private");
-
-const upload = await fetch("https://uploads.pinata.cloud/v3/files", {
-  method: "POST",
-  headers: {
-    Authorization: `Bearer ${JWT}`,
-  },
-  body: formData,
-});
-const uploadResponse = await upload.json();
-const cid = uploadResponse.data.cid;
+const upload = await pinata.upload.private.file(file);
+const cid = upload.cid;
 ```
-
-</CodeGroup>
 
 Save the returned `cid` for the next step.
 
@@ -59,63 +41,27 @@ Save the returned `cid` for the next step.
 
 Define your payment requirements:
 
-<CodeGroup>
-
-```bash cURL
-curl -X POST https://api.pinata.cloud/v3/x402/payment_instructions \
-  -H "Authorization: Bearer YOUR_JWT" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Premium Content Access",
-    "description": "One-time payment for file access",
-    "payment_requirements": [
-      {
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "pay_to": "YOUR_WALLET_ADDRESS",
-        "network": "base",
-        "description": "Access fee",
-        "max_amount_required": "10000"
-      }
-    ]
-  }'
-```
-
-```typescript TypeScript
-const JWT = "YOUR_PINATA_JWT";
-
-const instruction = await fetch(
-  "https://api.pinata.cloud/v3/x402/payment_instructions",
-  {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${JWT}`,
-      "Content-Type": "application/json",
+```typescript
+const instruction = await pinata.x402.createPaymentInstruction({
+  name: "Premium Content Access",
+  description: "One-time payment for file access",
+  payment_requirements: [
+    {
+      asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC on Base
+      pay_to: "YOUR_WALLET_ADDRESS", // YOU receive payments here
+      network: "base",
+      description: "Access fee",
+      amount: "10000", // $0.01 in USDC
     },
-    body: JSON.stringify({
-      name: "Premium Content Access",
-      description: "One-time payment for file access",
-      payment_requirements: [
-        {
-          asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-          pay_to: "YOUR_WALLET_ADDRESS", // YOU receive payments here
-          network: "base",
-          description: "Access fee",
-          max_amount_required: "10000",
-        },
-      ],
-    }),
-  }
-);
-const instructionResponse = await instruction.json();
-const instructionId = instructionResponse.data.id;
+  ],
+});
+const instructionId = instruction.data.id;
 ```
 
-</CodeGroup>
+**Understanding Payment Amounts:** The `amount` uses USDC's smallest unit. USDC has 6 decimals, so to convert USD to the token amount, multiply by 1,000,000:
 
-**Understanding Payment Amounts:** The `max_amount_required` uses USDC's smallest unit. USDC has 6 decimals, so to convert USD to the token amount, multiply by 1,000,000:
-
-| USD Amount | `max_amount_required` | Calculation |
-|------------|----------------------|-------------|
+| USD Amount | `amount` | Calculation |
+|------------|----------|-------------|
 | $0.01 | `"10000"` | $0.01 × 1,000,000 |
 | $0.10 | `"100000"` | $0.10 × 1,000,000 |
 | $1.00 | `"1000000"` | $1.00 × 1,000,000 |
@@ -125,8 +71,8 @@ const instructionId = instructionResponse.data.id;
 **Formula:** USD Amount × 1,000,000 = token amount
 
 **Networks:**
-- Production: Use `"base"` with `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
-- Testing: Use `"base-sepolia"` with `0x036CbD53842c5426634e7929541eC2318f3dCF7e`
+- Production: Use `"base"` (or `"eip155:8453"`) with `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
+- Testing: Use `"base-sepolia"` (or `"eip155:84532"`) with `0x036CbD53842c5426634e7929541eC2318f3dCF7e`
 
 Save the returned `id` for the next step.
 
@@ -134,30 +80,9 @@ Save the returned `id` for the next step.
 
 Link your private file to the payment instruction:
 
-<CodeGroup>
-
-```bash cURL
-curl -X PUT https://api.pinata.cloud/v3/x402/payment_instructions/{instruction_id}/cids/{cid} \
-  -H "Authorization: Bearer YOUR_JWT"
+```typescript
+await pinata.x402.addCid(instructionId, cid);
 ```
-
-```typescript TypeScript
-const JWT = "YOUR_PINATA_JWT";
-
-await fetch(
-  `https://api.pinata.cloud/v3/x402/payment_instructions/${instructionId}/cids/${cid}`,
-  {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${JWT}`,
-    },
-  }
-);
-```
-
-</CodeGroup>
-
-Replace `{instruction_id}` with the ID from Step 2 and `{cid}` with the CID from Step 1.
 
 ## Step 4: Share Your Monetized Content
 
@@ -175,21 +100,13 @@ https://your-gateway.mypinata.cloud/x402/cid/{cid}
 
 When a requester accesses your URL without payment, the gateway returns a 402 response with payment requirements:
 
-<CodeGroup>
-
-```bash cURL
-curl https://your-gateway.mypinata.cloud/x402/cid/{cid}
-```
-
-```typescript TypeScript
+```typescript
 const response = await fetch(
   `https://your-gateway.mypinata.cloud/x402/cid/${cid}`
 );
 const paymentRequirements = await response.json();
 console.log(paymentRequirements);
 ```
-
-</CodeGroup>
 
 Response:
 
@@ -213,16 +130,20 @@ After payment is made, requesters can access the file by including the payment p
 ## Next Steps
 
 - **Manage Multiple Files**: Attach multiple CIDs to the same payment instruction
-- **Update Pricing**: Use the [Update Payment Instruction](/api-reference/endpoint/x402/payment-instructions-update) endpoint
+- **Update Pricing**: Use [`updatePaymentInstruction`](/sdk/x402/payment-instructions/update)
 - **Monitor Access**: Check your gateway analytics to track paid downloads
-- **Requester Guide**: Learn how requesters access paid content in the [Accessing Paid Content](/files/x402-accessing-paid-content) guide
+- **Requester Guide**: Learn how requesters access paid content in the [Accessing Paid Content](/files/x402/x402-accessing-paid-content) guide
 
 ## Common Issues
 
 **404 Not Found**: Verify the CID is private and correctly attached to a payment instruction
 
-**403 Forbidden**: Check that your API key has the required permissions (`OrgFilesWrite`)
+**403 Forbidden**: Check that your API key has the required permissions
 
 **409 Conflict**: If deleting a payment instruction fails, remove all CID attachments first
 
 Need help? Contact team@pinata.cloud
+
+## API Reference
+
+For direct API access, see the [x402 API documentation](/api-reference/endpoint/x402/payment-instructions-list).
