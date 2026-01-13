@@ -8,7 +8,7 @@ This guide covers how to create, manage, and use Payment Instructions to monetiz
 
 ## Prerequisites
 
-- x402 feature flag enabled on your Pinata account
+- Paid Pinata account
 - [Pinata SDK](/sdk/getting-started) installed
 - Private files uploaded to Pinata IPFS
 
@@ -20,7 +20,7 @@ A Payment Instruction is a reusable configuration that defines:
 - **Metadata** - Name and description for organization
 
 <Note>
-  The `payment_requirements` field is an array, designed for future extensibility. The gateway processes the first payment requirement in the array.
+  The `payment_requirements` field is an array, allowing you to define multiple payment options. Each payment instruction can have multiple requirements, giving requesters flexibility in how they pay.
 </Note>
 
 ### Payment Instruction Structure
@@ -50,15 +50,15 @@ type PaymentRequirement = {
 
 ## Networks and Tokens
 
-Currently supported configurations:
+Currently supported configurations. **USDC is the only supported token at this time.**
 
 ### Base Mainnet (Production)
-- **Network**: `base`
+- **Network**: `base` (or `eip155:8453`)
 - **USDC Token Address**: `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
 - **Use for**: Production monetization
 
 ### Base Sepolia (Testing)
-- **Network**: `base-sepolia`
+- **Network**: `base-sepolia` (or `eip155:84532`)
 - **USDC Token Address**: `0x036CbD53842c5426634e7929541eC2318f3dCF7e`
 - **Use for**: Testing payment flows
 
@@ -188,10 +188,11 @@ await pinata.x402.deletePaymentInstruction(instructionId);
 
 ## CID Management
 
-### One-to-Many Relationship
+### CID and Payment Instruction Relationship
 
-- One Payment Instruction can be attached to multiple CIDs
-- Each CID can only have one Payment Instruction at a time
+- **One Payment Instruction → Multiple CIDs**: A single payment instruction can be attached to multiple CIDs
+- **One CID → One Payment Instruction**: Each CID can only have one payment instruction at a time
+- **Multiple Requirements**: A payment instruction can have multiple payment requirements in its `payment_requirements` array
 - Updating the instruction affects all attached CIDs
 
 ### Managing CID Attachments
