@@ -1,4 +1,6 @@
 openapi: 3.0.0
+x-mcp:
+  enabled: true
 info:
   title: Private IPFS API
   version: 1.0.0
