@@ -1,0 +1,68 @@
+# Pinata CAR Creator
+
+Prepare your files for IPFS with Pinata's CAR Creator desktop tool.
+
+## What This Does
+
+Our app packages your files into CAR (Content Addressable Archive) files. Once created, you can easily store them on IPFS with Pinata by uploading them through your dashboard or the Pinata SDK.
+
+## Getting Started
+
+### Download
+1. Download Pinata CAR Creator from the [latest release](https://github.com/PinataCloud/car-creator/releases/)
+2. Open the downloaded .dmg file
+3. Drag the app to your Applications folder
+4. Double-click to open
+
+*First time opening? Right-click the app and select "Open" if you see a security warning.*
+
+## Creating Your First CAR
+
+### 1. Select Your Content
+Click **"Select Files or Folders"** and choose what you want to archive.
+
+You can select:
+- Individual files
+- Entire folders  
+- Multiple items at once
+
+The app preserves your folder structure exactly as organized.
+
+### 2. Generate the Archive
+1. Click **"Create CAR"**
+2. Name your archive (e.g., `my-nft-collection.car`)
+3. Choose where to save it
+4. Click **Save**
+
+Processing time depends on the size of the files.
+
+### 3. Verify Your Archive
+Click **"Validate CAR"** to:
+- Confirm the archive was created successfully
+- View the root CID (your content's future IPFS address)
+- See a list of included files
+
+## Next Steps: Upload to IPFS
+
+Once you've created your CAR file, you're ready to upload it to IPFS:
+
+### Upload to Pinata
+1. Sign in to your [Pinata account](https://app.pinata.cloud)
+2. Click "Upload" → "CAR File"
+3. Select your CAR file
+4. Your content is now on IPFS! 
+
+> Note: If you're uploading a large archive it may take a while to upload. 
+
+## Troubleshooting
+
+### App Won't Open
+- **"Unidentified developer" warning**: Right-click the app → Select "Open"
+- **Still won't open**: Check you're running macOS 10.15 or later
+
+### CAR Creation Issues
+- **"Files skipped"**: Make sure you're not trying to create a CAR file with a CAR file in it.
+- **Slow processing**: Large files take time—the progress bar shows current status
+
+### Validation Problems
+- **"Invalid CAR"**: Try creating the archive again
