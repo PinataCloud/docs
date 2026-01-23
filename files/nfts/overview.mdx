@@ -5,11 +5,22 @@ description: "Backup your NFT collections to Pinata"
 
 Pin all IPFS content from your NFT collections to your Pinata account.
 
+## Two Ways to Backup
+
+<CardGroup cols={2}>
+  <Card title="Manual Sync" icon="rotate">
+    Sync your wallet on-demand and choose which CIDs to backup. Best for one-time backups or when you want full control over what gets pinned.
+  </Card>
+  <Card title="Automated Backups" icon="clock">
+    Enable auto-backup to automatically pin new CIDs whenever you sync. Set it and forget it—your NFTs stay protected.
+  </Card>
+</CardGroup>
+
 ## How It Works
 
 1. **Connect** - Add your wallet address
-2. **Sync** - Pinata fetches your NFTs from OpenSea and extracts IPFS CIDs
-3. **Backup** - Pin CIDs to your Pinata account
+2. **Sync** - Pinata scans your wallet across supported chains and extracts IPFS CIDs
+3. **Backup** - Pin CIDs to your Pinata account (manually or automatically)
 
 ## Supported Chains
 
