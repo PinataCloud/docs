@@ -108,10 +108,10 @@
                 "group": "NFT Backup",
                 "icon": "cloud-arrow-up",
                 "pages": [
-                  "files/nfts/overview",
-                  "files/nfts/wallets",
-                  "files/nfts/collections",
-                  "files/nfts/backup"
+                  "files/nft-backup/overview",
+                  "files/nft-backup/wallets",
+                  "files/nft-backup/collections",
+                  "files/nft-backup/sync"
                 ]
               }
             ]
