@@ -103,6 +103,16 @@
                   },
                   "files/x402/x402-services"
                 ]
+              },
+              {
+                "group": "NFT Backup",
+                "icon": "cloud-arrow-up",
+                "pages": [
+                  "files/nft-backup/overview",
+                  "files/nft-backup/wallets",
+                  "files/nft-backup/collections",
+                  "files/nft-backup/sync"
+                ]
               }
             ]
           },
@@ -501,8 +511,7 @@
                     ]
                   }
                 ]
-              }
-            ]
+              }            ]
           },
           {
             "version": "legacy",
