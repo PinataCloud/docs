@@ -1,0 +1,221 @@
+---
+title: "Quickstart"
+description: "Register your first AI agent on-chain using ERC-8004 and Pinata"
+---
+
+## What is ERC-8004?
+
+ERC-8004 is an open standard for AI agent identity and trust. It gives your agent:
+
+- **A portable identity** — Your agent exists as an NFT on Ethereum/L2s. It's yours, not tied to any platform.
+- **Discoverable endpoints** — Other agents and applications can find your MCP server, A2A endpoint, wallet, and more.
+- **Composable reputation** — Feedback from clients builds a track record that follows your agent everywhere.
+
+### The Three Registries
+
+| Registry | Purpose |
+|----------|---------|
+| **Identity** | Stores who agents are and how to reach them |
+| **Reputation** | Records feedback and ratings from clients |
+| **Validation** | Provides independent verification for high-stakes tasks |
+
+This guide focuses on the **Identity Registry** — registering your agent so it can be discovered.
+
+## Quick Start
+
+For example agent cards and ready-to-run scripts, check out [erc8004-pinata-example](https://github.com/PinataCloud/erc8004-pinata-example). For an interactive experience, try the wizard:
+
+```bash
+npx @pinata/erc8004-wizard
+```
+
+## Prerequisites
+
+1. **Pinata account** — Sign up at [pinata.cloud](https://pinata.cloud), create an [API key](/account-management/api-keys) and a [gateway](/gateways/dedicated-ipfs-gateways)
+2. **Test ETH** — ~0.1 ETH on Sepolia from the [Alchemy faucet](https://www.alchemy.com/faucets/ethereum-sepolia)
+3. **Wallet private key** — The wallet that will own your agent NFT
+
+## Registration Flow
+
+Registration has four steps:
+
+1. **Register on-chain** (without URI) → Get your `agentId`
+2. **Build agent card** with `registrations[]` containing your new `agentId`
+3. **Upload to IPFS** via Pinata
+4. **Set agent URI** on-chain to point to your IPFS content
+
+### Code Example
+
+```typescript
+import { PinataSDK } from "pinata"
+import { createPublicClient, createWalletClient, http, parseAbi, parseEventLogs } from "viem"
+import { privateKeyToAccount } from "viem/accounts"
+import { sepolia } from "viem/chains"
+
+const REGISTRY = "0xf66e7CBdAE1Cb710fee7732E4e1f173624e137A7"
+const AGENT_REGISTRY = `eip155:${sepolia.id}:${REGISTRY}`
+
+const abi = parseAbi([
+  "function register() external returns (uint256 agentId)",
+  "function setAgentURI(uint256 agentId, string newURI) external",
+  "event Registered(uint256 indexed agentId, string agentURI, address indexed owner)",
+])
+
+async function registerAgent(name: string, description: string) {
+  const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+  const publicClient = createPublicClient({ chain: sepolia, transport: http() })
+  const walletClient = createWalletClient({ account, chain: sepolia, transport: http() })
+  const pinata = new PinataSDK({
+    pinataJwt: process.env.PINATA_JWT!,
+    pinataGateway: process.env.PINATA_GATEWAY!,
+  })
+
+  // Step 1: Register on-chain to get agent ID
+  const registerHash = await walletClient.writeContract({
+    address: REGISTRY,
+    abi,
+    functionName: "register",
+    args: [],
+  })
+  const receipt = await publicClient.waitForTransactionReceipt({ hash: registerHash })
+  const logs = parseEventLogs({ abi, logs: receipt.logs, eventName: "Registered" })
+  const agentId = logs[0].args.agentId
+
+  // Step 2: Build agent card with registrations
+  const agentCard = {
+    type: "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+    name,
+    description,
+    image: "ipfs://bafkreiaims435hmzeg3l6ixlrlvnei7wept5kmfd6c2ncz3ucl466xhucu",
+    services: [],
+    registrations: [{ agentId: Number(agentId), agentRegistry: AGENT_REGISTRY }],
+    supportedTrust: ["reputation"],
+  }
+
+  // Step 3: Upload to Pinata
+  const blob = new Blob([JSON.stringify(agentCard, null, 2)], { type: "application/json" })
+  const file = new File([blob], `agent-${agentId}.json`, { type: "application/json" })
+  const uploadResult = await pinata.upload.public.file(file)
+  const tokenUri = `ipfs://${uploadResult.cid}`
+
+  // Step 4: Set agent URI on-chain
+  const setUriHash = await walletClient.writeContract({
+    address: REGISTRY,
+    abi,
+    functionName: "setAgentURI",
+    args: [agentId, tokenUri],
+  })
+  await publicClient.waitForTransactionReceipt({ hash: setUriHash })
+
+  return { agentId, tokenUri }
+}
+```
+
+## Agent Card Schema
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `type` | Yes | Always `https://eips.ethereum.org/EIPS/eip-8004#registration-v1` |
+| `name` | Yes | Your agent's display name |
+| `description` | Yes | What it does, capabilities, pricing |
+| `image` | Yes | Avatar URL (IPFS or HTTPS) |
+| `services` | No | Agent endpoints (see [Services & IPFS](/tools/erc-8004/services)) |
+| `registrations` | No | Registry references (populated after registration) |
+| `x402Support` | No | Accepts [x402 payments](/files/x402/intro) (default: false) |
+| `active` | No | Currently running (default: true) |
+| `supportedTrust` | No | Trust models (see below) |
+
+### Trust Models
+
+The `supportedTrust` array declares how clients can verify your agent:
+
+| Model | Description |
+|-------|-------------|
+| `reputation` | Trust based on historical feedback from clients |
+| `crypto-economic` | Trust backed by staked tokens that can be slashed |
+| `tee-attestation` | Trust verified by Trusted Execution Environment |
+
+Most agents use `["reputation"]`.
+
+### Example Agent Card
+
+```json
+{
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "name": "My Agent",
+  "description": "A helpful AI assistant.",
+  "image": "ipfs://bafkreiaims435hmzeg3l6ixlrlvnei7wept5kmfd6c2ncz3ucl466xhucu",
+  "services": [
+    { "name": "web", "endpoint": "https://myagent.example.com" },
+    { "name": "MCP", "endpoint": "https://mcp.myagent.example.com", "version": "2025-06-18" }
+  ],
+  "registrations": [
+    { "agentId": 5, "agentRegistry": "eip155:11155111:0xf66e7CBdAE1Cb710fee7732E4e1f173624e137A7" }
+  ],
+  "supportedTrust": ["reputation"]
+}
+```
+
+## Endpoint Verification
+
+Agents can prove they control their advertised endpoints by serving a `.well-known` file.
+
+**How it works:**
+1. Agent lists an HTTPS endpoint in their card
+2. Verifier fetches `https://{domain}/.well-known/agent-registration.json`
+3. File must contain a `registrations[]` entry matching the agent
+
+Create `/.well-known/agent-registration.json` on your domain:
+
+```json
+{
+  "registrations": [
+    {
+      "agentId": 5,
+      "agentRegistry": "eip155:11155111:0xf66e7CBdAE1Cb710fee7732E4e1f173624e137A7"
+    }
+  ]
+}
+```
+
+<Note>
+Verification isn't needed if your agent URI and endpoint share the same domain — domain control is already demonstrated.
+</Note>
+
+## Payment Wallet
+
+ERC-8004 stores the agent's payment wallet **on-chain** (not in the agent card). The wallet address must sign an EIP-712 message proving consent.
+
+```solidity
+// Contract functions
+function setAgentWallet(uint256 agentId, address newWallet, uint256 deadline, bytes signature)
+function getAgentWallet(uint256 agentId) returns (address)
+function unsetAgentWallet(uint256 agentId)
+```
+
+Read the payment wallet:
+
+```bash
+cast call 0xf66e7CBdAE1Cb710fee7732E4e1f173624e137A7 \
+  "getAgentWallet(uint256)(address)" <agent-id> \
+  --rpc-url https://ethereum-sepolia-rpc.publicnode.com
+```
+
+## Updating an Agent
+
+To update metadata, re-upload the agent card and call `setAgentURI`:
+
+```typescript
+const uploadResult = await pinata.upload.public.file(updatedAgentCardFile)
+await walletClient.writeContract({
+  address: REGISTRY,
+  abi,
+  functionName: "setAgentURI",
+  args: [agentId, `ipfs://${uploadResult.cid}`],
+})
+```
+
+## Resources
+
+- [ERC-8004 Specification](https://eips.ethereum.org/EIPS/eip-8004)
+- [Identity Registry on Etherscan](https://sepolia.etherscan.io/address/0xf66e7CBdAE1Cb710fee7732E4e1f173624e137A7)
