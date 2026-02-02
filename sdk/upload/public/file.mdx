@@ -152,3 +152,15 @@ const upload = await pinata.upload.public
   .file(file)
   .car()
 ```
+
+### expires (Optional)
+
+- Type: `number`
+
+Set an expiration date for the file using a Unix timestamp. The timestamp must be in the future. Once the expiration time is reached, the file will be automatically deleted.
+
+```typescript {3}
+const upload = await pinata.upload.public
+  .file(file)
+  .expires(1735689600)
+```
