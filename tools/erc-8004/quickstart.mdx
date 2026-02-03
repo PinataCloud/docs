@@ -32,10 +32,66 @@ npx @pinata/erc8004-wizard
 ## Prerequisites
 
 1. **Pinata account** — Sign up at [pinata.cloud](https://pinata.cloud), create an [API key](/account-management/api-keys) and a [gateway](/gateways/dedicated-ipfs-gateways)
-2. **Test ETH** — Get free Sepolia ETH from the [Alchemy faucet](https://www.alchemy.com/faucets/ethereum-sepolia)
+2. **Native tokens for gas** — Get free testnet tokens from faucets (links in table below)
 3. **Wallet private key** — The wallet that will own your agent NFT
 
-The Identity Registry on Sepolia is deployed at [`0xf66e7CBdAE1Cb710fee7732E4e1f173624e137A7`](https://sepolia.etherscan.io/address/0xf66e7CBdAE1Cb710fee7732E4e1f173624e137A7).
+## Supported Networks
+
+ERC-8004 is deployed on multiple chains with consistent addresses:
+
+| Network | Chain ID | Identity Registry | Faucet |
+|---------|----------|-------------------|--------|
+| Ethereum Mainnet | 1 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | — |
+| Ethereum Sepolia | 11155111 | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | [Alchemy](https://www.alchemy.com/faucets/ethereum-sepolia) |
+| Base Mainnet | 8453 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | — |
+| Base Sepolia | 84532 | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | [Alchemy](https://www.alchemy.com/faucets/base-sepolia) |
+| Polygon Mainnet | 137 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | — |
+| Polygon Amoy | 80002 | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | [Polygon](https://faucet.polygon.technology/) |
+| Monad Mainnet | 143 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | — |
+| Monad Testnet | 10143 | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | [Monad](https://faucet.monad.xyz) |
+| BSC Mainnet | 56 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | — |
+| BSC Testnet | 97 | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | [BNB Chain](https://www.bnbchain.org/en/testnet-faucet) |
+
+<Note>
+All mainnets share the same address: `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`
+
+All testnets share the same address: `0x8004A818BFB912233c491871b3d84c89A494BD9e`
+</Note>
+
+## Using the Scripts
+
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/PinataCloud/erc8004
+cd erc8004
+bun install
+cp .env.example .env  # fill in your values
+```
+
+### Available Scripts
+
+```bash
+bun run register <agent-card.json>              # Register new agent
+bun run register <agent-card.json> --update 3   # Update agent #3
+bun run verify <agent-id>                       # Verify registration
+bun run check-registration <agent-id>           # Check registrations[] matches on-chain
+bun run set-wallet <agent-id>                   # Set payment wallet
+bun run unset-wallet <agent-id>                 # Clear payment wallet
+```
+
+### Network Selection
+
+By default, scripts use **Ethereum Sepolia**. To use a different network:
+
+```bash
+# Via environment variable
+NETWORK=base-mainnet bun run register my-agent.json
+
+# Via CLI flag
+bun run register my-agent.json --network base-mainnet
+bun run verify 1 --network polygon-mainnet
+```
 
 ## Registration Flow
 
@@ -54,7 +110,7 @@ import { createPublicClient, createWalletClient, http, parseAbi, parseEventLogs 
 import { privateKeyToAccount } from "viem/accounts"
 import { sepolia } from "viem/chains"
 
-const REGISTRY = "0xf66e7CBdAE1Cb710fee7732E4e1f173624e137A7"
+const REGISTRY = "0x8004A818BFB912233c491871b3d84c89A494BD9e"
 const AGENT_REGISTRY = `eip155:${sepolia.id}:${REGISTRY}`
 
 const abi = parseAbi([
@@ -152,7 +208,7 @@ Most agents use `["reputation"]`.
     { "name": "MCP", "endpoint": "https://mcp.myagent.example.com", "version": "2025-06-18" }
   ],
   "registrations": [
-    { "agentId": 5, "agentRegistry": "eip155:11155111:0xf66e7CBdAE1Cb710fee7732E4e1f173624e137A7" }
+    { "agentId": 5, "agentRegistry": "eip155:11155111:0x8004A818BFB912233c491871b3d84c89A494BD9e" }
   ],
   "supportedTrust": ["reputation"]
 }
@@ -174,7 +230,7 @@ Create `/.well-known/agent-registration.json` on your domain:
   "registrations": [
     {
       "agentId": 5,
-      "agentRegistry": "eip155:11155111:0xf66e7CBdAE1Cb710fee7732E4e1f173624e137A7"
+      "agentRegistry": "eip155:11155111:0x8004A818BFB912233c491871b3d84c89A494BD9e"
     }
   ]
 }
@@ -198,9 +254,16 @@ function unsetAgentWallet(uint256 agentId)
 Read the payment wallet:
 
 ```bash
-cast call 0xf66e7CBdAE1Cb710fee7732E4e1f173624e137A7 \
+cast call 0x8004A818BFB912233c491871b3d84c89A494BD9e \
   "getAgentWallet(uint256)(address)" <agent-id> \
   --rpc-url https://ethereum-sepolia-rpc.publicnode.com
+```
+
+Or use the script:
+
+```bash
+bun run set-wallet <agent-id>    # Set payment wallet
+bun run unset-wallet <agent-id>  # Clear payment wallet
 ```
 
 ## Updating an Agent
@@ -217,7 +280,27 @@ await walletClient.writeContract({
 })
 ```
 
+Or use the script:
+
+```bash
+bun run register my-agent.json --update 3  # Update agent #3
+```
+
+## Verifying Agents
+
+The `verify` script fetches agent cards from IPFS via your Pinata gateway and validates them against the ERC-8004 spec:
+
+```bash
+bun run verify <agent-id>
+bun run check-registration <agent-id>  # Check registrations[] matches on-chain
+```
+
+<Note>
+To verify agents you didn't register, set up [Gateway Access Controls](/gateways/gateway-access-controls) and add a gateway key to your `.env` or pass it via CLI: `--gateway-key your_token`
+</Note>
+
 ## Resources
 
 - [ERC-8004 Specification](https://eips.ethereum.org/EIPS/eip-8004)
-- [Identity Registry on Etherscan](https://sepolia.etherscan.io/address/0xf66e7CBdAE1Cb710fee7732E4e1f173624e137A7)
+- [ERC-8004 Website](https://www.8004.org)
+- [PinataCloud/erc8004 Examples](https://github.com/PinataCloud/erc8004)

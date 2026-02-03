@@ -60,8 +60,21 @@
                   "frameworks/remix",
                   "frameworks/node-js"
                 ]
-              },
-              "llm-docs"
+              }
+            ]
+          },
+          {
+            "group": "AI",
+            "pages": [
+              "llm-docs",
+              {
+                "group": "ERC-8004",
+                "icon": "robot",
+                "pages": [
+                  "tools/erc-8004/quickstart",
+                  "tools/erc-8004/services"
+                ]
+              }
             ]
           },
           {
@@ -136,14 +149,6 @@
           {
             "group": "Additional Resources",
             "pages": [
-              {
-                "group": "ERC-8004",
-                "icon": "robot",
-                "pages": [
-                  "tools/erc-8004/quickstart",
-                  "tools/erc-8004/services"
-                ]
-              },
               "tools/pinata-expo-hooks",
               "tools/community-sdks",
               {
