@@ -213,6 +213,90 @@ async function upload() {
 
 </CodeGroup>
 
+### Expiration
+
+You can set an expiration date on files by using the `expires_at` option. The timestamp must be a Unix timestamp in the future. Once the expiration time is reached, the file will be automatically deleted.
+
+<CodeGroup>
+
+```typescript SDK {3}
+const upload = await pinata.upload.public
+  .file(file)
+  .expires(1735689600) // Unix timestamp in the future
+```
+
+```typescript API {13}
+const JWT = "YOUR_PINATA_JWT";
+
+async function upload() {
+  try {
+    const formData = new FormData();
+
+    const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
+
+    formData.append("file", file);
+
+    formData.append("network", "public");
+
+    formData.append("expires_at", "1735689600"); // Unix timestamp in the future
+
+    const request = await fetch("https://uploads.pinata.cloud/v3/files", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: formData,
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
+You can also set or update the expiration on an existing file using the update method or endpoint:
+
+<CodeGroup>
+
+```typescript SDK {3}
+const update = await pinata.files.public.update({
+  id: "2b4ee88d-1032-4e4e-a373-97d1ab127f16",
+  expires_at: 1735689600 // Unix timestamp in the future
+})
+```
+
+```typescript API
+const JWT = "YOUR_PINATA_JWT";
+
+async function update() {
+  try {
+    const fileId = "2b4ee88d-1032-4e4e-a373-97d1ab127f16";
+
+    const data = JSON.stringify({
+      expires_at: 1735689600 // Unix timestamp in the future
+    });
+
+    const request = await fetch(`https://api.pinata.cloud/v3/files/public/${fileId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: data,
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+</CodeGroup>
+
 ### Client Side Uploads
 
 There are situations where you may need to upload a file client side instead of server side. A great example is in Next.js where there is a 4MB file size restriction for files passed through Next's API routes. To solve this you can create a signed upload URL on the server and then pass it to the client for it to be consumed. This way your admin API key stays safe behind a server. Creating signed upload URLs can be done with either the [SDK](/sdk/upload/public/create-signed-url) or the [API](/api-reference/endpoint/create-signed-upload-url), and you can designate how long the URL is valid for or if there is other infromation you want to include such as metadata or a group ID.

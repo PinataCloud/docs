@@ -67,9 +67,9 @@ const update = await pinata.files.public.update({
 
 ### keyvalues (Optional)
 
-- Type: `string`
+- Type: `Record<string, string>`
 
-Update the name of a file
+Update the keyvalues of a file
 
 ```typescript {3-5}
 const update = await pinata.files.public.update({
@@ -77,5 +77,18 @@ const update = await pinata.files.public.update({
   keyvalues: {
     env: "prod"
   }
+})
+```
+
+### expires_at (Optional)
+
+- Type: `number`
+
+Set or update the expiration date for the file using a Unix timestamp. The timestamp must be in the future. Once the expiration time is reached, the file will be automatically deleted.
+
+```typescript {3}
+const update = await pinata.files.public.update({
+  id: "8809812b-cd36-499f-b9b3-a37258a9cd6a",
+  expires_at: 1735689600
 })
 ```
