@@ -68,6 +68,14 @@
             "pages": [
               "llm-docs",
               {
+                "group": "MCP Server",
+                "icon": "plug",
+                "pages": [
+                  "tools/mcp/overview",
+                  "tools/mcp/tools"
+                ]
+              },
+              {
                 "group": "ERC-8004",
                 "icon": "robot",
                 "pages": [

@@ -1,0 +1,579 @@
+---
+title: "Tools Reference"
+description: "Complete reference for all Pinata MCP server tools"
+---
+
+This page documents all tools available in the Pinata MCP server. Each tool includes its parameters and example prompts you can use with Claude.
+
+## Authentication
+
+### testAuthentication
+
+Verify that your Pinata JWT is valid and working.
+
+**Parameters:** None
+
+**Example Prompt:**
+```
+Test my Pinata authentication to make sure everything is working
+```
+
+---
+
+## File Operations
+
+### uploadFile
+
+Upload a file to Pinata IPFS. Provide either a file path or base64-encoded content.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `resourceUri` | string | No | File URI to upload (e.g., `file:///path/to/file.jpg`) |
+| `fileContent` | string | No | Base64-encoded file content (alternative to resourceUri) |
+| `fileName` | string | No | Name for the uploaded file (auto-detected from path if using resourceUri) |
+| `mimeType` | string | No | MIME type (auto-detected if not provided) |
+| `network` | `"public"` \| `"private"` | No | Upload to public or private IPFS (default: `"public"`) |
+| `group_id` | string | No | ID of a group to add the file to |
+| `keyvalues` | object | No | Metadata key-value pairs |
+
+**Example Prompts:**
+```
+Upload the file at ~/Documents/report.pdf to Pinata as a private file
+
+Upload this image to my Pinata account as a public file named "My Logo"
+
+Upload ~/data/config.json to Pinata and add it to group abc123
+```
+
+### searchFiles
+
+Search for files in your Pinata account by name, CID, or MIME type.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Search in public or private IPFS (default: `"public"`) |
+| `name` | string | No | Filter by filename |
+| `cid` | string | No | Filter by content ID (CID) |
+| `mimeType` | string | No | Filter by MIME type |
+| `limit` | number | No | Maximum number of results |
+| `pageToken` | string | No | Token for pagination |
+
+**Example Prompts:**
+```
+Search my Pinata account for all PNG files
+
+Find all files named "report" in my private storage
+
+List my JSON files on Pinata
+```
+
+### getFileById
+
+Retrieve detailed information about a specific file by its ID.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `id` | string | Yes | The unique ID of the file |
+
+**Example Prompt:**
+```
+Get details for file ID abc123 from my Pinata account
+```
+
+### updateFile
+
+Update metadata for an existing file including name and key-value pairs.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `id` | string | Yes | The unique ID of the file |
+| `name` | string | No | New name for the file |
+| `keyvalues` | object | No | Metadata key-value pairs to update |
+
+**Example Prompt:**
+```
+Rename file abc123 to "Final Report" and add metadata tag "status": "approved"
+```
+
+### deleteFile
+
+Delete a file from your Pinata account.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `id` | string | Yes | The unique ID of the file |
+
+**Example Prompt:**
+```
+Delete file abc123 from my Pinata account
+```
+
+---
+
+## Content Access
+
+### createLink
+
+Create a direct access link for a file. For public files returns a gateway URL, for private files generates a temporary download link.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `cid` | string | Yes | The CID of the file |
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `expires` | number | No | Expiration time in seconds for private links (default: 600) |
+
+**Example Prompts:**
+```
+Create a link for CID bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4
+
+Generate a temporary download link for my private file with CID QmX...
+```
+
+### createPrivateDownloadLink
+
+Generate a temporary download link specifically for private IPFS files.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `cid` | string | Yes | The CID of the private file |
+| `expires` | number | No | Expiration time in seconds (default: 600 = 10 minutes) |
+
+**Example Prompt:**
+```
+Create a 30-minute download link for private CID bafkreih...
+```
+
+### fetchFromGateway
+
+Fetch content from IPFS via Pinata gateway and return it.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `cid` | string | Yes | The CID of the file to fetch |
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+
+**Example Prompts:**
+```
+Fetch the content with CID QmX... from IPFS
+
+Get the contents of my private file bafkreih...
+```
+
+---
+
+## Group Operations
+
+### listGroups
+
+List groups in your Pinata account with optional filtering.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `name` | string | No | Filter groups by name |
+| `limit` | number | No | Maximum number of results |
+| `pageToken` | string | No | Token for pagination |
+
+**Example Prompt:**
+```
+List all my Pinata groups
+```
+
+### createGroup
+
+Create a new group to organize files.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `name` | string | Yes | Name for the new group |
+
+**Example Prompt:**
+```
+Create a new group called "Project Assets" on Pinata
+```
+
+### getGroup
+
+Retrieve detailed information about a specific group.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `id` | string | Yes | The unique ID of the group |
+
+**Example Prompt:**
+```
+Get details for group abc123
+```
+
+### updateGroup
+
+Update metadata for an existing group.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `id` | string | Yes | The unique ID of the group |
+| `name` | string | No | New name for the group |
+
+**Example Prompt:**
+```
+Rename group abc123 to "Marketing Assets"
+```
+
+### deleteGroup
+
+Delete a group from your Pinata account.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `id` | string | Yes | The unique ID of the group |
+
+**Example Prompt:**
+```
+Delete group abc123
+```
+
+### addFileToGroup
+
+Add an existing file to a group.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `groupId` | string | Yes | The ID of the group |
+| `fileId` | string | Yes | The ID of the file to add |
+
+**Example Prompt:**
+```
+Add file xyz789 to group abc123
+```
+
+### removeFileFromGroup
+
+Remove a file from a group.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `groupId` | string | Yes | The ID of the group |
+| `fileId` | string | Yes | The ID of the file to remove |
+
+**Example Prompt:**
+```
+Remove file xyz789 from group abc123
+```
+
+---
+
+## x402 Payment Instructions
+
+Tools for content monetization using the [x402 protocol](/files/x402/intro). Currently supports USDC on Base and Base Sepolia.
+
+### createPaymentInstruction
+
+Create payment requirements for gated content.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `name` | string | Yes | Name for the payment instruction |
+| `pay_to` | string | Yes | Wallet address (0x...) to receive payments |
+| `amount_usdc` | string | Yes | Price in USD (e.g., `"0.01"` for 1 cent, `"1.50"` for $1.50) |
+| `network` | `"base"` \| `"base-sepolia"` | No | Blockchain network (default: `"base"`) |
+| `description` | string | No | Description of the payment instruction |
+
+**Example Prompt:**
+```
+Create a payment instruction called "Premium Content" that requires 0.01 USDC on Base to access, sending payments to 0x1234...
+```
+
+### listPaymentInstructions
+
+List and filter existing payment instructions.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | number | No | Limit results |
+| `pageToken` | string | No | Token for pagination |
+| `cid` | string | No | Filter by associated CID |
+| `name` | string | No | Filter by name |
+| `id` | string | No | Filter by specific ID |
+
+**Example Prompt:**
+```
+List all my x402 payment instructions
+```
+
+### getPaymentInstruction
+
+Retrieve a specific payment instruction by ID.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | The payment instruction ID |
+
+**Example Prompt:**
+```
+Get details for payment instruction pi_abc123
+```
+
+### updatePaymentInstruction
+
+Modify payment instruction settings.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | The payment instruction ID |
+| `name` | string | No | Updated name |
+| `pay_to` | string | No | Updated wallet address |
+| `amount_usdc` | string | No | Updated price in USD |
+| `network` | `"base"` \| `"base-sepolia"` | No | Updated network |
+| `description` | string | No | Updated description |
+
+**Example Prompt:**
+```
+Update payment instruction pi_abc123 to charge $0.05 instead
+```
+
+### deletePaymentInstruction
+
+Remove a payment instruction.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | The payment instruction ID |
+
+**Example Prompt:**
+```
+Delete payment instruction pi_abc123
+```
+
+### listPaymentInstructionCids
+
+List CIDs associated with a payment instruction.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | The payment instruction ID |
+| `limit` | number | No | Limit results |
+| `pageToken` | string | No | Token for pagination |
+
+**Example Prompt:**
+```
+List all CIDs associated with payment instruction pi_abc123
+```
+
+### addCidToPaymentInstruction
+
+Associate a CID with a payment instruction for monetization.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | The payment instruction ID |
+| `cid` | string | Yes | The CID to associate |
+
+**Example Prompt:**
+```
+Add CID bafkreih... to payment instruction pi_abc123
+```
+
+### removeCidFromPaymentInstruction
+
+Remove a CID association from a payment instruction.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | The payment instruction ID |
+| `cid` | string | Yes | The CID to remove |
+
+**Example Prompt:**
+```
+Remove CID bafkreih... from payment instruction pi_abc123
+```
+
+---
+
+## CID Signatures
+
+Tools for cryptographic content verification using EIP-712 signatures.
+
+### addSignature
+
+Add an EIP-712 cryptographic signature to a CID for content verification.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `cid` | string | Yes | The CID to sign |
+| `signature` | string | Yes | The EIP-712 signature |
+| `address` | string | Yes | The wallet address that created the signature |
+
+**Example Prompt:**
+```
+Add signature 0xabc... from wallet 0x123... to CID bafkreih...
+```
+
+### getSignature
+
+Get signature details for a specific CID.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `cid` | string | Yes | The CID to get the signature for |
+
+**Example Prompt:**
+```
+Get the signature for CID bafkreih...
+```
+
+### deleteSignature
+
+Remove a signature from a CID.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `network` | `"public"` \| `"private"` | No | Public or private IPFS (default: `"public"`) |
+| `cid` | string | Yes | The CID to remove the signature from |
+
+**Example Prompt:**
+```
+Delete the signature from CID bafkreih...
+```
+
+---
+
+## Signed Upload URLs
+
+### createSignedUploadUrl
+
+Create a presigned URL for client-side uploads without exposing your API key.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `expires` | number | Yes | How long the URL is valid in seconds |
+| `max_file_size` | number | No | Max file size in bytes |
+| `allow_mime_types` | string[] | No | Allowed MIME types (supports wildcards like `"image/*"`) |
+| `group_id` | string | No | Group to add the uploaded file to |
+| `filename` | string | No | Name for the uploaded file |
+| `keyvalues` | object | No | Metadata key-value pairs |
+
+**Example Prompt:**
+```
+Create a signed upload URL that expires in 5 minutes and only allows image uploads up to 10MB
+```
+
+---
+
+## Pin by CID
+
+### pinByCid
+
+Pin an existing CID from the IPFS network to your Pinata account.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `cid` | string | Yes | CID to pin |
+| `name` | string | No | Custom name for the file |
+| `group_id` | string | No | Group to add the file to |
+| `keyvalues` | object | No | Metadata key-value pairs |
+| `host_nodes` | string[] | No | Host node IDs to fetch from |
+
+**Example Prompt:**
+```
+Pin the CID bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4 to my account
+```
+
+### queryPinRequests
+
+Query the status of pin by CID requests.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `order` | `"ASC"` \| `"DESC"` | No | Sort by date queued |
+| `status` | string | No | Filter by status |
+| `cid` | string | No | Filter by CID |
+| `limit` | number | No | Limit results |
+| `pageToken` | string | No | Token for pagination |
+
+**Example Prompt:**
+```
+Check the status of my pending pin requests
+```
+
+### cancelPinRequest
+
+Cancel a pending pin by CID request.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | ID of the pin request to cancel |
+
+**Example Prompt:**
+```
+Cancel pin request pr_abc123
+```
+
+---
+
+## Vectorize (AI/Semantic Search)
+
+### vectorizeFile
+
+Vectorize a file for semantic search capabilities.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `file_id` | string | Yes | ID of the file to vectorize |
+
+**Example Prompt:**
+```
+Vectorize the file with ID abc123 so I can search it semantically
+```
+
+### deleteFileVectors
+
+Delete vectors for a file.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `file_id` | string | Yes | ID of the file to delete vectors for |
+
+**Example Prompt:**
+```
+Delete the vectors for file abc123
+```
+
+### queryVectors
+
+Query vectorized files using semantic search.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `group_id` | string | Yes | ID of the group to search |
+| `text` | string | Yes | Query string for semantic search |
+
+**Example Prompt:**
+```
+Search my vectorized files in group xyz for "machine learning concepts"
+```
+
+---
+
+## Utilities
+
+### listAllowedDirectories
+
+List directories the MCP server can access for file operations.
+
+**Parameters:** None
+
+**Example Prompt:**
+```
+What directories can you access for file uploads?
+```
