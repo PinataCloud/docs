@@ -1,3 +1,19 @@
 ---
 openapi: get /files/{network}/{id}
 ---
+Retrieves a file by its unique ID on a given network.
+
+### Path Parameters
+- `network` (string): The network name (e.g., `ipfs`, `arweave`)
+- `id` (string): The unique file ID
+
+### Response
+Returns a JSON object containing file metadata and access URL.
+
+```json
+{
+  "id": "abc123",
+  "network": "ipfs",
+  "name": "reef-nft-042.json",
+  "url": "https://gateway.pinata.cloud/ipfs/QmABC123..."
+}
