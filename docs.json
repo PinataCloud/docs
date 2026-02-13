@@ -642,6 +642,10 @@
   },
   "redirects": [
     {
+      "source": "/docs",
+      "destination": "/quickstart"
+    },
+    {
       "source": "/sdk",
       "destination": "/sdk/getting-started"
     },
