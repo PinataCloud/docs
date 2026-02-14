@@ -42,9 +42,8 @@ aquamarine-casual-tarantula-177.mypinata.cloud
 ## Server-Side Setup
 
 <Warning>
-Next.js has a limit of how large a file can be passed through the built in API routes, if you need to enable larger uploads follow the client side setup guide
+  Next.js has a limit of how large a file can be passed through the built in API routes, if you need to enable larger uploads follow the client side setup guide.
 </Warning>
-
 
 ### Start up Next.js Project
 
@@ -71,17 +70,21 @@ Use the `JWT` from the API key creation in the previous step as well as the `Gat
 
 ### Setup Pinata
 
-Create a directory called `utils` in the root of the project and then make a file called `config.ts` inside of it. In that file we'll export an instance of the Files SDK that we can use throughout the rest of the app.
+<Warning>
+  CRITICAL: Never prefix your JWT with `NEXT_PUBLIC_` as this will expose it to the client-side code and compromise your API security. The JWT should only be used in server-side code.
+</Warning>
 
-```typescript utils/config.ts
-"server only"
+Create a directory called `utils` in the root of the project and then make a file called `server-config.ts` inside of it. This file will contain your server-side Pinata configuration with the JWT for secure API operations.
 
-import { PinataSDK } from "pinata"
+```typescript utils/server-config.ts
+"use server";
+
+import { PinataSDK } from "pinata";
 
 export const pinata = new PinataSDK({
   pinataJwt: `${process.env.PINATA_JWT}`,
-  pinataGateway: `${process.env.NEXT_PUBLIC_GATEWAY_URL}`
-})
+  pinataGateway: `${process.env.NEXT_PUBLIC_GATEWAY_URL}`,
+});
 ```
 
 ### Create Client Side Form
@@ -131,7 +134,7 @@ export default function Home() {
   return (
     <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
       <input type="file" onChange={handleChange} />
-      <button type="button" disabled={uploading} onClick={uploadFile} >
+      <button type="button" disabled={uploading} onClick={uploadFile}>
         {uploading ? "Uploading..." : "Upload"}
       </button>
     </main>
@@ -156,13 +159,13 @@ Once you have created that file you can paste in the following code.
 
 ```typescript app/api/files/route.ts
 import { NextResponse, type NextRequest } from "next/server";
-import { pinata } from "@/utils/config"
+import { pinata } from "@/utils/server-config";
 
 export async function POST(request: NextRequest) {
   try {
     const data = await request.formData();
     const file: File | null = data.get("file") as unknown as File;
-    const { cid } = await pinata.upload.public.file(file)
+    const { cid } = await pinata.upload.public.file(file);
     const url = await pinata.gateways.public.convert(cid);
     return NextResponse.json(url, { status: 200 });
   } catch (e) {
@@ -180,21 +183,25 @@ This will accept a `POST` request from the client, then send an API request to P
 With our URL we can render the image we uploaded by adding the following code to the `page.tsx` file.
 
 ```typescript app/page.tsx
-    return (
-		<main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
-			<input type="file" onChange={handleChange} />
-			<button type="button" disabled={uploading} onClick={uploadFile}>
-				{uploading ? "Uploading..." : "Upload"}
-			</button>
-			{/* Add a conditional looking for the signed url and use it as the source */}
-			{url && <img src={url} alt="Image from Pinata" />}
-		</main>
-	);
+return (
+  <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
+    <input type="file" onChange={handleChange} />
+    <button type="button" disabled={uploading} onClick={uploadFile}>
+      {uploading ? "Uploading..." : "Upload"}
+    </button>
+    {/* Add a conditional looking for the signed url and use it as the source */}
+    {url && <img src={url} alt="Image from Pinata" />}
+  </main>
+);
 ```
 
 And just like that we have uploaded an image to Pinata and recieved a usable URL in return!
 
 ## Client-Side Setup
+
+<Warning>
+  IMPORTANT: When uploading from the client side, never expose your JWT directly. Instead, use API routes to generate temporary signed URLs that the client can use for uploads. This keeps your JWT secure on the server.
+</Warning>
 
 Next.js has a file size limit as to what can be pass through API routes, so another workaround is to upload the file on the client side. To do this securely you can make an API route that generates a temporary upload URL that is used in the upload request.
 
@@ -223,17 +230,21 @@ Use the `JWT` from the API key creation in the previous step as well as the `Gat
 
 ### Setup Pinata
 
-Create a directory called `utils` in the root of the project and then make a file called `config.ts` inside of it. In that file we'll export an instance of the Files SDK that we can use throughout the rest of the app.
+<Warning>
+  CRITICAL: Never prefix your JWT with `NEXT_PUBLIC_` as this will expose it to the client-side code and compromise your API security. The JWT should only be used in server-side code.
+</Warning>
 
-```typescript utils/config.ts
-"server only"
+Create a directory called `utils` in the root of the project and then make a file called `server-config.ts` inside of it. This file will contain your server-side Pinata configuration with the JWT for secure API operations.
 
-import { PinataSDK } from "pinata"
+```typescript utils/server-config.ts
+"use server";
+
+import { PinataSDK } from "pinata";
 
 export const pinata = new PinataSDK({
   pinataJwt: `${process.env.PINATA_JWT}`,
-  pinataGateway: `${process.env.NEXT_PUBLIC_GATEWAY_URL}`
-})
+  pinataGateway: `${process.env.NEXT_PUBLIC_GATEWAY_URL}`,
+});
 ```
 
 ### Create API Route
@@ -244,7 +255,7 @@ Once you have created that file you can paste in the following code.
 
 ```typescript app/api/url/route.ts
 import { NextResponse } from "next/server";
-import { pinata } from "@/utils/config"
+import { pinata } from "@/utils/server-config";
 
 export const dynamic = "force-dynamic";
 
@@ -253,20 +264,43 @@ export async function GET() {
   try {
     const url = await pinata.upload.public.createSignedURL({
       expires: 30, // The only required param
-    })
+    });
     return NextResponse.json({ url: url }, { status: 200 }); // Returns the signed upload URL
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ text: "Error creating API Key:" }, { status: 500 });
+    return NextResponse.json(
+      { text: "Error creating API Key:" },
+      { status: 500 }
+    );
   }
 }
 ```
 
 When the client makes a `GET` request to `/api/url` it will return a temporary signed upload URL that is only valid for 30 seconds, which we can use on the client to make the upload request.
 
+### Create Client Configuration
+
+Since the client-side code cannot access server-side environment variables (those without `NEXT_PUBLIC_` prefix), we need to create a separate client configuration file that only includes the public gateway URL.
+
+```typescript utils/client-config.ts
+"use client";
+
+import { PinataSDK } from "pinata";
+
+// Client-side config only uses the public gateway URL
+// Authentication happens through signed URLs from API routes, not direct JWT usage
+export const pinata = new PinataSDK({
+  pinataGateway: `${process.env.NEXT_PUBLIC_GATEWAY_URL}`,
+});
+```
+
+<Note>
+  The client configuration does NOT include the JWT. Client-side authentication is handled through signed URLs generated by your API routes, ensuring your JWT remains secure on the server.
+</Note>
+
 ### Create Client Side Form
 
-Next we'll want to make an upload form on the client side that will allow someone to select a file and upload it with the signed upload URL
+Next we'll want to make an upload form on the client side that will allow someone to select a file and upload it with the signed upload URL.
 
 In the `/app/page.tsx` file take out the boiler plate code and use the following.
 
@@ -274,7 +308,7 @@ In the `/app/page.tsx` file take out the boiler plate code and use the following
 "use client";
 
 import { useState } from "react";
-import { pinata } from "@/utils/config";
+import { pinata } from "@/utils/client-config";
 
 export default function Home() {
   const [file, setFile] = useState<File>();
@@ -288,11 +322,9 @@ export default function Home() {
 
     try {
       setUploading(true);
-      const urlRequest = await fetch("/api/url"); // Fetches the temporary upload URL
+      const urlRequest = await fetch("/api/url"); // Fetches the temporary upload URL from server
       const urlResponse = await urlRequest.json(); // Parse response
-      const upload = await pinata.upload.public
-        .file(file)
-        .url(urlResponse.url); // Upload the file with the signed URL
+      const upload = await pinata.upload.public.file(file).url(urlResponse.url); // Upload the file with the signed URL
       console.log(upload);
       setUploading(false);
     } catch (e) {
@@ -323,48 +355,46 @@ The main thing to understand here is that we are able to use the `url()` method 
 "use client";
 
 import { useState } from "react";
-import { pinata } from "@/utils/config";
+import { pinata } from "@/utils/client-config";
 
 export default function Home() {
-	const [file, setFile] = useState<File>();
-	const [url, setUrl] = useState("");
-	const [uploading, setUploading] = useState(false);
+  const [file, setFile] = useState<File>();
+  const [url, setUrl] = useState("");
+  const [uploading, setUploading] = useState(false);
 
-	const uploadFile = async () => {
-		if (!file) {
-			alert("No file selected");
-			return;
-		}
+  const uploadFile = async () => {
+    if (!file) {
+      alert("No file selected");
+      return;
+    }
 
-		try {
-			setUploading(true);
-			const urlRequest = await fetch("/api/url"); // Fetches the temporary upload URL
+    try {
+      setUploading(true);
+      const urlRequest = await fetch("/api/url"); // Fetches the temporary upload URL from server
       const urlResponse = await urlRequest.json(); // Parse response
-      const upload = await pinata.upload.public
-        .file(file)
-        .url(urlResponse.url); // Upload the file with the signed URL
-      const fileUrl = await pinata.gateways.public.convert(upload.cid)
-			setUrl(fileUrl);
-			setUploading(false);
-		} catch (e) {
-			console.log(e);
-			setUploading(false);
-			alert("Trouble uploading file");
-		}
-	};
+      const upload = await pinata.upload.public.file(file).url(urlResponse.url); // Upload the file with the signed URL
+      const fileUrl = await pinata.gateways.public.convert(upload.cid);
+      setUrl(fileUrl);
+      setUploading(false);
+    } catch (e) {
+      console.log(e);
+      setUploading(false);
+      alert("Trouble uploading file");
+    }
+  };
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFile(e.target?.files?.[0]);
-	};
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(e.target?.files?.[0]);
+  };
 
-	return (
-		<main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
-			<input type="file" onChange={handleChange} />
-			<button type="button" disabled={uploading} onClick={uploadFile}>
-				{uploading ? "Uploading..." : "Upload"}
-			</button>
-			{url && <img src={url} alt="Image from Pinata" />}
-		</main>
-	);
+  return (
+    <main className="w-full min-h-screen m-auto flex flex-col justify-center items-center">
+      <input type="file" onChange={handleChange} />
+      <button type="button" disabled={uploading} onClick={uploadFile}>
+        {uploading ? "Uploading..." : "Upload"}
+      </button>
+      {url && <img src={url} alt="Image from Pinata" />}
+    </main>
+  );
 }
 ```
