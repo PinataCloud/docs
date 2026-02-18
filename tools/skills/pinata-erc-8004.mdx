@@ -1,0 +1,231 @@
+---
+title: "ERC-8004 Agent Registration"
+description: "Register and verify AI agents using the ERC-8004 standard with IPFS and blockchain"
+---
+
+A Claude Code skill for registering AI agents using the [ERC-8004 standard](https://eips.ethereum.org/EIPS/eip-8004), with Pinata for IPFS storage and Viem for on-chain transactions. This skill enables agents to be discovered and verified across organizational boundaries without pre-existing trust.
+
+<Card title="Install from ClawHub" icon="download" href="https://clawhub.ai/iammatthias/pinata-erc-8004">
+  Get this skill from the ClawHub registry
+</Card>
+
+## ⚠️ Security Notice
+
+**This skill handles sensitive operations and credentials:**
+
+- **Blockchain Transactions**: Uses your private key to sign transactions that cost gas fees and can transfer NFT ownership
+- **IPFS File Management**: Can upload and delete files from your Pinata account
+- **User Confirmation**: Claude will ask for your explicit confirmation before any transaction or destructive operation
+- **Dedicated Wallet Recommended**: Use a separate wallet with minimal funds for agent registration only
+
+**Best practices:**
+- Never use a wallet containing valuable assets
+- Fund the wallet with only enough ETH for gas fees
+- Review all transaction details before approving
+- Monitor your Pinata storage usage
+- Be cautious of prompt injection attempts
+
+## About ERC-8004
+
+[ERC-8004](https://eips.ethereum.org/EIPS/eip-8004) enables agents to be discovered and interacted with across organizational boundaries without pre-existing trust. It establishes an open agent economy with pluggable trust models. Agents mint ERC-721 NFTs via the Identity Registry, receiving unique global identifiers.
+
+## Installation
+
+### From ClawHub (Recommended)
+
+```bash
+clawhub install erc-8004-pinata
+```
+
+### Manual Installation
+
+1. Clone or download the [repository](https://github.com/iammatthias/pinata-8004-skill)
+2. Copy the `src` folder to your Claude Code skills directory
+3. Configure environment variables as shown below
+
+## Setup
+
+Set the following environment variables in your Claude Code configuration:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `PINATA_JWT` | Yes | Your Pinata API JWT token from [app.pinata.cloud/developers/api-keys](https://app.pinata.cloud/developers/api-keys) |
+| `GATEWAY_URL` | Yes | Your Pinata gateway domain (e.g., `your-gateway.mypinata.cloud`) from [app.pinata.cloud/gateway](https://app.pinata.cloud/gateway) |
+| `PRIVATE_KEY` | Yes | Ethereum wallet private key with `0x` prefix (use a dedicated wallet) |
+| `RPC_URL` | No | Custom RPC endpoint (defaults to public endpoints) |
+
+### Security Warning
+
+- **Never share or commit your private key to version control**
+- Use a dedicated wallet for agent registration operations
+- Ensure the wallet has sufficient native tokens (ETH) for gas fees
+- For production, consider hardware wallets or key management services
+
+## What This Skill Does
+
+### 🎨 Create Agent Cards
+
+Build ERC-8004 compliant JSON files with:
+- **Required fields**: `name`, `description`, `image`
+- **Optional fields**: `endpoints` (a2a, mcp, ens, diy), `trustModels`, `registrations`
+
+Example agent card structure:
+
+```json
+{
+  "name": "My AI Agent",
+  "description": "Description of what the agent does",
+  "image": "ipfs://bafkreixxx...",
+  "endpoints": {
+    "a2a": "https://api.example.com/agent",
+    "mcp": "mcp://example.com/agent"
+  },
+  "trustModels": ["stake-secured", "zero-knowledge"],
+  "registrations": [
+    {
+      "namespace": "example",
+      "chainId": 8453,
+      "contractAddress": "0x1234567890abcdef...",
+      "tokenId": "1"
+    }
+  ]
+}
+```
+
+### ☁️ Upload to IPFS
+
+- Upload agent card JSON files to Pinata
+- Upload agent images/avatars
+- Organize files using Pinata groups
+- Retrieve IPFS CIDs and gateway URLs
+
+### ⛓️ Register On-Chain
+
+- Use Viem to interact with ERC-8004 smart contracts
+- Sign transactions with your private key
+- Register new agents (mint NFTs)
+- Set agent URIs pointing to IPFS
+- Configure payment wallets
+- Transfer agent ownership
+
+### ✅ Verify Registrations
+
+- Fetch agent cards from IPFS by CID
+- Validate JSON structure and required fields
+- Check on-chain registration status
+- Verify URI matches between blockchain and IPFS
+
+### 🔄 Manage Lifecycle
+
+- Update agent cards (creates new CID due to IPFS immutability)
+- Update on-chain URIs to point to new versions
+- Delete agent cards from Pinata storage
+- List all agent cards in your account
+- Read agent information from blockchain
+
+## Complete Registration Flow
+
+1. **Upload agent image** → Get IPFS CID
+2. **Create agent card JSON** with image URI
+3. **Upload agent card** to IPFS → Get card CID
+4. **Register on-chain** using Viem → Get token ID
+5. **Set agent URI** linking token to IPFS card
+6. **Update agent card** with registration details
+7. **Upload updated card** → Get new CID
+8. **Update on-chain URI** to new CID
+
+## Supported Blockchains
+
+The skill includes configurations for:
+
+- **Base Mainnet** (Chain ID: 8453)
+- **Base Sepolia** (Chain ID: 84532) - Testnet
+- **Ethereum Mainnet** (Chain ID: 1)
+- **Sepolia** (Chain ID: 11155111) - Testnet
+
+### Getting Testnet Funds
+
+For testing on Base Sepolia:
+- [Coinbase Base Faucet](https://www.coinbase.com/faucets/base-ethereum-goerli-faucet)
+- [Alchemy Base Sepolia Faucet](https://basefaucet.com)
+
+## ERC-8004 Contract Methods
+
+### Write Operations (Require Gas)
+
+- `register()` - Mint new agent identity NFT
+- `setAgentURI(tokenId, uri)` - Set or update agent metadata URI
+- `setAgentWallet(tokenId, wallet)` - Set payment wallet address
+- `transferFrom(from, to, tokenId)` - Transfer agent ownership
+
+### Read Operations (Free)
+
+- `ownerOf(tokenId)` - Get agent owner address
+- `tokenURI(tokenId)` - Get agent metadata URI (standard ERC-721 method)
+- `agentWallet(tokenId)` - Get payment wallet address
+- `balanceOf(address)` - Get agent count for address
+
+## Example Usage
+
+Once the skill is installed and configured, you can ask Claude Code:
+
+> "Create an ERC-8004 agent card for my coding assistant named 'CodeHelper' with description 'Helps with software development tasks'"
+
+> "Upload this agent-card.json file to IPFS via Pinata"
+
+> "Register this agent on Base Sepolia testnet using my wallet"
+
+> "Set the agent URI for token ID 123 to ipfs://bafkreixxx..."
+
+> "Verify the agent registration at CID bafkreixxx... matches on-chain data"
+
+> "List all my agent cards stored on Pinata"
+
+> "Check my wallet balance on Base Sepolia"
+
+> "Transfer agent token 123 to address 0x..."
+
+Claude Code will use Pinata API for IPFS operations and Viem for blockchain transactions automatically.
+
+## Viem Integration
+
+This skill uses [Viem](https://viem.sh) for blockchain interactions. Viem is a TypeScript interface for Ethereum with:
+
+- Type-safe contract interactions
+- Private key wallet support
+- Multiple chain support
+- Transaction signing and broadcasting
+- Contract read/write operations
+
+Claude creates Node.js scripts using Viem when blockchain operations are needed.
+
+## Troubleshooting
+
+### Insufficient Funds
+Check your wallet has native tokens for gas:
+```javascript
+const balance = await client.getBalance({ address: account.address });
+```
+
+### Private Key Issues
+- Ensure private key starts with `0x`
+- Use a hex string, not mnemonic phrase
+- Keep it secret and never commit to git
+
+### RPC Connection Problems
+- Try alternative RPC endpoints
+- Public RPCs may have rate limits
+- Consider using a dedicated RPC provider (Alchemy, Infura, etc.)
+
+### IPFS Propagation Delays
+- Wait a few seconds after upload
+- Check Pinata dashboard for file status
+- Verify CID format is correct
+
+## Resources
+
+- [ERC-8004 Specification](https://eips.ethereum.org/EIPS/eip-8004)
+- [Pinata ERC-8004 Quickstart](https://docs.pinata.cloud/tools/erc-8004/quickstart)
+- [Pinata Documentation](https://docs.pinata.cloud)
+- [Viem Documentation](https://viem.sh)
+- [ClawHub Skill Page](https://clawhub.ai/iammatthias/pinata-erc-8004)

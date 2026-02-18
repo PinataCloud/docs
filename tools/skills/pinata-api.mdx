@@ -1,0 +1,128 @@
+---
+title: "Pinata API Skill"
+description: "Manage files, groups, gateways, signatures, payments, and AI-powered vector search"
+---
+
+A Claude Code skill for interacting with Pinata's IPFS storage services. This skill enables Claude to manage your files, organize them into groups, control access, handle payments, and perform AI-powered semantic search.
+
+<Card title="Install from ClawHub" icon="download" href="https://clawhub.ai/iammatthias/pinata-api">
+  Get this skill from the ClawHub registry
+</Card>
+
+## Installation
+
+### From ClawHub (Recommended)
+
+```bash
+clawhub install pinata-api
+```
+
+### Manual Installation
+
+1. Clone or download the [repository](https://github.com/iammatthias/pinata-api-skill)
+2. Copy the `src` folder to your Claude Code skills directory
+3. Configure environment variables as shown below
+
+## Setup
+
+Set the following environment variables in your Claude Code configuration:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `PINATA_JWT` | Yes | Your Pinata API JWT token from [app.pinata.cloud/developers/api-keys](https://app.pinata.cloud/developers/api-keys) |
+| `GATEWAY_URL` | Yes | Your Pinata gateway domain (e.g., `your-gateway.mypinata.cloud`) from [app.pinata.cloud/gateway](https://app.pinata.cloud/gateway) |
+| `GATEWAY_KEY` | No | Gateway key for accessing public IPFS content not tied to your account. See [Gateway Access Controls](https://docs.pinata.cloud/gateways/gateway-access-controls#gateway-keys) |
+
+## Available Functions
+
+### Authentication
+
+- `testAuthentication()` - Verify your Pinata JWT is valid and working
+
+### File Management
+
+- `searchFiles({ network?, name?, cid?, mimeType?, limit?, pageToken? })` - Search through your files with filters
+- `getFileById({ network?, id })` - Retrieve a specific file by its ID
+- `updateFile({ network?, id, name?, keyvalues? })` - Update file metadata and custom key-value pairs
+- `deleteFile({ network?, id })` - Delete a file from your account
+- `uploadFile({ file, fileName, network?, group_id?, keyvalues? })` - Upload a new file to IPFS
+
+### Group Management
+
+- `listGroups({ network?, name?, limit?, pageToken? })` - List all your groups with optional filtering
+- `createGroup({ network?, name })` - Create a new group for organizing files
+- `getGroup({ network?, id })` - Get details about a specific group
+- `updateGroup({ network?, id, name })` - Rename or modify a group
+- `deleteGroup({ network?, id })` - Delete a group (files remain)
+- `addFileToGroup({ network?, groupId, fileId })` - Add a file to a group
+- `removeFileFromGroup({ network?, groupId, fileId })` - Remove a file from a group
+
+### Gateway & Downloads
+
+- `createPrivateDownloadLink({ cid, expires? })` - Create a temporary signed download link for private content
+- `createSignedUploadUrl({ expires, max_file_size?, allow_mime_types?, group_id?, filename?, keyvalues? })` - Generate a signed URL for client-side file uploads
+
+### Content Signatures
+
+- `addSignature({ network?, cid, signature, address })` - Add an EIP-712 signature to verify content authenticity
+- `getSignature({ network?, cid })` - Retrieve the signature for a specific CID
+- `deleteSignature({ network?, cid })` - Remove a signature from content
+
+### Pin By CID
+
+- `pinByCid({ cid, name?, group_id?, keyvalues?, host_nodes? })` - Pin existing IPFS content to your account
+- `queryPinRequests({ order?, status?, cid?, limit?, pageToken? })` - Check the status of pin requests
+- `cancelPinRequest({ id })` - Cancel a pending pin request
+
+### x402 Payment Instructions
+
+Create payment requirements for content access using the x402 protocol:
+
+- `createPaymentInstruction({ name, pay_to, amount_usdc, network?, description? })` - Set up payment requirements
+- `listPaymentInstructions({ limit?, pageToken?, cid?, name?, id? })` - List all payment instructions
+- `getPaymentInstruction({ id })` - Get details about a specific payment instruction
+- `deletePaymentInstruction({ id })` - Remove a payment instruction
+- `addCidToPaymentInstruction({ id, cid })` - Associate content with a payment requirement
+- `removeCidFromPaymentInstruction({ id, cid })` - Remove content from payment requirements
+
+### Vectorize (AI Search)
+
+Enable semantic search across your files using AI embeddings:
+
+- `vectorizeFile({ file_id })` - Generate vector embeddings for a file to enable semantic search
+- `deleteFileVectors({ file_id })` - Remove vector embeddings for a file
+- `queryVectors({ group_id, text })` - Perform semantic search within a group using natural language
+
+## Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| `network` | IPFS network: `"public"` (default) or `"private"` |
+| `amount_usdc` | USD amount as string (e.g., `"1.50"` for $1.50) |
+| `blockchain network` | For payments: `"base"` (default) or `"base-sepolia"` |
+
+## Example Usage
+
+Once the skill is installed and configured, you can ask Claude Code in natural language:
+
+> "Upload my profile-photo.jpg to Pinata"
+
+> "Create a group called 'Project Assets'"
+
+> "Search for all JSON files in my account"
+
+> "Generate a temporary download link for CID bafkreixxx that expires in 1 hour"
+
+> "Vectorize all files in the 'Documents' group so I can search them"
+
+> "Find files about 'authentication' in my Documentation group"
+
+> "Create a payment instruction requiring $5 USDC to access this content"
+
+Claude Code will automatically use the Pinata API skill to handle these operations.
+
+## Resources
+
+- [Pinata Documentation](https://docs.pinata.cloud)
+- [Pinata MCP Server Source](https://github.com/PinataCloud/pinata-mcp)
+- [ClawHub Skill Page](https://clawhub.ai/iammatthias/pinata-api)
