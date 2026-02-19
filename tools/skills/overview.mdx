@@ -5,11 +5,13 @@ description: "Claude Code skills for Pinata workflows"
 
 ## What are Skills?
 
-Skills are specialized plugins for Claude Code that extend its capabilities with domain-specific knowledge and workflows. They allow Claude to perform complex operations that would otherwise require multiple steps and API calls.
+Skills are specialized plugins for AI agents that extend their capabilities with domain-specific knowledge and workflows. They allow AI agents to perform complex operations that would otherwise require multiple steps and API calls.
+
+These skills are designed for [OpenClaw](https://openclaw.ai/).
 
 ## Available Pinata Skills
 
-Pinata provides two powerful skills that enable Claude Code to work seamlessly with IPFS storage and blockchain agent registration:
+Pinata provides two powerful skills that enable AI agents to work seamlessly with IPFS storage and blockchain agent registration:
 
 <CardGroup cols={2}>
   <Card title="Pinata API" icon="cloud" href="/tools/skills/pinata-api">
@@ -40,7 +42,7 @@ Or manually copy the skill directories to your Claude Code skills folder.
 
 ## How Skills Work
 
-Once installed and configured with your API credentials, you can simply ask Claude Code to perform operations in natural language:
+Once installed and configured with your API credentials in OpenClaw, you can simply ask your AI agent to perform operations in natural language:
 
 > "Upload this file to Pinata"
 
@@ -48,10 +50,10 @@ Once installed and configured with your API credentials, you can simply ask Clau
 
 > "Register this agent on Base Sepolia"
 
-Claude Code automatically uses the appropriate skill and handles all the API calls, file operations, and blockchain transactions for you.
+The AI agent automatically uses the appropriate skill and handles all the API calls, file operations, and blockchain transactions for you.
 
 ## Configuration
 
-Skills require environment variables to be set in your Claude Code configuration. Each skill documents its required credentials and setup steps.
+Skills require environment variables to be set in your OpenClaw configuration (`~/.openclaw/openclaw.json`). Each skill documents its required credentials and setup steps.
 
 See the individual skill pages for detailed setup instructions.

@@ -3,7 +3,7 @@ title: "Pinata API Skill"
 description: "Manage files, groups, gateways, signatures, payments, and AI-powered vector search"
 ---
 
-A Claude Code skill for interacting with Pinata's IPFS storage services. This skill enables Claude to manage your files, organize them into groups, control access, handle payments, and perform AI-powered semantic search.
+An OpenClaw skill for interacting with Pinata's IPFS storage services. This skill enables AI agents to manage your files, organize them into groups, control access, handle payments, and perform AI-powered semantic search.
 
 <Card title="Install from ClawHub" icon="download" href="https://clawhub.ai/iammatthias/pinata-api">
   Get this skill from the ClawHub registry
@@ -20,12 +20,14 @@ clawhub install pinata-api
 ### Manual Installation
 
 1. Clone or download the [repository](https://github.com/iammatthias/pinata-api-skill)
-2. Copy the `src` folder to your Claude Code skills directory
+2. Copy the `src` folder to your OpenClaw skills directory:
+   - Workspace-specific: `<workspace>/skills/pinata-api/`
+   - Shared across agents: `~/.openclaw/skills/pinata-api/`
 3. Configure environment variables as shown below
 
 ## Setup
 
-Set the following environment variables in your Claude Code configuration:
+Set the following environment variables in your OpenClaw configuration (`~/.openclaw/openclaw.json`):
 
 | Variable | Required | Description |
 |----------|----------|-------------|
@@ -101,9 +103,26 @@ Enable semantic search across your files using AI embeddings:
 | `amount_usdc` | USD amount as string (e.g., `"1.50"` for $1.50) |
 | `blockchain network` | For payments: `"base"` (default) or `"base-sepolia"` |
 
+```json
+{
+  "skills": {
+    "entries": {
+      "pinata-api": {
+        "enabled": true,
+        "env": {
+          "PINATA_JWT": "your_pinata_jwt_token_here",
+          "GATEWAY_URL": "your-gateway.mypinata.cloud",
+          "GATEWAY_KEY": "optional_gateway_key"
+        }
+      }
+    }
+  }
+}
+```
+
 ## Example Usage
 
-Once the skill is installed and configured, you can ask Claude Code in natural language:
+Once the skill is installed and configured, you can ask your AI agent in natural language:
 
 > "Upload my profile-photo.jpg to Pinata"
 
@@ -119,7 +138,7 @@ Once the skill is installed and configured, you can ask Claude Code in natural l
 
 > "Create a payment instruction requiring $5 USDC to access this content"
 
-Claude Code will automatically use the Pinata API skill to handle these operations.
+Your AI agent will automatically use the Pinata API skill to handle these operations.
 
 ## Resources
 

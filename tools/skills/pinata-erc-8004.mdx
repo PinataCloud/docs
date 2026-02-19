@@ -3,7 +3,7 @@ title: "ERC-8004 Agent Registration"
 description: "Register and verify AI agents using the ERC-8004 standard with IPFS and blockchain"
 ---
 
-A Claude Code skill for registering AI agents using the [ERC-8004 standard](https://eips.ethereum.org/EIPS/eip-8004), with Pinata for IPFS storage and Viem for on-chain transactions. This skill enables agents to be discovered and verified across organizational boundaries without pre-existing trust.
+An OpenClaw skill for registering AI agents using the [ERC-8004 standard](https://eips.ethereum.org/EIPS/eip-8004), with Pinata for IPFS storage and Viem for on-chain transactions. This skill enables agents to be discovered and verified across organizational boundaries without pre-existing trust.
 
 <Card title="Install from ClawHub" icon="download" href="https://clawhub.ai/iammatthias/pinata-erc-8004">
   Get this skill from the ClawHub registry
@@ -15,7 +15,7 @@ A Claude Code skill for registering AI agents using the [ERC-8004 standard](http
 
 - **Blockchain Transactions**: Uses your private key to sign transactions that cost gas fees and can transfer NFT ownership
 - **IPFS File Management**: Can upload and delete files from your Pinata account
-- **User Confirmation**: Claude will ask for your explicit confirmation before any transaction or destructive operation
+- **User Confirmation**: The AI agent will ask for your explicit confirmation before any transaction or destructive operation
 - **Dedicated Wallet Recommended**: Use a separate wallet with minimal funds for agent registration only
 
 **Best practices:**
@@ -40,12 +40,14 @@ clawhub install erc-8004-pinata
 ### Manual Installation
 
 1. Clone or download the [repository](https://github.com/iammatthias/pinata-8004-skill)
-2. Copy the `src` folder to your Claude Code skills directory
+2. Copy the `src` folder to your OpenClaw skills directory:
+   - Workspace-specific: `<workspace>/skills/erc-8004-pinata/`
+   - Shared across agents: `~/.openclaw/skills/erc-8004-pinata/`
 3. Configure environment variables as shown below
 
 ## Setup
 
-Set the following environment variables in your Claude Code configuration:
+Set the following environment variables in your OpenClaw configuration (`~/.openclaw/openclaw.json`):
 
 | Variable | Required | Description |
 |----------|----------|-------------|
@@ -53,6 +55,26 @@ Set the following environment variables in your Claude Code configuration:
 | `GATEWAY_URL` | Yes | Your Pinata gateway domain (e.g., `your-gateway.mypinata.cloud`) from [app.pinata.cloud/gateway](https://app.pinata.cloud/gateway) |
 | `PRIVATE_KEY` | Yes | Ethereum wallet private key with `0x` prefix (use a dedicated wallet) |
 | `RPC_URL` | No | Custom RPC endpoint (defaults to public endpoints) |
+
+**Configuration example:**
+
+```json
+{
+  "skills": {
+    "entries": {
+      "erc-8004-pinata": {
+        "enabled": true,
+        "env": {
+          "PINATA_JWT": "your_pinata_jwt_token_here",
+          "GATEWAY_URL": "your-gateway.mypinata.cloud",
+          "PRIVATE_KEY": "0x1234567890abcdef...",
+          "RPC_URL": "https://sepolia.base.org"
+        }
+      }
+    }
+  }
+}
+```
 
 ### Security Warning
 
@@ -167,7 +189,7 @@ For testing on Base Sepolia:
 
 ## Example Usage
 
-Once the skill is installed and configured, you can ask Claude Code:
+Once the skill is installed and configured, you can ask your AI agent:
 
 > "Create an ERC-8004 agent card for my coding assistant named 'CodeHelper' with description 'Helps with software development tasks'"
 
@@ -185,7 +207,7 @@ Once the skill is installed and configured, you can ask Claude Code:
 
 > "Transfer agent token 123 to address 0x..."
 
-Claude Code will use Pinata API for IPFS operations and Viem for blockchain transactions automatically.
+The AI agent will use Pinata API for IPFS operations and Viem for blockchain transactions automatically.
 
 ## Viem Integration
 
@@ -197,7 +219,7 @@ This skill uses [Viem](https://viem.sh) for blockchain interactions. Viem is a T
 - Transaction signing and broadcasting
 - Contract read/write operations
 
-Claude creates Node.js scripts using Viem when blockchain operations are needed.
+The AI agent creates Node.js scripts using Viem when blockchain operations are needed.
 
 ## Troubleshooting
 
