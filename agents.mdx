@@ -18,7 +18,9 @@ Open **Agents** in the [Pinata App](https://app.pinata.cloud) sidebar to access 
 
 The workspace has three tabs: **My Agents**, **Skills**, and **Secrets**.
 
-{/* screenshot: My Agents list */}
+<Frame>
+  ![Image](/images/image-4.png)
+</Frame>
 
 ## Before You Start
 
@@ -26,10 +28,10 @@ Your agent needs an LLM provider API key to run. Add it as a [secret](#secrets) 
 
 Pinata supports three providers:
 
-| Provider | Models |
-| --- | --- |
-| Anthropic | Claude |
-| OpenAI | GPT |
+| Provider   | Models              |
+| ---------- | ------------------- |
+| Anthropic  | Claude              |
+| OpenAI     | GPT                 |
 | OpenRouter | Multi-model routing |
 
 ## Creating an Agent
@@ -47,19 +49,23 @@ Choose a personality template or create a custom one:
 
 Give the agent a name and an optional personality description.
 
-{/* screenshot: create agent - identity step */}
+<Frame>
+  ![Image](/images/image-5.png)
+</Frame>
 
 ### 2. Agent Workspace
 
 Select a workspace template. The **Pinata Optimized Agent** environment includes Node.js, Python, and common CLI tools. State persists and syncs automatically.
 
-{/* screenshot: create agent - environment step */}
+screenshot: create agent - environment step
 
 ### 3. Connect
 
 Choose your AI provider. If the API key is already in the Secrets vault, the provider shows "Key available."
 
-{/* screenshot: create agent - connect step */}
+<Frame>
+  ![Image](/images/image-6.png)
+</Frame>
 
 You can also configure messaging channels on this step.
 
@@ -67,24 +73,28 @@ You can also configure messaging channels on this step.
 
 Create a bot through [@BotFather](https://t.me/botfather), copy the bot token, set a DM policy, and optionally restrict access to specific user IDs.
 
-{/* screenshot: telegram channel configuration */}
+<Frame>
+  ![Image](/images/image-7.png)
+</Frame>
 
 **Slack**
 
 Create a Slack App at [api.slack.com/apps](https://api.slack.com/apps), enable Socket Mode, and generate an App-Level Token with the `connections:write` scope. Under **OAuth & Permissions**, add these Bot Token Scopes:
 
-| Scope | Description |
-| --- | --- |
-| `chat:write` | Send messages |
-| `im:write` | Open DMs |
-| `im:history` | Read DM history |
-| `im:read` | DM info |
-| `users:read` | User lookup |
-| `app_mentions:read` | Hear @mentions |
+| Scope               | Description     |
+| ------------------- | --------------- |
+| `chat:write`        | Send messages   |
+| `im:write`          | Open DMs        |
+| `im:history`        | Read DM history |
+| `im:read`           | DM info         |
+| `users:read`        | User lookup     |
+| `app_mentions:read` | Hear @mentions  |
 
 For public channel support, also add `channels:history` and `channels:read`. Install the app to your workspace, then paste the Bot Token and App Token.
 
-{/* screenshot: slack channel configuration */}
+<Frame>
+  ![Image](/images/image-8.png)
+</Frame>
 
 ### 4. Deploy
 
@@ -94,7 +104,9 @@ Click **Deploy Agent**. The container spins up and your agent starts running.
 
 Click into any agent to view its detail page with the Agent ID, version, and controls for Chat, Settings, and Restart.
 
-{/* screenshot: agent detail page */}
+<Frame>
+  ![Image](/images/image-9.png)
+</Frame>
 
 The detail page also includes:
 
@@ -107,7 +119,9 @@ The detail page also includes:
 
 Click **Chat** to open a direct session through the OpenClaw gateway. You can send messages, paste images, and start new sessions.
 
-{/* screenshot: agent chat panel */}
+<Frame>
+  ![Image](/images/image-10.png)
+</Frame>
 
 The gateway dashboard also provides access to instance management, sessions, usage metrics, and logs.
 
@@ -115,17 +129,23 @@ The gateway dashboard also provides access to instance management, sessions, usa
 
 Click **Settings** to open the full OpenClaw configuration panel covering environment, updates, authentication, channels, commands, hooks, skills, tools, gateway, models, and logging.
 
-{/* screenshot: OpenClaw settings dashboard */}
+<Frame>
+  ![Image](/images/image-11.png)
+</Frame>
 
 ## Skills
 
 Skills are reusable capability packages pinned to IPFS. You manage them at the workspace level and attach them to agents during creation.
 
-{/* screenshot: skills library */}
+<Frame>
+  ![Image](/images/image-13.png)
+</Frame>
 
 Each skill folder needs a `SKILL.md` with YAML frontmatter (name and description) and can optionally include a `metadata` JSON file for required environment variables. Click **Upload Skill**, name it (letters, numbers, hyphens, and underscores), add an optional description, and click **Upload & Register**.
 
-{/* screenshot: upload skill dialog */}
+<Frame>
+  ![Image](/images/image-12.png)
+</Frame>
 
 Once an agent is deployed, its skills are managed through the OpenClaw instance directly.
 
@@ -133,10 +153,14 @@ Once an agent is deployed, its skills are managed through the OpenClaw instance 
 
 The Secrets Vault stores encrypted API keys and credentials at the workspace level. You attach secrets to agents during creation, and they're injected as environment variables at startup. Values can't be viewed after saving.
 
-{/* screenshot: secrets vault */}
+<Frame>
+  ![Image](/images/image-13.png)
+</Frame>
 
 Click **Add Secret**, enter the environment variable name (e.g., `ANTHROPIC_API_KEY`) and its value, then save. Each secret shows which agents are using it.
 
-{/* screenshot: add secret dialog */}
+<Frame>
+  ![Image](/images/image-14.png)
+</Frame>
 
 After deployment, per-agent secrets are managed through the OpenClaw instance.
