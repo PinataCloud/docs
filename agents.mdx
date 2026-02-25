@@ -1,7 +1,7 @@
 ---
 title: "Agents"
 description: "Deploy hosted OpenClaw agents through Pinata"
-icon: "robot"
+icon: "lobster"
 ---
 
 Pinata Agents are hosted [OpenClaw](https://openclaw.org) instances. Each agent runs in an isolated container with its own environment, skills, and secrets. Pick a personality, connect an LLM provider, deploy — your agent is live.
@@ -49,9 +49,9 @@ Give the agent a name and an optional personality description.
 
 {/* screenshot: create agent - identity step */}
 
-### 2. Environment
+### 2. Agent Workspace
 
-Select a container template. The **Pinata Optimized Agent** environment includes Node.js, Python, and common CLI tools. State persists and syncs automatically.
+Select a workspace template. The **Pinata Optimized Agent** environment includes Node.js, Python, and common CLI tools. State persists and syncs automatically.
 
 {/* screenshot: create agent - environment step */}
 
@@ -98,7 +98,7 @@ Click into any agent to view its detail page with the Agent ID, version, and con
 
 The detail page also includes:
 
-- **Snapshots** — content-addressed captures of the agent environment, recorded every minute when changes are detected
+- **Snapshots** — snapshots of the agent environment, recorded every minute when changes are detected
 - **Channels** — Telegram and Slack configuration
 - **Skills** — attached skill packages
 - **Secrets** — environment variables injected at startup
