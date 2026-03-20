@@ -62,6 +62,7 @@
             "group": "AI",
             "pages": [
               "agents",
+              "tools/ipfs-cli#agents-beta",
               "llm-docs",
               {
                 "group": "MCP Server",
