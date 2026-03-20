@@ -6,7 +6,7 @@ icon: "terminal"
 
 ![cover](https://dweb.mypinata.cloud/ipfs/QmNcdx9t48z7RQUXUZZHmuc4zBfyBxKLjDfEgmfhiop7j7?img-format=webp)
 
-The IPFS CLI is a tool you can use alongside your account to upload and manage files through your terminal. The source code can be found in the link below.
+The IPFS CLI is a tool you can use alongside your account to upload and manage files through your terminal. It also provides access to Pinata's Agents platform (beta), allowing you to create, manage, and interact with hosted agents directly from the command line. The source code can be found in the link below.
 
 <Card horizontal icon="github" href="https://github.com/PinataCloud/ipfs-cli" title="Source Code">
 </Card>
@@ -63,7 +63,7 @@ sudo mv pinata /usr/bin
 
 ## Usage
 
-The Pinata CLI is equipped with the majortiry of features on both the Public IPFS API and Private IPFS API.
+The Pinata CLI is equipped with the majority of features on both the Public IPFS API and Private IPFS API. It also includes commands for managing AI Agents (beta), including creating agents, chatting, managing skills, and more.
 
 ### `auth`
 
@@ -480,6 +480,613 @@ USAGE:
 OPTIONS:
    --network value, --net value  Specify the network (public or private). Uses default if not specified
    --help, -h                    show help
+```
+
+### `agents` (Beta)
+
+<Warning>
+The Agents feature is currently in beta.
+</Warning>
+
+Interact with AI agents on Pinata. Agents are hosted OpenClaw instances that can run tools, maintain context across conversations, and integrate with external services.
+
+```
+NAME:
+   pinata agents - Interact with AI agents on Pinata
+
+USAGE:
+   pinata agents command [command options] [arguments...]
+
+COMMANDS:
+   list, l          List all agents
+   create, c        Create a new agent
+   get, g           Get agent details
+   delete, d        Delete an agent
+   restart, r       Restart an agent
+   logs             Get agent logs
+   chat             Interactive chat with an agent
+   exec             Execute a command in an agent container
+   skills, sk       Manage agent skills
+   secrets, sec     Manage secrets
+   channels, ch     Manage agent channels
+   devices, dev     Manage agent devices
+   snapshots, snap  Manage agent snapshots
+   tasks, t         Manage agent cron jobs/tasks
+   ports, p         Manage agent port forwarding
+   domains, dom     Manage custom domains (beta)
+   files            Agent file operations
+   templates, tpl   Browse pre-built agent templates
+   clawhub, hub     Browse and install skills from ClawHub
+   config, cfg      Manage agent configuration
+   update, up       Manage agent openclaw updates
+   versions, ver    List available agent versions
+   feedback         Submit feedback or feature request
+   help, h          Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+#### `list`
+
+```
+NAME:
+   pinata agents list - List all agents
+
+USAGE:
+   pinata agents list [command options] [arguments...]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+#### `create`
+
+```
+NAME:
+   pinata agents create - Create a new agent
+
+USAGE:
+   pinata agents create [command options] [arguments...]
+
+OPTIONS:
+   --name value, -n value             Name of the agent (required)
+   --description value, -d value      Agent personality description
+   --vibe value                       Agent vibe/tagline
+   --emoji value                      Agent emoji
+   --skill value [ --skill value ]    Skill CIDs to attach (can be specified multiple times)
+   --secret value [ --secret value ]  Secret IDs to attach (can be specified multiple times)
+   --template value, -t value         Template ID to deploy from (uses template snapshot, skills, and defaults)
+   --help, -h                         show help
+```
+
+**Example with template:**
+
+```bash
+# List available templates
+pinata agents templates list
+
+# Create agent from template
+pinata agents create --name "My IPFS Agent" --template tpchchgg
+```
+
+#### `chat`
+
+Start an interactive chat session with an agent. Supports multiple output modes for different use cases.
+
+```
+NAME:
+   pinata agents chat - Interactive chat with an agent
+
+USAGE:
+   pinata agents chat [command options] [agent ID] [optional prompt]
+
+OPTIONS:
+   --model value       Model override
+   --json              Force JSONL output (auto-enabled when stdout is not a TTY)
+   --text              Force plain text output (simpler alternative to JSONL for pipes)
+   --conversation, -C  Multi-turn conversation mode (read messages from stdin line-by-line)
+   --session value     Session key for conversation context
+   --help, -h          show help
+```
+
+**Output Modes:**
+
+| Mode | When | Use Case |
+|------|------|----------|
+| Interactive TUI | TTY stdout | Human users in terminal |
+| JSONL streaming | Non-TTY stdout (default) | Machine parsing, other agents |
+| Plain text (`--text`) | Explicit flag | Simple scripts, easy piping |
+| Multi-turn (`-C`) | Explicit flag | Conversations with context |
+
+**Examples:**
+
+```bash
+# Interactive TUI mode
+pinata agents chat <agent-id>
+
+# Single message with plain text response
+echo "Hello" | pinata agents chat --text <agent-id>
+
+# Multi-turn conversation (each line is a message)
+echo -e "Hello\nWhat is 2+2?" | pinata agents chat --text -C <agent-id>
+
+# JSONL output for machine parsing
+echo "Hello" | pinata agents chat <agent-id>
+
+# Filter JSONL to extract just the text
+echo "Hello" | pinata agents chat <agent-id> | jq -r 'select(.type=="content_delta") | .delta.text' | tr -d '\n'
+```
+
+#### `exec`
+
+Execute a command inside an agent's container.
+
+```
+NAME:
+   pinata agents exec - Execute a command in an agent container
+
+USAGE:
+   pinata agents exec [command options] [agent ID] [command]
+
+OPTIONS:
+   --cwd value  Working directory for the command
+   --help, -h   show help
+```
+
+**Examples:**
+
+```bash
+# Run a simple command
+pinata agents exec <agent-id> 'echo hello'
+
+# List files in workspace
+pinata agents exec <agent-id> 'ls -la /app'
+
+# Run with specific working directory
+pinata agents exec <agent-id> --cwd /app 'cat config.json'
+```
+
+#### `files`
+
+Read files from an agent's container.
+
+```
+NAME:
+   pinata agents files - Agent file operations
+
+USAGE:
+   pinata agents files command [command options] [arguments...]
+
+COMMANDS:
+   read, r  Read a file from agent container
+   help, h  Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Examples:**
+
+```bash
+# Read a file from the agent
+pinata agents files read <agent-id> /app/config.json
+```
+
+#### `devices`
+
+Manage device pairing for agents (used for mobile/external device connections).
+
+```
+NAME:
+   pinata agents devices - Manage agent devices
+
+USAGE:
+   pinata agents devices command [command options] [arguments...]
+
+COMMANDS:
+   list, l      List pending and paired devices
+   approve, a   Approve a device pairing request
+   approve-all  Approve all pending device requests
+   help, h      Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Examples:**
+
+```bash
+# List devices for an agent
+pinata agents devices list <agent-id>
+
+# Approve a specific device request
+pinata agents devices approve <agent-id> <request-id>
+
+# Approve all pending requests
+pinata agents devices approve-all <agent-id>
+```
+
+#### `skills`
+
+```
+NAME:
+   pinata agents skills - Manage agent skills
+
+USAGE:
+   pinata agents skills command [command options] [arguments...]
+
+COMMANDS:
+   list, l    List available skills in library
+   create, c  Create a new skill
+   delete, d  Delete a skill from library
+   attach, a  Attach skills to an agent
+   detach     Detach a skill from an agent
+   help, h    Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+#### `secrets`
+
+```
+NAME:
+   pinata agents secrets - Manage secrets
+
+USAGE:
+   pinata agents secrets command [command options] [arguments...]
+
+COMMANDS:
+   list, l    List all secrets
+   create, c  Create a new secret
+   update, u  Update a secret value
+   delete, d  Delete a secret
+   attach, a  Attach secrets to an agent
+   detach     Detach a secret from an agent
+   help, h    Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+#### `channels`
+
+```
+NAME:
+   pinata agents channels - Manage agent channels
+
+USAGE:
+   pinata agents channels command [command options] [arguments...]
+
+COMMANDS:
+   status, s     Get channel configuration status
+   configure, c  Configure a channel (telegram, slack, discord, whatsapp)
+   remove, r     Remove a channel configuration
+   help, h       Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Examples:**
+
+```bash
+# Get channel status
+pinata agents channels status <agent-id>
+
+# Configure Telegram
+pinata agents channels configure <agent-id> telegram --bot-token <token>
+
+# Remove a channel
+pinata agents channels remove <agent-id> telegram
+```
+
+#### `snapshots`
+
+```
+NAME:
+   pinata agents snapshots - Manage agent snapshots
+
+USAGE:
+   pinata agents snapshots command [command options] [arguments...]
+
+COMMANDS:
+   list, l    List agent snapshots
+   create, c  Create a snapshot
+   status, s  Get sync status
+   reset, r   Reset to a snapshot
+   help, h    Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Examples:**
+
+```bash
+# List snapshots
+pinata agents snapshots list <agent-id>
+
+# Check sync status
+pinata agents snapshots status <agent-id>
+
+# Create a snapshot
+pinata agents snapshots create <agent-id>
+
+# Reset to a snapshot
+pinata agents snapshots reset <agent-id> <snapshot-cid>
+```
+
+#### `tasks`
+
+```
+NAME:
+   pinata agents tasks - Manage agent cron jobs/tasks
+
+USAGE:
+   pinata agents tasks command [command options] [arguments...]
+
+COMMANDS:
+   list, l    List tasks
+   create, c  Create a new task
+   update, u  Update an existing task
+   delete, d  Delete a task
+   toggle     Enable or disable a task
+   run        Run a task immediately
+   history    View task run history
+   help, h    Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Creating tasks:**
+
+```bash
+# Create hourly task with system event
+pinata agents tasks create --name "hourly-check" --every 1h --system-event "Check status" <agent-id>
+
+# Create daily task with cron expression
+pinata agents tasks create --name "daily-report" --cron "0 9 * * *" --agent-turn "Generate report" <agent-id>
+
+# Create one-time task
+pinata agents tasks create --name "scheduled-job" --at "2026-04-01T12:00:00Z" --system-event "Run once" <agent-id>
+```
+
+**Schedule types:**
+- `--every` - Interval (e.g., "1h", "30m", "24h")
+- `--cron` - Cron expression (e.g., "0 9 * * *")
+- `--at` - One-time at ISO 8601 timestamp
+
+**Payload types:**
+- `--system-event` - Triggers heartbeat-style execution
+- `--agent-turn` - Triggers conversational response
+
+#### `templates`
+
+Browse pre-built agent templates that provide ready-to-use configurations.
+
+```
+NAME:
+   pinata agents templates - Browse pre-built agent templates
+
+USAGE:
+   pinata agents templates command [command options] [arguments...]
+
+COMMANDS:
+   list, l  List available templates
+   get, g   Get template details
+   help, h  Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Examples:**
+
+```bash
+# List all templates
+pinata agents templates list
+
+# List featured templates only
+pinata agents templates list --featured
+
+# Get template details
+pinata agents templates get ipfs-expert
+```
+
+#### `clawhub`
+
+Browse and install skills from ClawHub, the community skills marketplace.
+
+```
+NAME:
+   pinata agents clawhub - Browse and install skills from ClawHub
+
+USAGE:
+   pinata agents clawhub command [command options] [arguments...]
+
+COMMANDS:
+   list, l     List ClawHub skills
+   get, g      Get skill details
+   install, i  Install a ClawHub skill to your library
+   help, h     Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Examples:**
+
+```bash
+# Browse available skills
+pinata agents clawhub list
+
+# Get skill details
+pinata agents clawhub get clawdhub
+
+# Install a skill to your library
+pinata agents clawhub install <hub-skill-id>
+```
+
+#### `domains`
+
+Manage custom domains for your agents (beta feature).
+
+```
+NAME:
+   pinata agents domains - Manage custom domains (beta)
+
+USAGE:
+   pinata agents domains command [command options] [arguments...]
+
+COMMANDS:
+   list, l    List custom domains
+   add, a     Register a custom domain
+   update, u  Update a custom domain
+   delete, d  Remove a custom domain
+   help, h    Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Examples:**
+
+```bash
+# List domains for an agent
+pinata agents domains list <agent-id>
+
+# Add a subdomain (myapp.apps.pinata.cloud)
+pinata agents domains add <agent-id> --subdomain myapp --port 8080
+
+# Add a custom domain
+pinata agents domains add <agent-id> --domain api.example.com --port 3000 --protected
+
+# Update domain
+pinata agents domains update <agent-id> <domain-id> --port 8081
+
+# Remove domain
+pinata agents domains delete <agent-id> <domain-id>
+```
+
+#### `ports`
+
+Manage agent port forwarding rules.
+
+```
+NAME:
+   pinata agents ports - Manage agent port forwarding
+
+USAGE:
+   pinata agents ports command [command options] [arguments...]
+
+COMMANDS:
+   list, l  List port forwarding rules
+   set, s   Set port forwarding rules
+   help, h  Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Examples:**
+
+```bash
+# List current port mappings
+pinata agents ports list <agent-id>
+
+# Set port forwarding (port:pathPrefix format)
+pinata agents ports set <agent-id> 8080:/api 3000:/app
+```
+
+#### `config`
+
+Manage agent openclaw configuration.
+
+```
+NAME:
+   pinata agents config - Manage agent configuration
+
+USAGE:
+   pinata agents config command [command options] [arguments...]
+
+COMMANDS:
+   get, g       Read openclaw config
+   set, s       Write openclaw config
+   validate, v  Validate openclaw config
+   help, h      Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Examples:**
+
+```bash
+# Read current config
+pinata agents config get <agent-id>
+
+# Validate config
+pinata agents config validate <agent-id>
+
+# Set config (JSON string)
+pinata agents config set <agent-id> '{"key": "value"}'
+```
+
+#### `update`
+
+Manage openclaw version updates.
+
+```
+NAME:
+   pinata agents update - Manage agent openclaw updates
+
+USAGE:
+   pinata agents update command [command options] [arguments...]
+
+COMMANDS:
+   check, c  Check for openclaw updates
+   apply, a  Apply openclaw update
+   help, h   Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Examples:**
+
+```bash
+# Check for updates
+pinata agents update check <agent-id>
+
+# Apply latest update
+pinata agents update apply <agent-id>
+
+# Apply specific version
+pinata agents update apply <agent-id> --tag 2026.3.8
+```
+
+#### `versions`
+
+List available agent image versions.
+
+```
+NAME:
+   pinata agents versions - List available agent versions
+
+USAGE:
+   pinata agents versions [agent ID]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Example:**
+
+```bash
+pinata agents versions <agent-id>
 ```
 
 ## Contact
