@@ -62,7 +62,7 @@
             "group": "AI",
             "pages": [
               "agents",
-              "tools/ipfs-cli",
+              "tools/cli/agents",
               "llm-docs",
               {
                 "group": "MCP Server",
@@ -102,7 +102,15 @@
               "files/private-ipfs",
               "files/vectors",
               "files/signatures",
-              "tools/ipfs-cli",
+              {
+                "group": "CLI",
+                "icon": "terminal",
+                "pages": [
+                  "tools/cli/overview",
+                  "tools/cli/ipfs",
+                  "tools/cli/agents"
+                ]
+              },
               {
                 "group": "x402",
                 "icon": "sparkle",
