@@ -1,0 +1,76 @@
+---
+title: "Overview"
+description: "Deploy hosted OpenClaw agents through Pinata"
+icon: "lobster"
+---
+
+Pinata Agents are hosted [OpenClaw](https://openclaw.org) instances. Each agent runs in an isolated container with its own workspace, skills, and secrets.
+
+<Note>
+  Agents require a paid Pinata plan. [Upgrade here](https://app.pinata.cloud/billing).
+</Note>
+
+## Quick Start
+
+### 1. Add an LLM Provider Key
+
+Your agent needs an LLM provider to run. Add one of these as a [secret](/agents/secrets) first:
+
+- `ANTHROPIC_API_KEY`
+- `OPENAI_API_KEY`
+- `OPENROUTER_API_KEY`
+
+### 2. Create an Agent
+
+Open [agents.pinata.cloud](https://agents.pinata.cloud) and click **Create Agent**.
+
+**Step 1: Identity** — Choose a personality preset (Atlas, Nova, Sage) or create a custom one. Enter a name and optional description.
+
+**Step 2: Workspace** — The default Pinata workspace includes Node.js, Python, and common tools. Optionally add [skills](/agents/skills/overview).
+
+**Step 3: Connect** — Select your LLM provider (shows "Available" when the key exists). Add any additional secrets your agent needs. Optionally configure [channels](/agents/channels).
+
+**Step 4: Deploy** — Click **Deploy Agent**. Once provisioning completes, you're redirected to your agent's detail page.
+
+## Agent Detail Page
+
+The sidebar provides access to all agent features:
+
+| Section | Purpose |
+| ------- | ------- |
+| **Chat** | Conversation interface |
+| **Channels** | Messaging platform connections |
+| **Snapshots** | Workspace versions and git access |
+| **Skills** | Attached skill packages |
+| **Secrets** | Environment variables |
+| **Routes** | Port forwarding and domains |
+| **Tasks** | Scheduled jobs |
+
+**Dev Tools:** Console (terminal access), Logs, and Danger (delete agent).
+
+### Git Access
+
+Clone and edit your agent's workspace directly:
+
+```bash
+git clone https://agents.pinata.cloud/v0/agents/{agentId}/git {name}
+```
+
+Click **Copy with Token** in the Snapshots section to include authentication.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Routes" icon="network-wired" href="/agents/routes">
+    Expose services to the internet
+  </Card>
+  <Card title="Channels" icon="comments" href="/agents/channels">
+    Connect messaging platforms
+  </Card>
+  <Card title="Skills" icon="wand-magic-sparkles" href="/agents/skills/overview">
+    Extend agent capabilities
+  </Card>
+  <Card title="Secrets" icon="key" href="/agents/secrets">
+    Manage credentials
+  </Card>
+</CardGroup>

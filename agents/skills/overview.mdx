@@ -1,0 +1,86 @@
+---
+title: "Skills"
+sidebarTitle: "Skills"
+description: "Extend agent capabilities with reusable packages"
+icon: "wand-magic-sparkles"
+---
+
+Skills are IPFS-pinned code bundles that extend agent capabilities. Browse skills at [agents.pinata.cloud/skills](https://agents.pinata.cloud/skills).
+
+## Skills Library
+
+The library has three tabs:
+
+| Tab | Description |
+| --- | ----------- |
+| **All \| Installed** | Skills in your library |
+| **By Pinata** | Official verified skills |
+| **ClawHub Community** | Community marketplace |
+
+## Official Pinata Skills
+
+| Skill | Description |
+| ----- | ----------- |
+| **@pinata/api** | Pinata IPFS API for file storage, gateways, and vector search |
+| **@pinata/erc-8004** | Register AI agents on-chain |
+| **@pinata/memory-salience** | Salient memory with novelty, retention, and decay |
+| **@pinata/paraspace** | PARA-based workspace organization |
+| **@pinata/sqlite-sync** | SQLite with Pinata backup and versioning |
+
+Pinata skills show **BY PINATA** and **VERIFIED** badges.
+
+## ClawHub Community
+
+Browse community-created skills in the **ClawHub Community** tab. Each skill shows:
+
+- **Downloads** — Install count
+- **Stars** — Community rating
+
+Popular skills include Self-Improving-Agent, Ontology, Obsidian integration, and API Gateway.
+
+Click a skill card, then **Install** to add it to your library.
+
+## Skill Details
+
+Click any skill to view:
+
+- **Description** — Documentation
+- **CID** — IPFS identifier
+- **Required Secrets** — Environment variables needed
+- **Used By** — Agents using this skill
+
+## Uploading Custom Skills
+
+Click **Upload Skill** to create your own.
+
+Your skill folder must contain `SKILL.md` with YAML frontmatter:
+
+```markdown
+---
+name: my-skill
+description: What this skill does
+---
+
+# My Skill
+
+Instructions for using this skill.
+```
+
+<Note>
+  Skills are uploaded to the public IPFS network.
+</Note>
+
+## Attaching Skills to Agents
+
+**During creation:** Add skills in Step 2 (Workspace) of the setup wizard.
+
+**After deployment:** Open the agent's **Skills** section and add from your library.
+
+Skills are copied into the agent workspace. Detaching removes the files but keeps the skill in your library.
+
+## Constraints
+
+| Limit | Value |
+| ----- | ----- |
+| Skills per agent | 10 |
+| Skill name | Letters, numbers, hyphens, underscores |
