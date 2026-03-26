@@ -44,6 +44,7 @@ COMMANDS:
    config, cfg      Manage agent configuration
    update, up       Manage agent openclaw updates
    versions, ver    List available agent versions
+   auth             Authenticate with AI providers (anthropic, openai, openrouter)
    feedback         Submit feedback or feature request
    help, h          Shows a list of commands or help for one command
 
@@ -611,4 +612,48 @@ OPTIONS:
 
 ```bash
 pinata agents versions <agent-id>
+```
+
+## `auth`
+
+Authenticate with AI providers and store credentials as secrets for your agents.
+
+```
+NAME:
+   pinata agents auth - Authenticate with a provider and store the credential as a secret
+
+USAGE:
+   pinata agents auth [command options] [provider: anthropic, openai, openrouter]
+
+OPTIONS:
+   --oauth        Use OAuth browser flow instead of API key (openai only)
+   --setup-token  Store an Anthropic setup token instead of an API key (anthropic only)
+   --help, -h     show help
+```
+
+**Supported Providers:**
+
+| Provider | Secret Name | Options |
+|----------|-------------|---------|
+| `anthropic` | `ANTHROPIC_API_KEY` | `--setup-token` for Claude Code setup tokens |
+| `openai` | `OPENAI_API_KEY` or `OPENAI_OAUTH_TOKEN` | `--oauth` for Codex OAuth flow |
+| `openrouter` | `OPENROUTER_API_KEY` | - |
+
+**Examples:**
+
+```bash
+# Store Anthropic API key
+pinata agents auth anthropic
+
+# Store Anthropic setup token (for Claude Code)
+pinata agents auth anthropic --setup-token
+
+# Store OpenAI API key
+pinata agents auth openai
+
+# Authenticate with OpenAI via OAuth (for Codex CLI)
+pinata agents auth openai --oauth
+
+# Store OpenRouter API key
+pinata agents auth openrouter
 ```

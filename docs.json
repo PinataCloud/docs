@@ -68,7 +68,7 @@
                   "agents/overview",
                   "agents/routes",
                   "agents/channels",
-                  "agents/skills/overview",
+                  "agents/skills",
                   "agents/secrets",
                   "agents/templates"
                 ]
