@@ -1,0 +1,100 @@
+---
+title: "Overview"
+description: "Deploy hosted OpenClaw agents through Pinata"
+icon: "lobster"
+---
+
+Pinata Agents are hosted [OpenClaw](https://openclaw.org) instances. Each agent runs in an isolated container with its own workspace, skills, and secrets.
+
+<Note>
+  Agents require a paid Pinata plan. [Upgrade here](https://app.pinata.cloud/billing).
+</Note>
+
+## Navigation
+
+Open [agents.pinata.cloud](https://agents.pinata.cloud) to access the Agents platform. Use the command palette (**⌘K** or **Search**) to quickly navigate and take actions:
+
+| Section | Contents |
+| ------- | -------- |
+| **Agents** | Your agents with status |
+| **Pages** | My Agents, Skills, Secrets, Templates, Workspaces |
+| **Workspaces** | Switch between [workspaces](/account-management/workspaces) |
+| **Actions** | Create Agent, Upload Skill, Add Secret, Connect providers, and more |
+
+## Quick Start
+
+### 1. Connect an LLM Provider
+
+Your agent needs an LLM provider to run. Open the command palette and select:
+
+- **Connect Anthropic** → `ANTHROPIC_API_KEY`
+- **Connect OpenAI** → `OPENAI_API_KEY`
+- **Connect OpenRouter** → `OPENROUTER_API_KEY`
+
+Or add the key manually in [Secrets](/agents/secrets).
+
+### 2. Create an Agent
+
+Click **Create Agent** or use the command palette.
+
+**Start from a Template** — Select a pre-configured [template](/agents/templates) to skip manual setup. Templates include skills, required secrets, and default settings.
+
+**Or configure manually:**
+
+**Step 1: Identity** — Choose a personality preset (Atlas, Nova, Sage) or create a custom one. Enter a name and optional description.
+
+**Step 2: Workspace** — The default Pinata workspace includes Node.js, Python, and common tools. Optionally add [skills](/agents/skills).
+
+**Step 3: Connect** — Select your LLM provider (shows "Available" when the key exists). Add any additional secrets your agent needs. Optionally configure [channels](/agents/channels).
+
+**Step 4: Deploy** — Click **Deploy Agent**. Once provisioning completes, you're redirected to your agent's detail page.
+
+## Agent Detail Page
+
+The sidebar provides access to all agent features:
+
+| Section | Purpose |
+| ------- | ------- |
+| **Chat** | Conversation interface |
+| **Channels** | Messaging platform connections |
+| **Snapshots** | Workspace versions and git access |
+| **Skills** | Attached skill packages |
+| **Secrets** | Environment variables |
+| **Models** | LLM provider configuration |
+| **Routes** | Port forwarding and domains |
+| **Tasks** | Scheduled jobs |
+
+### Dev Tools
+
+| Tool | Purpose |
+| ---- | ------- |
+| **Console** | Terminal access to your agent's container |
+| **Logs** | Real-time logs with search, level filters (TRACE, DEBUG, INFO, WARN, ERROR, FATAL), and export |
+| **Danger** | Agent settings, paired devices, and actions (restart, delete) |
+
+### Git Access
+
+Clone and edit your agent's workspace directly:
+
+```bash
+git clone https://agents.pinata.cloud/v0/agents/{agentId}/git {name}
+```
+
+Click **Copy with Token** in the Snapshots section to include authentication.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Routes" icon="network-wired" href="/agents/routes">
+    Expose services to the internet
+  </Card>
+  <Card title="Channels" icon="comments" href="/agents/channels">
+    Connect messaging platforms
+  </Card>
+  <Card title="Skills" icon="wand-magic-sparkles" href="/agents/skills">
+    Extend agent capabilities
+  </Card>
+  <Card title="Secrets" icon="key" href="/agents/secrets">
+    Manage credentials
+  </Card>
+</CardGroup>

@@ -1,0 +1,92 @@
+---
+title: "Routes"
+description: "Expose agent services to the internet"
+icon: "network-wired"
+---
+
+Routes expose services running inside your agent container to the internet. Open the **Routes** section from your agent's detail page.
+
+Click **ADD** to create a new route:
+
+| Option | Description |
+| ------ | ----------- |
+| **Path Route** | Map a URL path prefix to a container port |
+| **Custom Domain** | Route a hostname to a container port |
+
+## Path Routes
+
+Path routes forward traffic from a URL path to an internal port. The path prefix is stripped before reaching your service.
+
+Example: A request to `/app/api/users` with path prefix `/app` arrives at your service as `/api/users`.
+
+### Adding a Path Route
+
+| Field | Description |
+| ----- | ----------- |
+| **Path Prefix** | URL path (e.g., `/app`) |
+| **Port** | Container port (1025–65535) |
+| **Protected** | Require gateway token authentication |
+
+### Path Format
+
+- Must start with `/`
+- Letters, numbers, hyphens, underscores only
+- Cannot overlap with reserved paths (`/v0`, `/chat`, `/config`)
+
+## Custom Domains
+
+<Note>
+  Custom Domains is currently in beta.
+</Note>
+
+Custom domains route traffic from a dedicated hostname to a container port. Unlike path routes, the full request path is forwarded as-is.
+
+### Pinata Subdomains
+
+Get a random platform-assigned subdomain on `*.apps.pinata.cloud`.
+
+| Field | Description |
+| ----- | ----------- |
+| **Port** | Container port (1025–65535) |
+| **Protected** | Require gateway token authentication |
+
+Result: `https://swift-fox-347.apps.pinata.cloud` → your port
+
+### Bring Your Own Domain
+
+Use your own domain (e.g., `app.example.com`).
+
+| Field | Description |
+| ----- | ----------- |
+| **Domain** | Your domain |
+| **Port** | Container port |
+| **Protected** | Require gateway token authentication |
+
+#### DNS Setup
+
+After registering, configure these DNS records:
+
+1. **TXT record** — Verify domain ownership
+2. **CNAME record** — Point to the Pinata proxy
+
+Domain status progresses: `pending` → `pending_ssl` → `active`
+
+## Public vs Protected
+
+| Mode | Behavior |
+| ---- | -------- |
+| **Protected** | Requests require a gateway token |
+| **Public** | Open to the internet |
+
+<Warning>
+  Public routes expose your service without authentication. Only use for services that handle their own auth.
+</Warning>
+
+## Constraints
+
+| Limit | Value |
+| ----- | ----- |
+| Path routes per agent | 10 |
+| Custom domains per agent | 5 |
+| Port range | 1025–65535 |
+| Reserved port | 18789 (gateway) |

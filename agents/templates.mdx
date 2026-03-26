@@ -1,0 +1,74 @@
+---
+title: "Templates"
+description: "Deploy pre-configured agents in one click"
+icon: "clone"
+---
+
+<Note>
+  Templates are currently in beta.
+</Note>
+
+Templates are pre-configured agent packages with bundled [skills](/agents/skills), required [secrets](/agents/secrets), and default settings. Browse at [agents.pinata.cloud/templates](https://agents.pinata.cloud/templates) or use the [CLI](/tools/cli/agents#templates).
+
+## Browsing Templates
+
+Filter templates using the tabs:
+
+| Tab | Description |
+| --- | ----------- |
+| **All** | All available templates |
+| **General** | General-purpose agents |
+| **My Submissions** | Templates you've submitted |
+
+### Featured Templates
+
+| Template | Description |
+| -------- | ----------- |
+| **IPFS Expert** | File storage, pinning, and content distribution |
+| **Telegram Bot** | Responds to messages and commands |
+| **Personal AI** | Personal assistant that learns your preferences |
+| **Frontend Dev Agent** | Frontend development with Vite, React, TypeScript |
+| **DeFi Monitor** | On-chain monitoring for protocols and whale activity |
+
+## Template Details
+
+Click a template to view:
+
+- **Description** — What it does
+- **Category** and **Tags**
+- **Version**
+- **Required Setup** — Secrets you need to provide
+
+### Required Setup
+
+Templates list the secrets needed before deployment. Example for Telegram Bot:
+
+| Secret | Description |
+| ------ | ----------- |
+| `ANTHROPIC_API_KEY` | Anthropic API key for Claude |
+| `TELEGRAM_BOT_TOKEN` | Token from BotFather |
+
+Add these to your [Secrets vault](/agents/secrets) before deploying.
+
+## Deploying
+
+1. Select a template
+2. Review **Required Setup**
+3. Add any missing secrets
+4. Click **Deploy This Agent**
+
+## Paid Templates
+
+Some templates require payment via x402 micropayments (USDC on Base). Free templates show `FREE`.
+
+## Submitting Templates
+
+Share your agent configuration as a template for others to use.
+
+1. Go to the **My Submissions** tab
+2. Click **Submit Template**
+3. Enter a public **GitHub** or **GitLab** repository URL
+4. Fill in template details (name, description, category)
+5. Submit for review
+
+Your submissions appear in **My Submissions** where you can track their status.

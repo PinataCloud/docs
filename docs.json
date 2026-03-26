@@ -61,7 +61,18 @@
           {
             "group": "AI",
             "pages": [
-              "agents",
+              {
+                "group": "Agents",
+                "icon": "lobster",
+                "pages": [
+                  "agents/overview",
+                  "agents/routes",
+                  "agents/channels",
+                  "agents/skills",
+                  "agents/secrets",
+                  "agents/templates"
+                ]
+              },
               "tools/cli/agents",
               "llm-docs",
               {
@@ -631,6 +642,10 @@
     }
   },
   "redirects": [
+    {
+      "source": "/agents",
+      "destination": "/agents/overview"
+    },
     {
       "source": "/sdk",
       "destination": "/sdk/getting-started"

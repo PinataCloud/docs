@@ -1,0 +1,61 @@
+---
+title: "Channels"
+description: "Connect your agent to messaging platforms"
+icon: "comments"
+---
+
+Channels connect your agent to external messaging platforms. Configure during agent creation or from the **Channels** section in your agent's detail page.
+
+| Channel | Status |
+| ------- | ------ |
+| Telegram | Available |
+| Slack | Available |
+| Discord | Available |
+| WhatsApp | Coming Soon |
+
+## Telegram
+
+1. Create a bot through [@BotFather](https://t.me/botfather)
+2. Copy the bot token
+3. Configure in Pinata
+
+| Option | Description |
+| ------ | ----------- |
+| **Bot Token** | Token from BotFather |
+| **DM Policy** | `open` (anyone) or `pairing` (approval required) |
+| **Allow From** | Allowed user IDs |
+
+## Slack
+
+1. Create a Slack App at [api.slack.com/apps](https://api.slack.com/apps)
+2. Enable **Socket Mode**
+3. Generate an **App-Level Token** with `connections:write` scope
+4. Add Bot Token Scopes: `chat:write`, `im:write`, `im:history`, `im:read`, `users:read`, `app_mentions:read`
+5. Install to your workspace
+
+| Option | Description |
+| ------ | ----------- |
+| **Bot Token** | Bot User OAuth Token |
+| **App Token** | App-Level Token |
+
+## Discord
+
+1. Create an application at [discord.com/developers](https://discord.com/developers/applications)
+2. Create a Bot and copy the token
+3. Invite the bot to your server
+
+| Option | Description |
+| ------ | ----------- |
+| **Bot Token** | Discord bot token |
+
+## Managing Channels
+
+Configured channels show an **ENABLED** badge. Click **RECONFIGURE** to update settings.
+
+- Enable/disable channels without removing configuration
+- Token fields are optional when reconfiguring
+- Changes take effect after gateway restart
+
+<Warning>
+  Keep bot tokens secure. Store them as [secrets](/agents/secrets) and never commit to version control.
+</Warning>
