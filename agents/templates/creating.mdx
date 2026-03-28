@@ -1,0 +1,184 @@
+---
+title: "Creating Templates"
+description: "Share your agent configuration as a template"
+icon: "hammer"
+---
+
+Share your agent configuration as a template for others to deploy. Templates are pulled from public GitHub or GitLab repositories.
+
+<Card horizontal icon="github" href="https://github.com/PinataCloud/agent-template" title="Reference Template">
+  Clone this starter repo to create your own template.
+</Card>
+
+## Repository Structure
+
+Your repository must include:
+
+```
+manifest.json                # Agent config with all options
+README.md                    # Description shown in marketplace listing
+workspace/
+  BOOTSTRAP.md               # First-run conversation guide (self-deletes after setup)
+  SOUL.md                    # Agent personality and principles
+  AGENTS.md                  # Workspace conventions, memory system, safety rules
+  IDENTITY.md                # Agent name, vibe, emoji (filled in during bootstrap)
+  USER.md                    # Notes about the human (learned over time)
+  TOOLS.md                   # Environment-specific notes
+  HEARTBEAT.md               # Periodic tasks (empty by default)
+```
+
+## manifest.json
+
+The manifest includes a `_docs` block documenting every available field. Here's an overview:
+
+| Section | What it does |
+| ------- | ------------ |
+| `agent` | Name, description, vibe, emoji |
+| `model` | Default AI model |
+| `secrets` | Encrypted API keys and credentials |
+| `skills` | Attachable skill packages from ClawHub (max 20) |
+| `tasks` | Cron-scheduled prompts (max 20) |
+| `scripts` | Lifecycle hooks — `build` runs after git push, `start` runs on agent boot |
+| `routes` | Port forwarding for web apps/APIs (max 10) |
+| `channels` | Telegram, Discord, Slack configuration |
+| `template` | Marketplace listing metadata |
+
+<Warning>
+  Remove the `_docs` block before submitting to the marketplace.
+</Warning>
+
+### Example
+
+```json
+{
+  "version": 1,
+  "agent": {
+    "name": "TradeBot",
+    "description": "Crypto trading assistant with market analysis",
+    "emoji": "📈",
+    "vibe": "Professional and data-driven"
+  },
+  "template": {
+    "slug": "tradebot",
+    "category": "trading",
+    "partnerName": "Your Name",
+    "tags": ["crypto", "defi", "alerts"]
+  },
+  "secrets": [
+    {
+      "name": "COINGECKO_API_KEY",
+      "description": "API key from coingecko.com/api",
+      "required": true
+    }
+  ],
+  "scripts": {
+    "build": "npm install && npm run build",
+    "start": "node dist/server.js"
+  },
+  "routes": [
+    { "path": "/dashboard", "port": 3000, "protected": false }
+  ]
+}
+```
+
+## Workspace Files
+
+Files in `workspace/` are copied to the agent's workspace on deploy:
+
+| File | Purpose |
+| ---- | ------- |
+| `BOOTSTRAP.md` | First-run conversation guide (self-deletes after setup) |
+| `SOUL.md` | Agent personality and principles — customize this |
+| `AGENTS.md` | Workspace conventions, memory system, safety rules |
+| `IDENTITY.md` | Agent name, vibe, emoji (filled in during bootstrap) |
+| `USER.md` | Notes about the human (learned over time) |
+| `TOOLS.md` | Environment-specific notes |
+| `HEARTBEAT.md` | Periodic tasks (empty by default) |
+
+## Web Apps and APIs
+
+If your agent runs a server, API, or frontend dev server, you need two things in `manifest.json`:
+
+1. **`scripts`** — lifecycle hooks that install deps and start the server
+2. **`routes`** — port forwarding rules that expose the server to the internet
+
+Example from a Vite + React agent:
+
+```json
+{
+  "scripts": {
+    "build": "cd workspace/projects/myapp && npm install --include=dev",
+    "start": "cd workspace/projects/myapp && npx vite --host 0.0.0.0"
+  },
+  "routes": [
+    { "port": 5173, "path": "/app", "protected": false }
+  ]
+}
+```
+
+**Important details:**
+
+- `build` runs after every git push — use it to install dependencies or compile assets
+- `start` runs on agent boot — use it to launch your server or long-running process
+- Your server **must bind to `0.0.0.0`**, not `localhost`, or it won't be reachable
+- Set `protected: false` for public routes, or `true` (default) to require auth
+- Use `__AGENT_HOST__` as a placeholder in config files — it gets replaced at runtime with the agent's public hostname
+- For WebSocket/HMR setups (e.g. Vite), connect via WSS on port 443 through `__AGENT_HOST__`
+
+Example Vite config using the host placeholder:
+
+```ts
+export default defineConfig({
+  base: "/app",
+  server: {
+    host: "0.0.0.0",
+    allowedHosts: ["__AGENT_HOST__"],
+    hmr: {
+      host: "__AGENT_HOST__",
+      protocol: "wss",
+      clientPort: 443,
+    },
+  },
+});
+```
+
+## Validating and Submitting
+
+**Via the UI:**
+
+1. Go to [agents.pinata.cloud/templates/submit](https://agents.pinata.cloud/templates/submit)
+2. Enter your public repository URL
+3. Click **Validate** to check for required files
+4. Review the parsed manifest and workspace files
+5. Click **Submit** to send for review
+
+**Via the CLI:**
+
+```bash
+# Validate your repo
+pinata agents templates validate https://github.com/user/my-template
+
+# Submit for review
+pinata agents templates submit https://github.com/user/my-template
+
+# Submit from a specific branch
+pinata agents templates submit https://github.com/user/my-template --branch develop
+```
+
+## Managing Submissions
+
+Track and update your templates in the **My Submissions** tab or via CLI:
+
+```bash
+# List your submissions
+pinata agents templates mine
+
+# Update (re-pull from repo)
+pinata agents templates update <template-id>
+
+# Archive a submission
+pinata agents templates delete <template-id>
+```
+
+Template status progression:
+- **draft** → **pending_review** → **published** (or **rejected**)

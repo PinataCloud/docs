@@ -390,25 +390,31 @@ pinata agents tasks create --name "scheduled-job" --at "2026-04-01T12:00:00Z" --
 
 ## `templates`
 
-Browse pre-built agent templates that provide ready-to-use configurations.
+Browse and manage agent templates. Includes browsing published templates and submitting your own from a GitHub/GitLab repository.
 
 ```
 NAME:
-   pinata agents templates - Browse pre-built agent templates
+   pinata agents templates - Browse and manage agent templates
 
 USAGE:
    pinata agents templates command [command options] [arguments...]
 
 COMMANDS:
-   list, l  List available templates
-   get, g   Get template details
-   help, h  Shows a list of commands or help for one command
+   list, l      List available templates
+   get, g       Get template details by slug
+   mine         List templates you have submitted
+   validate, v  Validate a git repo for template submission
+   submit, s    Submit a new template from a git repo
+   update, u    Update an existing template submission (re-pull from repo)
+   delete, d    Archive a template submission
+   branches     List branches for a git repository
+   help, h      Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
 ```
 
-**Examples:**
+**Browsing templates:**
 
 ```bash
 # List all templates
@@ -417,8 +423,48 @@ pinata agents templates list
 # List featured templates only
 pinata agents templates list --featured
 
+# Filter by category
+pinata agents templates list --category ai
+
 # Get template details
 pinata agents templates get ipfs-expert
+```
+
+**Submitting templates:**
+
+Your git repo must contain a valid `manifest.json`, a `README.md`, and a `workspace/` directory. See [Creating Templates](/agents/templates#creating-templates) for the full specification.
+
+```bash
+# Validate your repo before submitting
+pinata agents templates validate https://github.com/user/my-agent-template
+
+# Validate a specific branch
+pinata agents templates validate https://github.com/user/my-agent-template --branch develop
+
+# List available branches
+pinata agents templates branches https://github.com/user/my-agent-template
+
+# Submit the template
+pinata agents templates submit https://github.com/user/my-agent-template
+
+# Submit from a specific branch
+pinata agents templates submit https://github.com/user/my-agent-template --branch develop
+```
+
+**Managing your submissions:**
+
+```bash
+# List your submitted templates
+pinata agents templates mine
+
+# Update an existing submission (re-pull from repo)
+pinata agents templates update <template-id>
+
+# Update with a new repo URL or branch
+pinata agents templates update <template-id> --git-url https://github.com/user/new-repo --branch main
+
+# Archive a submission
+pinata agents templates delete <template-id>
 ```
 
 ## `clawhub`
