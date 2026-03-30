@@ -688,6 +688,10 @@
     {
       "source": "/x402",
       "destination": "/files/x402"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/quickstart"
     }
   ]
 }
