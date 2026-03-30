@@ -70,7 +70,14 @@
                   "agents/channels",
                   "agents/skills",
                   "agents/secrets",
-                  "agents/templates"
+                  {
+                    "group": "Templates",
+                    "icon": "clone",
+                    "pages": [
+                      "agents/templates/overview",
+                      "agents/templates/creating"
+                    ]
+                  }
                 ]
               },
               "tools/cli/agents",
@@ -645,6 +652,10 @@
     {
       "source": "/agents",
       "destination": "/agents/overview"
+    },
+    {
+      "source": "/agents/templates",
+      "destination": "/agents/templates/overview"
     },
     {
       "source": "/sdk",
