@@ -1,0 +1,134 @@
+---
+title: "Quick Start"
+description: "Upload and download files from IPFS using the MPP Server"
+---
+
+Upload your first file to IPFS using MPP payments. No Pinata account required.
+
+## Prerequisites
+
+- A wallet with USDC on the Tempo network (chain ID 4217)
+- One of the following:
+  - [Tempo CLI](https://docs.tempo.xyz) installed
+  - `mppx` client SDK (`npm install mppx viem`)
+
+## Using the Tempo CLI
+
+The simplest way to interact with the MPP Server.
+
+### Upload a File
+
+```bash
+# 1. Get a signed upload URL (pay USDC automatically)
+RESPONSE=$(tempo request -X POST \
+  "https://mpp.pinata.cloud/v1/pin/public?fileSize=1024")
+
+# 2. Extract the signed URL
+URL=$(echo $RESPONSE | jq -r '.url')
+
+# 3. Upload your file to the signed URL
+curl -X POST "$URL" \
+  -F "file=@your-file.txt"
+```
+
+### Download a File
+
+```bash
+# Download a file by CID (pay USDC automatically)
+tempo request -X GET \
+  "https://mpp.pinata.cloud/v1/pin/public/QmYourCid" \
+  -o your-file.txt
+```
+
+## Using the mppx SDK
+
+For programmatic access in TypeScript/JavaScript applications.
+
+### Install Dependencies
+
+```bash
+npm install mppx viem
+```
+
+### Upload a File
+
+```typescript
+import { Mppx, tempo } from "mppx/client";
+import { privateKeyToAccount } from "viem/accounts";
+
+const account = privateKeyToAccount("0xYOUR_PRIVATE_KEY");
+const mppx = Mppx.create({ methods: [tempo({ account })] });
+
+// 1. Get a signed upload URL (handles 402 payment automatically)
+const response = await mppx.fetch(
+  "https://mpp.pinata.cloud/v1/pin/public?fileSize=1024",
+  { method: "POST" }
+);
+
+const { url } = await response.json();
+
+// 2. Upload your file to the signed URL
+const file = new File(["hello world"], "hello.txt", { type: "text/plain" });
+const formData = new FormData();
+formData.append("file", file);
+await fetch(url, {
+  method: "POST",
+  body: formData,
+});
+```
+
+### Download a File
+
+```typescript
+import { Mppx, tempo } from "mppx/client";
+import { privateKeyToAccount } from "viem/accounts";
+
+const account = privateKeyToAccount("0xYOUR_PRIVATE_KEY");
+const mppx = Mppx.create({ methods: [tempo({ account })] });
+
+// Download a file by CID (handles 402 payment automatically)
+const response = await mppx.fetch(
+  "https://mpp.pinata.cloud/v1/pin/public/QmYourCid"
+);
+
+const content = await response.blob();
+```
+
+## How the Payment Flow Works
+
+When using the `mppx` SDK or Tempo CLI, the 402 payment flow is handled automatically. Here's what happens under the hood:
+
+```
+Client                          MPP Server                    Tempo Network
+  |                                |                              |
+  |  POST /v1/pin/public           |                              |
+  |------------------------------->|                              |
+  |                                |                              |
+  |  402 + Payment Challenge       |                              |
+  |<-------------------------------|                              |
+  |                                |                              |
+  |  Pay USDC                      |                              |
+  |-------------------------------------------------------------->|
+  |                                |                              |
+  |  POST /v1/pin/public           |                              |
+  |  + Authorization (payment proof)                              |
+  |------------------------------->|                              |
+  |                                |  Verify payment              |
+  |                                |----------------------------->|
+  |                                |                              |
+  |  200 + { url: "signed_url" }   |                              |
+  |<-------------------------------|                              |
+```
+
+## Error Handling
+
+| Status | Meaning |
+|--------|---------|
+| `400` | Missing or invalid `fileSize` query parameter |
+| `402` | Payment required — include payment proof in `Authorization` header |
+| `404` | File not found on IPFS (download only) |
+
+## Next Steps
+
+- [Self-Hosting](/files/mpp/self-hosting) — Deploy your own MPP Server instance
+- [x402 Monetization](/files/x402/intro) — Monetize private IPFS content with x402
