@@ -1,0 +1,134 @@
+---
+title: "Self-Hosting"
+description: "Deploy your own MPP Server on Cloudflare Workers"
+---
+
+The MPP Server is open source and designed to run on Cloudflare Workers. Deploy your own instance to customize pricing, integrate with your own Pinata account, and control the payment flow.
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) installed
+- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/) installed
+- Cloudflare account
+- Pinata account with API key
+- Stripe account with crypto payments enabled
+
+## Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone git@github.com:PinataCloud/mpp-server.git
+cd mpp-server
+npm install
+```
+
+### 2. Configure Environment Variables
+
+Copy the example environment file and fill in your values:
+
+```bash
+cp .dev.vars.example .dev.vars
+```
+
+| Variable | Description |
+|----------|-------------|
+| `PINATA_JWT` | Your Pinata API JWT from the [Pinata dashboard](https://app.pinata.cloud/developers/api-keys) |
+| `PINATA_GATEWAY_TOKEN` | Gateway authentication token |
+| `PINATA_GATEWAY_URL` | Your Pinata gateway domain (e.g., `your-gateway.mypinata.cloud`) |
+| `MPP_SECRET_KEY` | 32-byte hex key for signing 402 challenges |
+| `STRIPE_SECRET_KEY` | Stripe API key with crypto payments preview access |
+
+Generate an MPP secret key:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+### 3. Local Development
+
+```bash
+npm run dev
+```
+
+The server starts at `http://localhost:8787`.
+
+### 4. Deploy
+
+```bash
+# Deploy to production
+npm run deploy
+
+# Or deploy to a specific environment
+npm run deploy:dev
+npm run deploy:prod
+```
+
+Set your secrets in Cloudflare (alternative to `.dev.vars` for deployed environments):
+
+```bash
+npx wrangler secret put PINATA_JWT
+npx wrangler secret put PINATA_GATEWAY_TOKEN
+npx wrangler secret put MPP_SECRET_KEY
+npx wrangler secret put STRIPE_SECRET_KEY
+```
+
+## Architecture
+
+The MPP Server is built with:
+
+| Component | Technology |
+|-----------|------------|
+| Runtime | Cloudflare Workers |
+| Framework | [Hono](https://hono.dev/) |
+| Payments | [mppx](https://www.npmjs.com/package/mppx) SDK |
+| Storage | [Pinata](https://pinata.cloud) IPFS |
+| Blockchain | Tempo Mainnet (USDC) |
+| Recipient Addresses | Stripe PaymentIntents API |
+
+### Request Flow
+
+1. **CORS middleware** handles cross-origin requests
+2. **MPP middleware** intercepts `/v1/pin/*` routes, calculates pricing, and manages the 402 challenge-response flow
+3. **Route handlers** create signed Pinata upload URLs or proxy file downloads
+4. **Stripe** generates unique deposit addresses for each payment
+
+### Pricing Logic
+
+Upload pricing is calculated per request based on file size:
+
+```
+price = fileSize (GB) x $0.10 x 12 months
+minimum = $0.01 USDC
+```
+
+Download pricing is a flat rate:
+
+```
+price = $0.01 USDC per download
+```
+
+You can customize these values in `src/index.ts`.
+
+## Project Structure
+
+```
+mpp-server/
+├── src/
+│   ├── index.ts          # App entry, middleware, pricing logic
+│   ├── main.ts           # Landing page HTML
+│   ├── routes/
+│   │   └── pin.ts        # Upload and download handlers
+│   └── utils/
+│       └── types.ts      # TypeScript types, helper functions
+├── wrangler.jsonc        # Cloudflare Workers configuration
+├── .dev.vars.example     # Environment variable template
+└── package.json
+```
+
+## Resources
+
+- [MPP Server Repository](https://github.com/PinataCloud/mpp-server)
+- [Tempo Documentation](https://docs.tempo.xyz)
+- [mppx SDK](https://www.npmjs.com/package/mppx)
+- [Cloudflare Workers Docs](https://developers.cloudflare.com/workers/)

@@ -130,6 +130,15 @@
                 ]
               },
               {
+                "group": "MPP Server",
+                "icon": "coins",
+                "pages": [
+                  "files/mpp/overview",
+                  "files/mpp/quickstart",
+                  "files/mpp/self-hosting"
+                ]
+              },
+              {
                 "group": "x402",
                 "icon": "sparkle",
                 "pages": [

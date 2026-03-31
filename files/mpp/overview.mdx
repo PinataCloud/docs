@@ -1,0 +1,74 @@
+---
+title: "MPP Server"
+description: "Account-free IPFS uploads and downloads using crypto payments via the Machine Payments Protocol"
+---
+
+Pinata's MPP Server enables account-free file uploads and downloads to IPFS using crypto payments. No API key or Pinata account required — just pay with USDC on Tempo and get your files stored on IPFS.
+
+## Overview
+
+The MPP Server is a payment-gated IPFS gateway built on the [Machine Payments Protocol (MPP)](https://docs.tempo.xyz). It uses the HTTP 402 challenge-response pattern:
+
+1. Client makes a request to upload or download a file
+2. Server responds with `402 Payment Required` and a payment challenge
+3. Client pays USDC on the Tempo network
+4. Client retries the request with proof of payment
+5. Server verifies payment and fulfills the request
+
+This is ideal for **machine-to-machine** workflows where agents, bots, or services need to store and retrieve files without managing API keys.
+
+## Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/v1/pin/public?fileSize={bytes}` | Get a signed upload URL |
+| `GET` | `/v1/pin/public/:cid` | Download a file by CID |
+
+### Upload
+
+Send a `POST` request with the `fileSize` query parameter (in bytes). After payment, the server returns a signed Pinata upload URL that you can use to upload your file directly.
+
+**Pricing:** `fileSize (GB) x $0.10 x 12 months`, minimum $0.01 USDC
+
+| File Size | Cost |
+|-----------|------|
+| 1 KB | $0.01 (minimum) |
+| 1 MB | $0.01 (minimum) |
+| 1 GB | $1.20 |
+| 10 GB | $12.00 |
+
+The signed URL is valid for **120 seconds** after generation.
+
+### Download
+
+Send a `GET` request with the file's CID. After payment, the server proxies the file from Pinata's IPFS gateway with the correct `Content-Type` and `Content-Disposition` headers.
+
+**Pricing:** Flat $0.01 USDC per download
+
+## Network
+
+| Property | Value |
+|----------|-------|
+| Chain | Tempo Mainnet |
+| Chain ID | 4217 |
+| RPC | `https://rpc.tempo.xyz` |
+| Token | USDC (`0x20C000000000000000000000b9537d11c60E8b50`) |
+
+## Production URL
+
+The Pinata-hosted MPP Server is available at:
+
+```
+https://mpp.pinata.cloud
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="bolt" href="/files/mpp/quickstart">
+    Upload your first file with MPP
+  </Card>
+  <Card title="Self-Hosting" icon="server" href="/files/mpp/self-hosting">
+    Deploy your own MPP Server
+  </Card>
+</CardGroup>
