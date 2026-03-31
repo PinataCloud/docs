@@ -4,87 +4,79 @@ description: "Expose agent services to the internet"
 icon: "network-wired"
 ---
 
-Routes expose services running inside your agent container to the internet. Use routes to make APIs, web apps, and other services publicly accessible.
+If your agent runs a web server, API, or any other network service, routes let you expose it to the internet. Your agent's container is isolated by default — routes punch a hole through so the outside world can reach your service.
+
+## When You Need Routes
+
+Common use cases:
+
+- Your agent runs a web app (React, Vue, etc.) and you want users to access it
+- Your agent exposes an API that other services need to call
+- You're running a dev server with hot reload and need external access
+
+If your agent just chats and runs scripts, you probably don't need routes.
 
 ## Add a Route
 
-1. Open your agent's detail page
-2. Click **Routes** in the sidebar
-3. Click **ADD**
-4. Choose **Path Route** or **Custom Domain**
+Open your agent → **Routes** → **ADD**.
 
-## Path Routes
+You have two options: **Path Route** or **Custom Domain**.
 
-Path routes forward traffic from a URL path to an internal port.
+### Path Routes
+
+Path routes are the simplest option. Your service becomes available at a URL like:
+
+```
+https://agents.pinata.cloud/v0/agents/{agentId}/app/...
+```
+
+To set one up:
 
 1. Click **ADD** → **Path Route**
-2. Enter a **Path Prefix** (e.g., `/app`)
-3. Enter the **Port** your service runs on
-4. Choose **Protected** or **Public**
-5. Click **Save**
+2. Enter a path prefix (like `/app` or `/api`)
+3. Enter the port your service runs on inside the container
+4. Choose whether it's protected or public
+5. Save
 
-Your service is now available at `https://agents.pinata.cloud/v0/agents/{agentId}/app/...`
+One thing to know: the path prefix gets stripped before reaching your service. If someone requests `/app/users/123`, your service sees `/users/123`.
 
-The path prefix is stripped before reaching your service. A request to `/app/api/users` arrives at your service as `/api/users`.
-
-### Path Format
-
-- Must start with `/`
-- Letters, numbers, hyphens, underscores only
-- Cannot use reserved paths (`/v0`, `/chat`, `/config`)
-
-## Custom Domains
+### Custom Domains
 
 <Note>
-  Custom Domains is currently in beta.
+  Custom domains are currently in beta.
 </Note>
 
-Custom domains route traffic from a dedicated hostname to your service. Unlike path routes, the full request path is forwarded as-is.
+Want a cleaner URL? Custom domains give you either a random Pinata subdomain (like `swift-fox-347.apps.pinata.cloud`) or let you use your own domain.
 
-### Pinata Subdomain
-
-Get a random subdomain on `*.apps.pinata.cloud`:
+**For a Pinata subdomain:**
 
 1. Click **ADD** → **Custom Domain** → **Pinata Subdomain**
-2. Enter the **Port**
-3. Choose **Protected** or **Public**
-4. Click **Save**
+2. Enter the port
+3. Choose protected or public
+4. Save — you'll get a random subdomain instantly
 
-You'll get a URL like `https://swift-fox-347.apps.pinata.cloud`.
-
-### Your Own Domain
-
-Use your own domain (e.g., `app.example.com`):
+**For your own domain:**
 
 1. Click **ADD** → **Custom Domain** → **Bring Your Own**
-2. Enter your **Domain**
-3. Enter the **Port**
-4. Choose **Protected** or **Public**
-5. Click **Save**
+2. Enter your domain (like `app.yourdomain.com`)
+3. Enter the port
+4. Save
+5. Add the DNS records shown (a TXT record for verification, then a CNAME)
 
-Then configure DNS:
-
-1. Add the **TXT record** shown to verify ownership
-2. Add the **CNAME record** to point to the Pinata proxy
-
-Status progression: `pending` → `pending_ssl` → `active`
+Your domain will show as "pending" until DNS propagates and SSL is provisioned.
 
 ## Protected vs Public
 
-| Mode | Behavior |
-| ---- | -------- |
-| **Protected** | Requests require a gateway token |
-| **Public** | Open to the internet |
+**Protected routes** require a gateway token to access. Use this when you want to control who can reach your service.
+
+**Public routes** are open to anyone on the internet. Only use this if your service handles its own authentication, or if you genuinely want it public.
 
 <Warning>
-  Public routes expose your service without authentication. Only use for services that handle their own auth.
+  Think carefully before making a route public. Anyone can access it.
 </Warning>
 
-## Constraints
+## Limits
 
-| Limit | Value |
-| ----- | ----- |
-| Path routes per agent | 10 |
-| Custom domains per agent | 5 |
-| Port range | 1025–65535 |
-| Reserved port | 18789 (gateway) |
+- Up to 10 path routes per agent
+- Up to 5 custom domains per agent
+- Ports must be between 1025 and 65535 (port 18789 is reserved)

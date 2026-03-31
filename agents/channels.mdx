@@ -4,69 +4,78 @@ description: "Connect your agent to messaging platforms"
 icon: "comments"
 ---
 
-Channels connect your agent to external messaging platforms. Configure during agent creation or from the **Channels** section in your agent's detail page.
+Channels let your agent talk to people on Telegram, Slack, and Discord. Instead of everyone coming to the Pinata dashboard, they can message your agent where they already hang out.
 
-| Channel | Status |
-| ------- | ------ |
-| Telegram | Available |
-| Slack | Available |
-| Discord | Available |
-| WhatsApp | Coming Soon |
+**Currently available:** Telegram, Slack, Discord
 
-## Connect Telegram
+**Coming soon:** WhatsApp
 
-1. Create a bot through [@BotFather](https://t.me/botfather) on Telegram
-2. Copy the bot token BotFather gives you
-3. Open your agent → **Channels** → **Telegram**
-4. Paste the **Bot Token**
-5. Configure DM policy and allowed users
-6. Click **Save**
+## Telegram
 
-| Option | Description |
-| ------ | ----------- |
-| **Bot Token** | Token from BotFather |
-| **DM Policy** | `open` (anyone can message) or `pairing` (approval required) |
-| **Allow From** | Specific user IDs to allow |
+Telegram is the quickest to set up. You'll create a bot through Telegram's BotFather and connect it to your agent.
 
-## Connect Slack
+1. Open Telegram and message [@BotFather](https://t.me/botfather)
+2. Send `/newbot` and follow the prompts to create your bot
+3. Copy the bot token BotFather gives you
+4. In Pinata, open your agent → **Channels** → **Telegram**
+5. Paste your bot token and save
 
-1. Create a Slack App at [api.slack.com/apps](https://api.slack.com/apps)
-2. Enable **Socket Mode** in your app settings
-3. Generate an **App-Level Token** with `connections:write` scope
-4. Add Bot Token Scopes: `chat:write`, `im:write`, `im:history`, `im:read`, `users:read`, `app_mentions:read`
-5. Install to your workspace
-6. Open your agent → **Channels** → **Slack**
-7. Paste both tokens
-8. Click **Save**
+Now anyone who messages your Telegram bot is talking to your agent.
 
-| Option | Description |
-| ------ | ----------- |
-| **Bot Token** | Bot User OAuth Token (starts with `xoxb-`) |
-| **App Token** | App-Level Token (starts with `xapp-`) |
+### Controlling Access
 
-## Connect Discord
+By default, your bot is open — anyone can message it. If you want to restrict access:
 
-1. Create an application at [discord.com/developers](https://discord.com/developers/applications)
-2. Go to **Bot** and click **Add Bot**
-3. Copy the bot token
-4. Go to **OAuth2** → **URL Generator**, select `bot` scope and required permissions
-5. Use the generated URL to invite the bot to your server
-6. Open your agent → **Channels** → **Discord**
-7. Paste the **Bot Token**
-8. Click **Save**
+- **Pairing mode** — Users need approval before they can chat
+- **Allow list** — Only specific Telegram user IDs can message the bot
 
-| Option | Description |
-| ------ | ----------- |
-| **Bot Token** | Discord bot token |
+Configure these in the channel settings.
 
-## Manage Channels
+## Slack
 
-Configured channels show an **ENABLED** badge. Click **RECONFIGURE** to update settings.
+Slack takes a few more steps because you need to create a Slack App with the right permissions.
 
-- Enable/disable channels without removing configuration
-- Token fields are optional when reconfiguring (leave blank to keep existing)
-- Changes take effect after gateway restart
+1. Go to [api.slack.com/apps](https://api.slack.com/apps) and create a new app
+2. Enable **Socket Mode** (under Settings)
+3. Create an **App-Level Token** with the `connections:write` scope
+4. Under **OAuth & Permissions**, add these bot token scopes:
+   - `chat:write`, `im:write`, `im:history`, `im:read`, `users:read`, `app_mentions:read`
+5. Install the app to your workspace
+6. In Pinata, open your agent → **Channels** → **Slack**
+7. Paste both tokens:
+   - **Bot Token** — starts with `xoxb-`
+   - **App Token** — starts with `xapp-`
+8. Save
+
+Your agent will now respond to DMs and mentions in your Slack workspace.
+
+## Discord
+
+Discord setup is similar to Telegram — create a bot, get a token, connect it.
+
+1. Go to [discord.com/developers](https://discord.com/developers/applications) and create an application
+2. Go to **Bot** → **Add Bot**
+3. Copy the bot token (you may need to reset it to see it)
+4. Go to **OAuth2** → **URL Generator**
+   - Select the `bot` scope
+   - Select the permissions your bot needs
+5. Copy the generated URL and open it to invite the bot to your server
+6. In Pinata, open your agent → **Channels** → **Discord**
+7. Paste the bot token and save
+
+Your agent can now respond in Discord.
+
+## Managing Channels
+
+Once connected, channels show an **ENABLED** badge. You can:
+
+- **Disable** a channel without removing its configuration
+- **Reconfigure** to update settings (leave token fields blank to keep existing values)
+
+<Note>
+  Changes to channels take effect after a gateway restart.
+</Note>
 
 <Warning>
-  Keep bot tokens secure. Store them as [secrets](/agents/secrets) and never commit to version control.
+  Bot tokens are sensitive. Don't share them or commit them to version control.
 </Warning>
