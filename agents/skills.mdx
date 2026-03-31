@@ -4,18 +4,20 @@ description: "Extend agent capabilities with reusable packages"
 icon: "wand-magic-sparkles"
 ---
 
-Skills are IPFS-pinned code bundles that extend agent capabilities. Browse skills at [agents.pinata.cloud/skills](https://agents.pinata.cloud/skills) or use the [CLI](/tools/cli/agents#skills).
+Skills are code bundles that extend what your agent can do. Browse and install skills at [agents.pinata.cloud/skills](https://agents.pinata.cloud/skills).
 
-## Skills Library
+## Browse Skills
 
-The library has two sections:
+Go to [agents.pinata.cloud/skills](https://agents.pinata.cloud/skills) to see available skills:
 
 | Tab | Description |
 | --- | ----------- |
 | **All \| Installed** | Skills in your library |
 | **ClawHub Community** | Community marketplace |
 
-## Official Pinata Skills
+### Official Pinata Skills
+
+Look for the **BY PINATA** and **VERIFIED** badges:
 
 | Skill | Description |
 | ----- | ----------- |
@@ -25,33 +27,32 @@ The library has two sections:
 | **@pinata/paraspace** | PARA-based workspace organization |
 | **@pinata/sqlite-sync** | SQLite with Pinata backup and versioning |
 
-Pinata skills show **BY PINATA** and **VERIFIED** badges.
+### Community Skills
 
-## ClawHub Community
+Browse the **ClawHub Community** tab for community-created skills. Each shows download count and star rating.
 
-Browse community-created skills in the **ClawHub Community** tab. Each skill shows:
+## Install a Skill
 
-- **Downloads** — Install count
-- **Stars** — Community rating
+1. Click a skill card to view details
+2. Review the description and required secrets
+3. Click **Install**
 
-Popular skills include Self-Improving-Agent, Ontology, Obsidian integration, and API Gateway.
+The skill is added to your library and available to attach to any agent.
 
-Click a skill card, then **Install** to add it to your library.
+## Attach a Skill to an Agent
 
-## Skill Details
+**During creation:** Add skills in Step 2 (Workspace) of the setup wizard.
 
-Click any skill to view:
+**After deployment:** Open your agent → **Skills** → Click **Add** → Select from your library.
 
-- **Description** — Documentation
-- **CID** — IPFS identifier
-- **Required Secrets** — [Environment variables](/agents/secrets) needed
-- **Used By** — Agents using this skill
+Skills are copied into the agent's workspace. Detaching removes the files but keeps the skill in your library.
 
-## Uploading Custom Skills
+## Create a Custom Skill
 
-Click **Upload Skill** to create your own.
+1. Click **Upload Skill**
+2. Select a folder containing your skill files
 
-Your skill folder must contain `SKILL.md` with YAML frontmatter:
+Your folder must include `SKILL.md` with YAML frontmatter:
 
 ```markdown
 ---
@@ -68,13 +69,24 @@ Instructions for using this skill.
   Skills are uploaded to the public IPFS network.
 </Note>
 
-## Attaching Skills to Agents
+## Skill Details
 
-**During creation:** Add skills in Step 2 (Workspace) of the setup wizard.
+Click any skill to view:
 
-**After deployment:** Open the agent's **Skills** section and add from your library.
+- **Description** — Documentation and usage instructions
+- **CID** — IPFS content identifier
+- **Required Secrets** — Environment variables needed
+- **Used By** — Agents using this skill
 
-Skills are copied into the agent workspace. Detaching removes the files but keeps the skill in your library.
+## Using the CLI
+
+```bash
+# List skills in your library
+pinata agents skills list
+
+# Upload a skill
+pinata agents skills upload <path>
+```
 
 ## Constraints
 

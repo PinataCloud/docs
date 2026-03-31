@@ -9,47 +9,61 @@ icon: "grid-2"
   Templates are currently in beta.
 </Note>
 
-Templates are pre-configured agent packages with bundled [skills](/agents/skills), required [secrets](/agents/secrets), and default settings. Browse at [agents.pinata.cloud/templates](https://agents.pinata.cloud/templates) or use the [CLI](/tools/cli/agents#templates).
+Templates are pre-configured agent packages with bundled [skills](/agents/skills), required [secrets](/agents/secrets), and default settings. Deploy a template to get a working agent in minutes.
 
-## Browsing Templates
+## Browse Templates
 
-Filter templates using the tabs:
+Go to [agents.pinata.cloud/templates](https://agents.pinata.cloud/templates) to browse available templates.
 
 | Tab | Description |
 | --- | ----------- |
-| **All** | All available templates |
+| **All** | All published templates |
 | **General** | General-purpose agents |
-| **My Submissions** | Templates you've submitted |
+| **My Submissions** | Templates you've created |
 
-## Template Details
+Click any template to see its details: description, category, tags, and required secrets.
 
-Click a template to view:
+## Deploy a Template
 
-- **Description** — What it does
-- **Category** and **Tags**
-- **Version**
-- **Required Setup** — Secrets you need to provide
+1. Click a template to open its details
+2. Review the **Required Setup** section — these are secrets you'll need
+3. Click **Deploy This Agent**
+4. Enter a name for your agent
+5. Add any missing secrets when prompted
+6. Click **Deploy**
 
-### Required Setup
+Your agent will provision and you'll be redirected to its detail page.
 
-Templates list the secrets needed before deployment. Example for Telegram Bot:
+### Required Secrets
+
+Most templates need at least an LLM provider key. The template details show exactly what's required:
 
 | Secret | Description |
 | ------ | ----------- |
 | `ANTHROPIC_API_KEY` | Anthropic API key for Claude |
-| `TELEGRAM_BOT_TOKEN` | Token from BotFather |
+| `TELEGRAM_BOT_TOKEN` | Token from BotFather (for Telegram templates) |
 
-Add these to your [Secrets vault](/agents/secrets) before deploying.
+Add secrets to your [vault](/agents/secrets) before deploying, or you'll be prompted during setup.
 
-## Deploying
+## Using the CLI
 
-1. Select a template
-2. Review **Required Setup**
-3. Add any missing secrets
-4. Click **Deploy This Agent**
+You can also deploy templates via the [CLI](/tools/cli/agents#templates):
+
+```bash
+# List available templates
+pinata agents templates list
+
+# Deploy a template
+pinata agents create --template <template-id>
+```
 
 ## Next Steps
 
-<Card title="Create Your Own Template" icon="hammer" href="/agents/templates/creating">
-  Share your agent configuration as a template for others to deploy.
-</Card>
+<CardGroup cols={2}>
+  <Card title="Create Your Own" icon="hammer" href="/agents/templates/creating">
+    Package your agent configuration as a reusable template.
+  </Card>
+  <Card title="Browse Templates" icon="grid-2" href="https://agents.pinata.cloud/templates">
+    Explore the template marketplace.
+  </Card>
+</CardGroup>

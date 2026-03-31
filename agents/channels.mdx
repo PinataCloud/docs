@@ -13,47 +13,58 @@ Channels connect your agent to external messaging platforms. Configure during ag
 | Discord | Available |
 | WhatsApp | Coming Soon |
 
-## Telegram
+## Connect Telegram
 
-1. Create a bot through [@BotFather](https://t.me/botfather)
-2. Copy the bot token
-3. Configure in Pinata
+1. Create a bot through [@BotFather](https://t.me/botfather) on Telegram
+2. Copy the bot token BotFather gives you
+3. Open your agent → **Channels** → **Telegram**
+4. Paste the **Bot Token**
+5. Configure DM policy and allowed users
+6. Click **Save**
 
 | Option | Description |
 | ------ | ----------- |
 | **Bot Token** | Token from BotFather |
-| **DM Policy** | `open` (anyone) or `pairing` (approval required) |
-| **Allow From** | Allowed user IDs |
+| **DM Policy** | `open` (anyone can message) or `pairing` (approval required) |
+| **Allow From** | Specific user IDs to allow |
 
-## Slack
+## Connect Slack
 
 1. Create a Slack App at [api.slack.com/apps](https://api.slack.com/apps)
-2. Enable **Socket Mode**
+2. Enable **Socket Mode** in your app settings
 3. Generate an **App-Level Token** with `connections:write` scope
 4. Add Bot Token Scopes: `chat:write`, `im:write`, `im:history`, `im:read`, `users:read`, `app_mentions:read`
 5. Install to your workspace
+6. Open your agent → **Channels** → **Slack**
+7. Paste both tokens
+8. Click **Save**
 
 | Option | Description |
 | ------ | ----------- |
-| **Bot Token** | Bot User OAuth Token |
-| **App Token** | App-Level Token |
+| **Bot Token** | Bot User OAuth Token (starts with `xoxb-`) |
+| **App Token** | App-Level Token (starts with `xapp-`) |
 
-## Discord
+## Connect Discord
 
 1. Create an application at [discord.com/developers](https://discord.com/developers/applications)
-2. Create a Bot and copy the token
-3. Invite the bot to your server
+2. Go to **Bot** and click **Add Bot**
+3. Copy the bot token
+4. Go to **OAuth2** → **URL Generator**, select `bot` scope and required permissions
+5. Use the generated URL to invite the bot to your server
+6. Open your agent → **Channels** → **Discord**
+7. Paste the **Bot Token**
+8. Click **Save**
 
 | Option | Description |
 | ------ | ----------- |
 | **Bot Token** | Discord bot token |
 
-## Managing Channels
+## Manage Channels
 
 Configured channels show an **ENABLED** badge. Click **RECONFIGURE** to update settings.
 
 - Enable/disable channels without removing configuration
-- Token fields are optional when reconfiguring
+- Token fields are optional when reconfiguring (leave blank to keep existing)
 - Changes take effect after gateway restart
 
 <Warning>

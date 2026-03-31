@@ -4,34 +4,34 @@ description: "Expose agent services to the internet"
 icon: "network-wired"
 ---
 
-Routes expose services running inside your agent container to the internet. Open the **Routes** section from your agent's detail page.
+Routes expose services running inside your agent container to the internet. Use routes to make APIs, web apps, and other services publicly accessible.
 
-Click **ADD** to create a new route:
+## Add a Route
 
-| Option | Description |
-| ------ | ----------- |
-| **Path Route** | Map a URL path prefix to a container port |
-| **Custom Domain** | Route a hostname to a container port |
+1. Open your agent's detail page
+2. Click **Routes** in the sidebar
+3. Click **ADD**
+4. Choose **Path Route** or **Custom Domain**
 
 ## Path Routes
 
-Path routes forward traffic from a URL path to an internal port. The path prefix is stripped before reaching your service.
+Path routes forward traffic from a URL path to an internal port.
 
-Example: A request to `/app/api/users` with path prefix `/app` arrives at your service as `/api/users`.
+1. Click **ADD** → **Path Route**
+2. Enter a **Path Prefix** (e.g., `/app`)
+3. Enter the **Port** your service runs on
+4. Choose **Protected** or **Public**
+5. Click **Save**
 
-### Adding a Path Route
+Your service is now available at `https://agents.pinata.cloud/v0/agents/{agentId}/app/...`
 
-| Field | Description |
-| ----- | ----------- |
-| **Path Prefix** | URL path (e.g., `/app`) |
-| **Port** | Container port (1025–65535) |
-| **Protected** | Require gateway token authentication |
+The path prefix is stripped before reaching your service. A request to `/app/api/users` arrives at your service as `/api/users`.
 
 ### Path Format
 
 - Must start with `/`
 - Letters, numbers, hyphens, underscores only
-- Cannot overlap with reserved paths (`/v0`, `/chat`, `/config`)
+- Cannot use reserved paths (`/v0`, `/chat`, `/config`)
 
 ## Custom Domains
 
@@ -39,39 +39,37 @@ Example: A request to `/app/api/users` with path prefix `/app` arrives at your s
   Custom Domains is currently in beta.
 </Note>
 
-Custom domains route traffic from a dedicated hostname to a container port. Unlike path routes, the full request path is forwarded as-is.
+Custom domains route traffic from a dedicated hostname to your service. Unlike path routes, the full request path is forwarded as-is.
 
-### Pinata Subdomains
+### Pinata Subdomain
 
-Get a random platform-assigned subdomain on `*.apps.pinata.cloud`.
+Get a random subdomain on `*.apps.pinata.cloud`:
 
-| Field | Description |
-| ----- | ----------- |
-| **Port** | Container port (1025–65535) |
-| **Protected** | Require gateway token authentication |
+1. Click **ADD** → **Custom Domain** → **Pinata Subdomain**
+2. Enter the **Port**
+3. Choose **Protected** or **Public**
+4. Click **Save**
 
-Result: `https://swift-fox-347.apps.pinata.cloud` → your port
+You'll get a URL like `https://swift-fox-347.apps.pinata.cloud`.
 
-### Bring Your Own Domain
+### Your Own Domain
 
-Use your own domain (e.g., `app.example.com`).
+Use your own domain (e.g., `app.example.com`):
 
-| Field | Description |
-| ----- | ----------- |
-| **Domain** | Your domain |
-| **Port** | Container port |
-| **Protected** | Require gateway token authentication |
+1. Click **ADD** → **Custom Domain** → **Bring Your Own**
+2. Enter your **Domain**
+3. Enter the **Port**
+4. Choose **Protected** or **Public**
+5. Click **Save**
 
-#### DNS Setup
+Then configure DNS:
 
-After registering, configure these DNS records:
+1. Add the **TXT record** shown to verify ownership
+2. Add the **CNAME record** to point to the Pinata proxy
 
-1. **TXT record** — Verify domain ownership
-2. **CNAME record** — Point to the Pinata proxy
+Status progression: `pending` → `pending_ssl` → `active`
 
-Domain status progresses: `pending` → `pending_ssl` → `active`
-
-## Public vs Protected
+## Protected vs Public
 
 | Mode | Behavior |
 | ---- | -------- |

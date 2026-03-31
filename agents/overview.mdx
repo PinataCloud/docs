@@ -10,48 +10,40 @@ Pinata Agents are hosted [OpenClaw](https://openclaw.org) instances. Each agent 
   Agents require a paid Pinata plan. [Upgrade here](https://app.pinata.cloud/billing).
 </Note>
 
-## Navigation
-
-Open [agents.pinata.cloud](https://agents.pinata.cloud) to access the Agents platform. Use the command palette (**⌘K** or **Search**) to quickly navigate and take actions:
-
-| Section | Contents |
-| ------- | -------- |
-| **Agents** | Your agents with status |
-| **Pages** | My Agents, Skills, Secrets, Templates, Workspaces |
-| **Workspaces** | Switch between [workspaces](/account-management/workspaces) |
-| **Actions** | Create Agent, Upload Skill, Add Secret, Connect providers, and more |
-
 ## Quick Start
 
 ### 1. Connect an LLM Provider
 
-Your agent needs an LLM provider to run. Open the command palette and select:
+Your agent needs an LLM provider to run. Go to [agents.pinata.cloud/secrets](https://agents.pinata.cloud/secrets) and click **Connect** on one of the provider cards:
 
-- **Connect Anthropic** → `ANTHROPIC_API_KEY`
-- **Connect OpenAI** → `OPENAI_API_KEY`
-- **Connect OpenRouter** → `OPENROUTER_API_KEY`
+- **Anthropic** → `ANTHROPIC_API_KEY`
+- **OpenAI** → `OPENAI_API_KEY`
+- **OpenRouter** → `OPENROUTER_API_KEY`
 
-Or add the key manually in [Secrets](/agents/secrets).
+Or use the command palette (**⌘K**) and search for "Connect Anthropic" (or your preferred provider).
 
 ### 2. Create an Agent
 
-Click **Create Agent** or use the command palette.
+Go to [agents.pinata.cloud/agents](https://agents.pinata.cloud/agents) and click **Create Agent**.
 
-**Start from a Template** — Select a pre-configured [template](/agents/templates) to skip manual setup. Templates include skills, required secrets, and default settings.
+**Option A: Start from a Template**
 
-**Or configure manually:**
+Select a pre-configured [template](/agents/templates/overview) to skip manual setup. Templates include skills, required secrets, and default settings.
 
-**Step 1: Identity** — Choose a personality preset (Atlas, Nova, Sage) or create a custom one. Enter a name and optional description.
+**Option B: Configure Manually**
 
-**Step 2: Workspace** — The default Pinata workspace includes Node.js, Python, and common tools. Optionally add [skills](/agents/skills).
+1. **Identity** — Choose a personality preset (Atlas, Nova, Sage) or create a custom one. Enter a name and optional description.
+2. **Workspace** — The default workspace includes Node.js, Python, and common tools. Optionally add [skills](/agents/skills).
+3. **Connect** — Select your LLM provider (shows "Available" when the key exists). Add any additional secrets. Optionally configure [channels](/agents/channels).
+4. **Deploy** — Click **Deploy Agent**. Once provisioning completes, you're redirected to your agent's detail page.
 
-**Step 3: Connect** — Select your LLM provider (shows "Available" when the key exists). Add any additional secrets your agent needs. Optionally configure [channels](/agents/channels).
+### 3. Start Chatting
 
-**Step 4: Deploy** — Click **Deploy Agent**. Once provisioning completes, you're redirected to your agent's detail page.
+Your agent is ready. Use the **Chat** interface to start a conversation.
 
 ## Agent Detail Page
 
-The sidebar provides access to all agent features:
+Click any agent to open its detail page. The sidebar provides access to all features:
 
 | Section | Purpose |
 | ------- | ------- |
@@ -69,8 +61,8 @@ The sidebar provides access to all agent features:
 | Tool | Purpose |
 | ---- | ------- |
 | **Console** | Terminal access to your agent's container |
-| **Logs** | Real-time logs with search, level filters (TRACE, DEBUG, INFO, WARN, ERROR, FATAL), and export |
-| **Danger** | Agent settings, paired devices, and actions (restart, delete) |
+| **Logs** | Real-time logs with search and level filters |
+| **Danger** | Settings, paired devices, restart, and delete |
 
 ### Git Access
 
@@ -82,11 +74,26 @@ git clone https://agents.pinata.cloud/v0/agents/{agentId}/git {name}
 
 Click **Copy with Token** in the Snapshots section to include authentication.
 
+## Using the CLI
+
+Everything you can do in the UI is also available via the [CLI](/tools/cli/agents):
+
+```bash
+# List your agents
+pinata agents list
+
+# Create an agent
+pinata agents create
+
+# Get agent details
+pinata agents get <agent-id>
+```
+
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Routes" icon="network-wired" href="/agents/routes">
-    Expose services to the internet
+  <Card title="Templates" icon="grid-2" href="/agents/templates/overview">
+    Deploy pre-configured agents
   </Card>
   <Card title="Channels" icon="comments" href="/agents/channels">
     Connect messaging platforms
@@ -96,5 +103,8 @@ Click **Copy with Token** in the Snapshots section to include authentication.
   </Card>
   <Card title="Secrets" icon="key" href="/agents/secrets">
     Manage credentials
+  </Card>
+  <Card title="Routes" icon="network-wired" href="/agents/routes">
+    Expose services to the internet
   </Card>
 </CardGroup>
