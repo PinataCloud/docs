@@ -4,54 +4,56 @@ description: "Extend agent capabilities with reusable packages"
 icon: "wand-magic-sparkles"
 ---
 
-Skills are IPFS-pinned code bundles that extend agent capabilities. Browse skills at [agents.pinata.cloud/skills](https://agents.pinata.cloud/skills) or use the [CLI](/tools/cli/agents#skills).
+Skills give your agent new abilities. Want your agent to store files on IPFS? There's a skill for that. Need it to remember things between conversations? There's a skill for that too.
 
-## Skills Library
+Think of skills as plugins — pre-packaged code and instructions that teach your agent how to do something specific.
 
-The library has two sections:
+## Browse Available Skills
 
-| Tab | Description |
-| --- | ----------- |
-| **All \| Installed** | Skills in your library |
-| **ClawHub Community** | Community marketplace |
+Head to [agents.pinata.cloud/skills](https://agents.pinata.cloud/skills) to see what's available.
 
-## Official Pinata Skills
+**Your Library** shows skills you've already installed. **ClawHub Community** is the marketplace where you'll find skills made by others.
 
-| Skill | Description |
-| ----- | ----------- |
-| **@pinata/api** | Pinata IPFS API for file storage, gateways, and vector search |
-| **@pinata/erc-8004** | Register AI agents on-chain |
-| **@pinata/memory-salience** | Salient memory with novelty, retention, and decay |
-| **@pinata/paraspace** | PARA-based workspace organization |
-| **@pinata/sqlite-sync** | SQLite with Pinata backup and versioning |
+### Official Skills from Pinata
 
-Pinata skills show **BY PINATA** and **VERIFIED** badges.
+These are built and maintained by the Pinata team (look for the verified badge):
 
-## ClawHub Community
+- **@pinata/api** — Store and retrieve files from IPFS, use gateways, run vector searches
+- **@pinata/memory-salience** — Help your agent remember what matters and forget what doesn't
+- **@pinata/sqlite-sync** — SQLite database with automatic Pinata backup
+- **@pinata/paraspace** — Organize your agent's workspace using the PARA method
+- **@pinata/erc-8004** — Register your agent on-chain
 
-Browse community-created skills in the **ClawHub Community** tab. Each skill shows:
+### Community Skills
 
-- **Downloads** — Install count
-- **Stars** — Community rating
+The community tab has skills for all sorts of things — Obsidian integration, self-improvement loops, API gateways, and more. Each shows download counts and ratings so you can see what's popular.
 
-Popular skills include Self-Improving-Agent, Ontology, Obsidian integration, and API Gateway.
+## Install a Skill
 
-Click a skill card, then **Install** to add it to your library.
+Click any skill to see what it does and what secrets it might need. If it looks useful, click **Install**. The skill gets added to your library.
 
-## Skill Details
+Installing doesn't attach the skill to any agent — it just makes it available to use.
 
-Click any skill to view:
+## Attach a Skill to an Agent
 
-- **Description** — Documentation
-- **CID** — IPFS identifier
-- **Required Secrets** — [Environment variables](/agents/secrets) needed
-- **Used By** — Agents using this skill
+Once a skill is in your library, you can attach it to any of your agents.
 
-## Uploading Custom Skills
+**For new agents:** Add skills in Step 2 (Workspace) of the creation wizard.
 
-Click **Upload Skill** to create your own.
+**For existing agents:** Open the agent → **Skills** → **Add** → pick from your library.
 
-Your skill folder must contain `SKILL.md` with YAML frontmatter:
+When you attach a skill, its files get copied into your agent's workspace. Your agent can then read the skill's instructions and use its code.
+
+<Tip>
+  Detaching a skill removes its files from the agent but keeps the skill in your library. You can always reattach it later.
+</Tip>
+
+## Create Your Own Skill
+
+Have something useful your agent knows how to do? Package it as a skill.
+
+1. Create a folder with your skill files
+2. Add a `SKILL.md` file with this format:
 
 ```markdown
 ---
@@ -61,24 +63,22 @@ description: What this skill does
 
 # My Skill
 
-Instructions for using this skill.
+Instructions your agent should follow when using this skill.
 ```
 
+3. Click **Upload Skill** and select your folder
+
 <Note>
-  Skills are uploaded to the public IPFS network.
+  Skills are uploaded to the public IPFS network. Don't include secrets or sensitive code.
 </Note>
 
-## Attaching Skills to Agents
+## Using the CLI
 
-**During creation:** Add skills in Step 2 (Workspace) of the setup wizard.
+```bash
+pinata agents skills list            # See your library
+pinata agents skills upload <path>   # Upload a new skill
+```
 
-**After deployment:** Open the agent's **Skills** section and add from your library.
+## Limits
 
-Skills are copied into the agent workspace. Detaching removes the files but keeps the skill in your library.
-
-## Constraints
-
-| Limit | Value |
-| ----- | ----- |
-| Skills per agent | 10 |
-| Skill name | Letters, numbers, hyphens, underscores |
+You can attach up to 10 skills per agent. Skill names can only contain letters, numbers, hyphens, and underscores.

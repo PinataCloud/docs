@@ -9,47 +9,46 @@ icon: "grid-2"
   Templates are currently in beta.
 </Note>
 
-Templates are pre-configured agent packages with bundled [skills](/agents/skills), required [secrets](/agents/secrets), and default settings. Browse at [agents.pinata.cloud/templates](https://agents.pinata.cloud/templates) or use the [CLI](/tools/cli/agents#templates).
+Templates are the fastest way to get a working agent. Instead of configuring everything yourself, pick a template that does what you need — it comes with the right skills, settings, and personality already set up. Just add your API keys and deploy.
 
-## Browsing Templates
+## Find a Template
 
-Filter templates using the tabs:
+Browse templates at [agents.pinata.cloud/templates](https://agents.pinata.cloud/templates). You'll see two sections:
 
-| Tab | Description |
-| --- | ----------- |
-| **All** | All available templates |
-| **General** | General-purpose agents |
-| **My Submissions** | Templates you've submitted |
+**Agent Marketplace** — Community and partner templates ready to deploy. You'll find agents for trading, social media, productivity, and more.
 
-## Template Details
+**My Templates** — Templates you've created or submitted. Use these to quickly spin up copies of your own agent configurations.
 
-Click a template to view:
+Click any template to see what it does, what skills it includes, and what secrets you'll need to provide.
 
-- **Description** — What it does
-- **Category** and **Tags**
-- **Version**
-- **Required Setup** — Secrets you need to provide
+## Deploy It
 
-### Required Setup
+Once you've found a template you like:
 
-Templates list the secrets needed before deployment. Example for Telegram Bot:
+1. Click **Deploy This Agent**
+2. Give your agent a name
+3. Add any secrets the template requires (usually just your LLM API key)
+4. Click **Deploy**
 
-| Secret | Description |
-| ------ | ----------- |
-| `ANTHROPIC_API_KEY` | Anthropic API key for Claude |
-| `TELEGRAM_BOT_TOKEN` | Token from BotFather |
+Your agent will spin up in about 30 seconds. You'll land on its chat page, ready to go.
 
-Add these to your [Secrets vault](/agents/secrets) before deploying.
+### What About Secrets?
 
-## Deploying
+Most templates need at least an LLM provider key (like `ANTHROPIC_API_KEY`). Some need additional keys — a Telegram template needs your bot token, a trading template might need exchange API keys.
 
-1. Select a template
-2. Review **Required Setup**
-3. Add any missing secrets
-4. Click **Deploy This Agent**
+The template page shows exactly what's required. If you haven't added those secrets yet, you'll be prompted during setup. Or add them ahead of time in your [secrets vault](/agents/secrets).
 
-## Next Steps
+## Using the CLI
 
-<Card title="Create Your Own Template" icon="hammer" href="/agents/templates/creating">
-  Share your agent configuration as a template for others to deploy.
+```bash
+pinata agents templates list                    # Browse templates
+pinata agents create --template <template-id>   # Deploy one
+```
+
+## Create Your Own
+
+Built something useful? Package it as a template and share it with others — or just use it to quickly spin up copies of your own agents.
+
+<Card title="Creating Templates" icon="hammer" href="/agents/templates/creating">
+  Learn how to package your agent as a reusable template.
 </Card>

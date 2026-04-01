@@ -1,0 +1,89 @@
+---
+title: "Tasks"
+description: "Schedule prompts to run automatically"
+icon: "clock"
+---
+
+Tasks let you schedule prompts that run automatically — on a schedule, at a specific time, or on a recurring interval. Use them for daily check-ins, periodic reports, automated workflows, or anything else you want your agent to do without you having to ask.
+
+## Create a Task
+
+Open your agent → **Tasks** → **Add Task**.
+
+You'll configure:
+
+1. **Name** — What to call this task
+2. **Schedule** — When it runs
+3. **Prompt** — What to tell your agent
+4. **Delivery** — Where to send the response (optional)
+
+### Schedule Types
+
+**Cron expression** — Standard cron syntax for complex schedules.
+
+```
+0 9 * * *      # Every day at 9am
+0 */6 * * *    # Every 6 hours
+0 9 * * 1-5    # Weekdays at 9am
+```
+
+**Interval** — Run every N minutes/hours.
+
+**One-time** — Run once at a specific date and time.
+
+You can also set a timezone so schedules run at the right local time.
+
+### Prompt
+
+This is what your agent receives when the task runs. Write it like you're sending a message:
+
+- "Check my portfolio and summarize any significant changes"
+- "Review yesterday's logs and flag anything unusual"
+- "Generate the weekly status report"
+
+You can optionally specify which model to use and a timeout.
+
+### Delivery
+
+By default, task results stay in your agent's conversation history. But you can also:
+
+**Announce to a channel** — Send the response to Telegram, Slack, or Discord. Useful for alerts or reports you want pushed to you.
+
+**Webhook** — POST the response to a URL. Useful for integrations with other systems.
+
+## Managing Tasks
+
+Your tasks list shows each task with its schedule and status.
+
+**Run now** — Trigger a task immediately without waiting for the schedule.
+
+**Enable/disable** — Pause a task without deleting it.
+
+**Edit** — Change the schedule, prompt, or delivery settings.
+
+**Delete** — Remove the task entirely.
+
+### Run History
+
+Click a task to see its run history — when it ran, whether it succeeded, and what the agent responded.
+
+## Using the CLI
+
+```bash
+# List tasks
+pinata agents tasks list <agent-id>
+
+# Create a task
+pinata agents tasks create <agent-id>
+
+# Run a task now
+pinata agents tasks run <agent-id> <task-id>
+
+# Delete a task
+pinata agents tasks delete <agent-id> <task-id>
+```
+
+## Limits
+
+- Up to 20 tasks per agent
+- Minimum interval is 1 minute

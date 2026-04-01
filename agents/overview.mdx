@@ -4,97 +4,110 @@ description: "Deploy hosted OpenClaw agents through Pinata"
 icon: "lobster"
 ---
 
-Pinata Agents are hosted [OpenClaw](https://openclaw.org) instances. Each agent runs in an isolated container with its own workspace, skills, and secrets.
+Pinata Agents are hosted [OpenClaw](https://openclaw.org) instances — AI agents that can run code, browse the web, manage files, and connect to external services. Each agent runs in its own isolated container with a persistent workspace.
 
 <Note>
   Agents require a paid Pinata plan. [Upgrade here](https://app.pinata.cloud/billing).
 </Note>
 
-## Navigation
+## Get Your First Agent Running
 
-Open [agents.pinata.cloud](https://agents.pinata.cloud) to access the Agents platform. Use the command palette (**⌘K** or **Search**) to quickly navigate and take actions:
+This takes about 2 minutes. You'll connect an LLM provider, create an agent, and start chatting.
 
-| Section | Contents |
-| ------- | -------- |
-| **Agents** | Your agents with status |
-| **Pages** | My Agents, Skills, Secrets, Templates, Workspaces |
-| **Workspaces** | Switch between [workspaces](/account-management/workspaces) |
-| **Actions** | Create Agent, Upload Skill, Add Secret, Connect providers, and more |
+### 1. Add Your API Key
 
-## Quick Start
+Your agent needs access to an LLM to think and respond. Head to [agents.pinata.cloud/secrets](https://agents.pinata.cloud/secrets) and you'll see cards for the major providers at the top.
 
-### 1. Connect an LLM Provider
+Click **Connect** on whichever you use — Anthropic, OpenAI, OpenRouter, Gemini, or Venice — paste your API key, and save. That's it.
 
-Your agent needs an LLM provider to run. Open the command palette and select:
+<Tip>
+  Don't have an API key yet? [Anthropic](https://console.anthropic.com/), [OpenAI](https://platform.openai.com/), and [OpenRouter](https://openrouter.ai/) all offer free trial credits.
+</Tip>
 
-- **Connect Anthropic** → `ANTHROPIC_API_KEY`
-- **Connect OpenAI** → `OPENAI_API_KEY`
-- **Connect OpenRouter** → `OPENROUTER_API_KEY`
+### 2. Create Your Agent
 
-Or add the key manually in [Secrets](/agents/secrets).
+Go to [agents.pinata.cloud/agents](https://agents.pinata.cloud/agents) and click **Create Agent**.
 
-### 2. Create an Agent
+You have two paths:
 
-Click **Create Agent** or use the command palette.
+**Use a template** if you want something working fast. Templates come pre-configured with skills, settings, and personality — just add your secrets and deploy. Browse templates at [agents.pinata.cloud/templates](https://agents.pinata.cloud/templates).
 
-**Start from a Template** — Select a pre-configured [template](/agents/templates) to skip manual setup. Templates include skills, required secrets, and default settings.
+**Build from scratch** if you want full control. The wizard walks you through:
 
-**Or configure manually:**
+1. **Identity** — Pick a personality (Atlas, Nova, Sage) or create your own. Give it a name.
+2. **Workspace** — The default includes Node.js, Python, and common tools. Add [skills](/agents/skills) if you want extra capabilities.
+3. **Connect** — Select your LLM provider and add any other API keys your agent needs.
+4. **Deploy** — Hit the button and wait about 30 seconds.
 
-**Step 1: Identity** — Choose a personality preset (Atlas, Nova, Sage) or create a custom one. Enter a name and optional description.
+### 3. Start Talking
 
-**Step 2: Workspace** — The default Pinata workspace includes Node.js, Python, and common tools. Optionally add [skills](/agents/skills).
+Once your agent is running, you'll land on its chat interface. Say hello. Ask it to help you with something. It can write code, create files, search the web, and more.
 
-**Step 3: Connect** — Select your LLM provider (shows "Available" when the key exists). Add any additional secrets your agent needs. Optionally configure [channels](/agents/channels).
+## What's in the Agent Dashboard
 
-**Step 4: Deploy** — Click **Deploy Agent**. Once provisioning completes, you're redirected to your agent's detail page.
+Click any agent to open its detail page. Here's what you'll find:
 
-## Agent Detail Page
+**Chat** — Your conversation interface. You can switch models from the dropdown in the top right.
 
-The sidebar provides access to all agent features:
+**Channels** — Connect your agent to Telegram, Slack, or Discord so others can talk to it too.
 
-| Section | Purpose |
-| ------- | ------- |
-| **Chat** | Conversation interface |
-| **Channels** | Messaging platform connections |
-| **Snapshots** | Workspace versions and git access |
-| **Skills** | Attached skill packages |
-| **Secrets** | Environment variables |
-| **Models** | LLM provider configuration |
-| **Routes** | Port forwarding and domains |
-| **Tasks** | Scheduled jobs |
+**Snapshots** — Version history of your agent's workspace, plus git access for local editing.
+
+**Skills** — Packages that give your agent new abilities, like IPFS storage or on-chain registration.
+
+**Secrets** — API keys and credentials your agent can access as environment variables.
+
+**Models** — Configure which models your agent can use and set the default.
+
+**Routes** — Expose web servers or APIs running inside your agent to the internet.
+
+**Tasks** — Schedule prompts to run automatically.
 
 ### Dev Tools
 
-| Tool | Purpose |
-| ---- | ------- |
-| **Console** | Terminal access to your agent's container |
-| **Logs** | Real-time logs with search, level filters (TRACE, DEBUG, INFO, WARN, ERROR, FATAL), and export |
-| **Danger** | Agent settings, paired devices, and actions (restart, delete) |
+When you need to debug or dig deeper:
 
-### Git Access
+- **Console** — Full terminal access to your agent's container
+- **Logs** — Real-time logs with level filtering, search, and export
+- **Danger** — Agent settings, OpenClaw version, restart, and delete
 
-Clone and edit your agent's workspace directly:
+<Tip>
+  Press **⌘K** (or **Ctrl+K**) anywhere to open the command palette for quick navigation to agents, pages, and actions.
+</Tip>
+
+### Working with Git
+
+Want to edit your agent's workspace locally? Clone it:
 
 ```bash
-git clone https://agents.pinata.cloud/v0/agents/{agentId}/git {name}
+git clone https://agents.pinata.cloud/v0/agents/{agentId}/git my-agent
 ```
 
-Click **Copy with Token** in the Snapshots section to include authentication.
+Click **Copy with Token** in the Snapshots section to get the URL with authentication included.
+
+## Using the CLI
+
+Everything in the UI is also available through the [CLI](/tools/cli/agents):
+
+```bash
+pinata agents list              # See your agents
+pinata agents create            # Create a new agent
+pinata agents get <agent-id>    # Get agent details
+```
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Routes" icon="network-wired" href="/agents/routes">
-    Expose services to the internet
+  <Card title="Templates" icon="grid-2" href="/agents/templates/overview">
+    Deploy a pre-configured agent in one click
   </Card>
   <Card title="Channels" icon="comments" href="/agents/channels">
-    Connect messaging platforms
+    Let others talk to your agent on Telegram, Slack, or Discord
   </Card>
   <Card title="Skills" icon="wand-magic-sparkles" href="/agents/skills">
-    Extend agent capabilities
+    Give your agent new abilities
   </Card>
-  <Card title="Secrets" icon="key" href="/agents/secrets">
-    Manage credentials
+  <Card title="Routes" icon="network-wired" href="/agents/routes">
+    Expose a web app or API to the internet
   </Card>
 </CardGroup>

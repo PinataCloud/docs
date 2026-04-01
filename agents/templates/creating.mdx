@@ -4,15 +4,22 @@ description: "Share your agent configuration as a template"
 icon: "hammer"
 ---
 
-Share your agent configuration as a template for others to deploy. Templates are pulled from public GitHub or GitLab repositories.
+Templates let you package an agent configuration for reuse or sharing. This guide walks through creating a template, testing it by deploying your own agent, and optionally submitting it to the marketplace.
 
 <Card horizontal icon="github" href="https://github.com/PinataCloud/agent-template" title="Reference Template">
   Clone this starter repo to create your own template.
 </Card>
 
-## Repository Structure
+## Clone the Starter
 
-Your repository must include:
+Fork or clone the [reference template](https://github.com/PinataCloud/agent-template) to get started:
+
+```bash
+git clone https://github.com/PinataCloud/agent-template my-template
+cd my-template
+```
+
+Your repository should have this structure:
 
 ```
 manifest.json                # Agent config with all options
@@ -27,16 +34,16 @@ workspace/
   HEARTBEAT.md               # Periodic tasks (empty by default)
 ```
 
-## manifest.json
+## Configure manifest.json
 
-The manifest includes a `_docs` block documenting every available field. Here's an overview:
+The manifest defines your agent's identity, required secrets, skills, and behavior. It includes a `_docs` block documenting every field.
 
 | Section | What it does |
 | ------- | ------------ |
 | `agent` | Name, description, vibe, emoji |
 | `model` | Default AI model |
 | `secrets` | Encrypted API keys and credentials |
-| `skills` | Attachable skill packages from ClawHub (max 20) |
+| `skills` | Attachable skill packages — use CIDs or ClawHub slugs (max 20) |
 | `tasks` | Cron-scheduled prompts (max 20) |
 | `scripts` | Lifecycle hooks — `build` runs after git push, `start` runs on agent boot |
 | `routes` | Port forwarding for web apps/APIs (max 10) |
@@ -75,29 +82,34 @@ The manifest includes a `_docs` block documenting every available field. Here's 
     "build": "npm install && npm run build",
     "start": "node dist/server.js"
   },
+  "skills": [
+    "@pinata/api"
+  ],
   "routes": [
     { "path": "/dashboard", "port": 3000, "protected": false }
   ]
 }
 ```
 
-## Workspace Files
+## Customize Workspace Files
 
-Files in `workspace/` are copied to the agent's workspace on deploy:
+Files in `workspace/` are copied to the agent's workspace on deploy. Customize these to define your agent's personality and behavior:
 
 | File | Purpose |
 | ---- | ------- |
 | `BOOTSTRAP.md` | First-run conversation guide (self-deletes after setup) |
-| `SOUL.md` | Agent personality and principles — customize this |
+| `SOUL.md` | Agent personality and principles — **customize this** |
 | `AGENTS.md` | Workspace conventions, memory system, safety rules |
 | `IDENTITY.md` | Agent name, vibe, emoji (filled in during bootstrap) |
 | `USER.md` | Notes about the human (learned over time) |
 | `TOOLS.md` | Environment-specific notes |
 | `HEARTBEAT.md` | Periodic tasks (empty by default) |
 
-## Web Apps and APIs
+Focus on `SOUL.md` to give your agent a distinct personality, and `BOOTSTRAP.md` if you want a custom onboarding flow.
 
-If your agent runs a server, API, or frontend dev server, you need two things in `manifest.json`:
+## Add Web App Support (Optional)
+
+If your agent runs a server, API, or frontend dev server, add two things to `manifest.json`:
 
 1. **`scripts`** — lifecycle hooks that install deps and start the server
 2. **`routes`** — port forwarding rules that expose the server to the internet
@@ -118,8 +130,9 @@ Example from a Vite + React agent:
 
 **Important details:**
 
-- `build` runs after every git push — use it to install dependencies or compile assets
-- `start` runs on agent boot — use it to launch your server or long-running process
+- **`build`** — Runs once after deploy or git push (e.g. `npm install`, compile). Executes from `/home/node/clawd`. Output logged to `/tmp/user-build.log`. Max 5 min timeout. If build fails, start does not run.
+- **`start`** — Launches a long-running background process after build completes (e.g. a web server). Executes from `/home/node/clawd`. Output logged to `/tmp/user-start.log`. Runs detached so it survives the runner exiting.
+- **Retry scripts** — If you need to re-run the build/start lifecycle (e.g. after pushing changes), use the **Retry Scripts** option in your agent's settings or call the API endpoint.
 - Your server **must bind to `0.0.0.0`**, not `localhost`, or it won't be reachable
 - Set `protected: false` for public routes, or `true` (default) to require auth
 - Use `__AGENT_HOST__` as a placeholder in config files — it gets replaced at runtime with the agent's public hostname
@@ -142,7 +155,28 @@ export default defineConfig({
 });
 ```
 
-## Validating and Submitting
+## Deploy From Your Template
+
+You can deploy an agent from your template before submitting it to the marketplace. This lets you test and iterate on your template.
+
+**Via the UI:**
+
+1. Go to [agents.pinata.cloud/agents](https://agents.pinata.cloud/agents) and click **Create Agent**
+2. Select **Start from a Template**
+3. Paste your public repository URL (GitHub or GitLab)
+4. Complete the setup flow and deploy
+
+**Via the CLI:**
+
+```bash
+pinata agents create --template https://github.com/you/my-template
+```
+
+Push changes to your repo and redeploy to test updates. Once you're happy with your template, you can optionally submit it to the marketplace.
+
+## Submit to Marketplace (Optional)
+
+Share your template with the community by submitting it for review.
 
 **Via the UI:**
 
@@ -165,9 +199,12 @@ pinata agents templates submit https://github.com/user/my-template
 pinata agents templates submit https://github.com/user/my-template --branch develop
 ```
 
+Template status progression:
+- **draft** → **pending_review** → **published** (or **rejected**)
+
 ## Managing Submissions
 
-Track and update your templates in the **My Submissions** tab or via CLI:
+Track and update your templates in [**My Templates**](https://agents.pinata.cloud/templates?tab=mine) or via CLI:
 
 ```bash
 # List your submissions
@@ -179,6 +216,3 @@ pinata agents templates update <template-id>
 # Archive a submission
 pinata agents templates delete <template-id>
 ```
-
-Template status progression:
-- **draft** → **pending_review** → **published** (or **rejected**)
