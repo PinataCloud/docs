@@ -1,0 +1,79 @@
+---
+title: "Snapshots"
+description: "Version history and git access for your agent's workspace"
+icon: "clock-rotate-left"
+---
+
+Snapshots capture the state of your agent's workspace. They're created automatically as your agent works, and you can restore to any previous state if something goes wrong.
+
+## How Snapshots Work
+
+Your agent's workspace is automatically captured every minute when changes are detected. Each snapshot includes:
+
+- All files in the workspace
+- A content identifier (CID) for the snapshot
+- Timestamp of when it was captured
+
+Open your agent → **Snapshots** to see:
+
+- **Status** — Whether the workspace is live and when it last synced
+- **Lifecycle Scripts** — Build/start script status
+- **Scheduled Tasks** — Task configuration status
+- **Snapshots** — Total count of saved snapshots
+
+## Restore to a Previous State
+
+If your agent's workspace gets into a bad state, you can restore from any previous snapshot:
+
+1. Open **Snapshots**
+2. Browse the snapshot history
+3. Click on a snapshot to see what changed
+4. Select **Restore** to roll back to that state
+
+<Warning>
+  Restoring replaces your current workspace with the snapshot contents. Any changes since that snapshot will be lost.
+</Warning>
+
+## Git Access
+
+You can clone your agent's workspace locally, make changes, and push them back. This is useful for:
+
+- Editing files in your preferred IDE
+- Making bulk changes
+- Version controlling your agent's configuration
+
+### Clone the Workspace
+
+```bash
+git clone https://agents.pinata.cloud/v0/agents/{agentId}/git my-agent
+```
+
+Click **Copy with Token** to get the URL with authentication included.
+
+### Make Changes and Push
+
+```bash
+# Edit files in workspace/ and skills/
+git add -A && git commit -m "my changes"
+git push
+```
+
+### Pull Changes Made by the Agent
+
+Your agent modifies its own workspace as it works. Pull to sync those changes locally:
+
+```bash
+git pull
+```
+
+### Set Up Persistent Credentials
+
+Tired of copying the token each time? Set up git credentials to remember your authentication:
+
+1. In the Snapshots section, expand **Setup Persistent Credentials**
+2. Follow the instructions to configure git credential storage
+3. Future git operations will authenticate automatically
+
+<Tip>
+  After pushing changes, your agent's build script (if configured) will run automatically. Check the Snapshots section to see the lifecycle script status.
+</Tip>

@@ -66,10 +66,15 @@
                 "icon": "lobster",
                 "pages": [
                   "agents/overview",
-                  "agents/routes",
-                  "agents/channels",
-                  "agents/skills",
+                  "agents/chat",
                   "agents/secrets",
+                  "agents/models",
+                  "agents/skills",
+                  "agents/channels",
+                  "agents/routes",
+                  "agents/tasks",
+                  "agents/snapshots",
+                  "agents/devtools",
                   {
                     "group": "Templates",
                     "icon": "clone",

@@ -18,7 +18,7 @@ This takes about 2 minutes. You'll connect an LLM provider, create an agent, and
 
 Your agent needs access to an LLM to think and respond. Head to [agents.pinata.cloud/secrets](https://agents.pinata.cloud/secrets) and you'll see cards for the major providers at the top.
 
-Click **Connect** on whichever you use — Anthropic, OpenAI, or OpenRouter — paste your API key, and save. That's it.
+Click **Connect** on whichever you use — Anthropic, OpenAI, OpenRouter, Gemini, or Venice — paste your API key, and save. That's it.
 
 <Tip>
   Don't have an API key yet? [Anthropic](https://console.anthropic.com/), [OpenAI](https://platform.openai.com/), and [OpenRouter](https://openrouter.ai/) all offer free trial credits.
@@ -47,27 +47,33 @@ Once your agent is running, you'll land on its chat interface. Say hello. Ask it
 
 Click any agent to open its detail page. Here's what you'll find:
 
-**Chat** — Your conversation interface. This is where you'll spend most of your time.
+**Chat** — Your conversation interface. You can switch models from the dropdown in the top right.
 
 **Channels** — Connect your agent to Telegram, Slack, or Discord so others can talk to it too.
 
-**Snapshots** — Version history of your agent's workspace. You can also clone it via git to edit files locally.
+**Snapshots** — Version history of your agent's workspace, plus git access for local editing.
 
 **Skills** — Packages that give your agent new abilities, like IPFS storage or on-chain registration.
 
 **Secrets** — API keys and credentials your agent can access as environment variables.
 
+**Models** — Configure which models your agent can use and set the default.
+
 **Routes** — Expose web servers or APIs running inside your agent to the internet.
 
-**Tasks** — Schedule prompts to run on a cron schedule.
+**Tasks** — Schedule prompts to run automatically.
 
 ### Dev Tools
 
 When you need to debug or dig deeper:
 
 - **Console** — Full terminal access to your agent's container
-- **Logs** — Real-time logs with filtering and search
-- **Danger** — Restart, delete, or reconfigure your agent
+- **Logs** — Real-time logs with level filtering, search, and export
+- **Danger** — Agent settings, OpenClaw version, restart, and delete
+
+<Tip>
+  Press **⌘K** (or **Ctrl+K**) anywhere to open the command palette for quick navigation to agents, pages, and actions.
+</Tip>
 
 ### Working with Git
 

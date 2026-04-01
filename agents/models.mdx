@@ -1,0 +1,60 @@
+---
+title: "Models"
+description: "Configure which AI models your agent can use"
+icon: "microchip"
+---
+
+Each agent can access multiple AI models from different providers. You control which models are available and which one is used by default.
+
+## View Available Models
+
+Open your agent → **Models**. You'll see models grouped by provider — only providers you've connected in [Secrets](/agents/secrets) will appear here.
+
+Each provider section shows:
+- Models currently enabled for this agent
+- Which model is set as the default
+- An **+ Add Model** button to enable more
+
+## Add a Model
+
+1. Click **+ Add Model** in the provider section
+2. Select from available models
+3. The model is now available for this agent
+
+Your agent can switch between any enabled models during conversations.
+
+## Set the Default Model
+
+The default model is what your agent uses unless you specify otherwise. One model will show a **DEFAULT** badge.
+
+To change it, click the model you want as default and select **Set as Default**.
+
+## Remove a Model
+
+Click the **×** next to any model to remove it from this agent. You can always add it back later.
+
+## Switch Models in Chat
+
+In the chat interface, use the model dropdown in the top right to switch between enabled models mid-conversation. This is useful for:
+
+- Using a faster model for simple tasks
+- Switching to a more capable model for complex reasoning
+- Testing how different models handle the same prompt
+
+## Supported Models
+
+Available models depend on your connected providers:
+
+**Anthropic** — Claude Opus, Sonnet, Haiku (various versions)
+
+**OpenAI** — GPT models (including via Codex subscription)
+
+**OpenRouter** — Access to models from multiple providers
+
+**Gemini** — Google's Gemini models
+
+**Venice** — Privacy-focused models
+
+<Note>
+  New models are added regularly. Check the Models section in your agent to see the latest available options.
+</Note>

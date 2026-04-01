@@ -43,7 +43,7 @@ The manifest defines your agent's identity, required secrets, skills, and behavi
 | `agent` | Name, description, vibe, emoji |
 | `model` | Default AI model |
 | `secrets` | Encrypted API keys and credentials |
-| `skills` | Attachable skill packages from ClawHub (max 20) |
+| `skills` | Attachable skill packages — use CIDs or ClawHub slugs (max 20) |
 | `tasks` | Cron-scheduled prompts (max 20) |
 | `scripts` | Lifecycle hooks — `build` runs after git push, `start` runs on agent boot |
 | `routes` | Port forwarding for web apps/APIs (max 10) |
@@ -82,6 +82,9 @@ The manifest defines your agent's identity, required secrets, skills, and behavi
     "build": "npm install && npm run build",
     "start": "node dist/server.js"
   },
+  "skills": [
+    "@pinata/api"
+  ],
   "routes": [
     { "path": "/dashboard", "port": 3000, "protected": false }
   ]
@@ -129,6 +132,7 @@ Example from a Vite + React agent:
 
 - **`build`** — Runs once after deploy or git push (e.g. `npm install`, compile). Executes from `/home/node/clawd`. Output logged to `/tmp/user-build.log`. Max 5 min timeout. If build fails, start does not run.
 - **`start`** — Launches a long-running background process after build completes (e.g. a web server). Executes from `/home/node/clawd`. Output logged to `/tmp/user-start.log`. Runs detached so it survives the runner exiting.
+- **Retry scripts** — If you need to re-run the build/start lifecycle (e.g. after pushing changes), use the **Retry Scripts** option in your agent's settings or call the API endpoint.
 - Your server **must bind to `0.0.0.0`**, not `localhost`, or it won't be reachable
 - Set `protected: false` for public routes, or `true` (default) to require auth
 - Use `__AGENT_HOST__` as a placeholder in config files — it gets replaced at runtime with the agent's public hostname
@@ -200,7 +204,7 @@ Template status progression:
 
 ## Managing Submissions
 
-Track and update your templates in [**My Submissions**](https://agents.pinata.cloud/templates?tab=mine) or via CLI:
+Track and update your templates in [**My Templates**](https://agents.pinata.cloud/templates?tab=mine) or via CLI:
 
 ```bash
 # List your submissions
