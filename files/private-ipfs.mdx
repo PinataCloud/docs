@@ -3,6 +3,10 @@ title: "Private IPFS"
 icon: "lock"
 ---
 
+<Note>
+  Available on Enterprise plans. Contact [sales@pinata.cloud](mailto:sales@pinata.cloud) for more info. 
+</Note>
+
 IPFS has traditionally been a fully public network, so anything you pin can be accessed by anyone if they have the CID. While this is a benefit for a majority of blockchain applications, there are still cases where true privacy is needed. This is why Pinata has built Private IPFS, a new service that allows you to keep content private and only share when authorized.
 
 ## Private vs Public Network
@@ -21,7 +25,7 @@ const publicUpload = await pinata.upload.public.file(file)
 const privateUpload = await pinata.upload.private.file(file)
 ```
 
-```typescript {11} API
+```typescript API highlight={11}
 const JWT = "PINATA_JWT";
 
 async function uploadFile() {
@@ -66,7 +70,7 @@ const files = await pinata.files.public.list()
 const files = await pinata.files.private.list()
 ```
 
-```typescript {6,8} API
+```typescript API highlight={6,8}
 const JWT = "YOUR_PINATA_JWT";
 
 async function files() {
@@ -108,7 +112,7 @@ const group = await pinata.groups.private.create({
 });
 ```
 
-```typescript {5,7} API
+```typescript API highlight={5,7}
 const JWT = "YOUR_PINATA_JWT";
 
 async function group() {
@@ -138,7 +142,6 @@ async function group() {
 ```
 
 </CodeGroup>
-
 
 ## Accessing Private Files
 
@@ -201,27 +204,24 @@ Want to get paid for access to your private content? Check out [x402 Monetizatio
 
 Pinata has built several example apps and tutorials you can reference to see how Private IPFS enables token gated experiences in blockchain and crpto contexts.
 
-<Card horizontal title="PinataCloud/concealmint-client" href="https://github.com/PinataCloud/concealmint-client" icon="github">
+<Card title="PinataCloud/concealmint-client" icon="github" horizontal href="https://github.com/PinataCloud/concealmint-client">
   GitHub repo for [CONCEALMINT](https://concealmint.com), an app for creating and access Private NFTs
 </Card>
 
 <CardGroup cols={2}>
+  <Card title="Making Private NFTs" href="https://pinata.cloud/blog/making-private-nfts/" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/781.png">
+    By using Private IPFS you can gate acceess to files based on NFT ownership
+  </Card>
 
-<Card img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/12/781.png" title="Making Private NFTs" href="https://pinata.cloud/blog/making-private-nfts/">
-  By using Private IPFS you can gate acceess to files based on NFT ownership
-</Card>
+  <Card title="How to Build a Farcaster Native Gumroad on Base" href="https://www.pinata.cloud/blog/how-to-build-a-farcaster-native-gumroad-on-base/" img="https://www.pinata.cloud/blog/content/images/size/w2000/format/avif/2024/10/Blog-19.png">
+    Sell digital content inside Farcaster frames and keeping it secure through Private IPFS
+  </Card>
 
-<Card img="https://www.pinata.cloud/blog/content/images/size/w2000/format/avif/2024/10/Blog-19.png" title="How to Build a Farcaster Native Gumroad on Base" href="https://www.pinata.cloud/blog/how-to-build-a-farcaster-native-gumroad-on-base/">
-  Sell digital content inside Farcaster frames and keeping it secure through Private IPFS
-</Card>
+  <Card title="How To Build Simple Logging For Your Crypto App With Private IPFS" href="https://www.pinata.cloud/blog/how-to-build-simple-logging-for-your-crypto-app-with-private-ipfs/" img="https://www.pinata.cloud/blog/content/images/size/w2000/format/avif/2025/01/1112.png">
+    Add simple yet private logging to your crypto app using Private IPFS
+  </Card>
 
-<Card img="https://www.pinata.cloud/blog/content/images/size/w2000/format/avif/2025/01/1112.png" title="How To Build Simple Logging For Your Crypto App With Private IPFS" href="https://www.pinata.cloud/blog/how-to-build-simple-logging-for-your-crypto-app-with-private-ipfs/">
-  Add simple yet private logging to your crypto app using Private IPFS
-</Card>
-
-<Card img="https://www.pinata.cloud/blog/content/images/size/w2000/format/avif/2024/10/Blog-20.png" title="Building a Macintosh-Inspired Retro File System in the Browser" href="https://www.pinata.cloud/blog/building-a-macintosh-inspired-retro-file-system-in-the-browser/">
-  See the possibilities of file management using Groups and Private IPFS
-</Card>
-
-
+  <Card title="Building a Macintosh-Inspired Retro File System in the Browser" href="https://www.pinata.cloud/blog/building-a-macintosh-inspired-retro-file-system-in-the-browser/" img="https://www.pinata.cloud/blog/content/images/size/w2000/format/avif/2024/10/Blog-20.png">
+    See the possibilities of file management using Groups and Private IPFS
+  </Card>
 </CardGroup>
