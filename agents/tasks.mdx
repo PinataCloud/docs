@@ -6,9 +6,11 @@ icon: "clock"
 
 Tasks let you schedule prompts that run automatically — on a schedule, at a specific time, or on a recurring interval. Use them for daily check-ins, periodic reports, automated workflows, or anything else you want your agent to do without you having to ask.
 
+{/* Screenshot: Scheduled Tasks tab showing tasks with Agent Message badge, schedule, run history, and error status */}
+
 ## Create a Task
 
-Open your agent → **Tasks** → **Add Task**.
+Open your agent → **Tasks** → **+ ADD**.
 
 You'll configure:
 
@@ -42,6 +44,13 @@ This is what your agent receives when the task runs. Write it like you're sendin
 - "Generate the weekly status report"
 
 You can optionally specify which model to use and a timeout.
+
+### Message Type
+
+Tasks can deliver prompts in two ways:
+
+- **Agent Message** — The default. Your prompt is delivered as a chat message. Use this for most tasks.
+- **System Event** — Delivered as a system-level event rather than a chat message. Use this for heartbeat checks or maintenance tasks.
 
 ### Delivery
 

@@ -6,18 +6,20 @@ icon: "microchip"
 
 Each agent can access multiple AI models from different providers. You control which models are available and which one is used by default.
 
+{/* Screenshot: Models tab showing provider sections (Anthropic, OpenAI Codex) with enabled models and DEFAULT badge */}
+
 ## View Available Models
 
 Open your agent → **Models**. You'll see models grouped by provider — only providers you've connected in [Secrets](/agents/secrets) will appear here.
 
 Each provider section shows:
 - Models currently enabled for this agent
-- Which model is set as the default
-- An **+ Add Model** button to enable more
+- Which model is set as the default (marked with a **DEFAULT** badge)
+- A **+ ADD** button to enable more
 
 ## Add a Model
 
-1. Click **+ Add Model** in the provider section
+1. Click **+ ADD** in the provider section
 2. Select from available models
 3. The model is now available for this agent
 
@@ -35,7 +37,7 @@ Click the **×** next to any model to remove it from this agent. You can always 
 
 ## Switch Models in Chat
 
-In the chat interface, use the model dropdown in the top right to switch between enabled models mid-conversation. This is useful for:
+In the chat interface, use the model dropdown in the sidebar to switch between enabled models mid-conversation. This is useful for:
 
 - Using a faster model for simple tasks
 - Switching to a more capable model for complex reasoning
@@ -45,13 +47,11 @@ In the chat interface, use the model dropdown in the top right to switch between
 
 Available models depend on your connected providers:
 
-**Anthropic** — Claude Opus, Sonnet, Haiku (various versions)
+**Anthropic** — Claude Sonnet, Opus, Haiku (e.g., `claude-sonnet-4-6`, `claude-opus-4-6`, `claude-haiku-4-5`)
 
-**OpenAI** — GPT models (including via Codex subscription)
+**OpenAI Codex** — GPT models (e.g., `gpt-5.4`)
 
 **OpenRouter** — Access to models from multiple providers
-
-**Gemini** — Google's Gemini models
 
 **Venice** — Privacy-focused models
 

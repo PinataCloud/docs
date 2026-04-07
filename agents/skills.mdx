@@ -8,11 +8,13 @@ Skills give your agent new abilities. Want your agent to store files on IPFS? Th
 
 Think of skills as plugins — pre-packaged code and instructions that teach your agent how to do something specific.
 
+{/* Screenshot: Skills Library page with All | Installed tab showing skill cards with versions and CIDs */}
+
 ## Browse Available Skills
 
 Head to [agents.pinata.cloud/skills](https://agents.pinata.cloud/skills) to see what's available.
 
-**Your Library** shows skills you've already installed. **ClawHub Community** is the marketplace where you'll find skills made by others.
+The **All | Installed** tab shows skills in your library. Switch to **Browse ClawHub** to find community skills made by others.
 
 ### Official Skills from Pinata
 
@@ -26,11 +28,15 @@ These are built and maintained by the Pinata team (look for the verified badge):
 
 ### Community Skills
 
-The community tab has skills for all sorts of things — Obsidian integration, self-improvement loops, API gateways, and more. Each shows download counts and ratings so you can see what's popular.
+The **Browse ClawHub** tab has skills for all sorts of things — Obsidian integration, self-improvement loops, API gateways, and more. Each skill card shows the author, download count, star count, and current version.
+
+Pinata-verified skills (like `@pinata/api`) show a verified badge and appear in both your library and ClawHub. Community skills are contributed by users and sorted by popularity.
+
+Use the search box to find skills by name.
 
 ## Install a Skill
 
-Click any skill to see what it does and what secrets it might need. If it looks useful, click **Install**. The skill gets added to your library.
+Click any skill to see its details — description, required secrets, files, and version history. If it looks useful, click **Install**. The skill gets added to your library.
 
 Installing doesn't attach the skill to any agent — it just makes it available to use.
 
@@ -40,20 +46,49 @@ Once a skill is in your library, you can attach it to any of your agents.
 
 **For new agents:** Add skills in Step 2 (Workspace) of the creation wizard.
 
-**For existing agents:** Open the agent → **Skills** → **Add** → pick from your library.
+**For existing agents:** Open the agent → **Skills** → **+ ADD** → pick from your library.
 
 When you attach a skill, its files get copied into your agent's workspace. Your agent can then read the skill's instructions and use its code.
+
+{/* Screenshot: Skill detail drawer showing description, required secrets, file browser, and version history */}
+
+Click any attached skill to open its detail drawer — you'll see the description, required secrets, a file browser, and version history.
+
+### Referencing Skills by Slug or CID
+
+When you add skills through the CLI or in a template's `manifest.json`, you can reference them by their **ClawHub slug** (like `@pinata/api`) or their **IPFS CID**. Slugs are the easier option for marketplace skills — they always resolve to the latest version.
+
+```json
+"skills": [
+  "@pinata/api",
+  "@pinata/memory-salience"
+]
+```
+
+CIDs are useful when you want to pin a specific version or use a self-hosted skill that isn't on ClawHub.
 
 <Tip>
   Detaching a skill removes its files from the agent but keeps the skill in your library. You can always reattach it later.
 </Tip>
+
+## Skill Versions
+
+Skills use version numbers (like `v1.0.0`) so you can track changes over time. You'll see the current version badge on each skill in your library and on attached skills.
+
+### Updating
+
+Open your agent → **Skills** and click into a skill to see its version history. If a newer version exists, you can update to get the latest code and instructions. For ClawHub skills, updates pull the latest version from the marketplace automatically.
+
+### Rolling Back
+
+If an update causes issues, open the skill's version history and select an earlier version to roll back to.
 
 ## Create Your Own Skill
 
 Have something useful your agent knows how to do? Package it as a skill.
 
 1. Create a folder with your skill files
-2. Add a `SKILL.md` file with this format:
+2. Add a `SKILL.md` file with YAML frontmatter including `name`, `description`, and optionally metadata (JSON with required env vars)
 
 ```markdown
 ---
@@ -66,7 +101,9 @@ description: What this skill does
 Instructions your agent should follow when using this skill.
 ```
 
-3. Click **Upload Skill** and select your folder
+3. In the Skills Library, click **Upload Skill**
+4. Choose your folder, enter a name and optional description
+5. Click **Upload & Register**
 
 <Note>
   Skills are uploaded to the public IPFS network. Don't include secrets or sensitive code.
@@ -75,8 +112,8 @@ Instructions your agent should follow when using this skill.
 ## Using the CLI
 
 ```bash
-pinata agents skills list            # See your library
-pinata agents skills upload <path>   # Upload a new skill
+pinata agents skills list              # See your library
+pinata agents skills create <path>     # Upload a new skill
 ```
 
 ## Limits

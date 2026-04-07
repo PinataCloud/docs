@@ -43,7 +43,7 @@ The manifest defines your agent's identity, required secrets, skills, and behavi
 | `agent` | Name, description, vibe, emoji |
 | `model` | Default AI model |
 | `secrets` | Encrypted API keys and credentials |
-| `skills` | Attachable skill packages — use CIDs or ClawHub slugs (max 20) |
+| `skills` | Attachable skill packages — use ClawHub slugs (e.g. `@pinata/api`) or CIDs (max 10) |
 | `tasks` | Cron-scheduled prompts (max 20) |
 | `scripts` | Lifecycle hooks — `build` runs after git push, `start` runs on agent boot |
 | `routes` | Port forwarding for web apps/APIs (max 10) |
@@ -54,39 +54,52 @@ The manifest defines your agent's identity, required secrets, skills, and behavi
   Remove the `_docs` block before submitting to the marketplace.
 </Warning>
 
+### Skills
+
+List the skills your agent should have. Use ClawHub slugs (like `@pinata/api`) for marketplace skills — they'll automatically resolve to the latest version when someone deploys your template. You can also use IPFS CIDs if you want to pin a specific version.
+
 ### Example
+
+Here's a complete manifest that includes secrets, skills, lifecycle scripts, a web route, and a daily scheduled task:
 
 ```json
 {
   "version": 1,
   "agent": {
-    "name": "TradeBot",
-    "description": "Crypto trading assistant with market analysis",
-    "emoji": "📈",
-    "vibe": "Professional and data-driven"
+    "name": "Useful Assistant",
+    "description": "Personal AI helper with file reading, web search, and memory management",
+    "emoji": "🧠",
+    "vibe": "Resourceful and opinionated"
   },
   "template": {
-    "slug": "tradebot",
-    "category": "trading",
-    "partnerName": "Your Name",
-    "tags": ["crypto", "defi", "alerts"]
+    "slug": "useful-assistant",
+    "category": "general",
+    "partnerName": "Pinata",
+    "tags": ["assistant", "personal", "productivity"]
   },
   "secrets": [
     {
-      "name": "COINGECKO_API_KEY",
-      "description": "API key from coingecko.com/api",
-      "required": true
+      "name": "EXAMPLE_API_KEY",
+      "description": "Optional API key for external service",
+      "required": false
     }
   ],
   "scripts": {
-    "build": "npm install && npm run build",
-    "start": "node dist/server.js"
+    "build": "cd workspace/projects/hello-test && npm install --include=dev",
+    "start": "cd workspace/projects/hello-test && npx vite --host 0.0.0.0"
   },
   "skills": [
     "@pinata/api"
   ],
   "routes": [
-    { "path": "/dashboard", "port": 3000, "protected": false }
+    { "port": 5173, "path": "/app", "protected": false }
+  ],
+  "tasks": [
+    {
+      "name": "daily-check-in",
+      "schedule": { "kind": "cron", "expr": "0 9 * * *" },
+      "payload": { "kind": "agentTurn", "text": "Good morning! Review my workspace and suggest priorities for today." }
+    }
   ]
 }
 ```
@@ -174,6 +187,8 @@ pinata agents create --template https://github.com/you/my-template
 
 Push changes to your repo and redeploy to test updates. Once you're happy with your template, you can optionally submit it to the marketplace.
 
+{/* Screenshot: My Templates page showing submitted template card with PENDING REVIEW status */}
+
 ## Submit to Marketplace (Optional)
 
 Share your template with the community by submitting it for review.
@@ -201,6 +216,7 @@ pinata agents templates submit https://github.com/user/my-template --branch deve
 
 Template status progression:
 - **draft** → **pending_review** → **published** (or **rejected**)
+- Published templates can be **archived** (soft-deleted) and resubmitted later
 
 ## Managing Submissions
 
