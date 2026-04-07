@@ -6,7 +6,7 @@ icon: "hammer"
 
 Templates let you package an agent configuration for reuse or sharing. This guide walks through creating a template, testing it by deploying your own agent, and optionally submitting it to the marketplace.
 
-<Card horizontal icon="github" href="https://github.com/PinataCloud/agent-template" title="Reference Template">
+<Card title="Reference Template" icon="github" horizontal href="https://github.com/PinataCloud/agent-template">
   Clone this starter repo to create your own template.
 </Card>
 
@@ -21,7 +21,7 @@ cd my-template
 
 Your repository should have this structure:
 
-```
+```text
 manifest.json                # Agent config with all options
 README.md                    # Description shown in marketplace listing
 workspace/
@@ -39,7 +39,7 @@ workspace/
 The manifest defines your agent's identity, required secrets, skills, and behavior. It includes a `_docs` block documenting every field.
 
 | Section | What it does |
-| ------- | ------------ |
+| --- | --- |
 | `agent` | Name, description, vibe, emoji |
 | `model` | Default AI model |
 | `secrets` | Encrypted API keys and credentials |
@@ -109,7 +109,7 @@ Here's a complete manifest that includes secrets, skills, lifecycle scripts, a w
 Files in `workspace/` are copied to the agent's workspace on deploy. Customize these to define your agent's personality and behavior:
 
 | File | Purpose |
-| ---- | ------- |
+| --- | --- |
 | `BOOTSTRAP.md` | First-run conversation guide (self-deletes after setup) |
 | `SOUL.md` | Agent personality and principles — **customize this** |
 | `AGENTS.md` | Workspace conventions, memory system, safety rules |
@@ -127,7 +127,7 @@ If your agent runs a server, API, or frontend dev server, add two things to `man
 1. **`scripts`** — lifecycle hooks that install deps and start the server
 2. **`routes`** — port forwarding rules that expose the server to the internet
 
-Example from a Vite + React agent:
+Example from a Vite \+ React agent:
 
 ```json
 {
@@ -187,7 +187,9 @@ pinata agents create --template https://github.com/you/my-template
 
 Push changes to your repo and redeploy to test updates. Once you're happy with your template, you can optionally submit it to the marketplace.
 
-{/* Screenshot: My Templates page showing submitted template card with PENDING REVIEW status */}
+<Frame>
+  ![Image](/images/image-27.png)
+</Frame>
 
 ## Submit to Marketplace (Optional)
 
@@ -215,7 +217,8 @@ pinata agents templates submit https://github.com/user/my-template --branch deve
 ```
 
 Template status progression:
-- **draft** → **pending_review** → **published** (or **rejected**)
+
+- **draft** → **pending\_review** → **published** (or **rejected**)
 - Published templates can be **archived** (soft-deleted) and resubmitted later
 
 ## Managing Submissions

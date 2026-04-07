@@ -6,13 +6,15 @@ icon: "terminal"
 
 The Dev Tools section gives you low-level access to your agent — a shell into the container, real-time logs, and the controls to restart or delete.
 
-{/* Screenshot: Console tab showing terminal session with working directory prompt */}
+<Frame>
+  ![Image](/images/image-37.png)
+</Frame>
 
 ## Console
 
 Open your agent → **Console** to get a shell directly into your agent's container.
 
-```
+```text
 --- Agent Console ---
 Working directory: /home/node/clawd/workspace
 
@@ -32,7 +34,9 @@ The working directory starts at `/home/node/clawd/workspace` — the same worksp
   Click the expand icon in the top-right for fullscreen mode.
 </Tip>
 
-{/* Screenshot: Logs tab showing log entries with level filters, search, and AUTO-FOLLOW enabled */}
+<Frame>
+  ![Image](/images/image-38.png)
+</Frame>
 
 ## Logs
 
@@ -54,12 +58,13 @@ The search box filters log content. Enable **AUTO-FOLLOW** to automatically scro
 ### Log Entries
 
 Each entry shows:
+
 - **Timestamp** — When the event occurred
 - **Level** — Severity (INFO, ERROR, etc.)
 - **Source** — Which component generated the log (e.g., `gateway/reload`)
 - **Message** — The log content
 
-Click the **+** button to expand an entry and see the full message.
+Click the **\+** button to expand an entry and see the full message.
 
 ### Exporting
 
@@ -80,7 +85,7 @@ This page shows your agent's current state under **General**, with actions at th
 ### Agent Details
 
 | Field | Description |
-|-------|-------------|
+| --- | --- |
 | **Agent ID** | Unique identifier for API calls and URLs |
 | **Status** | Running, starting, or stopped |
 | **Name** | Display name |
@@ -105,6 +110,7 @@ Click **Change** next to the Version field to check for and apply OpenClaw updat
 ### Restart Gateway
 
 Restarts your agent's gateway process. Use this when:
+
 - Your agent is behaving unexpectedly
 - You need to apply configuration changes
 - Connections seem stuck
@@ -116,6 +122,7 @@ Restarts your agent's gateway process. Use this when:
 ### Delete Agent
 
 Permanently deletes your agent, including:
+
 - The container
 - All workspace files and snapshots
 - All R2 data

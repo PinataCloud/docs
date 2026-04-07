@@ -17,11 +17,15 @@ Common use cases:
 
 If your agent just chats and runs scripts, you probably don't need routes.
 
+<Frame>
+  ![Image](/images/image-35.png)
+</Frame>
+
 {/* Screenshot: Domains & Routes tab showing path routes (PROTECTED) and custom domains (PUBLIC) with PREVIEW buttons */}
 
 ## Add a Route
 
-Open your agent → **Routes** → **+ ADD**.
+Open your agent → **Routes** → **\+ ADD**.
 
 You have two options: **Path Route** or **Custom Domain**.
 
@@ -29,13 +33,13 @@ You have two options: **Path Route** or **Custom Domain**.
 
 Path routes are the simplest option. Your service becomes available at a URL like:
 
-```
+```text
 https://agents.pinata.cloud/v0/agents/{agentId}/app/...
 ```
 
 To set one up:
 
-1. Click **+ ADD** → **Path Route**
+1. Click **\+ ADD** → **Path Route**
 2. Enter the container port your service runs on
 3. Enter a path prefix (like `/app` or `/api`)
 4. Choose **Public** or **Protected** access
@@ -53,7 +57,7 @@ Want a cleaner URL? Custom domains give you either a Pinata subdomain (like `glo
 
 **For a Pinata subdomain:**
 
-1. Click **+ ADD** → **Subdomain** tab
+1. Click **\+ ADD** → **Subdomain** tab
 2. Edit the generated subdomain name if you'd like (a random name is pre-filled)
 3. Enter the container port
 4. Choose **Public** or **Protected** access
@@ -61,7 +65,7 @@ Want a cleaner URL? Custom domains give you either a Pinata subdomain (like `glo
 
 **For your own domain:**
 
-1. Click **+ ADD** → **Custom Domain** tab
+1. Click **\+ ADD** → **Custom Domain** tab
 2. Enter your domain (like `app.yourdomain.com`)
 3. Enter the container port
 4. You'll receive a TXT record challenge — add a TXT record at `_pinata-verify.yourdomain.com` with the provided value
