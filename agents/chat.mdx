@@ -8,42 +8,52 @@ The Chat page is where you interact with your agent. It's a real-time conversati
 
 Open your agent → **Chat** to start talking.
 
+<Frame>
+  ![Image](/images/image-30.png)
+</Frame>
+
 ## Connection Status
 
 At the top you'll see "CONNECTED" with a green dot when your agent is ready. If the connection drops, the status updates and you can refresh to reconnect.
 
+## Agent Sidebar
+
+The right side of the chat page shows a live overview of your agent - its status, current model, version, and resource usage (CPU, memory, disk, network). You'll also see quick counts for attached skills, secrets, and tasks, plus any custom domain routes you've configured.
+
+This sidebar is a good way to keep an eye on your agent's health without leaving the conversation.
+
 ## Switching Models
 
-Use the dropdown in the top-right to switch between any models you've [enabled for this agent](/agents/models). You can switch mid-conversation — useful for:
+Use the model dropdown in the sidebar to switch between any models you've [enabled for this agent](/agents/models). You can switch mid-conversation - useful for:
 
 - Using a faster model for quick questions
 - Switching to a more capable model for complex reasoning
 - Comparing how different models handle the same prompt
 
-The dropdown shows models grouped by provider (e.g., `anthropic/claude-sonnet-4-6`).
+The dropdown shows models by provider (e.g., `anthropic/claude-sonnet-4-6`).
 
 ## Display Settings
 
 Click the settings icon (sliders) to toggle what's visible in the chat:
 
 | Setting | What it does |
-|---------|--------------|
+| --- | --- |
 | **Markdown** | Render markdown formatting in responses |
-| **Thinking** | Show the agent's extended thinking process |
+| **Thinking** | Show extended thinking blocks when available |
 | **Tool Calls** | Show tool use blocks (commands, API calls, etc.) |
 | **Image Preview** | Display images inline |
 | **Timestamps** | Show when each message was sent |
 | **Avatars** | Show profile pictures next to messages |
 
-These are personal preferences — they don't affect how your agent works, just how you see the conversation.
+These are personal preferences - they don't affect how your agent works, just how you see the conversation.
 
 ## Tool Calls
 
 When your agent uses a tool, you'll see it in the chat as an expandable block:
 
-- **Tool name** — What tool was called (e.g., `cron`, `bash`, `web_search`)
-- **Arguments** — What parameters were passed
-- **Result** — What came back
+- **Tool name** - What tool was called (e.g., `cron`, `bash`, `web_search`)
+- **Arguments** - What parameters were passed
+- **Result** - What came back
 
 Click "Show more" to expand the full details. This is helpful for debugging or understanding exactly what your agent did.
 
@@ -53,6 +63,5 @@ Click the expand icon in the top-right to go fullscreen. This hides the sidebar 
 
 ## Tips
 
-- Your agent remembers the full conversation context, so you can refer back to earlier messages
+- Tool calls can take a few seconds - the interface shows a progress indicator while the agent is working
 - If the agent seems stuck, try rephrasing or breaking your request into smaller steps
-- Tool calls can take a few seconds — the interface shows when the agent is working

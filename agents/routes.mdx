@@ -5,7 +5,7 @@ description: "Expose agent services to the internet"
 icon: "network-wired"
 ---
 
-If your agent runs a web server, API, or any other network service, routes let you expose it to the internet. Your agent's container is isolated by default — routes punch a hole through so the outside world can reach your service.
+If your agent runs a web server, API, or any other network service, routes let you expose it to the internet. Your agent's container is isolated by default - routes punch a hole through so the outside world can reach your service.
 
 ## When You Need Routes
 
@@ -17,9 +17,15 @@ Common use cases:
 
 If your agent just chats and runs scripts, you probably don't need routes.
 
+<Frame>
+  ![Image](/images/image-35.png)
+</Frame>
+
+{/* Screenshot: Domains & Routes tab showing path routes (PROTECTED) and custom domains (PUBLIC) with PREVIEW buttons */}
+
 ## Add a Route
 
-Open your agent → **Routes** → **ADD**.
+Open your agent → **Routes** → **\+ ADD**.
 
 You have two options: **Path Route** or **Custom Domain**.
 
@@ -27,17 +33,17 @@ You have two options: **Path Route** or **Custom Domain**.
 
 Path routes are the simplest option. Your service becomes available at a URL like:
 
-```
+```text
 https://agents.pinata.cloud/v0/agents/{agentId}/app/...
 ```
 
 To set one up:
 
-1. Click **ADD** → **Path Route**
-2. Enter a path prefix (like `/app` or `/api`)
-3. Enter the port your service runs on inside the container
-4. Choose whether it's protected or public
-5. Save
+1. Click **\+ ADD** → **Path Route**
+2. Enter the container port your service runs on
+3. Enter a path prefix (like `/app` or `/api`)
+4. Choose **Public** or **Protected** access
+5. Click **Add Route**
 
 One thing to know: the path prefix gets stripped before reaching your service. If someone requests `/app/users/123`, your service sees `/users/123`.
 
@@ -47,30 +53,43 @@ One thing to know: the path prefix gets stripped before reaching your service. I
   Custom domains are currently in beta.
 </Note>
 
-Want a cleaner URL? Custom domains give you either a random Pinata subdomain (like `swift-fox-347.apps.pinata.cloud`) or let you use your own domain.
+Want a cleaner URL? Custom domains give you either a Pinata subdomain (like `glow-kite-520.apps.pinata.cloud`) or let you use your own domain.
 
 **For a Pinata subdomain:**
 
-1. Click **ADD** → **Custom Domain** → **Pinata Subdomain**
-2. Enter the port
-3. Choose protected or public
-4. Save — you'll get a random subdomain instantly
+1. Click **\+ ADD** → **Subdomain** tab
+2. Edit the generated subdomain name if you'd like (a random name is pre-filled)
+3. Enter the container port
+4. Choose **Public** or **Protected** access
+5. Click **Register**
 
 **For your own domain:**
 
-1. Click **ADD** → **Custom Domain** → **Bring Your Own**
+1. Click **\+ ADD** → **Custom Domain** tab
 2. Enter your domain (like `app.yourdomain.com`)
-3. Enter the port
-4. Save
-5. Add the DNS records shown (a TXT record for verification, then a CNAME)
+3. Enter the container port
+4. You'll receive a TXT record challenge - add a TXT record at `_pinata-verify.yourdomain.com` with the provided value
+5. Save the domain registration
+6. Add a CNAME record pointing to the target shown after registration
+7. Click **Verify** to confirm ownership and provision SSL
 
-Your domain will show as "pending" until DNS propagates and SSL is provisioned.
+After you click Verify, Pinata checks your TXT record to confirm you own the domain, then provisions SSL through Cloudflare. This can take a few minutes - your domain will show as "pending" until everything is ready.
+
+<Note>
+  The same domain always produces the same challenge token, so you only need to add the TXT record once even if you need to re-verify.
+</Note>
+
+### Editing and Removing Domains
+
+Once a custom domain is created, you can update its **target port** and **protected** setting, but you cannot change the domain name or subdomain. To switch domains, delete and recreate.
 
 ## Protected vs Public
 
 **Protected routes** require a gateway token to access. Use this when you want to control who can reach your service.
 
 **Public routes** are open to anyone on the internet. Only use this if your service handles its own authentication, or if you genuinely want it public.
+
+Both path routes and custom domains default to **public**. Set them to **protected** explicitly if you need access control.
 
 <Warning>
   Think carefully before making a route public. Anyone can access it.

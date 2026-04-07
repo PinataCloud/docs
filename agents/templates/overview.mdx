@@ -9,17 +9,21 @@ icon: "grid-2"
   Templates are currently in beta.
 </Note>
 
-Templates are the fastest way to get a working agent. Instead of configuring everything yourself, pick a template that does what you need — it comes with the right skills, settings, and personality already set up. Just add your API keys and deploy.
+Templates are the fastest way to get a working agent. Instead of configuring everything yourself, pick a template that does what you need - it comes with the right skills, settings, and personality already set up. Just add your API keys and deploy.
+
+<Frame>
+  ![Image](/images/image-25.png)
+</Frame>
 
 ## Find a Template
 
-Browse templates at [agents.pinata.cloud/templates](https://agents.pinata.cloud/templates). You'll see two sections:
+Browse templates in two places:
 
-**Agent Marketplace** — Community and partner templates ready to deploy. You'll find agents for trading, social media, productivity, and more.
+[**Marketplace**](https://agents.pinata.cloud/marketplace) - Published templates ready to deploy. Filter by category (e.g., General) or search by name. Featured templates appear at the top.
 
-**My Templates** — Templates you've created or submitted. Use these to quickly spin up copies of your own agent configurations.
+[**My Templates**](https://agents.pinata.cloud/templates) - Templates you've created or submitted. Create new templates by importing from a public GitHub or GitLab repo.
 
-Click any template to see what it does, what skills it includes, and what secrets you'll need to provide.
+Click any template to see what it does, what skills it includes, what secrets you'll need to provide, and whether it includes pre-configured scheduled tasks.
 
 ## Deploy It
 
@@ -34,7 +38,7 @@ Your agent will spin up in about 30 seconds. You'll land on its chat page, ready
 
 ### What About Secrets?
 
-Most templates need at least an LLM provider key (like `ANTHROPIC_API_KEY`). Some need additional keys — a Telegram template needs your bot token, a trading template might need exchange API keys.
+Most templates need at least an LLM provider key (like `ANTHROPIC_API_KEY`). Some need additional keys - a Telegram template needs your bot token, a trading template might need exchange API keys.
 
 The template page shows exactly what's required. If you haven't added those secrets yet, you'll be prompted during setup. Or add them ahead of time in your [secrets vault](/agents/secrets).
 
@@ -47,8 +51,12 @@ pinata agents create --template <template-id>   # Deploy one
 
 ## Create Your Own
 
-Built something useful? Package it as a template and share it with others — or just use it to quickly spin up copies of your own agents.
+Built something useful? Package it as a template and share it with others - or just use it to quickly spin up copies of your own agents.
 
 <Card title="Creating Templates" icon="hammer" href="/agents/templates/creating">
   Learn how to package your agent as a reusable template.
+</Card>
+
+<Card title="Reference Template" icon="github" horizontal href="https://github.com/PinataCloud/agent-template">
+  Clone this starter repo - it includes working examples of port forwarding, tasks, lifecycle scripts, and secrets.
 </Card>

@@ -1,0 +1,43 @@
+---
+title: "Logs"
+description: "Real-time logs with filtering and export"
+icon: "scroll"
+---
+
+Open your agent → **Logs** to see real-time output from OpenClaw.
+
+<Frame>
+  ![Image](/images/image-38.png)
+</Frame>
+
+## Filtering
+
+Use the checkboxes to filter by log level:
+
+- **TRACE** - Most verbose, detailed execution flow
+- **DEBUG** - Debugging information
+- **INFO** - General operational messages
+- **WARN** - Warning conditions
+- **ERROR** - Error conditions
+- **FATAL** - Critical failures
+
+The search box filters log content. Enable **AUTO-FOLLOW** to automatically scroll to new entries as they appear.
+
+## Log Entries
+
+Each entry shows:
+
+- **Timestamp** - When the event occurred
+- **Level** - Severity (INFO, ERROR, etc.)
+- **Source** - Which component generated the log (e.g., `gateway/reload`)
+- **Message** - The log content
+
+Click the **+** button to expand an entry and see the full message.
+
+## Exporting
+
+Click **EXPORT VISIBLE** to download the currently filtered logs. This exports only what matches your current filters - useful for sharing specific issues or keeping records.
+
+## Log File
+
+Logs are written to `/TMP/OPENCLAW/OPENCLAW-{date}.LOG`. A new file is created each day.
