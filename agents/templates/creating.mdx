@@ -43,9 +43,9 @@ The manifest defines your agent's identity, required secrets, skills, and behavi
 | `agent` | Name, description, vibe, emoji |
 | `model` | Default AI model |
 | `secrets` | Encrypted API keys and credentials |
-| `skills` | Attachable skill packages — use ClawHub slugs (e.g. `@pinata/api`) or CIDs (max 10) |
+| `skills` | Attachable skill packages - use ClawHub slugs (e.g. `@pinata/api`) or CIDs (max 10) |
 | `tasks` | Cron-scheduled prompts (max 20) |
-| `scripts` | Lifecycle hooks — `build` runs after git push, `start` runs on agent boot |
+| `scripts` | Lifecycle hooks - `build` runs after git push, `start` runs on agent boot |
 | `routes` | Port forwarding for web apps/APIs (max 10) |
 | `channels` | Telegram, Discord, Slack configuration |
 | `template` | Marketplace listing metadata |
@@ -56,7 +56,7 @@ The manifest defines your agent's identity, required secrets, skills, and behavi
 
 ### Skills
 
-List the skills your agent should have. Use ClawHub slugs (like `@pinata/api`) for marketplace skills — they'll automatically resolve to the latest version when someone deploys your template. You can also use IPFS CIDs if you want to pin a specific version.
+List the skills your agent should have. Use ClawHub slugs (like `@pinata/api`) for marketplace skills - they'll automatically resolve to the latest version when someone deploys your template. You can also use IPFS CIDs if you want to pin a specific version.
 
 ### Example
 
@@ -111,7 +111,7 @@ Files in `workspace/` are copied to the agent's workspace on deploy. Customize t
 | File | Purpose |
 | --- | --- |
 | `BOOTSTRAP.md` | First-run conversation guide (self-deletes after setup) |
-| `SOUL.md` | Agent personality and principles — **customize this** |
+| `SOUL.md` | Agent personality and principles - **customize this** |
 | `AGENTS.md` | Workspace conventions, memory system, safety rules |
 | `IDENTITY.md` | Agent name, vibe, emoji (filled in during bootstrap) |
 | `USER.md` | Notes about the human (learned over time) |
@@ -124,8 +124,8 @@ Focus on `SOUL.md` to give your agent a distinct personality, and `BOOTSTRAP.md`
 
 If your agent runs a server, API, or frontend dev server, add two things to `manifest.json`:
 
-1. **`scripts`** — lifecycle hooks that install deps and start the server
-2. **`routes`** — port forwarding rules that expose the server to the internet
+1. **`scripts`** - lifecycle hooks that install deps and start the server
+2. **`routes`** - port forwarding rules that expose the server to the internet
 
 Example from a Vite \+ React agent:
 
@@ -143,12 +143,12 @@ Example from a Vite \+ React agent:
 
 **Important details:**
 
-- **`build`** — Runs once after deploy or git push (e.g. `npm install`, compile). Executes from `/home/node/clawd`. Output logged to `/tmp/user-build.log`. Max 5 min timeout. If build fails, start does not run.
-- **`start`** — Launches a long-running background process after build completes (e.g. a web server). Executes from `/home/node/clawd`. Output logged to `/tmp/user-start.log`. Runs detached so it survives the runner exiting.
-- **Retry scripts** — If you need to re-run the build/start lifecycle (e.g. after pushing changes), use the **Retry Scripts** option in your agent's settings or call the API endpoint.
+- **`build`** - Runs once after deploy or git push (e.g. `npm install`, compile). Executes from `/home/node/clawd`. Output logged to `/tmp/user-build.log`. Max 5 min timeout. If build fails, start does not run.
+- **`start`** - Launches a long-running background process after build completes (e.g. a web server). Executes from `/home/node/clawd`. Output logged to `/tmp/user-start.log`. Runs detached so it survives the runner exiting.
+- **Retry scripts** - If you need to re-run the build/start lifecycle (e.g. after pushing changes), use the **Retry Scripts** option in your agent's settings or call the API endpoint.
 - Your server **must bind to `0.0.0.0`**, not `localhost`, or it won't be reachable
 - Set `protected: false` for public routes, or `true` (default) to require auth
-- Use `__AGENT_HOST__` as a placeholder in config files — it gets replaced at runtime with the agent's public hostname
+- Use `__AGENT_HOST__` as a placeholder in config files - it gets replaced at runtime with the agent's public hostname
 - For WebSocket/HMR setups (e.g. Vite), connect via WSS on port 443 through `__AGENT_HOST__`
 
 Example Vite config using the host placeholder:

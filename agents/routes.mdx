@@ -5,7 +5,7 @@ description: "Expose agent services to the internet"
 icon: "network-wired"
 ---
 
-If your agent runs a web server, API, or any other network service, routes let you expose it to the internet. Your agent's container is isolated by default — routes punch a hole through so the outside world can reach your service.
+If your agent runs a web server, API, or any other network service, routes let you expose it to the internet. Your agent's container is isolated by default - routes punch a hole through so the outside world can reach your service.
 
 ## When You Need Routes
 
@@ -68,12 +68,12 @@ Want a cleaner URL? Custom domains give you either a Pinata subdomain (like `glo
 1. Click **\+ ADD** → **Custom Domain** tab
 2. Enter your domain (like `app.yourdomain.com`)
 3. Enter the container port
-4. You'll receive a TXT record challenge — add a TXT record at `_pinata-verify.yourdomain.com` with the provided value
+4. You'll receive a TXT record challenge - add a TXT record at `_pinata-verify.yourdomain.com` with the provided value
 5. Save the domain registration
 6. Add a CNAME record pointing to the target shown after registration
 7. Click **Verify** to confirm ownership and provision SSL
 
-After you click Verify, Pinata checks your TXT record to confirm you own the domain, then provisions SSL through Cloudflare. This can take a few minutes — your domain will show as "pending" until everything is ready.
+After you click Verify, Pinata checks your TXT record to confirm you own the domain, then provisions SSL through Cloudflare. This can take a few minutes - your domain will show as "pending" until everything is ready.
 
 <Note>
   The same domain always produces the same challenge token, so you only need to add the TXT record once even if you need to re-verify.

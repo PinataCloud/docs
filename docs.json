@@ -74,7 +74,15 @@
                   "agents/routes",
                   "agents/tasks",
                   "agents/snapshots",
-                  "agents/devtools",
+                  {
+                    "group": "Dev Tools",
+                    "icon": "terminal",
+                    "pages": [
+                      "agents/console",
+                      "agents/logs",
+                      "agents/devtools"
+                    ]
+                  },
                   {
                     "group": "Templates",
                     "icon": "clone",

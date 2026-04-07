@@ -1,88 +1,14 @@
 ---
-title: "Dev Tools"
-description: "Console access, logs, and agent management"
-icon: "terminal"
+title: "Danger"
+description: "Agent details, configuration, restart, and delete"
+icon: "triangle-exclamation"
 ---
-
-The Dev Tools section gives you low-level access to your agent — a shell into the container, real-time logs, and the controls to restart or delete.
-
-<Frame>
-  ![Image](/images/image-37.png)
-</Frame>
-
-## Console
-
-Open your agent → **Console** to get a shell directly into your agent's container.
-
-```text
---- Agent Console ---
-Working directory: /home/node/clawd/workspace
-
-~/clawd/workspace $
-```
-
-This is a full terminal session. You can:
-
-- Run commands in your agent's environment
-- Inspect files and directories
-- Debug issues in real-time
-- Install packages or run scripts manually
-
-The working directory starts at `/home/node/clawd/workspace` — the same workspace your agent uses.
-
-<Tip>
-  Click the expand icon in the top-right for fullscreen mode.
-</Tip>
-
-<Frame>
-  ![Image](/images/image-38.png)
-</Frame>
-
-## Logs
-
-Open your agent → **Logs** to see real-time output from OpenClaw.
-
-### Filtering
-
-Use the checkboxes to filter by log level:
-
-- **TRACE** — Most verbose, detailed execution flow
-- **DEBUG** — Debugging information
-- **INFO** — General operational messages
-- **WARN** — Warning conditions
-- **ERROR** — Error conditions
-- **FATAL** — Critical failures
-
-The search box filters log content. Enable **AUTO-FOLLOW** to automatically scroll to new entries as they appear.
-
-### Log Entries
-
-Each entry shows:
-
-- **Timestamp** — When the event occurred
-- **Level** — Severity (INFO, ERROR, etc.)
-- **Source** — Which component generated the log (e.g., `gateway/reload`)
-- **Message** — The log content
-
-Click the **\+** button to expand an entry and see the full message.
-
-### Exporting
-
-Click **EXPORT VISIBLE** to download the currently filtered logs. This exports only what matches your current filters — useful for sharing specific issues or keeping records.
-
-### Log File
-
-Logs are written to `/TMP/OPENCLAW/OPENCLAW-{date}.LOG`. A new file is created each day.
-
-{/* Screenshot: Danger tab showing General section with agent details, workspace state, and Actions (Restart/Delete) at the bottom */}
-
-## Danger
 
 Open your agent → **Danger** to see agent details and destructive actions.
 
 This page shows your agent's current state under **General**, with actions at the bottom.
 
-### Agent Details
+## Agent Details
 
 | Field | Description |
 | --- | --- |
@@ -97,17 +23,17 @@ This page shows your agent's current state under **General**, with actions at th
 
 Click **manifest.json schema** to see all configuration options.
 
-Below the agent details you'll see a full overview of everything attached to your agent — workspace state, lifecycle scripts, scheduled tasks, channels, custom domains, skills (with their CIDs), paired devices, and secrets (with sync status showing when each was last synced).
+Below the agent details you'll see a full overview of everything attached to your agent - workspace state, lifecycle scripts, scheduled tasks, channels, custom domains, skills (with their CIDs), paired devices, and secrets (with sync status showing when each was last synced).
 
-### Editing Configuration
+## Editing Configuration
 
 Click **Edit** next to the Config row to modify your agent's `openclaw.json`. This is where you can tweak advanced OpenClaw settings. Changes are validated before being saved.
 
-### Updating OpenClaw
+## Updating OpenClaw
 
 Click **Change** next to the Version field to check for and apply OpenClaw updates.
 
-### Restart Gateway
+## Restart Gateway
 
 Restarts your agent's gateway process. Use this when:
 
@@ -119,7 +45,7 @@ Restarts your agent's gateway process. Use this when:
   Restarting temporarily disconnects all clients. May take a few minutes.
 </Warning>
 
-### Delete Agent
+## Delete Agent
 
 Permanently deletes your agent, including:
 

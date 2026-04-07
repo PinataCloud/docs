@@ -4,7 +4,7 @@ description: "Deploy hosted OpenClaw agents through Pinata"
 icon: "lobster"
 ---
 
-Pinata Agents are hosted [OpenClaw](https://openclaw.org) instances — AI agents that can run code, search the web, manage files, and connect to external services. Each agent runs in its own isolated container with a persistent workspace.
+Pinata Agents are hosted [OpenClaw](https://openclaw.org) instances - AI agents that can run code, search the web, manage files, and connect to external services. Each agent runs in its own isolated container with a persistent workspace.
 
 <Note>
   Agents require a paid Pinata plan. [Upgrade here](https://app.pinata.cloud/billing).
@@ -18,7 +18,7 @@ This takes about 2 minutes. You'll connect an LLM provider, create an agent, and
 
 Your agent needs access to an LLM to think and respond. Head to [agents.pinata.cloud/secrets](https://agents.pinata.cloud/secrets) and you'll see cards for supported providers at the top.
 
-Click **Connect** on whichever you use — Anthropic, OpenAI, OpenRouter, or Venice — paste your API key, and save. That's it.
+Click **Connect** on whichever you use - Anthropic, OpenAI, OpenRouter, or Venice - paste your API key, and save. That's it.
 
 <Tip>
   Don't have an API key yet? [Anthropic](https://console.anthropic.com/), [OpenAI](https://platform.openai.com/), and [OpenRouter](https://openrouter.ai/) all offer free trial credits.
@@ -30,14 +30,14 @@ Go to [agents.pinata.cloud/agents](https://agents.pinata.cloud/agents) and click
 
 You have two paths:
 
-**Use a template** if you want something working fast. Templates come pre-configured with skills, settings, and personality — just add your secrets and deploy. Browse templates at [agents.pinata.cloud/templates](https://agents.pinata.cloud/templates).
+**Use a template** if you want something working fast. Templates come pre-configured with skills, settings, and personality - just add your secrets and deploy. Browse templates at [agents.pinata.cloud/templates](https://agents.pinata.cloud/templates).
 
 **Build from scratch** if you want full control. The wizard walks you through:
 
-1. **Identity** — Pick a personality (Atlas, Nova, Sage) or create your own. Give it a name.
-2. **Workspace** — The default includes Node.js, Python, and common tools. Add [skills](/agents/skills) if you want extra capabilities.
-3. **Connect** — Select your LLM provider and add any other API keys your agent needs.
-4. **Deploy** — Hit the button and wait about 30 seconds.
+1. **Identity** - Pick a personality (Atlas, Nova, Sage) or create your own. Give it a name.
+2. **Workspace** - The default includes Node.js, Python, and common tools. Add [skills](/agents/skills) if you want extra capabilities.
+3. **Connect** - Select your LLM provider and add any other API keys your agent needs.
+4. **Deploy** - Hit the button and wait about 30 seconds.
 
 ### 3. Start Talking
 
@@ -51,29 +51,29 @@ Once your agent is running, you'll land on its chat interface. Say hello. Ask it
 
 Click any agent to open its detail page. Here's what you'll find:
 
-**Chat** — Your conversation interface with a model switcher and live resource stats in the sidebar.
+**Chat** - Your conversation interface with a model switcher and live resource stats in the sidebar.
 
-**Channels** — Connect your agent to Telegram, Slack, or Discord so others can talk to it too.
+**Channels** - Connect your agent to Telegram, Slack, or Discord so others can talk to it too.
 
-**Files** — Workspace snapshots, version history, and git access for local editing.
+**Files** - Workspace snapshots, version history, and git access for local editing.
 
-**Skills** — Packages that give your agent new abilities, like IPFS storage or on-chain registration.
+**Skills** - Packages that give your agent new abilities, like IPFS storage or on-chain registration.
 
-**Secrets** — API keys and credentials your agent can access as environment variables.
+**Secrets** - API keys and credentials your agent can access as environment variables.
 
-**Models** — Configure which models your agent can use and set the default.
+**Models** - Configure which models your agent can use and set the default.
 
-**Routes** — Expose web servers or APIs running inside your agent to the internet.
+**Routes** - Expose web servers or APIs running inside your agent to the internet.
 
-**Tasks** — Schedule prompts to run automatically.
+**Tasks** - Schedule prompts to run automatically.
 
 ### Dev Tools
 
 When you need to debug or dig deeper:
 
-- **Console** — Full terminal access to your agent's container
-- **Logs** — Real-time logs with level filtering, search, and export
-- **Danger** — Agent details, workspace state, configuration, restart, and delete
+- **[Console](/agents/console)** - Full terminal access to your agent's container
+- **[Logs](/agents/logs)** - Real-time logs with level filtering, search, and export
+- **[Danger](/agents/devtools)** - Agent details, workspace state, configuration, restart, and delete
 
 <Tip>
   Press **⌘K** (or **Ctrl\+K**) anywhere to open the command palette for quick navigation to agents, pages, and actions.
