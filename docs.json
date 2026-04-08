@@ -107,6 +107,15 @@
                   "tools/erc-8004/quickstart",
                   "tools/erc-8004/services"
                 ]
+              },
+              {
+                "group": "Skills",
+                "icon": "wand-magic-sparkles",
+                "pages": [
+                  "tools/skills/overview",
+                  "tools/skills/pinata-api",
+                  "tools/skills/pinata-erc-8004"
+                ]
               }
             ]
           },
