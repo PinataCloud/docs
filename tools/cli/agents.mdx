@@ -673,7 +673,6 @@ USAGE:
 
 OPTIONS:
    --oauth        Use OAuth browser flow instead of API key (openai only)
-   --setup-token  Store an Anthropic setup token instead of an API key (anthropic only)
    --help, -h     show help
 ```
 
@@ -681,7 +680,7 @@ OPTIONS:
 
 | Provider | Secret Name | Options |
 |----------|-------------|---------|
-| `anthropic` | `ANTHROPIC_API_KEY` | `--setup-token` for Claude Code setup tokens |
+| `anthropic` | `ANTHROPIC_API_KEY` | - |
 | `openai` | `OPENAI_API_KEY` or `OPENAI_OAUTH_TOKEN` | `--oauth` for Codex OAuth flow |
 | `openrouter` | `OPENROUTER_API_KEY` | - |
 
@@ -690,9 +689,6 @@ OPTIONS:
 ```bash
 # Store Anthropic API key
 pinata agents auth anthropic
-
-# Store Anthropic setup token (for Claude Code)
-pinata agents auth anthropic --setup-token
 
 # Store OpenAI API key
 pinata agents auth openai
