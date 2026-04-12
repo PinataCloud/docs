@@ -69,6 +69,12 @@
   ],
   "navigation": [
     {
+      "group": "Architecture",
+      "pages": [
+        "architecture/prime-invariant"
+      ]
+    },
+    {
       "group": "Get Started",
       "pages": [
         "quickstart",
