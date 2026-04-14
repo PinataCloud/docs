@@ -43,7 +43,7 @@ The manifest defines your agent's identity, required secrets, skills, and behavi
 | `agent` | Name, description, vibe, emoji |
 | `model` | Default AI model |
 | `secrets` | Encrypted API keys and credentials |
-| `skills` | Attachable skill packages - use ClawHub slugs (e.g. `@pinata/api`) or CIDs (max 10) |
+| `skills` | Attachable skill packages — objects with `clawhub_slug` or `cid` and a `name` (max 10) |
 | `tasks` | Cron-scheduled prompts (max 20) |
 | `scripts` | Lifecycle hooks - `build` runs after git push, `start` runs on agent boot |
 | `routes` | Port forwarding for web apps/APIs (max 10) |
@@ -56,7 +56,21 @@ The manifest defines your agent's identity, required secrets, skills, and behavi
 
 ### Skills
 
-List the skills your agent should have. Use ClawHub slugs (like `@pinata/api`) for marketplace skills - they'll automatically resolve to the latest version when someone deploys your template. You can also use IPFS CIDs if you want to pin a specific version.
+Skills are objects with a `name` and either a `clawhub_slug` or a `cid`. Use `clawhub_slug` for marketplace skills — they'll automatically resolve to the latest version when someone deploys your template. Use `cid` to pin a specific uploaded skill by its IPFS CID.
+
+```json
+// ClawHub marketplace skill
+{
+  "clawhub_slug": "@pinata/api",
+  "name": "Pinata API"
+}
+
+// Uploaded skill pinned by CID
+{
+  "cid": "bafkreiexample...",
+  "name": "My Custom Skill"
+}
+```
 
 ### Example
 
@@ -89,7 +103,7 @@ Here's a complete manifest that includes secrets, skills, lifecycle scripts, a w
     "start": "cd workspace/projects/hello-test && npx vite --host 0.0.0.0"
   },
   "skills": [
-    "@pinata/api"
+    { "clawhub_slug": "@pinata/api", "name": "Pinata API" }
   ],
   "routes": [
     { "port": 5173, "path": "/app", "protected": false }
