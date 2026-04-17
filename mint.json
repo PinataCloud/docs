@@ -71,6 +71,7 @@
     {
       "group": "Architecture",
       "pages": [
+        "architecture/manifest",
         "architecture/prime-invariant"
       ]
     },
