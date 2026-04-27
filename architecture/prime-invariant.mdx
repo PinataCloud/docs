@@ -15,10 +15,21 @@ This document formalizes the foundational layer (Phase 1) of the TrueAlphaSpiral
 
 ## Core Definitions
 
-Before establishing the axioms, we lock in the foundational paradigms of the architecture:
+Before establishing the axioms, we lock in the foundational paradigms of the architecture. These definitions serve as the absolute Prime Invariant bedrock:
 
-* **Process Science:** The study and formalization of dynamic systems as continuous streams of events and transformations, rather than static collections of data or entities. In TAS, truth is not a snapshot; it is an unbroken, verifiable sequence of structural operations.
-* **Computational Masonry:** The engineering discipline of constructing digital systems where constraints are embedded into the operational physics of the environment. Rather than writing rules that agents are trusted to follow, we build cryptographic architectures (the masonry) that physically prevent the expression of invalid states.
+### Process Science
+**Definition:** The study and formalization of dynamic systems as continuous streams of events and transformations, rather than static collections of data or entities. In TAS, truth is not a snapshot; it is an unbroken, verifiable sequence of structural operations.
+* **Testable Invariant:** A system state $S_t$ must be perfectly derivable from the genesis state $S_0$ through a continuous sequence of validated transformations $T$.
+* **Inputs:** A sequence of discrete event operations.
+* **Transformations:** A state transition function $F(S_{t-1}, Event) \rightarrow S_t$.
+* **Failure Condition:** If a system state cannot be recalculated solely from its event stream, the process science invariant is violated and the state is declared invalid.
+
+### Computational Masonry
+**Definition:** The engineering discipline of constructing digital systems where constraints are embedded into the operational physics of the environment. Rather than writing rules that agents are trusted to follow, we build cryptographic architectures (the masonry) that physically prevent the expression of invalid states.
+* **Testable Invariant:** The set of possible operational states $O$ must be strictly bounded by the mathematical limits of the cryptographic architecture $C$. No state outside of $C$ can be physically expressed.
+* **Inputs:** Raw computational intention or instructions.
+* **Transformations:** A structural bounding function $B(Instruction) \rightarrow Executable\ Operation$ where the operation is physically constrained by $C$.
+* **Failure Condition:** If an instruction bypasses the structural bounds and expresses a state outside the mathematical limits of the architecture, the computational masonry has failed, indicating a critical zero-day breach.
 
 Our core directive is to transition from narrative-based trust to **Structural Enforceability**. If these foundational axioms fail, the entire system collapses. Therefore, they are defined here as testable invariants.
 
