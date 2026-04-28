@@ -72,8 +72,7 @@
       "group": "Architecture",
       "pages": [
         "architecture/manifest",
-        "architecture/prime-invariant",
-        "architecture/interface-constraint"
+        "architecture/prime-invariant"
       ]
     },
     {
