@@ -74,7 +74,8 @@
         "architecture/manifest",
         "architecture/prime-invariant",
         "architecture/the-lock",
-        "architecture/operational-mechanics"
+        "architecture/operational-mechanics",
+        "architecture/institutional-layer"
       ]
     },
     {
