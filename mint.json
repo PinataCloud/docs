@@ -73,7 +73,8 @@
       "pages": [
         "architecture/manifest",
         "architecture/prime-invariant",
-        "architecture/the-lock"
+        "architecture/the-lock",
+        "architecture/operational-mechanics"
       ]
     },
     {
