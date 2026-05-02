@@ -72,7 +72,8 @@
       "group": "Architecture",
       "pages": [
         "architecture/manifest",
-        "architecture/prime-invariant"
+        "architecture/prime-invariant",
+        "architecture/the-lock"
       ]
     },
     {
