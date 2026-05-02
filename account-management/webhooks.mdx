@@ -48,7 +48,7 @@ Our webhook partner Svix offers a set of useful libraries that make verifying we
 ```typescript
 import { Webhook } from "svix";
 
-const secret = "whsec_MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw";
+const secret = process.env.WEBHOOK_SECRET;
 
 // These were all sent from the server
 const headers = {
@@ -60,7 +60,7 @@ const payload = '{"test": 2432232314}';
 
 const wh = new Webhook(secret);
 // Throws on error, returns the verified content on success
-const payload = wh.verify(payload, headers);
+const verifiedPayload = wh.verify(payload, headers);
 ```
 
 For more instructions and examples of how to verify signatures, check out their [webhook verification documentation](https://docs.svix.com/receiving/verifying-payloads/how).
