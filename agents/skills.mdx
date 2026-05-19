@@ -1,64 +1,65 @@
 ---
 title: "Skills"
-description: "Extend agent capabilities with reusable packages"
+description: "Reusable capability packages you can attach to an agent"
 icon: "wand-magic-sparkles"
 ---
 
-Skills give your agent new abilities. Want your agent to store files on IPFS? There's a skill for that. Need it to remember things between conversations? There's a skill for that too.
+Skills are how you teach an agent new tricks without rewriting it. A skill is a folder of files — code, instructions, sometimes a `.env.example` listing what credentials it needs. When you attach a skill to an agent, those files land in the agent's workspace and the agent can use them.
 
-Think of skills as plugins - pre-packaged code and instructions that teach your agent how to do something specific.
+There are two views to keep separate in your head:
+
+- The **Skills Library** in the sidebar — the catalog of skills installed in your account. This includes the ones Pinata publishes and any you've added from the community or your own folder.
+- A specific agent's **Skills tab** — which subset of the library is actually attached to *this* agent. Installing a skill in the Library doesn't attach it; attachment happens per-agent.
 
 <Frame>
   ![Image](/images/image-32.png)
 </Frame>
 
-## Browse Available Skills
+## Find a skill
 
-Head to [agents.pinata.cloud/skills](https://agents.pinata.cloud/skills) to see what's available.
+Open the **Skills Library** in the sidebar.
 
-The **All | Installed** tab shows skills in your library. Switch to **Browse ClawHub** to find community skills made by others.
+Two tabs at the top:
 
-### Official Skills from Pinata
+- **All | Installed** — skills already in your library
+- **Browse ClawHub** — the community catalog
 
-These are built and maintained by the Pinata team (look for the verified badge):
+Search by name in either tab. Each card shows the skill name, author, install count, version, and a CID prefix. Pinata-built skills (like `@pinata/api`) carry a verified badge and show up in both tabs.
 
-- **@pinata/api** - Store and retrieve files from IPFS, use gateways, run vector searches
-- **@pinata/memory-salience** - Help your agent remember what matters and forget what doesn't
-- **@pinata/sqlite-sync** - SQLite database with automatic Pinata backup
-- **@pinata/paraspace** - Organize your agent's workspace using the PARA method
-- **@pinata/erc-8004** - Register your agent on-chain
+### Skills Pinata maintains
 
-### Community Skills
+- **`@pinata/api`** — store and retrieve files on IPFS, use gateways, run vector searches, sign x402 payments
+- **`@pinata/erc-8004`** — register your agent on-chain and verify other agents (ERC-8004)
+- **`@pinata/memory-salience`** — let your agent remember what matters across conversations
+- **`@pinata/paraspace`** — organize the workspace with the PARA method
+- **`@pinata/sqlite-sync`** — a SQLite database with automatic Pinata backup and CID-chained history
+- **`@pinata/platform`** — the agent can call back into the platform (install skills, set secrets, manage tasks) without ever seeing your Pinata JWT. Bundled by default.
 
-The **Browse ClawHub** tab has skills for all sorts of things - Obsidian integration, self-improvement loops, API gateways, and more. Each skill card shows the author, download count, star count, and current version.
+## Install a skill
 
-Pinata-verified skills (like `@pinata/api`) show a verified badge and appear in both your library and ClawHub. Community skills are contributed by users and sorted by popularity.
+Click a card to see its description, files, and required env vars. **Install** adds it to your library. From there, you can attach it to as many agents as you like.
 
-Use the search box to find skills by name.
+Installing alone doesn't change anything about your running agents — you still need to attach it.
 
-## Install a Skill
+## Attach a skill to an agent
 
-Click any skill to see its details - description, required secrets, files, and version history. If it looks useful, click **Install**. The skill gets added to your library.
+- **When creating a new agent**: step 2 of the wizard lets you pick skills from your library.
+- **For an existing agent**: open the agent → **Skills** → **+ ADD** and pick from your library.
 
-Installing doesn't attach the skill to any agent - it just makes it available to use.
+Attaching copies the skill's files into the agent's workspace under `workspace/skills/<skill-name>/`. The agent reads from there.
 
-## Attach a Skill to an Agent
+If the skill declares required env vars in a `.env.example`, the Skills tab flags any that aren't set on the agent. Add the missing values in the [Secrets Vault](/agents/secrets) and attach them, then restart the gateway.
 
-Once a skill is in your library, you can attach it to any of your agents.
+<Tip>
+  Detaching a skill removes its files from the agent's workspace but keeps the skill installed in your library. You can re-attach later.
+</Tip>
 
-**For new agents:** Add skills in Step 2 (Workspace) of the creation wizard.
+## Slugs vs CIDs
 
-**For existing agents:** Open the agent → **Skills** → **\+ ADD** → pick from your library.
+Anywhere you reference a skill — in the CLI, in [`manifest.json`](/agents/manifest), in API calls — you can use either form:
 
-When you attach a skill, its files get copied into your agent's workspace. Your agent can then read the skill's instructions and use its code.
-
-{/* Screenshot: Skill detail drawer showing description, required secrets, file browser, and version history */}
-
-Click any attached skill to open its detail drawer - you'll see the description, required secrets, a file browser, and version history.
-
-### Referencing Skills by Slug or CID
-
-When you add skills through the CLI or in a template's `manifest.json`, you can reference them by their **ClawHub slug** (like `@pinata/api`) or their **IPFS CID**. Slugs are the easier option for marketplace skills - they always resolve to the latest version.
+- **Slug** (`@pinata/api`) — always resolves to the latest published version. Easiest for templates and shared configs.
+- **IPFS CID** (`bafybeicglyjdb6w...`) — pins one specific version. Use when you want byte-stable behavior or you're using a self-hosted skill not on ClawHub.
 
 ```json
 "skills": [
@@ -67,30 +68,22 @@ When you add skills through the CLI or in a template's `manifest.json`, you can 
 ]
 ```
 
-CIDs are useful when you want to pin a specific version or use a self-hosted skill that isn't on ClawHub.
+## Versions and updates
 
-<Tip>
-  Detaching a skill removes its files from the agent but keeps the skill in your library. You can always reattach it later.
-</Tip>
+Skills follow semver. Each card shows the current version (`v1.0.0`, etc.).
 
-## Skill Versions
+- **Update** — if a newer version exists, the Skills tab will show an update available. Update from there. For ClawHub skills, this pulls the latest published version.
+- **Roll back** — open a skill's version history and pick an earlier version. Internally that re-pins to that version's CID.
 
-Skills use version numbers (like `v1.0.0`) so you can track changes over time. You'll see the current version badge on each skill in your library and on attached skills.
+If you're building automation, you can also check for updates via the API: `GET /v0/agents/{agentId}/skills/updates`.
 
-### Updating
+## Publishing your own
 
-Open your agent → **Skills** and click into a skill to see its version history. If a newer version exists, you can update to get the latest code and instructions. For ClawHub skills, updates pull the latest version from the marketplace automatically.
+Have something useful? Package it as a skill.
 
-### Rolling Back
-
-If an update causes issues, open the skill's version history and select an earlier version to roll back to.
-
-## Create Your Own Skill
-
-Have something useful your agent knows how to do? Package it as a skill.
-
-1. Create a folder with your skill files
-2. Add a `SKILL.md` file with YAML frontmatter including `name`, `description`, and optionally metadata (JSON with required env vars)
+1. Put your files in a folder
+2. Add a `SKILL.md` with YAML frontmatter — at minimum, `name` and `description`
+3. Optional: a `.env.example` declaring required env vars (the UI will read this and flag missing values when someone attaches it)
 
 ```markdown
 ---
@@ -100,24 +93,26 @@ description: What this skill does
 
 # My Skill
 
-Instructions your agent should follow when using this skill.
+Instructions the agent should follow when using this skill.
 ```
 
-3. In the Skills Library, click **Upload Skill**
-4. Choose your folder, enter a name and optional description
-5. Click **Upload & Register**
+In the Skills Library, click **Upload Skill**, choose your folder, give it a name and description, then **Upload & Register**.
 
 <Note>
-  Skills are uploaded to the public IPFS network. Don't include secrets or sensitive code.
+  Skill folders are pinned to public IPFS. Don't include secrets or anything you wouldn't paste into a Gist.
 </Note>
 
-## Using the CLI
+## From the CLI
 
 ```bash
 pinata agents skills list              # See your library
 pinata agents skills create <path>     # Upload a new skill
+pinata agents clawhub list             # Browse the community catalog
+pinata agents clawhub install <slug>   # Install a community skill
 ```
 
 ## Limits
 
-You can attach up to 10 skills per agent. Skill names can only contain letters, numbers, hyphens, and underscores.
+- Up to **10 skills** attached per agent
+- Skill names: letters, numbers, hyphens, underscores
+- Folder size limits follow Pinata's IPFS upload limits

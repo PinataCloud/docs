@@ -1,10 +1,10 @@
 ---
 title: "Console"
-description: "Terminal access to your agent's container"
+description: "A real terminal inside your agent's container"
 icon: "terminal"
 ---
 
-Open your agent → **Console** to get a shell directly into your agent's container.
+The Console tab is a shell. You get an interactive prompt inside your agent's container, with the same workspace your agent reads and writes.
 
 <Frame>
   ![Image](/images/image-37.png)
@@ -17,15 +17,67 @@ Working directory: /home/node/clawd/workspace
 ~/clawd/workspace $
 ```
 
-This is a full terminal session. You can:
+Anything you can do with a shell, you can do here:
 
-- Run commands in your agent's environment
-- Inspect files and directories
-- Debug issues in real-time
-- Install packages or run scripts manually
+- Run `bash`, `python`, `node`, `git`, `curl`, `jq`
+- Tail log files: `tail -f /tmp/user-build.log`
+- Check what the agent sees: `env | sort`
+- Confirm a service is listening: `ss -tlnp`
+- Edit a file with `vi` or `nano`
 
-The working directory starts at `/home/node/clawd/workspace` - the same workspace your agent uses.
+The session starts in `/home/node/clawd/workspace` — the same workspace shown on the Files tab. Skills live under `skills/`, uploaded files under `uploads/`.
 
 <Tip>
-  Click the expand icon in the top-right for fullscreen mode.
+  The button in the top-right of the panel switches to fullscreen mode, which is much more pleasant for anything beyond a one-liner.
 </Tip>
+
+## When to reach for the Console
+
+The Console is the second-best debugging tool, after Logs. Use it when:
+
+- Logs show an error and you need to look at a file to understand it
+- A lifecycle script failed and you want to read `/tmp/user-build.log` or `/tmp/user-start.log`
+- You want to confirm a process is actually running (`ps aux | grep <name>`)
+- You want to reproduce a one-off command the agent ran
+
+Quick checks worth knowing:
+
+```bash
+# What did the build script say?
+tail -n 200 /tmp/user-build.log
+
+# What did the start script say?
+tail -n 200 /tmp/user-start.log
+
+# Latest OpenClaw log
+ls -la /tmp/openclaw/
+
+# OpenClaw runtime config
+cat /home/node/.openclaw/openclaw.json
+
+# Manifest the agent is using
+cat workspace/manifest.json
+
+# Is anything listening on common dev ports?
+ss -tlnp
+```
+
+For workflows by symptom, see [Troubleshooting](/agents/troubleshooting).
+
+## Running a command from outside the UI
+
+If you're scripting against an agent, hit the API:
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{"command":"ls -la workspace","cwd":"/home/node/clawd"}' \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/console/exec
+```
+
+The response is JSON: `{ stdout, stderr, exitCode, command, timestamp }`.
+
+<Warning>
+  Console access is full shell access. Anyone with the gateway token has it. Treat the token like a server credential.
+</Warning>

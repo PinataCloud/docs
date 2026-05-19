@@ -66,6 +66,7 @@
                 "icon": "lobster",
                 "pages": [
                   "agents/overview",
+                  "agents/concepts",
                   "agents/chat",
                   "agents/secrets",
                   "agents/models",
@@ -84,11 +85,27 @@
                     ]
                   },
                   {
+                    "group": "Build",
+                    "icon": "code",
+                    "pages": [
+                      "agents/manifest",
+                      "agents/api"
+                    ]
+                  },
+                  {
                     "group": "Templates",
                     "icon": "clone",
                     "pages": [
                       "agents/templates/overview",
                       "agents/templates/creating"
+                    ]
+                  },
+                  {
+                    "group": "Troubleshooting",
+                    "icon": "wrench",
+                    "pages": [
+                      "agents/troubleshooting",
+                      "agents/errors"
                     ]
                   }
                 ]

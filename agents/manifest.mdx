@@ -1,0 +1,272 @@
+---
+title: "Manifest Reference"
+sidebarTitle: "Manifest"
+description: "Every field in manifest.json, the source of truth for an agent's configuration"
+icon: "file-code"
+---
+
+`manifest.json` lives at the root of every agent's workspace. It controls identity, lifecycle scripts, secrets, skills, routes, channels, scheduled tasks, and (for templates) marketplace metadata. This page documents every field at the version 1 schema.
+
+The schema is published at:
+
+```
+https://agents.pinata.cloud/schemas/manifest.v1.json
+```
+
+Add a `$schema` line so editors can autocomplete and validate:
+
+```json
+{
+  "$schema": "https://agents.pinata.cloud/schemas/manifest.v1.json",
+  "version": 1,
+  "engine": "openclaw",
+  "agent": { "name": "My Agent" }
+}
+```
+
+## Top-level fields
+
+| Field | Type | Required | Description |
+| --- | --- | :---: | --- |
+| `$schema` | string | optional | Schema URL for editor support |
+| `version` | integer | yes | Manifest version - currently `1` |
+| `engine` | string | optional | Container engine - `openclaw` (default) or `hermes` |
+| `agent` | object | yes | Agent identity (see below) |
+| `model` | string | optional | Default model in `<provider>/<model>` form |
+| `secrets` | array | optional | Encrypted credentials this agent requires |
+| `skills` | array | optional | Up to 10 skill slugs or CIDs |
+| `tasks` | array | optional | Up to 20 scheduled tasks |
+| `scripts` | object | optional | Lifecycle hooks (`build`, `start`) |
+| `routes` | array | optional | Up to 10 port-forwarding rules |
+| `channels` | object | optional | Messaging channel configuration |
+| `template` | object | optional | Marketplace listing metadata (only for templates) |
+
+## `agent`
+
+Defines the agent's identity. All fields are written into the workspace (mostly `IDENTITY.md`) at deploy time.
+
+```json
+"agent": {
+  "name": "Social Bot",
+  "description": "You manage Socials",
+  "vibe": "Resourceful and opinionated",
+  "emoji": "🤖"
+}
+```
+
+| Field | Type | Limit | Notes |
+| --- | --- | --- | --- |
+| `name` | string | 1-100 chars, **required** | Display name |
+| `description` | string | ≤ 10000 chars | Personality / role |
+| `vibe` | string | ≤ 200 chars | One-line tagline |
+| `emoji` | string | ≤ 32 chars | Visible in lists and avatars |
+
+## `model`
+
+A single default model identifier in `<provider>/<model>` form:
+
+```json
+"model": "anthropic/claude-sonnet-4-6"
+```
+
+Provider must match a connected provider in the [Secrets Vault](/agents/secrets). If a task or session specifies a model that isn't enabled on the agent, the request falls back to this default.
+
+## `secrets`
+
+Declares the secrets this agent needs. These are env-var names - the actual values come from the [Secrets Vault](/agents/secrets) at attach time.
+
+```json
+"secrets": [
+  { "name": "OPENROUTER_API_KEY" },
+  { "name": "TELEGRAM_BOT_TOKEN", "description": "BotFather token", "required": false }
+]
+```
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `name` | string | Environment variable name (e.g. `ANTHROPIC_API_KEY`) |
+| `description` | string | Shown on the deploy form |
+| `required` | boolean | Default `true`. `false` makes the field optional in the deploy wizard |
+
+## `skills`
+
+Up to 10 skill references - either ClawHub slugs (resolves to the latest version) or IPFS CIDs (byte-stable).
+
+```json
+"skills": [
+  "@pinata/api",
+  "@pinata/memory-salience",
+  "bafybeicglyjdb6wrrcbfyu6i2fe4lpxdxgvfvlht7yzdim7cvwt656whue"
+]
+```
+
+Each attached skill is unpacked under `workspace/skills/<skill-name>/`. See [Skills](/agents/skills).
+
+## `tasks`
+
+Scheduled prompts. Up to 20 per agent. Full reference in [Tasks](/agents/tasks).
+
+```json
+"tasks": [
+  {
+    "name": "daily-check-in",
+    "schedule": { "kind": "cron", "expr": "0 9 * * *", "tz": "America/Los_Angeles" },
+    "payload": { "kind": "agentTurn", "text": "Summarize yesterday." },
+    "delivery": { "mode": "announce", "channel": "telegram", "to": "123" }
+  }
+]
+```
+
+Schedule kinds: `at` (one-shot ISO timestamp), `every` (`everyMs` interval, optional `staggerMs`), `cron` (`expr` with optional `tz`).
+
+Payload kinds: `agentTurn` (chat message; supports `model`, `thinking`, `timeoutSeconds`) or `systemEvent` (system trigger; provide `message`).
+
+Delivery modes: `none` (default), `announce` (to a channel - set `channel` and `to`), or `webhook` (set `to` to a URL). `bestEffort: true` swallows delivery failures.
+
+`sessionTarget` is `main` or `isolated`. `wakeMode` is `now` or `next-heartbeat`.
+
+## `scripts`
+
+Lifecycle hooks. Both fields are shell commands run by the agent's runner.
+
+```json
+"scripts": {
+  "build": "cd workspace/projects/app && npm install --include=dev",
+  "start": "cd workspace/projects/app && npx vite --host 0.0.0.0"
+}
+```
+
+| Hook | When it runs | Working directory | Output log | Timeout |
+| --- | --- | --- | --- | --- |
+| `build` | After deploy, after each `git push`, on **Retry Scripts** | `/home/node/clawd` | `/tmp/user-build.log` | 5 min |
+| `start` | After a successful `build`, on agent boot | `/home/node/clawd` | `/tmp/user-start.log` | None - runs detached |
+
+If `build` fails, `start` does not run. If `start` crashes, the agent is still healthy - only the user-defined process exits.
+
+**Retry the lifecycle:** `POST /v0/agents/{agentId}/scripts/retry` (or the action on the Danger tab).
+
+**Bind servers to `0.0.0.0`**, not `localhost`, so the gateway can reach them. See [Routes](/agents/routes).
+
+## `routes`
+
+Port-forwarding rules. Up to 10. Each entry maps an external path prefix to a container port.
+
+```json
+"routes": [
+  { "port": 5173, "path": "/app", "protected": false },
+  { "port": 3000, "path": "/api", "protected": true }
+]
+```
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `port` | integer | Container port. 1025-65535. `18789` is reserved. |
+| `path` | string | URL path prefix. Stripped from the request before reaching your service. |
+| `protected` | boolean | `true` requires a gateway token. Defaults to `false`. |
+
+For custom domains, register them through the UI or the [Domains API](/agents/api#custom-domains) - they aren't declared in `manifest.json`.
+
+## `channels`
+
+Configures the messaging channels for this agent. Tokens are usually injected from secrets to avoid leaking into the manifest.
+
+```json
+"channels": {
+  "telegram": {
+    "botToken": "env:TELEGRAM_BOT_TOKEN",
+    "dmPolicy": "pairing",
+    "allowFrom": ["123456789"]
+  },
+  "slack": {
+    "botToken": "env:SLACK_BOT_TOKEN",
+    "appToken": "env:SLACK_APP_TOKEN"
+  },
+  "discord": {
+    "botToken": "env:DISCORD_BOT_TOKEN"
+  }
+}
+```
+
+| Channel | Required fields | Notes |
+| --- | --- | --- |
+| `telegram` | `botToken` | `dmPolicy` (`open` / `pairing`), `allowFrom` (user IDs) |
+| `slack` | `botToken`, `appToken` | Socket Mode + scopes per [Channels](/agents/channels#slack) |
+| `discord` | `botToken` | |
+| `whatsapp` | `dmPolicy`, `allowFrom` | Linking happens on the agent. Coming soon. |
+
+Use `env:VAR_NAME` to read from an environment variable instead of embedding a literal token.
+
+## `template`
+
+Only used when the manifest is the source for a marketplace template. Ignored for direct deploys.
+
+```json
+"template": {
+  "slug": "useful-assistant",
+  "category": "general",
+  "partnerName": "Pinata",
+  "tags": ["assistant", "personal", "productivity"]
+}
+```
+
+| Field | Notes |
+| --- | --- |
+| `slug` | Marketplace URL slug. Lowercase, hyphens. |
+| `category` | One of the marketplace categories (e.g. `general`, `defi`, `social`) |
+| `partnerName` | Display name shown on the template card |
+| `tags` | Array of free-text tags for filtering |
+| `paid` | Optional. Set `{ "amount": "1.00", "currency": "USDC" }` for x402 paid templates |
+
+## Validation
+
+<Note>
+  `manifest.json` is different from `openclaw.json` - see [Concepts → manifest vs openclaw config](/agents/concepts#manifest-json-vs-openclaw-json). The `/v0/agents/{agentId}/config/validate` endpoint validates `openclaw.json`, not `manifest.json`.
+</Note>
+
+To validate `manifest.json` ahead of committing, run it through the template validator (which checks `manifest.json` + `README.md` + `workspace/`):
+
+```bash
+# CLI
+pinata agents templates validate https://github.com/user/my-template
+```
+
+```bash
+# Or hit the API directly with the repo URL + ref
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{"gitUrl":"https://github.com/user/my-template","ref":"refs/heads/main"}' \
+  https://agents.pinata.cloud/v0/templates/validate
+```
+
+The response is `{ valid: boolean, errors: string[], manifest, readme, files }`.
+
+Common manifest errors you'll see in `errors[]`:
+
+| Error string (verbatim) | Cause |
+| --- | --- |
+| `version must be 1` | Missing or wrong `version` field |
+| `agent.name is required` | The `agent` object is missing or `name` is empty |
+| `agent.name exceeds 100 characters` | Trim the name |
+| `skills exceeds maximum of 10` | More than 10 entries in `skills` |
+| `routes exceeds maximum of 10` | More than 10 entries in `routes` |
+| `tasks exceeds maximum of 20` | More than 20 entries in `tasks` |
+| `routes[i].port reserved` | Used port `18789` |
+| `routes[i].port out of range` | Port outside `1025`-`65535` |
+| `tasks[i].schedule.kind invalid` | Schedule kind isn't `at` / `every` / `cron` |
+| `channels.<channel>.botToken required` | Missing token for initial channel setup |
+
+See [Errors](/agents/errors) for the full HTTP status code reference.
+
+## Minimal Example
+
+The smallest valid manifest:
+
+```json
+{
+  "version": 1,
+  "agent": { "name": "Hello" }
+}
+```
+
+This boots the default `openclaw` engine with no skills, no scripts, and no routes - just a workspace and a chat interface.

@@ -9,38 +9,37 @@ icon: "grid-2"
   Templates are currently in beta.
 </Note>
 
-Templates are the fastest way to get a working agent. Instead of configuring everything yourself, pick a template that does what you need - it comes with the right skills, settings, and personality already set up. Just add your API keys and deploy.
+Templates are the fastest path to a working agent. Instead of configuring everything yourself, you pick a template that does what you need — it ships with the right skills, settings, and personality already in place. You add your API keys, and you deploy.
 
 <Frame>
   ![Image](/images/image-25.png)
 </Frame>
 
-## Find a Template
+## Where to look
 
-Browse templates in two places:
+Two places, depending on what you're after:
 
-[**Marketplace**](https://agents.pinata.cloud/marketplace) - Published templates ready to deploy. Filter by category (e.g., General) or search by name. Featured templates appear at the top.
+- [**Marketplace**](https://agents.pinata.cloud/marketplace) — every published template, from Pinata and from other builders. Filter by category, engine, or tags. Featured templates float to the top. Some are paid; those use x402 micropayments and you complete the purchase in flow.
+- [**My Templates**](https://agents.pinata.cloud/templates) — templates you've created, submitted, or imported. The **New Template** card at the top-left lets you import one from a public GitHub or GitLab repo.
 
-[**My Templates**](https://agents.pinata.cloud/templates) - Templates you've created or submitted. Create new templates by importing from a public GitHub or GitLab repo.
+Click any template card to open its details — description, skills it bundles, secrets it'll ask you for, and any scheduled tasks it sets up.
 
-Click any template to see what it does, what skills it includes, what secrets you'll need to provide, and whether it includes pre-configured scheduled tasks.
+## Deploying
 
-## Deploy It
-
-Once you've found a template you like:
+Once you've found one you like:
 
 1. Click **Deploy This Agent**
-2. Give your agent a name
-3. Add any secrets the template requires (usually just your LLM API key)
-4. Click **Deploy**
+2. Name your agent
+3. Provide whatever secrets the template asks for (usually just your LLM key)
+4. **Deploy**
 
-Your agent will spin up in about 30 seconds. You'll land on its chat page, ready to go.
+Provisioning takes about 30 seconds. You'll land on the agent's Chat tab, ready to talk to it.
 
-### What About Secrets?
+### A note on secrets
 
-Most templates need at least an LLM provider key (like `ANTHROPIC_API_KEY`). Some need additional keys - a Telegram template needs your bot token, a trading template might need exchange API keys.
+Every template needs at least an LLM provider key (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, etc.). Many need more — a Telegram template needs a bot token, a trading template might need exchange credentials.
 
-The template page shows exactly what's required. If you haven't added those secrets yet, you'll be prompted during setup. Or add them ahead of time in your [secrets vault](/agents/secrets).
+The template card spells out exactly what it needs. You can add the secrets ahead of time in the [Secrets Vault](/agents/secrets), or wait — the deploy flow prompts you for anything missing.
 
 ## Using the CLI
 
@@ -53,10 +52,16 @@ pinata agents create --template <template-id>   # Deploy one
 
 Built something useful? Package it as a template and share it with others - or just use it to quickly spin up copies of your own agents.
 
-<Card title="Creating Templates" icon="hammer" href="/agents/templates/creating">
-  Learn how to package your agent as a reusable template.
-</Card>
+<CardGroup cols={2}>
+  <Card title="Creating Templates" icon="hammer" href="/agents/templates/creating">
+    Walk through packaging your agent as a reusable template
+  </Card>
+
+  <Card title="Manifest reference" icon="file-code" href="/agents/manifest">
+    Full reference for every field in `manifest.json`
+  </Card>
+</CardGroup>
 
 <Card title="Reference Template" icon="github" horizontal href="https://github.com/PinataCloud/agent-template">
-  Clone this starter repo - it includes working examples of port forwarding, tasks, lifecycle scripts, and secrets.
+  Clone this starter repo - it includes working examples of routes, tasks, lifecycle scripts, and secrets.
 </Card>

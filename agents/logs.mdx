@@ -1,43 +1,69 @@
 ---
 title: "Logs"
-description: "Real-time logs with filtering and export"
+description: "Stream OpenClaw's output in real time"
 icon: "scroll"
 ---
 
-Open your agent → **Logs** to see real-time output from OpenClaw.
+The Logs tab is a live stream of what OpenClaw is doing inside your agent. New entries appear without refreshing — the tab uses a WebSocket under the hood. If the small status badge in the header reads `WEBSOCKET CONNECTED`, you're streaming. If it reads `WEBSOCKET NOT CONNECTED`, either the agent isn't running or the connection dropped — hit the refresh button or check the agent's status.
 
 <Frame>
   ![Image](/images/image-38.png)
 </Frame>
 
+## Reading the stream
+
+Each log line has four parts:
+
+- **Timestamp** — when it happened
+- **Level** — severity (`TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL`)
+- **Source** — which component generated the line (e.g. `gateway/reload`, `cron/runner`)
+- **Message** — the content
+
+Click the **+** on the left of any row to expand it. Useful for stack traces and structured fields that don't fit on a single line.
+
 ## Filtering
 
-Use the checkboxes to filter by log level:
+The six colored checkboxes — TRACE, DEBUG, INFO, WARN, ERROR, FATAL — toggle log levels on and off. When you're hunting a problem, uncheck everything except WARN and above to cut the noise.
 
-- **TRACE** - Most verbose, detailed execution flow
-- **DEBUG** - Debugging information
-- **INFO** - General operational messages
-- **WARN** - Warning conditions
-- **ERROR** - Error conditions
-- **FATAL** - Critical failures
+The **Search logs** box does a substring match against the message. Combine with level filters: "show me ERROR lines mentioning `telegram`."
 
-The search box filters log content. Enable **AUTO-FOLLOW** to automatically scroll to new entries as they appear.
-
-## Log Entries
-
-Each entry shows:
-
-- **Timestamp** - When the event occurred
-- **Level** - Severity (INFO, ERROR, etc.)
-- **Source** - Which component generated the log (e.g., `gateway/reload`)
-- **Message** - The log content
-
-Click the **+** button to expand an entry and see the full message.
+The **AUTO-FOLLOW** checkbox keeps the view pinned to the latest entry. Uncheck it when you want to scroll back without the view jumping.
 
 ## Exporting
 
-Click **EXPORT VISIBLE** to download the currently filtered logs. This exports only what matches your current filters - useful for sharing specific issues or keeping records.
+**EXPORT VISIBLE** downloads whatever the current filters are showing — useful for sharing with support or filing an issue. It's only what you see; the export respects your filters.
 
-## Log File
+## Where the logs live on disk
 
-Logs are written to `/TMP/OPENCLAW/OPENCLAW-{date}.LOG`. A new file is created each day.
+Inside the container, OpenClaw writes daily log files to `/tmp/openclaw/openclaw-{date}.log`. From the [Console](/agents/console):
+
+```bash
+ls /tmp/openclaw/
+tail -f /tmp/openclaw/openclaw-$(date +%Y-%m-%d).log
+```
+
+That's identical to what the Logs tab streams, with one difference: only the last 100 lines are retained when the gateway restarts. If you need long-term retention, export periodically.
+
+## Reading logs over the API
+
+For scripts and incident response:
+
+```bash
+curl -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/logs
+```
+
+Returns the latest 100 lines as a single string. For full streaming, the UI uses a WebSocket on the agent's subdomain — see [API → Streaming logs](/agents/api#streaming-logs).
+
+## Common sources, and what they tell you
+
+| Source | What it means |
+| --- | --- |
+| `gateway/reload` | Gateway reloaded its configuration — usually after a secret, skill, or channel change |
+| `gateway/ws` | WebSocket lifecycle (connect, disconnect, reconnect) |
+| `cron/runner` | A scheduled task fired — which one, and what happened |
+| `agent/turn` | One conversation turn — request in, response out |
+| `skill/<name>` | Output from a specific skill |
+| `script/build`, `script/start` | Lifecycle script output (also tee'd to `/tmp/user-build.log` and `/tmp/user-start.log`) |
+
+If something's broken, start at ERROR. If you see ERROR lines and can't make sense of them, [Troubleshooting](/agents/troubleshooting) maps symptoms to fixes, and the [Error reference](/agents/errors) maps verbatim error strings to causes.

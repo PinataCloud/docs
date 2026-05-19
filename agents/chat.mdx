@@ -4,64 +4,60 @@ description: "Talk to your agent through the web interface"
 icon: "message"
 ---
 
-The Chat page is where you interact with your agent. It's a real-time conversation interface that shows your messages, agent responses, and any tools the agent uses along the way.
+The Chat tab is your main conversation with the agent. Messages stream in real time. You see your prompts, the agent's responses, any tools it called along the way, and — if you enable it — its thinking.
 
-Open your agent → **Chat** to start talking.
+Open your agent → **Chat**.
 
 <Frame>
   ![Image](/images/image-30.png)
 </Frame>
 
-## Connection Status
+## Sending a message
 
-At the top you'll see "CONNECTED" with a green dot when your agent is ready. If the connection drops, the status updates and you can refresh to reconnect.
+The composer is at the bottom of the page.
 
-## Agent Sidebar
+- **+** opens an attachment picker. Files you attach land in `<workspace>/uploads/` inside the container, and the agent gets the path in its context.
+- The text input is the message itself. Press Enter to send, Shift+Enter for a newline.
+- **MODEL** picks which model handles this turn. It defaults to whatever you set as the agent's default — see [Models](/agents/models).
+- The send arrow submits.
 
-The right side of the chat page shows a live overview of your agent - its status, current model, version, and resource usage (CPU, memory, disk, network). You'll also see quick counts for attached skills, secrets, and tasks, plus any custom domain routes you've configured.
+## Slash commands
 
-This sidebar is a good way to keep an eye on your agent's health without leaving the conversation.
+Type `/` at the start of a message to run a command instead of a regular prompt:
 
-## Switching Models
-
-Use the model dropdown in the sidebar to switch between any models you've [enabled for this agent](/agents/models). You can switch mid-conversation - useful for:
-
-- Using a faster model for quick questions
-- Switching to a more capable model for complex reasoning
-- Comparing how different models handle the same prompt
-
-The dropdown shows models by provider (e.g., `anthropic/claude-sonnet-4-6`).
-
-## Display Settings
-
-Click the settings icon (sliders) to toggle what's visible in the chat:
-
-| Setting | What it does |
+| Command | Effect |
 | --- | --- |
-| **Markdown** | Render markdown formatting in responses |
-| **Thinking** | Show extended thinking blocks when available |
-| **Tool Calls** | Show tool use blocks (commands, API calls, etc.) |
-| **Image Preview** | Display images inline |
-| **Timestamps** | Show when each message was sent |
-| **Avatars** | Show profile pictures next to messages |
+| `/new` | Starts a fresh session — the agent forgets the prior conversation |
+| `/status` | Prints the current model, session info, and key flags |
+| `/help` | Shows the commands your agent supports |
 
-These are personal preferences - they don't affect how your agent works, just how you see the conversation.
+The list depends on your agent's OpenClaw version and any skills you've attached, so `/help` is the best way to see what's actually available.
 
-## Tool Calls
+## Reading agent responses
 
-When your agent uses a tool, you'll see it in the chat as an expandable block:
+Each turn the agent sends back has a few elements you'll see in the chat:
 
-- **Tool name** - What tool was called (e.g., `cron`, `bash`, `web_search`)
-- **Arguments** - What parameters were passed
-- **Result** - What came back
+- **Thinking block** — collapsed by default, labeled `Thinking ▾`. Click it to expand. Only appears for models that expose reasoning.
+- **Message text** — the actual reply. Renders markdown, including code blocks and tables.
+- **Tool calls** — if the agent called a tool (a shell command, a web search, a skill), you'll see a labeled block with the arguments and result. This is your single best window into *why* the agent answered the way it did.
+- **Model badge** — after the response, a small badge shows which model produced it. Useful when you've been switching models mid-conversation.
 
-Click "Show more" to expand the full details. This is helpful for debugging or understanding exactly what your agent did.
+When you want to debug a bad answer, expand the thinking block and the tool calls before anything else. That's almost always where the answer is.
 
-## Fullscreen Mode
+## Switching models mid-conversation
 
-Click the expand icon in the top-right to go fullscreen. This hides the sidebar and gives you more room for the conversation. Click again to exit.
+Use the **MODEL** dropdown in the composer. You can switch between any models you've enabled for this agent — start a turn with a cheap, fast model, then bump up for a hard question. Each turn is tagged with the model that produced it, so the conversation stays readable.
+
+If you want to confirm what the agent is currently using without scrolling, send `/status`.
+
+## More room for the conversation
+
+Click **Hide navbar** in the top-right corner to collapse the left sidebar — the conversation gets the full width of the screen. Click it again to bring the sidebar back.
 
 ## Tips
 
-- Tool calls can take a few seconds - the interface shows a progress indicator while the agent is working
-- If the agent seems stuck, try rephrasing or breaking your request into smaller steps
+- Long-running tool calls show a progress indicator. Wait for it before assuming the agent is stuck.
+- If the chat looks disconnected and stays that way, the gateway probably needs a kick. Open **Danger** → **Restart Gateway**.
+- If you change a secret, attach a new skill, or add a channel, restart the gateway so the agent picks up the change.
+
+For deeper debugging, the [Logs](/agents/logs) tab streams everything OpenClaw is doing under the hood. See [Troubleshooting](/agents/troubleshooting) for common failure modes.

@@ -1,84 +1,92 @@
 ---
 title: "Channels"
-description: "Connect your agent to messaging platforms"
+description: "Let people talk to your agent on Telegram, Slack, or Discord"
 icon: "comments"
 ---
 
-Channels let your agent talk to people on Telegram, Slack, and Discord. Instead of everyone coming to the Pinata dashboard, they can message your agent where they already hang out.
+By default, the only way to talk to your agent is through the Pinata dashboard. Channels change that — connect Telegram, Slack, or Discord, and your agent shows up wherever you and your team already chat.
 
-**Currently available:** Telegram, Slack, Discord
-
-**Coming soon:** WhatsApp
+WhatsApp is on the roadmap; you'll see its card grayed out as **Coming Soon**.
 
 <Frame>
   ![Image](/images/image-31.png)
 </Frame>
 
+## How it works
+
+Open your agent → **Channels**. You'll see one card per platform.
+
+- A card with **+ ADD** isn't connected yet. Click it to open the setup dialog.
+- A card with **ENABLED** is already connected. The card shows a summary (the DM policy and a masked bot token), and a **RECONFIGURE** button reopens the dialog so you can update settings without losing the connection.
+
+Setup is the same shape for every platform: grab a bot token from the platform, paste it into the dialog, save. Some platforms need an extra token or an OAuth invite to a workspace/server.
+
+Once a channel is enabled, anyone who messages your bot on that platform is talking to your agent. Responses come back through the same channel.
+
 ## Telegram
 
-Telegram is the quickest to set up. You'll create a bot through Telegram's BotFather and connect it to your agent.
+This is the quickest. You need a bot token from Telegram's BotFather.
 
-1. Open Telegram and message [@BotFather](https://t.me/botfather)
-2. Send `/newbot` and follow the prompts to create your bot
+1. In Telegram, message [@BotFather](https://t.me/botfather)
+2. Send `/newbot` and follow the prompts
 3. Copy the bot token BotFather gives you
-4. In Pinata, open your agent → **Channels** and click **\+ ADD** on the Telegram card
-5. Paste your bot token and save
+4. In Pinata: agent → **Channels** → **+ ADD** on the Telegram card
+5. Paste the token and save
 
-Now anyone who messages your Telegram bot is talking to your agent.
+### Controlling who can DM your bot
 
-### Controlling Access
+The Telegram dialog has two access controls:
 
-By default, your bot is open - anyone can message it. If you want to restrict access:
+- **DM policy** — `open` (anyone can message) or `pairing` (users must be approved first)
+- **Allow list** — a list of Telegram user IDs that are allowed to message
 
-- **DM policy** - Switch from "open" to "pairing" mode, which requires users to be approved before they can chat
-- **Allow list** - Only specific Telegram user IDs can message the bot
-
-You can use either or both. Configure these in the channel settings.
+You can use either or both. Leave both at their defaults if you want anyone to be able to chat.
 
 ## Slack
 
-Slack takes a few more steps because you need to create a Slack App with the right permissions.
+Slack needs a custom app with the right permissions. It's a few more steps but everything happens once.
 
 1. Go to [api.slack.com/apps](https://api.slack.com/apps) and create a new app
-2. Enable **Socket Mode** (under Settings)
+2. Enable **Socket Mode**
 3. Create an **App-Level Token** with the `connections:write` scope
-4. Under **OAuth & Permissions**, add these bot token scopes:
-   - `chat:write`, `im:write`, `im:history`, `im:read`, `users:read`, `app_mentions:read`
+4. Under **OAuth & Permissions**, add these bot token scopes: `chat:write`, `im:write`, `im:history`, `im:read`, `users:read`, `app_mentions:read`
 5. Install the app to your workspace
-6. In Pinata, open your agent → **Channels** and click **\+ ADD** on the Slack card
-7. Paste both tokens:
-   - **Bot Token** - starts with `xoxb-`
-   - **App Token** - starts with `xapp-`
-8. Save
+6. In Pinata: agent → **Channels** → **+ ADD** on the Slack card
+7. Paste both tokens — bot token starts with `xoxb-`, app token starts with `xapp-`
 
-Your agent will now respond to DMs and mentions in your Slack workspace.
+Once connected, the bot responds to DMs and to `@mentions` in any channel it's been invited to.
 
 ## Discord
 
-Discord setup is similar to Telegram - create a bot, get a token, connect it.
+Same shape as Telegram — make a bot in Discord's developer portal, copy the token, paste it in.
 
 1. Go to [discord.com/developers](https://discord.com/developers/applications) and create an application
-2. Go to **Bot** → **Add Bot**
-3. Copy the bot token (you may need to reset it to see it)
-4. Go to **OAuth2** → **URL Generator**
-   - Select the `bot` scope
-   - Select the permissions your bot needs
-5. Copy the generated URL and open it to invite the bot to your server
-6. In Pinata, open your agent → **Channels** and click **\+ ADD** on the Discord card
-7. Paste the bot token and save
+2. Under **Bot**, click **Add Bot** and copy the token (you may need to reset it once to reveal it)
+3. Under **OAuth2 → URL Generator**, check the `bot` scope and the permissions your bot needs
+4. Open the generated URL to invite the bot to your server
+5. In Pinata: agent → **Channels** → **+ ADD** on the Discord card
+6. Paste the bot token and save
 
-Your agent can now respond in Discord.
+## Updating or removing a channel
 
-## Managing Channels
-
-Once connected, channels show a green **ENABLED** badge along with a summary of your configuration (DM policy, masked token). You can:
-
-- **Reconfigure** to update settings (leave token fields blank to keep existing values)
+- **Reconfigure** — click **RECONFIGURE** on an enabled channel. You can leave the token fields blank to keep the existing token while changing other settings.
+- **Remove** — same dialog, **Remove** action. This deletes the channel config and restarts the agent's gateway.
 
 <Note>
-  Changes to channels take effect after a gateway restart.
+  Channel changes take effect after the gateway restarts. Configure and remove handle that automatically.
 </Note>
 
 <Warning>
-  Bot tokens are sensitive. Don't share them or commit them to version control.
+  Bot tokens are sensitive. Keep them out of source control. They're stored encrypted on Pinata's side; treat them the same way locally.
 </Warning>
+
+## When it doesn't work
+
+| Symptom | What's going on | What to do |
+| --- | --- | --- |
+| Bot doesn't respond | Gateway didn't restart after configure | Open **Danger** → **Restart Gateway** |
+| Slack works in DMs but not channels | Missing `app_mentions:read` scope | Reinstall the Slack app with the scopes above |
+| Telegram users get no reply | `dmPolicy` is `pairing` and they aren't paired yet | Switch to `open`, or approve them via [Devices](/agents/devtools#device-pairing) |
+| `403` when adding a channel | Plan limit or workspace permissions | Check your plan and workspace role |
+
+If none of these match, check [Logs](/agents/logs) for entries from `gateway/reload` and the channel name, or walk through [Troubleshooting](/agents/troubleshooting).

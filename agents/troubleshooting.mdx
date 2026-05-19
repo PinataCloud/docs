@@ -1,0 +1,230 @@
+---
+title: "Troubleshooting"
+description: "What to check when your agent isn't behaving"
+icon: "wrench"
+---
+
+Most problems with an agent fall into a small number of buckets, and the answer is almost always in one of five places. Before you scroll through symptoms, walk these in order — you'll often find it on step one.
+
+1. **Logs** — open the [Logs](/agents/logs) tab, uncheck everything except WARN and ERROR, and scroll up to the most recent red line. That's usually the answer.
+2. **Danger tab** — the [Danger](/agents/devtools) tab is the inventory page. Check status, last sync, the lifecycle-script state, and whether your secrets show as `Synced`.
+3. **Console** — the [Console](/agents/console) is a shell. `tail /tmp/user-build.log`, `env`, `ps aux` answer about 80% of "why doesn't my service work" questions.
+4. **Files** — if something used to work and broke after a recent change, restore an earlier snapshot from the [Files](/agents/snapshots) tab.
+5. **Validate config** — `POST /v0/templates/validate` checks `manifest.json`; `POST /v0/agents/{agentId}/config/validate` checks the runtime `openclaw.json`. These are two different files, see [Concepts](/agents/concepts#manifest-json-vs-openclaw-json) for the difference.
+
+If you're staring at an HTTP error code, the [Error reference](/agents/errors) goes status-by-status with verbatim error strings.
+
+The rest of this page is symptom-first. Find what's happening, jump there.
+
+## Agent won't start / stays in `starting`
+
+Symptom: status badge stuck on `starting`, no logs appearing, chat won't connect.
+
+**Check:**
+
+```bash
+# Are we still spinning up the container?
+curl -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID | jq '.processStatus'
+
+# Did the build script blow up?
+# Console → tail -n 200 /tmp/user-build.log
+```
+
+**Common causes:**
+
+| Cause | Fix |
+| --- | --- |
+| `build` script failed | Fix the script, then **Retry Scripts** on the Danger tab (or `POST /v0/agents/{agentId}/scripts/retry`) |
+| Missing required secret | The Danger page flags missing secrets. Attach in the [Secrets Vault](/agents/secrets), then restart the gateway |
+| Container OOM | A heavy `npm install` or model load can hit the memory ceiling. Slim dependencies or break up the script |
+| OpenClaw version pinned to a broken release | Danger → **Change** to update to latest |
+
+## Gateway won't connect / chat is offline
+
+Symptom: chat shows "disconnected" or fails to reconnect.
+
+**Check:** the agent is `running` on the Danger tab, then look at Logs filtered to `gateway/ws`.
+
+**Common causes:**
+
+| Cause | Fix |
+| --- | --- |
+| Gateway crashed | Danger → **Restart Gateway** |
+| Gateway token rotated and your client cached the old one | Copy the latest token from Danger, update your client |
+| Network/route returning 502 | Hard-refresh the page; if it persists, restart the gateway |
+| Browser blocked third-party cookies for `agents.pinata.cloud` | Pass the token via header or query string instead of relying on the cookie |
+
+## Build script failed
+
+Symptom: Danger → **Lifecycle Scripts** shows `build` failed; `start` never ran.
+
+**Read the log:**
+
+```bash
+# Console
+tail -n 200 /tmp/user-build.log
+```
+
+**Common causes:**
+
+- Wrong working directory - `build` runs from `/home/node/clawd`, not the workspace
+- Missing tooling (`pnpm`, `yarn`) - install in the build script first, or use a tool that ships with the image (`npm`)
+- `package.json` not found - `cd` into the right project subfolder
+- 5-minute timeout - split the work or pre-install in a snapshot
+
+Fix the script, then `POST /v0/agents/{agentId}/scripts/retry` (or click **Retry Scripts**).
+
+## Start script crashes immediately
+
+Symptom: `start` finishes seconds after launching - service is unreachable.
+
+```bash
+tail -n 200 /tmp/user-start.log
+ss -tlnp
+```
+
+**Common causes:**
+
+| Cause | Fix |
+| --- | --- |
+| Bound to `127.0.0.1` / `localhost` | Bind to `0.0.0.0` so the gateway can reach it |
+| Port mismatch with `routes` entry | Make sure `manifest.json` `routes[i].port` matches what the server actually listens on |
+| Missing env var | `start` runs after `build` with the agent's full env - confirm with `env | grep MY_VAR` |
+| Process exits because it expected an interactive TTY | Add `--no-color`/`--no-progress` flags, or daemonize properly |
+
+<a id="routes"></a>
+## Routes not working / 404 / 502
+
+Symptom: the URL for your path route or custom domain doesn't load.
+
+**Walk through:**
+
+```bash
+# Is your service even listening?
+ss -tlnp
+
+# Hit it from inside the container
+curl -i http://localhost:5173/
+
+# Does the route show up in the API?
+curl -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/port-forwarding
+```
+
+**Common causes:**
+
+| Cause | Fix |
+| --- | --- |
+| Service bound to `localhost` | Bind to `0.0.0.0` |
+| Wrong port | Match the listener's port in the route definition |
+| Path prefix mismatch | The prefix is stripped before reaching your service - `/app/foo` becomes `/foo`. Set your framework `base` accordingly (e.g. Vite `base: "/app"`) |
+| Allowed-hosts not configured | Vite/Next dev servers reject unknown hosts - add `__AGENT_HOST__` to the allow-list |
+| Custom domain stuck `pending_ownership` | TXT record not visible yet. Wait for DNS propagation or `dig TXT _pinata-verify.<your-domain>` |
+| Custom domain stuck `pending` | Cloudflare is still provisioning - usually clears in a few minutes |
+
+See [Routes & Domains](/agents/routes) for the full domain status table.
+
+## Secret update didn't apply
+
+Symptom: you updated a secret in the Vault but the agent still uses the old value.
+
+**Check:** Danger → **Secrets** → the per-secret **Synced** indicator. Out of sync means the running gateway hasn't been restarted since the update.
+
+**Fix:** Danger → **Restart Gateway**, or `POST /v0/agents/{agentId}/restart`.
+
+Secrets are injected at process start - they are not hot-reloaded.
+
+## Skill missing / not loading
+
+Symptom: agent doesn't seem to know about a skill you attached.
+
+**Check:**
+
+```bash
+# Is it actually attached?
+curl -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID | jq '.skills'
+
+# Are the files in the workspace?
+# Console: ls workspace/skills/
+```
+
+**Common causes:**
+
+| Cause | Fix |
+| --- | --- |
+| Skill attached but agent not restarted | Restart the gateway |
+| Required env var declared in `.env.example` is missing | The Skills tab flags missing vars when you open the skill. Add the value to the Secrets Vault and attach it |
+| Skill version is out of date | Skills tab → click the skill → **Update** |
+| Skill installed from CID, not slug, and a newer version exists | Switch to the slug to track latest, or pin to a newer CID |
+
+## Custom domain stuck pending
+
+See [Routes → Custom domains](/agents/routes#custom-domains) - statuses are `pending_ownership` (TXT record), `pending` (Cloudflare provisioning), then `active`.
+
+```bash
+# Confirm DNS
+dig TXT _pinata-verify.app.example.com +short
+
+# Re-trigger verification
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/domains/$DOMAIN_ID/verify
+```
+
+## Device pairing rejects / stuck pending
+
+Symptom: a paired client (CLI, mobile) can't connect, or stays pending forever.
+
+```bash
+curl -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/devices
+```
+
+**Common causes:**
+
+- The device never sent an approval request - re-pair from the client
+- You're on a different workspace than the one you approved from - check **Account → Workspaces**
+- The agent is `not_running` - pairing requires the gateway to be up
+
+**Fix:** approve the request from the Danger page or `POST /v0/agents/{agentId}/devices/approve-all`.
+
+## Git push rejected
+
+Symptom: `git push` to your agent's workspace fails.
+
+**Common causes:**
+
+| Cause | Fix |
+| --- | --- |
+| Authentication failed | Copy a fresh URL with **Copy with Token** from the Files tab |
+| Local branch diverged | `git pull --rebase` first - the server commits the agent's pending changes before applying your push |
+| Pre-receive validation failed | Look at the rejected output - often a manifest validation error. Validate locally before pushing |
+
+## Tasks aren't firing
+
+Symptom: a scheduled task isn't running.
+
+**Check:**
+
+- Is the task enabled? `GET /v0/agents/{agentId}/tasks` with `includeDisabled=true`
+- Is the agent running? Tasks fire only while the gateway is up; missed runs during downtime are skipped
+- Check `cron/runner` lines in Logs around the expected time
+- Trigger manually: `POST /v0/agents/{agentId}/tasks/{jobId}/run` - if that works, the schedule is wrong
+
+## Costs / model usage looks off
+
+Switch the agent's model dropdown in chat to see what model is actually being used, or run `/status`. Tasks can specify their own `model` - re-check `payload.model` if a scheduled run looks unexpected.
+
+## Still stuck?
+
+Open a ticket from **Support → Chat with us** in the sidebar, or email `team@pinata.cloud`. Useful info to include:
+
+- Agent ID (Danger → Agent → Agent ID)
+- OpenClaw version
+- A recent `EXPORT VISIBLE` from the Logs tab (filter to `ERROR` first)
+- The relevant section of `manifest.json` if config-related
+- What you expected vs. what happened
+
+For HTTP errors, the [Error reference](/agents/errors) often has the answer faster than a support round-trip.
