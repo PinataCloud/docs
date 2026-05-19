@@ -56,17 +56,21 @@ If the skill declares required env vars in a `.env.example`, the Skills tab flag
 
 ## Slugs vs CIDs
 
-Anywhere you reference a skill — in the CLI, in [`manifest.json`](/agents/manifest), in API calls — you can use either form:
+Anywhere you reference a skill — in the CLI, in [`manifest.json`](/agents/manifest), in API calls — you have two ways to identify it:
 
-- **Slug** (`@pinata/api`) — always resolves to the latest published version. Easiest for templates and shared configs.
+- **ClawHub slug** (`@pinata/api`) — always resolves to the latest published version. Easiest for templates and shared configs.
 - **IPFS CID** (`bafybeicglyjdb6w...`) — pins one specific version. Use when you want byte-stable behavior or you're using a self-hosted skill not on ClawHub.
+
+In `manifest.json` each skill is an object with `name` plus either `clawhub_slug` or `cid`:
 
 ```json
 "skills": [
-  "@pinata/api",
-  "@pinata/memory-salience"
+  { "clawhub_slug": "@pinata/api", "name": "Pinata API" },
+  { "clawhub_slug": "@pinata/memory-salience", "name": "Memory Salience" }
 ]
 ```
+
+See the [manifest reference](/agents/manifest#skills) for the full schema.
 
 ## Versions and updates
 

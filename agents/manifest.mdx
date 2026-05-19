@@ -90,15 +90,21 @@ Declares the secrets this agent needs. These are env-var names - the actual valu
 
 ## `skills`
 
-Up to 10 skill references - either ClawHub slugs (resolves to the latest version) or IPFS CIDs (byte-stable).
+Up to 10 skills. Each entry is an object with a `name` plus either a `clawhub_slug` (resolves to the latest published version) or a `cid` (byte-stable, pinned to a specific upload).
 
 ```json
 "skills": [
-  "@pinata/api",
-  "@pinata/memory-salience",
-  "bafybeicglyjdb6wrrcbfyu6i2fe4lpxdxgvfvlht7yzdim7cvwt656whue"
+  { "clawhub_slug": "@pinata/api", "name": "Pinata API" },
+  { "clawhub_slug": "@pinata/memory-salience", "name": "Memory Salience" },
+  { "cid": "bafybeicglyjdb6wrrcbfyu6i2fe4lpxdxgvfvlht7yzdim7cvwt656whue", "name": "My Custom Skill" }
 ]
 ```
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `name` | string | Display name shown in the UI. Required. |
+| `clawhub_slug` | string | ClawHub slug like `@pinata/api`. Mutually exclusive with `cid`. |
+| `cid` | string | IPFS CID of an uploaded skill. Mutually exclusive with `clawhub_slug`. |
 
 Each attached skill is unpacked under `workspace/skills/<skill-name>/`. See [Skills](/agents/skills).
 

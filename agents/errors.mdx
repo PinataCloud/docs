@@ -74,7 +74,7 @@ Resource state is incompatible with the request.
 | Cause | Fix |
 | --- | --- |
 | Duplicate secret name on `POST /v0/secrets` | Use a different name or update the existing one |
-| Two credentials for the same provider attached (e.g. `ANTHROPIC_API_KEY` + Claude subscription) | Detach one |
+| Two credentials for the same provider attached (e.g. `OPENAI_API_KEY` + Codex subscription) | Detach one |
 | Custom domain already registered (verified) | Pick a different name or delete the existing registration |
 | Subdomain collides with another tenant | Generate a new one or pick a different name |
 | Trying to delete a secret still attached to an agent | Detach from agents first |
