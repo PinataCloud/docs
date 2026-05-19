@@ -245,22 +245,21 @@ curl -X POST \
   https://agents.pinata.cloud/v0/templates/validate
 ```
 
-The response is `{ valid: boolean, errors: string[], manifest, readme, files }`.
+The response is `{ valid: boolean, errors: string[], manifest, readme, files }` — any problems with the manifest show up in the `errors` array.
 
-Common manifest errors you'll see in `errors[]`:
+Schema constraints to keep in mind while authoring:
 
-| Error string (verbatim) | Cause |
+| Field | Constraint |
 | --- | --- |
-| `version must be 1` | Missing or wrong `version` field |
-| `agent.name is required` | The `agent` object is missing or `name` is empty |
-| `agent.name exceeds 100 characters` | Trim the name |
-| `skills exceeds maximum of 10` | More than 10 entries in `skills` |
-| `routes exceeds maximum of 10` | More than 10 entries in `routes` |
-| `tasks exceeds maximum of 20` | More than 20 entries in `tasks` |
-| `routes[i].port reserved` | Used port `18789` |
-| `routes[i].port out of range` | Port outside `1025`-`65535` |
-| `tasks[i].schedule.kind invalid` | Schedule kind isn't `at` / `every` / `cron` |
-| `channels.<channel>.botToken required` | Missing token for initial channel setup |
+| `version` | Must be `1` |
+| `agent` | Required; `agent.name` is required and ≤ 100 chars |
+| `agent.description` | ≤ 10000 chars |
+| `agent.vibe` | ≤ 200 chars |
+| `agent.emoji` | ≤ 32 chars |
+| `skills` | ≤ 10 entries |
+| `routes` | ≤ 10 entries; ports `1025`–`65535`, excluding `18789` |
+| `tasks` | ≤ 20 entries; minimum interval 1 minute |
+| `channels.*.botToken` | Required on initial setup (Slack also requires `appToken`) |
 
 See [Errors](/agents/errors) for the full HTTP status code reference.
 

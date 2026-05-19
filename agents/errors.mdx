@@ -138,17 +138,16 @@ Your `_pinata-verify.<domain>` TXT record isn't visible. Confirm with `dig TXT _
 
 Issues is closed beta and restricted to `@pinata.cloud` accounts today.
 
-## Error string lookup
+## Common error responses
 
-Verbatim messages you'll see in the `error` field of a response or the `errors[]` array from validators. Search this page for the literal string to jump to its meaning.
+Errors documented in the API spec, grouped by where they appear. Use this as a starting point when you're trying to interpret an error response — the exact string returned by the API is the source of truth.
 
-| Error string | Where it appears | Meaning |
+| Response | Where it appears | What it means |
 | --- | --- | --- |
-| `Validation failed` | Most `400` responses | One or more fields failed schema validation - check the rest of the message |
-| `Missing userId` | Several JWT-protected endpoints | Pinata JWT couldn't be resolved to a user - regenerate the key |
-| `Agent limit reached` | `POST /v0/agents` (`403`) | Workspace at its agent quota - upgrade or delete an unused agent |
+| `Missing userId` | Several JWT-protected endpoints | Pinata JWT couldn't be resolved to a user — regenerate the key |
+| `Agent limit reached` | `POST /v0/agents` (`403`) | Workspace at its agent quota — upgrade or delete an unused agent |
 | `Storage not configured` | `POST /v0/agents/{agentId}/snapshots/sync` (`400`) | Workspace has no backing storage; contact support |
-| `Sync failed` | Snapshot sync (`500`) | IPFS pin or workspace serialization failed - retry |
+| `Sync failed` | Snapshot sync (`500`) | IPFS pin or workspace serialization failed — retry |
 | `Snapshot not found` | `POST /v0/agents/{agentId}/snapshots/reset` (`404`) | Snapshot CID isn't in this agent's history |
 | `Invalid snapshot CID` | Snapshot reset (`400`) | The provided CID didn't parse |
 | `Unsupported channel` | `DELETE /v0/agents/{agentId}/channels/{channel}` (`400`) | Channel must be `telegram` / `slack` / `discord` / `whatsapp` |
@@ -161,24 +160,17 @@ Verbatim messages you'll see in the `error` field of a response or the `errors[]
 | `Failed to read config` | `GET /v0/agents/{agentId}/config` (`500`) | Couldn't read `openclaw.json` |
 | `Failed to write config` | `PUT /v0/agents/{agentId}/config` (`500`) | Couldn't write `openclaw.json` |
 | `Invalid version` | `POST /v0/agents/{agentId}/restart` (`400`) | Requested OpenClaw version doesn't exist |
-| `Restart failed` | Restart (`500`) | Gateway didn't come back up - check Logs |
+| `Restart failed` | Restart (`500`) | Gateway didn't come back up — check Logs |
 | `Script launch failed` | `POST /v0/agents/{agentId}/scripts/retry` (`500`) | Build or start couldn't be launched |
-| `File too large` | `POST /v0/agents/{agentId}/files/upload` (`413`) | Body over the upload limit - chunk or push via git |
-| `CLI error` | Several OpenClaw-backed endpoints (`500`) | Underlying `openclaw` CLI returned non-zero - check Logs |
-| `Token generation failed` | `POST /v0/agents/{agentId}/platform/token` (`500`) | Platform JWT couldn't be minted - rotate gateway token |
-| `Secrets not configured` | `POST /v0/secrets` (`503`) | Server-side encryption key not provisioned - contact support |
+| `File too large` | `POST /v0/agents/{agentId}/files/upload` (`413`) | Body over the upload limit — chunk or push via git |
+| `CLI error` | Several OpenClaw-backed endpoints (`500`) | Underlying `openclaw` CLI returned non-zero — check Logs |
+| `Token generation failed` | `POST /v0/agents/{agentId}/platform/token` (`500`) | Platform JWT couldn't be minted — rotate gateway token |
+| `Secrets not configured` | `POST /v0/secrets` (`503`) | Server-side encryption key not provisioned — contact support |
 | `Duplicate secret name` | `POST /v0/secrets` (`409`) | Secret name is already taken |
 | `Conflicting secrets` | `POST /v0/agents/{agentId}/secrets` (`409`) | Attaching two creds for the same provider (e.g. API key + subscription) |
 | `Invalid parameters` | Tasks create (`400`) | One of `name`, `schedule`, or `payload` is missing or malformed |
 | `Failed to create cron job` | Tasks create (`500`) | OpenClaw rejected the cron config |
 | `Failed to list cron jobs` | Tasks list (`500`) | OpenClaw CLI failed |
-| `version must be 1` | Manifest validate / template validate | `manifest.json` missing or wrong `version` |
-| `agent.name is required` | Manifest validate | `agent.name` missing or empty |
-| `skills exceeds maximum of 10` | Manifest validate | Too many skills listed |
-| `routes exceeds maximum of 10` | Manifest validate | Too many routes listed |
-| `tasks exceeds maximum of 20` | Manifest validate | Too many tasks listed |
-| `routes[i].port reserved` | Manifest validate | Used `18789` (reserved for the gateway) |
-| `routes[i].port out of range` | Manifest validate | Port must be `1025`-`65535` |
 
 ## See also
 
