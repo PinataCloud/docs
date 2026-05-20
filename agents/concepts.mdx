@@ -1,0 +1,201 @@
+---
+title: "Concepts"
+description: "Terms, file layout, and how the pieces fit together"
+icon: "compass"
+---
+
+The agent platform has a handful of moving parts, and they don't always have obvious names. This page is your reference: every term, every standard file path, every reserved port. Skim it now to get the lay of the land; come back later when something in the docs reads like jargon.
+
+## The shape of things
+
+```text
+Workspace (your team)  ──►  Agent (container)  ──►  Channels / Routes / Tasks
+   │                            │
+   │                            ├─ Skills (capabilities)
+   │                            ├─ Secrets (env vars)
+   │                            ├─ Models (LLMs it can call)
+   │                            └─ Workspace files + snapshots
+   ▼
+Pinata IPFS + R2 (storage)
+```
+
+A **workspace** is a Pinata team. Inside it you create one or more **agents** — each is an isolated container running the [OpenClaw](https://openclaw.org) engine, with its own files, gateway, and per-agent subdomain.
+
+## Glossary
+
+### Agent
+
+A single isolated container with a persistent workspace, gateway, and `{agentId}.agents.pinata.cloud` subdomain. Created via `POST /v0/agents` or the Create Agent button. Identified by `agentId` (a short slug like `x0i33jye`).
+
+### Engine
+
+The runtime that powers the agent. `openclaw` is the default; `hermes` is also enumerated. Set via `engine` in [`manifest.json`](/agents/manifest).
+
+### Gateway
+
+The long-running process inside each agent container that:
+
+- Terminates WebSocket connections from the dashboard, channels, and CLI
+- Routes path/domain traffic to user-defined ports
+- Brokers HTTP API calls for the per-agent subdomain
+- Restarts on **Restart Gateway** in the [Danger](/agents/devtools) tab
+
+Listens on the reserved port `18789`.
+
+### Gateway token
+
+Per-agent credential used to authenticate against the agent's own subdomain (`{agentId}.agents.pinata.cloud/...`). See [API → Gateway token](/agents/api#gateway-token). Distinct from the **Pinata JWT** (workspace-wide API key) and from the **platform JWT** (1h token an agent gets from itself via `POST /v0/platform/token`).
+
+| Token | Where it works | What it's for |
+| --- | --- | --- |
+| Pinata JWT | `agents.pinata.cloud` | Workspace-wide management - create/list/delete agents, manage secrets, browse templates |
+| Gateway token | `{agentId}.agents.pinata.cloud` | Talk to one specific agent (chat, files, routes, console, git) |
+| Platform JWT | `agents.pinata.cloud` | A short-lived JWT the agent gets *for itself* - lets the agent self-modify via `@pinata/platform` |
+
+### Workspace
+
+Two meanings - context disambiguates:
+
+1. **Team workspace** - your Pinata account or shared team. Switch under **Account → Workspaces**.
+2. **Agent workspace** - the per-agent file tree at `/home/node/clawd/workspace/` inside the container. Includes [`manifest.json`](/agents/manifest), `SOUL.md`, attached skills under `skills/`, file uploads under `uploads/`, and anything else your agent has written.
+
+### Workspace anatomy
+
+The default file layout inside `workspace/`:
+
+| File | Purpose |
+| --- | --- |
+| `manifest.json` | Agent configuration - identity, secrets, skills, scripts, routes, channels, tasks. Single source of truth. |
+| `SOUL.md` | Agent personality and principles - customize freely |
+| `AGENTS.md` | Conventions the agent follows when working in the repo (memory system, safety rules, file layout) |
+| `IDENTITY.md` | Name, vibe, emoji, owner identity - written at deploy time |
+| `USER.md` | Notes about the human user, learned over time |
+| `TOOLS.md` | Environment notes (what tools exist in the container) |
+| `BOOTSTRAP.md` | First-run conversation guide. Self-deletes after setup. |
+| `HEARTBEAT.md` | Periodic-task notes (empty by default) |
+| `skills/<name>/` | Files for each attached skill |
+| `uploads/` | Files uploaded via the chat attachment button or `POST /v0/agents/{agentId}/files/upload` |
+
+You can commit and push anything else (`projects/`, `scripts/`, etc.) - the agent treats the whole tree as fair game.
+
+### `manifest.json` vs `openclaw.json`
+
+These are two different files. Both are JSON; they live in different places and have different schemas.
+
+| File | Path | Schema | Edited by |
+| --- | --- | --- | --- |
+| `manifest.json` | `<workspace>/manifest.json` | [`manifest.v1.json`](/agents/manifest) | You (committed to git, validated via `POST /v0/templates/validate`) |
+| `openclaw.json` | `/home/node/.openclaw/openclaw.json` | OpenClaw runtime schema | OpenClaw at runtime (validated via `POST /v0/agents/{agentId}/config/validate`) |
+
+Day-to-day, edit `manifest.json`. `openclaw.json` is the engine's runtime mirror and is generally only touched via the **OpenClaw Settings UI** on the Danger tab.
+
+### Skill
+
+A reusable package of files and instructions that extends an agent's capabilities. Pinned to IPFS, addressed by **slug** (`@pinata/api`) or **CID**. Installed into your Skills Library, then attached per-agent. Up to 10 attached per agent. See [Skills](/agents/skills).
+
+The platform ships with `@pinata/platform` bundled - it lets the agent perform self-service operations (install skills, set secrets, manage tasks).
+
+### Secret vs variable
+
+Both are environment variables injected at container start. The difference:
+
+| Kind | Storage | Visible in API? | Use for |
+| --- | --- | --- | --- |
+| **Secret** | AES-GCM encrypted with a per-user key | Never returned | API keys, tokens, passwords |
+| **Variable** | Plaintext | Returned in listings | Public URLs, feature flags |
+
+See [Secrets](/agents/secrets).
+
+### Channel
+
+A messaging surface the agent can be reached on - Telegram, Slack, Discord (WhatsApp coming). Configured per-agent. See [Channels](/agents/channels).
+
+### Route
+
+A mapping from an external URL prefix or domain to a container port. Lets you expose web apps and APIs running inside the agent. See [Routes & Domains](/agents/routes).
+
+### Task
+
+A scheduled prompt or system event. Three schedule kinds: `at` (one-shot), `every` (interval), `cron`. See [Tasks](/agents/tasks).
+
+### Lifecycle script
+
+Shell commands run by the agent runner at well-defined points:
+
+| Script | When | Working dir | Log file | Timeout |
+| --- | --- | --- | --- | --- |
+| `build` | After deploy, after each `git push`, on Retry Scripts | `/home/node/clawd` | `/tmp/user-build.log` | 5 min |
+| `start` | After successful `build`, on agent boot | `/home/node/clawd` | `/tmp/user-start.log` | None (detached) |
+
+Defined in `scripts` in [`manifest.json`](/agents/manifest#scripts).
+
+### Snapshot
+
+A capture of the agent's workspace pinned to IPFS as a single CID. Created automatically every minute when changes are detected, plus on demand via `POST /v0/agents/{agentId}/snapshots/sync`. Reset to any historical snapshot via `POST /v0/agents/{agentId}/snapshots/reset`. See [Files & Snapshots](/agents/snapshots).
+
+### Device
+
+A client paired with an agent (CLI, mobile, browser session) - approval-gated for security. Listed at `GET /v0/agents/{agentId}/devices`. See [Danger → Devices](/agents/devtools#device-pairing).
+
+### Template
+
+A pre-configured agent (manifest + workspace files + skill list) packaged for one-click deployment. Published on the [Marketplace](https://agents.pinata.cloud/marketplace) or kept private in [My Templates](https://agents.pinata.cloud/templates). See [Templates](/agents/templates/overview).
+
+### Issue
+
+(Closed beta, `@pinata.cloud` accounts only.) Kanban-style work item assigned to an agent - title + prompt + optional repo. The agent runs, you review the workspace diff, then approve or revert.
+
+## Filesystem reference
+
+Paths agents and developers reach for most often inside the container:
+
+| Path | What's there |
+| --- | --- |
+| `/home/node/clawd/` | Runner root - where `build`/`start` execute |
+| `/home/node/clawd/workspace/` | Agent workspace (see anatomy above) |
+| `/home/node/clawd/workspace/skills/<name>/` | Attached skill files |
+| `/home/node/clawd/workspace/uploads/` | Uploaded files |
+| `/home/node/.openclaw/openclaw.json` | OpenClaw runtime config |
+| `/tmp/openclaw/openclaw-YYYY-MM-DD.log` | Daily OpenClaw log file |
+| `/tmp/user-build.log` | `build` script output |
+| `/tmp/user-start.log` | `start` script output |
+
+## Reserved ports & names
+
+| Reserved | Why |
+| --- | --- |
+| Port `18789` | Gateway listens here |
+| Subdomains containing `pinata` | Reserved for first-party use |
+| Specific reserved domain suffixes | Reserved for the platform |
+
+Path routes must use ports between `1025` and `65535`, excluding `18789`. See [Routes](/agents/routes).
+
+## Identifier formats
+
+Quick reference for the IDs you'll see in URLs and API responses:
+
+| Identifier | Format | Example |
+| --- | --- | --- |
+| Agent ID | Random short slug | `x0i33jye` |
+| Snapshot CID | IPFS CIDv1, `bafy...` or `Qm...` | `QmUMfo19uXMdBSXLiZAz7w...` |
+| Skill CID | IPFS CIDv1, `bafy...` | `bafybeicglyjdb6w...` |
+| Skill slug | `@<owner>/<name>` (lowercase, hyphens) | `@pinata/api` |
+| Custom domain ID | UUID | `2fcd2a0b-aa70-432d-a310-678e01570e65` |
+| Secret ID | Random opaque string | (server-assigned) |
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Manifest reference" icon="file-code" href="/agents/manifest">
+    Every field in `manifest.json`
+  </Card>
+  <Card title="HTTP API" icon="plug" href="/agents/api">
+    Auth, endpoints, and examples
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/agents/troubleshooting">
+    Debug a stuck agent
+  </Card>
+  <Card title="Error reference" icon="circle-exclamation" href="/agents/errors">
+    Look up an API error
+  </Card>
+</CardGroup>

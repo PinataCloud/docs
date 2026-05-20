@@ -1,63 +1,65 @@
 ---
 title: "Models"
-description: "Configure which AI models your agent can use"
+description: "Pick which AI models this agent can use"
 icon: "microchip"
 ---
 
-Each agent can access multiple AI models from different providers. You control which models are available and which one is used by default.
+Each agent has its own list of allowed models, grouped by provider. The default model is what the agent reaches for when nothing else says otherwise; you can also swap models in the middle of a conversation if you want a faster (or smarter) one for a specific turn.
 
 <Frame>
   ![Image](/images/image-34.png)
 </Frame>
 
-## View Available Models
+## What you see
 
-Open your agent → **Models**. You'll see models grouped by provider - only providers you've connected in [Secrets](/agents/secrets) will appear here.
+Open your agent → **Models**. The page lists each connected provider as a separate section. Only providers you've connected in the [Secrets Vault](/agents/secrets) show up here — if you don't see OpenAI, for example, it's because you haven't connected an OpenAI key.
 
-Each provider section shows:
+Inside each provider section:
 
-- Models currently enabled for this agent
-- Which model is set as the default (marked with a **DEFAULT** badge)
-- A **\+ ADD** button to enable more
+- One row per model that's currently enabled
+- A **DEFAULT** badge marks the agent's default model
+- An **×** on a row removes that model from this agent
+- **+ ADD** at the top right of each section lets you enable more models from that provider
 
-## Add a Model
+## Enable a model
 
-1. Click **\+ ADD** in the provider section
-2. Select from available models
-3. The model is now available for this agent
+Click **+ ADD** in the provider section and pick a model from the list. It's now available to this agent — you can call it from chat or set it as default. Removing one with **×** doesn't disconnect the provider, it just narrows the menu.
 
-Your agent can switch between any enabled models during conversations.
+## Set the default
 
-## Set the Default Model
+The default is what gets used when you don't specify a model. Click a model row to set it as default; the **DEFAULT** badge moves.
 
-The default model is what your agent uses unless you specify otherwise. One model will show a **DEFAULT** badge.
+## Switch models mid-conversation
 
-To change it, click the model you want as default and select **Set as Default**.
+On the [Chat](/agents/chat) tab, the **MODEL** dropdown next to the message input lets you pick a model for the next turn. You'd typically reach for this to:
 
-## Remove a Model
+- Use a fast/cheap model for routine questions
+- Bump up to a more capable model for a hard one
+- Compare answers from two models on the same prompt
 
-Click the **×** next to any model to remove it from this agent. You can always add it back later.
+Each response is tagged with the model that produced it, so the conversation stays readable when you switch.
 
-## Switch Models in Chat
+## What models look like in configs
 
-In the chat interface, use the model dropdown in the sidebar to switch between enabled models mid-conversation. This is useful for:
+When you reference a model in code, in `manifest.json`, or in a task payload, the convention is `provider/model`:
 
-- Using a faster model for simple tasks
-- Switching to a more capable model for complex reasoning
-- Testing how different models handle the same prompt
+```text
+anthropic/claude-sonnet-4-6
+openrouter/tencent/hy3-preview
+openai/gpt-5.4
+```
 
-## Supported Models
+The provider prefix tells OpenClaw which connected provider to use. If you give it a model that isn't enabled on this agent, the request falls back to the default.
 
-Available models depend on your connected providers:
+## What's available today
 
-**Anthropic** - Claude Sonnet, Opus, Haiku (e.g., `claude-sonnet-4-6`, `claude-opus-4-6`, `claude-haiku-4-5`)
+The exact list updates as providers ship. A current snapshot:
 
-**OpenAI Codex** - GPT models (e.g., `gpt-5.4`)
+- **Anthropic** — `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5`
+- **OpenAI Codex** (subscription) — `gpt-5.4`
+- **OpenRouter** — `auto` (lets OpenRouter pick), plus any specific model on the platform (e.g. `tencent/hy3-preview`)
+- **Venice / Pinata / Custom** — whatever the provider exposes
 
-**OpenRouter** - Access to models from multiple providers
-
-**Venice** - Privacy-focused models
-
-<Note>
-  New models are added regularly. Check the Models section in your agent to see the latest available options.
-</Note>
+<Tip>
+  When you select `auto` on OpenRouter, OpenRouter picks the underlying model for each request. Handy if you don't want to micromanage which model handles what.
+</Tip>

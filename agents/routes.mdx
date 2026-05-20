@@ -1,102 +1,117 @@
 ---
 title: "Domains & Routes"
 sidebarTitle: "Routes"
-description: "Expose agent services to the internet"
+description: "Expose web services from inside your agent to the internet"
 icon: "network-wired"
 ---
 
-If your agent runs a web server, API, or any other network service, routes let you expose it to the internet. Your agent's container is isolated by default - routes punch a hole through so the outside world can reach your service.
+By default, anything your agent runs on a port stays inside the container — nobody on the outside can reach it. Routes punch a hole through so the outside can.
 
-## When You Need Routes
-
-Common use cases:
-
-- Your agent runs a web app (React, Vue, etc.) and you want users to access it
-- Your agent exposes an API that other services need to call
-- You're running a dev server with hot reload and need external access
-
-If your agent just chats and runs scripts, you probably don't need routes.
+You'd want this if your agent is hosting a web app, an API, or a dev server you want to view in a browser. If your agent just chats and runs scripts, you don't need any of this.
 
 <Frame>
   ![Image](/images/image-35.png)
 </Frame>
 
-{/* Screenshot: Domains & Routes tab showing path routes (PROTECTED) and custom domains (PUBLIC) with PREVIEW buttons */}
+## Two kinds of route
 
-## Add a Route
+Open your agent → **Routes**. There are two sections:
 
-Open your agent → **Routes** → **\+ ADD**.
+- **Path routes** — your service is reachable on the agent's own subdomain, under a path prefix you choose. No DNS work; works immediately.
+- **Custom domains** — your service is reachable on a Pinata-provided subdomain (`name-name-NN.apps.pinata.cloud`) or on your own domain.
 
-You have two options: **Path Route** or **Custom Domain**.
+Click **+ ADD** to add either.
 
-### Path Routes
+## Path routes
 
-Path routes are the simplest option. Your service becomes available at a URL like:
+This is the simplest option. Pick a port and a path; the route becomes available at:
 
 ```text
-https://agents.pinata.cloud/v0/agents/{agentId}/app/...
+https://{agentId}.agents.pinata.cloud/<path>/...
 ```
 
-To set one up:
+Click **+ ADD** → **Path Route**, then fill in:
 
-1. Click **\+ ADD** → **Path Route**
-2. Enter the container port your service runs on
-3. Enter a path prefix (like `/app` or `/api`)
-4. Choose **Public** or **Protected** access
-5. Click **Add Route**
+1. **Container port** — the port your service is listening on inside the agent (e.g. `5173`)
+2. **Path prefix** — the URL path (e.g. `/app`, or `/` for everything)
+3. **Public** or **Protected** access — see below
 
-One thing to know: the path prefix gets stripped before reaching your service. If someone requests `/app/users/123`, your service sees `/users/123`.
+One thing to know: the path prefix is **stripped** before the request hits your service. If someone visits `/app/users/123`, your service sees `/users/123`. Most frameworks let you configure a base path to match — for Vite that's `base: "/app"`.
 
-### Custom Domains
+## Custom domains
 
 <Note>
   Custom domains are currently in beta.
 </Note>
 
-Want a cleaner URL? Custom domains give you either a Pinata subdomain (like `glow-kite-520.apps.pinata.cloud`) or let you use your own domain.
+There are two flavors.
 
-**For a Pinata subdomain:**
+### Pinata-provided subdomain
 
-1. Click **\+ ADD** → **Subdomain** tab
-2. Edit the generated subdomain name if you'd like (a random name is pre-filled)
-3. Enter the container port
-4. Choose **Public** or **Protected** access
-5. Click **Register**
+Easiest. You get a random `name-name-NN.apps.pinata.cloud` subdomain that points at your agent.
 
-**For your own domain:**
+1. **+ ADD** → **Subdomain** tab
+2. Optionally rename the auto-generated subdomain (you can also accept the default)
+3. Set the container port and Public/Protected
+4. **Register** — it's live immediately
 
-1. Click **\+ ADD** → **Custom Domain** tab
-2. Enter your domain (like `app.yourdomain.com`)
-3. Enter the container port
-4. You'll receive a TXT record challenge - add a TXT record at `_pinata-verify.yourdomain.com` with the provided value
-5. Save the domain registration
-6. Add a CNAME record pointing to the target shown after registration
-7. Click **Verify** to confirm ownership and provision SSL
+### Bring your own domain
 
-After you click Verify, Pinata checks your TXT record to confirm you own the domain, then provisions SSL through Cloudflare. This can take a few minutes - your domain will show as "pending" until everything is ready.
+1. **+ ADD** → **Custom Domain** tab
+2. Type your domain (e.g. `app.example.com`)
+3. Pinata gives you a TXT record value — add it as `_pinata-verify.app.example.com` at your DNS provider
+4. Submit the registration
+5. Pinata gives you a CNAME target — add a CNAME from `app.example.com` to that target
+6. Click **Verify**
 
-<Note>
-  The same domain always produces the same challenge token, so you only need to add the TXT record once even if you need to re-verify.
-</Note>
+After Verify, Pinata checks your TXT record, then provisions an SSL certificate through Cloudflare. The domain shows up in the list with a status; once it reads **active**, traffic is flowing.
 
-### Editing and Removing Domains
+DNS propagation and SSL provisioning typically take a few minutes. If your domain stays in a pending state, see [Troubleshooting → Custom domain stuck pending](/agents/troubleshooting#custom-domain-stuck-pending).
 
-Once a custom domain is created, you can update its **target port** and **protected** setting, but you cannot change the domain name or subdomain. To switch domains, delete and recreate.
+### Editing a custom domain
 
-## Protected vs Public
+Once registered, you can change the **target port** and the **Protected** flag. You can't rename the domain — to switch, delete and recreate.
 
-**Protected routes** require a gateway token to access. Use this when you want to control who can reach your service.
+## Public vs Protected
 
-**Public routes** are open to anyone on the internet. Only use this if your service handles its own authentication, or if you genuinely want it public.
+Every route, path or domain, is one or the other.
 
-Both path routes and custom domains default to **public**. Set them to **protected** explicitly if you need access control.
+- **Public** — anyone on the internet can reach it. Use this if your service handles its own auth, or you genuinely want it open.
+- **Protected** — requests must include the agent's gateway token. The token can be in the `Authorization: Bearer` header, a `?token=...` query string, or a `gw_token` cookie. Use this when you want the route locked down with no extra work.
 
 <Warning>
-  Think carefully before making a route public. Anyone can access it.
+  Public means *public*. Think before flipping that switch.
 </Warning>
 
-## Limits
+## Building a web app that works behind a route
 
-- Up to 10 path routes per agent
-- Up to 5 custom domains per agent
-- Ports must be between 1025 and 65535 (port 18789 is reserved)
+Two things have to be true or it won't work, and the fix is almost always one of them:
+
+1. **Your server has to bind to `0.0.0.0`**, not `localhost`. The gateway can't reach `localhost` from outside the process.
+2. **Your dev server has to allow the agent's host**. Vite, Next, etc. check `Host` and reject unknowns by default.
+
+Use the placeholder `__AGENT_HOST__` in config files — it's replaced at runtime with the agent's public hostname. Example for Vite:
+
+```ts
+export default defineConfig({
+  base: "/app",
+  server: {
+    host: "0.0.0.0",
+    allowedHosts: ["__AGENT_HOST__"],
+    hmr: {
+      host: "__AGENT_HOST__",
+      protocol: "wss",
+      clientPort: 443,
+    },
+  },
+});
+```
+
+If a route 404s or 502s after you've set everything up, [Troubleshooting → Routes not working](/agents/troubleshooting#routes) covers the common causes.
+
+## Limits and reserved values
+
+- Up to **10 path routes** per agent
+- Up to **5 custom domains** per agent
+- Container ports must be between `1025` and `65535`. Port `18789` is reserved for the gateway.
+- Subdomains containing the word "pinata" or using reserved suffixes are rejected.

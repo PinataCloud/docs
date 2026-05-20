@@ -1,90 +1,97 @@
 ---
 title: "Files & Snapshots"
 sidebarTitle: "Files"
-description: "Version history and git access for your agent's workspace"
+description: "Browse, version, and edit your agent's workspace"
 icon: "folder-open"
 ---
 
-Snapshots capture the state of your agent's workspace. They're created automatically as your agent works, and you can restore to any previous state if something goes wrong.
+The Files tab gives you three things: a snapshot history of the agent's workspace, content diffs so you can see what changed between snapshots, and a git URL so you can clone the workspace locally and edit it like any other repo.
 
 <Frame>
   ![Image](/images/image-39.png)
 </Frame>
 
-## How Snapshots Work
+## Workspace Snapshots
 
-Your agent's workspace is automatically captured every minute when changes are detected. Each snapshot includes:
+Every minute or so, when the workspace has changed, Pinata captures a snapshot. Each snapshot is the entire workspace pinned to IPFS as a single CID — your full file tree at that point in time, immutable.
 
-- All files in the workspace
-- A content identifier (CID) for the snapshot
-- Timestamp of when it was captured
+The summary card at the top shows:
 
-Open your agent → **Files** to see:
+- **Status** — `Live`, plus how long ago the workspace last synced
+- **Lifecycle Scripts** — whether `build` and `start` are configured (and their run state if they are)
+- **Scheduled Tasks** — whether any tasks are set up
+- **Files** — total file count and the current snapshot CID
 
-- **Status** - Whether the workspace is live and when it last synced
-- **Lifecycle Scripts** - Build/start script status
-- **Scheduled Tasks** - Task configuration status
-- **Files** - Total file count with the current snapshot CID
+Below the summary is the snapshot list — newest at the top, labeled `LATEST`, `V9`, `V8`, and so on. Click any version to expand its **Content Diff** — a file-by-file view of what changed since the previous snapshot, rendered as either a unified or side-by-side diff.
 
-## Restore to a Previous State
+Common file you'll see diffs for: `manifest.json`. See the [manifest reference](/agents/manifest) for what every field means.
 
-If your agent's workspace gets into a bad state, you can restore from any previous snapshot:
+## Restore an older snapshot
 
-1. Open **Files**
-2. Browse the snapshot history
-3. Click on a snapshot to see what changed
-4. Select **Restore** to roll back to that state
+If a recent change broke something, you can roll back.
+
+1. Find the snapshot you want in the list
+2. Open it
+3. **Restore**
+
+Under the hood this runs a `git --hard` reset to the commit associated with that snapshot. The current workspace is replaced — anything that hadn't been captured into a snapshot yet is lost.
 
 <Warning>
-  Restoring replaces your current workspace with the snapshot contents. Any changes since that snapshot will be lost.
+  Restore is destructive. Snapshot the current state first if you might want to come back to it.
 </Warning>
 
-## Git Access
+## Force a snapshot now
 
-You can clone your agent's workspace locally, make changes, and push them back. This is useful for:
+Snapshots run on their own, but you can trigger one immediately:
 
-- Editing files in your preferred IDE
-- Making bulk changes
-- Version controlling your agent's configuration
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/snapshots/sync
+```
 
-### Clone the Workspace
+The same endpoint with `GET` returns sync status — whether storage is configured, when it last synced, and a human-readable message.
+
+## Editing the workspace locally
+
+The workspace is a git repo, served by Pinata. Clone, edit in your IDE, commit, push.
 
 ```bash
 git clone https://agents.pinata.cloud/v0/agents/{agentId}/git my-agent
 ```
 
-Click **Copy with Token** to get the URL with authentication included.
+Click **Copy with Token** in the Files tab and you get a URL with the gateway token already baked in as HTTP Basic auth — no credential setup, just clone and go.
 
-The "Copy with Token" button embeds your gateway token directly in the URL so git can authenticate automatically.
-
-### Make Changes and Push
+### Pushing changes
 
 ```bash
-# Edit files in workspace/ and skills/
-git add -A && git commit -m "my changes"
+# edit files in workspace/ or skills/
+git add -A
+git commit -m "tweak the workspace"
 git push
 ```
 
-### Pull Changes Made by the Agent
+When you push, the server commits any pending agent-side changes first, then applies your push on top. That means your push automatically picks up anything the agent has been writing.
 
-Your agent modifies its own workspace as it works. Pull to sync those changes locally:
+After a push, the agent's `build` script (if you've set one) runs automatically. Check the **Lifecycle Scripts** row to watch its status. Details: [Manifest → Scripts](/agents/manifest#scripts).
+
+### Pulling agent-side changes
+
+Your agent writes to the same workspace as it works. To sync that locally:
 
 ```bash
 git pull
 ```
 
-### Set Up Persistent Credentials
+### Persistent credentials
 
-Tired of copying the token each time? Set up git credentials to remember your authentication:
+Copying the tokened URL every time gets old. Expand **Setup Persistent Credentials** in the Files tab and follow the instructions — git stores the credentials, future operations authenticate automatically.
 
-1. In the Files section, expand **Setup Persistent Credentials (Skip Token Copy Each Time)**
-2. Follow the instructions to configure git credential storage
-3. Future git operations will authenticate automatically
+## Reading or uploading files programmatically
 
-<Tip>
-  When you push, the server first commits any pending workspace changes made by the agent before applying your push. This means your push automatically picks up any uncommitted agent-side changes.
-</Tip>
+Two endpoints, both on the agent's subdomain:
 
-<Tip>
-  After pushing changes, your agent's build script (if configured) will run automatically. Check the Files section to see the lifecycle script status.
-</Tip>
+- `GET /v0/agents/{agentId}/files?path=<path>` — read any file inside the container
+- `POST /v0/agents/{agentId}/files/upload` — upload a base64-encoded file into `<workspace>/uploads/`
+
+Both require auth (Pinata JWT or gateway token). See [API → Files](/agents/api#files).

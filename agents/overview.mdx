@@ -1,120 +1,148 @@
 ---
 title: "Overview"
-description: "Deploy hosted OpenClaw agents through Pinata"
+description: "Hosted AI agents that can run code, manage files, and connect to other services"
 icon: "lobster"
 ---
 
-Pinata Agents are hosted [OpenClaw](https://openclaw.org) instances - AI agents that can run code, search the web, manage files, and connect to external services. Each agent runs in its own isolated container with a persistent workspace.
+Pinata Agents gives you a hosted AI agent in its own sandboxed container. The agent has a workspace it can read and write to, a terminal it can run commands in, and connectors for the outside world — chat apps, web servers, scheduled jobs. You talk to it through the dashboard, the CLI, or whichever messaging platform you connect it to.
+
+Under the hood, each agent runs the [OpenClaw](https://openclaw.org) engine. You don't have to know OpenClaw to use one, but if you go deep, that's the project to read.
 
 <Note>
   Agents require a paid Pinata plan. [Upgrade here](https://app.pinata.cloud/billing).
 </Note>
 
-## Get Your First Agent Running
+## Get your first agent running
 
-This takes about 2 minutes. You'll connect an LLM provider, create an agent, and start chatting.
+It takes a couple of minutes. You'll connect an LLM provider, create the agent, and start chatting.
 
-### 1. Add Your API Key
+### 1. Connect an LLM provider
 
-Your agent needs access to an LLM to think and respond. Head to [agents.pinata.cloud/secrets](https://agents.pinata.cloud/secrets) and you'll see cards for supported providers at the top.
+Your agent needs an LLM to think. Go to the [Secrets Vault](https://agents.pinata.cloud/secrets).
 
-Click **Connect** on whichever you use - Anthropic, OpenAI, OpenRouter, or Venice - paste your API key, and save. That's it.
+At the top of that page you'll see a row of provider cards: **Anthropic**, **OpenAI**, **OpenRouter**, **Pinata**, **Venice**, and **Custom**. Click **Connect** on whichever one you use, paste your API key (or run through OAuth if you're using an OpenAI Codex subscription), and save.
 
 <Tip>
-  Don't have an API key yet? [Anthropic](https://console.anthropic.com/), [OpenAI](https://platform.openai.com/), and [OpenRouter](https://openrouter.ai/) all offer free trial credits.
+  Don't have an API key? [Anthropic](https://console.anthropic.com/), [OpenAI](https://platform.openai.com/), and [OpenRouter](https://openrouter.ai/) all offer free trial credits.
 </Tip>
 
-### 2. Create Your Agent
+You can connect more than one provider — useful so you have a fallback if one is down.
 
-Go to [agents.pinata.cloud/agents](https://agents.pinata.cloud/agents) and click **Create Agent**.
+### 2. Create an agent
+
+Head to [My Agents](https://agents.pinata.cloud/agents) and click **Create Agent**.
 
 You have two paths:
 
-**Use a template** if you want something working fast. Templates come pre-configured with skills, settings, and personality - just add your secrets and deploy. Browse templates at [agents.pinata.cloud/templates](https://agents.pinata.cloud/templates).
+- **Start from a template** — fastest. Templates come pre-wired with skills, settings, and a personality. Pick one from the [Marketplace](https://agents.pinata.cloud/marketplace) (others' templates) or [My Templates](https://agents.pinata.cloud/templates) (your own). Add the secrets it needs, deploy.
+- **Build from scratch** — full control. The wizard walks you through naming the agent, picking a personality preset (Atlas, Nova, Sage, or custom), choosing skills, and connecting your LLM provider.
 
-**Build from scratch** if you want full control. The wizard walks you through:
+Either way, the agent takes about 30 seconds to provision. When it's ready you land on its Chat tab.
 
-1. **Identity** - Pick a personality (Atlas, Nova, Sage) or create your own. Give it a name.
-2. **Workspace** - The default includes Node.js, Python, and common tools. Add [skills](/agents/skills) if you want extra capabilities.
-3. **Connect** - Select your LLM provider and add any other API keys your agent needs.
-4. **Deploy** - Hit the button and wait about 30 seconds.
+### 3. Start a conversation
 
-### 3. Start Talking
-
-Once your agent is running, you'll land on its chat interface. Say hello. Ask it to help you with something. It can write code, create files, search the web, and more.
+Say hello. Ask it to write some code, summarize a webpage, or set up a workflow. It can use a terminal, edit files, search the web, and call any skills you've attached.
 
 <Frame>
   ![Image](/images/image-29.png)
 </Frame>
 
-## What's in the Agent Dashboard
+## Finding your way around
 
-Click any agent to open its detail page. Here's what you'll find:
+The sidebar on the left is the same on every page. Top half is the workspace itself; bottom half is account and support.
 
-**Chat** - Your conversation interface with a model switcher and live resource stats in the sidebar.
-
-**Channels** - Connect your agent to Telegram, Slack, or Discord so others can talk to it too.
-
-**Files** - Workspace snapshots, version history, and git access for local editing.
-
-**Skills** - Packages that give your agent new abilities, like IPFS storage or on-chain registration.
-
-**Secrets** - API keys and credentials your agent can access as environment variables.
-
-**Models** - Configure which models your agent can use and set the default.
-
-**Routes** - Expose web servers or APIs running inside your agent to the internet.
-
-**Tasks** - Schedule prompts to run automatically.
-
-### Dev Tools
-
-When you need to debug or dig deeper:
-
-- **[Console](/agents/console)** - Full terminal access to your agent's container
-- **[Logs](/agents/logs)** - Real-time logs with level filtering, search, and export
-- **[Danger](/agents/devtools)** - Agent details, workspace state, configuration, restart, and delete
+| Section | What's in it |
+| --- | --- |
+| **My Agents** | Every agent you've created. Click one to expand its tabs (Chat, Channels, Files, Skills, etc.). |
+| **My Issues** | A kanban board for assigning work to agents. Closed beta — `@pinata.cloud` accounts today. |
+| **Skills Library** | Skills you've installed, plus a community catalog under **Browse ClawHub**. |
+| **Secrets Vault** | All your encrypted credentials, in one place, shared across agents. |
+| **My Templates** | Templates you've created or imported. |
+| **Marketplace** | Published templates from Pinata and other builders, ready to deploy in one click. |
+| **Account** | **Workspaces** (switch teams), **Integrations** (e.g. GitHub OAuth), **Activity** (audit log). |
+| **Support** | Docs, the OpenAPI reference, changelog, and a way to chat with the Pinata team. |
 
 <Tip>
-  Press **⌘K** (or **Ctrl\+K**) anywhere to open the command palette for quick navigation to agents, pages, and actions.
+  **⌘K** (or **Ctrl+K**) opens a command palette for jumping to any agent, page, or action.
 </Tip>
 
-### Working with Git
+## The agent dashboard
 
-Want to edit your agent's workspace locally? Clone it:
+Click any agent and you'll see tabs across the top of the page. Each tab is a slice of how the agent works:
+
+- **Chat** — your conversation with the agent
+- **Channels** — wire it up to Telegram, Slack, or Discord
+- **Files** — workspace snapshot history, content diffs, git URL
+- **Skills** — capabilities attached to this specific agent (pulled from your Skills Library)
+- **Secrets** — provider connections and env vars this agent can see
+- **Models** — which models from your providers it's allowed to use, and which is the default
+- **Routes** — path routes and custom domains for any web service it runs
+- **Tasks** — cron jobs and one-off scheduled prompts
+- **Console** — a terminal inside the container
+- **Logs** — real-time log stream
+- **Danger** — full configuration overview, plus restart and delete
+
+That last one is named "Danger" deliberately — restart and delete live there, but so does most of the inventory data, so it's also the page you'll open when you need to know exactly how an agent is configured.
+
+## Editing the workspace locally
+
+Your agent's workspace is a git repo you can clone and push to.
 
 ```bash
 git clone https://agents.pinata.cloud/v0/agents/{agentId}/git my-agent
 ```
 
-Click **Copy with Token** in the Files section to get the URL with authentication included.
+On the Files tab, **Copy with Token** gives you a URL with authentication built in so you don't have to manage credentials. Edit locally, push, and the agent picks up your changes — the build script (if you've defined one) runs automatically.
 
-## Using the CLI
+See [Files & Snapshots](/agents/snapshots) for the full flow.
 
-Everything in the UI is also available through the [CLI](/tools/cli/agents):
+## Working from the terminal
+
+Everything in the dashboard is in the CLI too:
 
 ```bash
 pinata agents list              # See your agents
 pinata agents create            # Create a new agent
 pinata agents get <agent-id>    # Get agent details
+pinata agents chat <agent-id>   # Talk to it from your terminal
 ```
 
-## Next Steps
+Full reference: [Agents CLI](/tools/cli/agents).
+
+## Going deeper
+
+<CardGroup cols={2}>
+  <Card title="Concepts" icon="compass" href="/agents/concepts">
+    Glossary, file layout, and how the pieces relate
+  </Card>
+
+  <Card title="Manifest reference" icon="file-code" href="/agents/manifest">
+    Every field in `manifest.json`, the source of truth for an agent's config
+  </Card>
+
+  <Card title="HTTP API" icon="plug" href="/agents/api">
+    Auth model and endpoint reference for building against the platform
+  </Card>
+
+  <Card title="Troubleshooting" icon="wrench" href="/agents/troubleshooting">
+    What to do when something doesn't work
+  </Card>
+</CardGroup>
 
 <CardGroup cols={2}>
   <Card title="Templates" icon="grid-2" href="/agents/templates/overview">
-    Deploy a pre-configured agent in one click
+    Deploy a pre-built agent in one click
   </Card>
 
   <Card title="Channels" icon="comments" href="/agents/channels">
-    Let others talk to your agent on Telegram, Slack, or Discord
+    Let people talk to your agent on Telegram, Slack, or Discord
   </Card>
 
   <Card title="Skills" icon="wand-magic-sparkles" href="/agents/skills">
-    Give your agent new abilities
+    Add capabilities — IPFS storage, memory, on-chain identity, more
   </Card>
 
   <Card title="Routes" icon="network-wired" href="/agents/routes">
-    Expose a web app or API to the internet
+    Expose a web app or API from inside the agent
   </Card>
 </CardGroup>

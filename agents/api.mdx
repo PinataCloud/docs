@@ -1,0 +1,400 @@
+---
+title: "HTTP API"
+sidebarTitle: "HTTP API"
+description: "Authenticate, manage agents, and talk to gateways over HTTP"
+icon: "plug"
+---
+
+The Agents API is the same API the dashboard uses. Everything in the UI is exposed at `agents.pinata.cloud` - including agent management, secrets, skills, channels, snapshots, custom domains, devices, and OpenClaw config.
+
+Full OpenAPI reference: [agents.pinata.cloud/openapi](https://agents.pinata.cloud/openapi) (also linked from the Support → OpenAPI Docs item in the sidebar).
+
+## Base URLs
+
+There are two surfaces, on purpose:
+
+| Surface | Host | Auth | What it's for |
+| --- | --- | --- | --- |
+| **Management** | `agents.pinata.cloud` | Pinata JWT | Creating agents, managing secrets, browsing templates |
+| **Per-agent** | `{agentId}.agents.pinata.cloud` | Gateway token | Talking to a specific agent (chat, routes, files, devices) |
+
+The same agent sub-routes (`/v0/agents/{agentId}/...`) are mounted on both. Use the management host when you have the workspace owner's JWT; use the per-agent host when you only have the gateway token.
+
+## Authentication
+
+Three credentials, used in different contexts:
+
+### Pinata JWT
+
+Standard Pinata API key (`bearerAuth` in the OpenAPI spec). Used for all management routes (`/v0/agents`, `/v0/secrets`, `/v0/skills`, `/v0/templates`, etc.).
+
+```http
+Authorization: Bearer <PINATA_JWT>
+```
+
+Create one in your [Account → API Keys](/account-management/api-keys).
+
+### Gateway token
+
+Per-agent token (`gatewayToken` in the OpenAPI spec) used for the agent's own subdomain. Read it from the agent's **Danger** page or `GET /v0/agents/{agentId}/gateway-token`. Rotate it from the same page or `POST /v0/agents/{agentId}/gateway-token/rotate`.
+
+Passing the gateway token:
+
+```http
+Authorization: Bearer <GATEWAY_TOKEN>
+```
+
+```http
+?token=<GATEWAY_TOKEN>
+```
+
+```http
+Cookie: gw_token=<GATEWAY_TOKEN>
+```
+
+<Warning>
+  The gateway token grants full access to the agent's container - console, files, routes, everything. Treat it like a server credential.
+</Warning>
+
+### Git Basic auth
+
+Used only by the Git Smart HTTP endpoints (`/v0/agents/{agentId}/git/...`). Sent as HTTP Basic auth - username is ignored, password is the gateway token. The **Copy with Token** button on the Files tab embeds this for you.
+
+### Platform JWT (for skills)
+
+Inside an agent, the `@pinata/platform` skill can exchange the gateway token for a short-lived (1 hour) platform JWT. That JWT then unlocks the management-domain API (create secrets, install skills, etc.) on the agent's behalf - so an agent can self-modify without ever seeing the user's Pinata JWT.
+
+```bash
+# From inside the agent container:
+curl -X POST \
+  -H "Authorization: Bearer $OPENCLAW_GATEWAY_TOKEN" \
+  https://{agentId}.agents.pinata.cloud/v0/platform/token
+```
+
+## Quick Examples
+
+All examples below use `PINATA_JWT` (from `https://app.pinata.cloud`) or `GATEWAY_TOKEN` (from the agent's Danger page).
+
+### List your agents
+
+```bash
+curl -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents
+```
+
+### Create an agent
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "My Agent",
+    "description": "Personal assistant",
+    "emoji": "🤖",
+    "skillCids": ["@pinata/api"],
+    "secretIds": ["secret-id-1"]
+  }' \
+  https://agents.pinata.cloud/v0/agents
+```
+
+Returns `201` with the created agent. Returns `403` if you're at the agent limit.
+
+### Get agent details
+
+```bash
+curl -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID
+```
+
+Response includes `agent`, `processStatus`, `skills`, `secrets`, `snapshots`, and `portForwarding`.
+
+### Restart the gateway
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/restart
+```
+
+### Run a shell command
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{"command":"ls workspace","cwd":"/home/node/clawd"}' \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/console/exec
+```
+
+Returns `{ stdout, stderr, exitCode, command, timestamp }`.
+
+### Read a file
+
+```bash
+curl -H "Authorization: Bearer $PINATA_JWT" \
+  "https://agents.pinata.cloud/v0/agents/$AGENT_ID/files?path=workspace/IDENTITY.md"
+```
+
+### Upload a file
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  -H "Content-Type: application/json" \
+  -d "{\"filename\":\"report.pdf\",\"contentBase64\":\"$(base64 -w0 < report.pdf)\"}" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/files/upload
+```
+
+Returns `{ path, filename, size }`. File limit matches the read endpoint (a few MB).
+
+### Snapshot now
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/snapshots/sync
+```
+
+### Reset to a snapshot
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{"snapshotCid":"QmXyz..."}' \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/snapshots/reset
+```
+
+### Read the latest logs
+
+```bash
+curl -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/logs
+```
+
+Returns the last 100 lines as a single string.
+
+### Validate manifest / config
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  -H "Content-Type: application/json" \
+  -d "{\"config\":$(jq -Rs . < manifest.json)}" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/config/validate
+```
+
+## Files
+
+| Endpoint | Method | Notes |
+| --- | --- | --- |
+| `/v0/agents/{agentId}/files?path=<path>` | `GET` | Read any file from the container |
+| `/v0/agents/{agentId}/files/upload` | `POST` | Upload a base64 file into `<workspace>/uploads/` (max ~few MB, `413` if too large) |
+| `/v0/agents/{agentId}/snapshots` | `GET` | Latest 10 snapshots |
+| `/v0/agents/{agentId}/snapshots/sync` | `GET` / `POST` | Get sync status / take a snapshot now |
+| `/v0/agents/{agentId}/snapshots/reset` | `POST` | Reset to a specific snapshot CID |
+
+## Custom Domains
+
+| Endpoint | Method | Notes |
+| --- | --- | --- |
+| `/v0/agents/{agentId}/domains` | `GET` | List subdomains and custom domains |
+| `/v0/agents/{agentId}/domains` | `POST` | Register a subdomain or custom domain |
+| `/v0/agents/{agentId}/domains/challenge` | `POST` | Get the TXT verification value for a custom domain |
+| `/v0/agents/{agentId}/domains/{domainId}` | `PUT` / `DELETE` | Update port/protected or remove |
+| `/v0/agents/{agentId}/domains/{domainId}/verify` | `POST` | Verify ownership and provision SSL |
+
+See [Routes & Domains](/agents/routes) for the full workflow.
+
+## Devices
+
+| Endpoint | Method | Notes |
+| --- | --- | --- |
+| `/v0/agents/{agentId}/devices` | `GET` | List pending and paired devices |
+| `/v0/agents/{agentId}/devices/{requestId}/approve` | `POST` | Approve a specific device |
+| `/v0/agents/{agentId}/devices/approve-all` | `POST` | Bulk-approve every pending device |
+
+## Streaming logs
+
+The Logs tab streams over WebSocket on the agent's subdomain:
+
+```
+wss://{agentId}.agents.pinata.cloud/v0/logs?token=<GATEWAY_TOKEN>
+```
+
+Each message is a JSON object: `{ timestamp, level, source, message }`. Filter on the client by `level` (`TRACE` ... `FATAL`) and free-text on `message`.
+
+## Error Format
+
+Errors return JSON with a single `error` field:
+
+```json
+{ "error": "Validation failed: skills exceeds maximum of 10" }
+```
+
+Status codes follow HTTP semantics - `400` for validation, `401` for missing auth, `403` for plan/permission issues, `404` for missing resources, `409` for conflicts (duplicate secret name, both subdomain and customDomain provided, etc.), `413` for upload size, `500` for internal failures, `503` when an upstream (Convex, Pinata storage) is unreachable.
+
+See [Errors](/agents/errors) for the full code-by-code reference.
+
+## Endpoint Quick Reference
+
+Compact index of every endpoint, grouped by purpose. `JWT` = Pinata JWT, `GW` = gateway token (per-agent host). All paths under `agents.pinata.cloud`.
+
+### Agents
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `GET` | `/v0/agents` | JWT | List your agents |
+| `POST` | `/v0/agents` | JWT | Create an agent |
+| `GET` | `/v0/agents/{agentId}` | JWT / GW | Agent detail (skills, secrets, snapshots, routes) |
+| `DELETE` | `/v0/agents/{agentId}` | JWT | Delete the agent |
+| `POST` | `/v0/agents/{agentId}/restart` | JWT / GW | Restart the gateway |
+| `GET` | `/v0/agents/{agentId}/logs` | JWT / GW | Last 100 log lines |
+| `GET` | `/v0/agents/engines` | JWT | List available engines (`openclaw`, `hermes`) |
+| `GET` | `/v0/agents/{agentId}/available-agent-versions` | JWT / GW | Versions you can upgrade to |
+| `POST` | `/v0/agents/{agentId}/scripts/retry` | JWT / GW | Re-run `build` then `start` |
+| `GET` | `/v0/agents/{agentId}/update` | JWT / GW | Check for OpenClaw updates |
+| `POST` | `/v0/agents/{agentId}/update` | JWT / GW | Apply an OpenClaw update |
+
+### Auth
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `GET` | `/v0/agents/{agentId}/gateway-token` | JWT | Get the current gateway token |
+| `POST` | `/v0/agents/{agentId}/gateway-token/rotate` | JWT | Rotate it |
+| `POST` | `/v0/agents/{agentId}/platform/token` | GW | Exchange gateway token for a 1h platform JWT |
+| `GET` | `/v0/agents/{agentId}/platform/whoami` | GW | Agent's own identity |
+
+### Secrets
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `GET` | `/v0/secrets` | JWT | List your secrets |
+| `POST` | `/v0/secrets` | JWT | Create a secret |
+| `PUT` | `/v0/secrets/{id}` | JWT | Update value |
+| `DELETE` | `/v0/secrets/{id}` | JWT | Delete |
+| `POST` | `/v0/agents/{agentId}/secrets` | JWT / GW | Attach existing secrets to an agent |
+| `DELETE` | `/v0/agents/{agentId}/secrets/{secretId}` | JWT / GW | Detach a secret |
+
+### Skills
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `GET` | `/v0/skills` | JWT | List your installed skills |
+| `POST` | `/v0/skills` | JWT | Register a new skill from a folder |
+| `GET` | `/v0/skills/{skillId}/versions` | JWT | List versions |
+| `POST` | `/v0/skills/{skillId}/versions` | JWT | Publish a new version |
+| `DELETE` | `/v0/skills/{skillCid}` | JWT | Remove from library |
+| `GET` | `/v0/clawhub` | JWT | Browse the community hub |
+| `GET` | `/v0/clawhub/{slug}` | JWT | Hub skill detail |
+| `POST` | `/v0/clawhub/{hubSkillId}/install` | JWT | Install a hub skill |
+| `GET` | `/v0/agents/{agentId}/skills` | JWT / GW | Skills attached to this agent |
+| `POST` | `/v0/agents/{agentId}/skills` | JWT / GW | Attach |
+| `DELETE` | `/v0/agents/{agentId}/skills/{skillId}` | JWT / GW | Detach |
+| `GET` | `/v0/agents/{agentId}/skills/updates` | JWT / GW | Check for skill updates |
+| `POST` | `/v0/agents/{agentId}/skills/{skillId}/update` | JWT / GW | Bump a skill on this agent |
+
+### Channels
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `GET` | `/v0/agents/{agentId}/channels` | JWT / GW | Status of all channels |
+| `POST` | `/v0/agents/{agentId}/channels/{channel}` | JWT / GW | Configure (`telegram`/`slack`/`discord`/`whatsapp`) |
+| `DELETE` | `/v0/agents/{agentId}/channels/{channel}` | JWT / GW | Remove |
+
+### Routes & domains
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `GET` | `/v0/agents/{agentId}/port-forwarding` | JWT / GW | List path routes |
+| `PUT` | `/v0/agents/{agentId}/port-forwarding` | JWT / GW | Replace path routes |
+| `GET` | `/v0/agents/{agentId}/domains` | JWT / GW | List domains and subdomains |
+| `POST` | `/v0/agents/{agentId}/domains` | JWT / GW | Register a subdomain or custom domain |
+| `POST` | `/v0/agents/{agentId}/domains/challenge` | JWT / GW | Get TXT challenge for a custom domain |
+| `PUT` | `/v0/agents/{agentId}/domains/{domainId}` | JWT / GW | Update port/protected |
+| `DELETE` | `/v0/agents/{agentId}/domains/{domainId}` | JWT / GW | Remove |
+| `POST` | `/v0/agents/{agentId}/domains/{domainId}/verify` | JWT / GW | Verify ownership + provision SSL |
+
+### Tasks
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `GET` | `/v0/agents/{agentId}/tasks` | JWT / GW | List cron jobs |
+| `POST` | `/v0/agents/{agentId}/tasks` | JWT / GW | Create |
+| `GET` | `/v0/agents/{agentId}/tasks/{jobId}` | JWT / GW | Detail |
+| `PUT` | `/v0/agents/{agentId}/tasks/{jobId}` | JWT / GW | Update |
+| `DELETE` | `/v0/agents/{agentId}/tasks/{jobId}` | JWT / GW | Delete |
+| `POST` | `/v0/agents/{agentId}/tasks/{jobId}/run` | JWT / GW | Run now |
+| `POST` | `/v0/agents/{agentId}/tasks/{jobId}/toggle` | JWT / GW | Enable / disable |
+| `GET` | `/v0/agents/{agentId}/tasks/{jobId}/runs` | JWT / GW | Run history |
+
+### Files & snapshots
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `GET` | `/v0/agents/{agentId}/files?path=<path>` | JWT / GW | Read a file from inside the container |
+| `POST` | `/v0/agents/{agentId}/files/upload` | JWT / GW | Upload base64 file to `<workspace>/uploads/` |
+| `GET` | `/v0/agents/{agentId}/snapshots` | JWT / GW | Last 10 snapshots |
+| `GET` | `/v0/agents/{agentId}/snapshots/sync` | JWT / GW | Sync status |
+| `POST` | `/v0/agents/{agentId}/snapshots/sync` | JWT / GW | Trigger a snapshot now |
+| `POST` | `/v0/agents/{agentId}/snapshots/reset` | JWT / GW | Reset to a snapshot CID |
+
+### Console
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `POST` | `/v0/agents/{agentId}/console/exec` | JWT / GW | Run a shell command, returns `{stdout, stderr, exitCode}` |
+
+### Devices
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `GET` | `/v0/agents/{agentId}/devices` | JWT / GW | List pending + paired |
+| `POST` | `/v0/agents/{agentId}/devices/{requestId}/approve` | JWT / GW | Approve one |
+| `POST` | `/v0/agents/{agentId}/devices/approve-all` | JWT / GW | Approve every pending |
+
+### Config (OpenClaw runtime)
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `GET` | `/v0/agents/{agentId}/config` | JWT / GW | Read `openclaw.json` |
+| `PUT` | `/v0/agents/{agentId}/config` | JWT / GW | Write `openclaw.json` (validated server-side) |
+| `POST` | `/v0/agents/{agentId}/config/validate` | JWT / GW | Validate `openclaw.json` without applying |
+
+<Note>
+  Note `config/validate` validates `openclaw.json` (runtime config), **not** `manifest.json`. To validate a manifest, use `POST /v0/templates/validate` or run `pinata agents templates validate`.
+</Note>
+
+### Templates
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `GET` | `/v0/templates` | JWT | List your templates |
+| `POST` | `/v0/templates` | JWT | Submit a template from a git repo |
+| `GET` | `/v0/templates/{slug}` | JWT | Get by slug |
+| `GET` | `/v0/templates/id/{templateId}` | JWT | Get by ID |
+| `PUT` | `/v0/templates/{templateId}` | JWT | Update / resubmit |
+| `DELETE` | `/v0/templates/{templateId}` | JWT | Archive |
+| `POST` | `/v0/templates/validate` | JWT | Validate a git repo for template submission |
+| `POST` | `/v0/templates/branches` | JWT | List branches on a public repo |
+| `POST` | `/v0/templates/refs` | JWT | List branches + tags |
+| `GET` | `/v0/public-templates` | none | Public marketplace listing |
+
+### Git Smart HTTP
+
+| Method | Path | Auth | Description |
+| --- | --- | :---: | --- |
+| `GET` | `/v0/agents/{agentId}/git/info/refs` | Git Basic (GW as password) | Ref advertisement |
+| `POST` | `/v0/agents/{agentId}/git/git-upload-pack` | Git Basic (GW as password) | `git clone` / `git pull` |
+| `POST` | `/v0/agents/{agentId}/git/git-receive-pack` | Git Basic (GW as password) | `git push` |
+
+## OpenAPI Spec
+
+For everything not covered here:
+
+```
+https://agents.pinata.cloud/openapi
+```
+
+The OpenAPI spec is the authoritative source - schemas, query parameters, response codes, and per-endpoint descriptions.

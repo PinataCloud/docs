@@ -1,100 +1,115 @@
 ---
 title: "Tasks"
-description: "Schedule prompts to run automatically"
+description: "Run prompts on a schedule"
 icon: "clock"
 ---
 
-Tasks let you schedule prompts that run automatically - on a schedule, at a specific time, or on a recurring interval. Use them for daily check-ins, periodic reports, automated workflows, or anything else you want your agent to do without you having to ask.
+Tasks are scheduled prompts. The agent runs them automatically — every Monday morning, every six hours, once next Tuesday at 2pm, whatever you set. Use them for daily check-ins, periodic reports, automation triggered by time rather than by a message.
 
 <Frame>
   ![Image](/images/image-36.png)
 </Frame>
 
-## Create a Task
+## Create a task
 
-Open your agent → **Tasks** → **\+ ADD**.
+Open your agent → **Tasks** → **+ ADD**.
 
-You'll configure:
+The dialog asks for:
 
-1. **Name** - What to call this task
-2. **Schedule** - When it runs
-3. **Prompt** - What to tell your agent
-4. **Delivery** - Where to send the response (optional)
+1. **Name** — anything readable, e.g. `daily-check-in`
+2. **Schedule** — when it runs
+3. **Prompt or system event** — what gets delivered to the agent
+4. **Delivery (optional)** — where the response goes if you want it to leave the agent
 
-### Schedule Types
+That's it. Save and the task starts running on the schedule.
 
-**Cron expression** - Standard cron syntax for complex schedules.
+## Schedule types
 
-```text
-0 9 * * *      # Every day at 9am
-0 */6 * * *    # Every 6 hours
-0 9 * * 1-5    # Weekdays at 9am
-```
+You have three choices for `schedule.kind`:
 
-**Interval** - Run every N minutes/hours.
+- **Cron** — standard cron expression. Most flexible.
 
-**One-time** - Run once at a specific date and time.
+  ```text
+  0 9 * * *      # Every day at 9am
+  0 */6 * * *    # Every six hours
+  0 9 * * 1-5    # Weekdays at 9am
+  ```
 
-You can also set a timezone so schedules run at the right local time.
+- **Every** — run every N milliseconds. Set `staggerMs` if you want to randomize the start offset so multiple tasks don't fire at the same instant.
 
-### Prompt
+- **At** — run once at a specific ISO timestamp.
 
-This is what your agent receives when the task runs. Write it like you're sending a message:
+You can set a timezone (`tz`) so cron respects DST and local time. Minimum interval across all kinds is 1 minute — anything tighter is rejected.
 
-- "Check my portfolio and summarize any significant changes"
-- "Review yesterday's logs and flag anything unusual"
-- "Generate the weekly status report"
+## What gets delivered
 
-You can optionally specify which model to use and a timeout.
+Two payload kinds:
 
-### Message Type
+- **`agentTurn`** (default) — your task fires a chat message. The agent treats it like a regular conversation turn. You can pin a specific `model`, toggle reasoning on or off via `thinking`, and set a `timeoutSeconds`.
 
-Tasks can deliver prompts in two ways:
+  Good prompts to schedule:
+  > "Check my portfolio and summarize anything that moved more than 5% today."
+  >
+  > "Generate the weekly status report from the work log."
 
-- **Agent Message** - The default. Your prompt is delivered as a chat message. Use this for most tasks.
-- **System Event** - Delivered as a system-level event rather than a chat message. Use this for heartbeat checks or maintenance tasks.
+- **`systemEvent`** — fires a system event instead. The agent sees it as a non-conversational trigger. Useful for heartbeats, periodic maintenance, or anything you don't want polluting the chat history.
 
-### Delivery
+## Where the response goes
 
-By default, task results stay in your agent's conversation history. But you can also:
+By default, the response lands back in the agent's main conversation. If you want it to go somewhere else:
 
-**Announce to a channel** - Send the response to Telegram, Slack, or Discord. Useful for alerts or reports you want pushed to you.
+- **Announce to a channel** — send the response to Telegram, Slack, or Discord. Set `delivery.mode` to `announce`, plus a channel and recipient. Good for alerts or daily standups.
 
-**Webhook** - POST the response to a URL. Useful for integrations with other systems.
+  ```json
+  "delivery": { "mode": "announce", "channel": "telegram", "to": "123456789" }
+  ```
 
-## Managing Tasks
+- **Webhook** — POST it to a URL. Good for hooking into other services.
 
-Your tasks list shows each task with its schedule and status.
+  ```json
+  "delivery": { "mode": "webhook", "to": "https://example.com/hook" }
+  ```
 
-**Run now** - Trigger a task immediately without waiting for the schedule.
+Set `bestEffort: true` in delivery if you'd rather swallow a delivery failure than mark the whole run as failed.
 
-**Enable/disable** - Pause a task without deleting it.
+## Sessions: main vs isolated
 
-**Edit** - Change the schedule, prompt, or delivery settings.
+A task can run in the agent's main conversation (so its output is part of the running chat history) or in an isolated session of its own. Pick one with `sessionTarget`:
 
-**Delete** - Remove the task entirely.
+- `main` — output joins the live conversation
+- `isolated` — one-off session that doesn't touch the main thread. Good for batch jobs and webhook-style work.
 
-### Run History
+## Wake mode
 
-Click a task to see its run history - when it ran, whether it succeeded, and what the agent responded.
+`wakeMode` controls timing:
 
-## Using the CLI
+- `now` (default) — fire the task at the scheduled time, even if the agent is busy
+- `next-heartbeat` — wait for the next heartbeat tick. Useful for low-priority background work.
+
+## Managing tasks
+
+Each task in the list has:
+
+- **Run now** — fire it immediately, doesn't affect the schedule
+- **Enable / disable** — pause without deleting
+- **Edit** — change schedule, prompt, or delivery
+- **Delete** — remove it
+- **Runs** — open the run history
+
+Run history shows what fired and when, and whether each run succeeded.
+
+## From the CLI
 
 ```bash
-# List tasks
 pinata agents tasks list <agent-id>
-
-# Create a task
 pinata agents tasks create <agent-id>
-
-# Run a task now
 pinata agents tasks run <agent-id> <task-id>
-
-# Delete a task
 pinata agents tasks delete <agent-id> <task-id>
 ```
 
-## Limits
+## Limits and gotchas
 
-- Up to 20 tasks per agent
-- Minimum interval is 1 minute
+- **20 tasks** per agent
+- Minimum interval **1 minute**
+- A task that runs longer than `timeoutSeconds` (or 5 minutes if unset) is cancelled and marked failed
+- Tasks survive agent restarts. Schedules that would have fired during downtime are skipped, not queued.

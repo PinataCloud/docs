@@ -1,0 +1,180 @@
+---
+title: "Error Reference"
+sidebarTitle: "Errors"
+description: "Look up an API error code and how to resolve it"
+icon: "circle-exclamation"
+---
+
+Every API error comes back as JSON with a single `error` field and an HTTP status code:
+
+```json
+{ "error": "Validation failed: skills exceeds maximum of 10" }
+```
+
+This page maps the codes you'll actually see in the wild to a cause and a fix. For step-by-step debugging, see [Troubleshooting](/agents/troubleshooting).
+
+## By HTTP status
+
+### `400 Bad Request`
+
+The request shape or content is invalid.
+
+| When you'll see it | Likely cause | Fix |
+| --- | --- | --- |
+| `POST /v0/agents` | `name` missing, too long, or contains banned characters | Trim or rename. Max 100 chars. |
+| `POST /v0/secrets` | `name` or `value` empty | Provide both |
+| `POST /v0/agents/.../skills` | More than 10 skills attached | Detach skills first |
+| `POST /v0/agents/.../console/exec` | Empty `command` | Provide the command string |
+| `POST /v0/agents/.../snapshots/sync` | Storage not configured for this workspace | Pinata storage isn't provisioned - contact support |
+| `POST /v0/agents/.../config/validate` | `config` field isn't valid JSON | Fix syntax |
+| `POST /v0/agents/.../domains` | Both `subdomain` and `customDomain` provided, banned name, or limit reached | Pick one. Avoid names containing "pinata". Max 5 domains. |
+| `POST /v0/agents/.../snapshots/reset` | `snapshotCid` missing or malformed | Use a CID from the snapshot list |
+| `POST /v0/agents/.../channels/{channel}` | Token missing on initial setup, or unsupported channel name | Provide `botToken` (and `appToken` for Slack) |
+| `POST /v0/agents/.../files/upload` | `filename` empty or `contentBase64` malformed | Sanitize filename, base64-encode without the data URL prefix |
+
+### `401 Unauthorized`
+
+No credential, or the credential was rejected before reaching authorization.
+
+| Cause | Fix |
+| --- | --- |
+| Missing `Authorization` header | Add `Authorization: Bearer <token>` |
+| Pinata JWT expired or revoked | Generate a new key in [Account → API Keys](/account-management/api-keys) |
+| Gateway token rotated | Copy the current value from Danger → Agent → Gateway Token |
+| Token from a different workspace | Switch workspaces in **Account → Workspaces** or use a key from the right workspace |
+
+### `403 Forbidden`
+
+Authenticated, but the action isn't allowed.
+
+| Cause | Fix |
+| --- | --- |
+| Agent limit reached on `POST /v0/agents` | Upgrade your plan or delete an unused agent |
+| Free plan trying to use a paid feature (channels, custom domains) | Upgrade plan |
+| Workspace permission denied | Ask the workspace admin for access |
+| `404` returned where you expected `403` (Issues API on non-internal accounts) | Issues is closed beta to `@pinata.cloud` only |
+
+### `404 Not Found`
+
+The resource doesn't exist (or you're not allowed to know it exists).
+
+| Cause | Fix |
+| --- | --- |
+| Wrong `agentId` | Check the ID from the Danger page or `GET /v0/agents` |
+| `snapshotCid` not in this agent's history | Use one from `GET /v0/agents/{agentId}/snapshots` |
+| Skill CID/slug not installed in your library | Install via Skills Library or `POST /v0/clawhub/{slug}/install` |
+| Template slug/ID doesn't exist or was archived | List `GET /v0/templates` |
+| Custom domain ID not on this agent | List `GET /v0/agents/{agentId}/domains` |
+| Issues endpoint hit by a non-internal account | Closed beta - returns `404` by design |
+
+### `409 Conflict`
+
+Resource state is incompatible with the request.
+
+| Cause | Fix |
+| --- | --- |
+| Duplicate secret name on `POST /v0/secrets` | Use a different name or update the existing one |
+| Two credentials for the same provider attached (e.g. `OPENAI_API_KEY` + Codex subscription) | Detach one |
+| Custom domain already registered (verified) | Pick a different name or delete the existing registration |
+| Subdomain collides with another tenant | Generate a new one or pick a different name |
+| Trying to delete a secret still attached to an agent | Detach from agents first |
+| Skill version conflict during update | Resolve via `POST /v0/agents/{agentId}/skills/{skillId}/update` |
+
+### `413 Payload Too Large`
+
+File upload exceeded the per-request limit.
+
+| Cause | Fix |
+| --- | --- |
+| `POST /v0/agents/{agentId}/files/upload` body too big | Chunk the upload, or push the file via git, or stream it from inside the container |
+
+### `500 Internal Server Error`
+
+Something blew up on the server. The `error` field usually has the underlying message.
+
+Common variants:
+
+| Message hint | Cause | Fix |
+| --- | --- | --- |
+| `Gateway failed to start` after agent create | Provisioning succeeded but the gateway crashed | Wait 30s and retry, or check Logs |
+| `Sync failed` | Workspace snapshot upload to Pinata IPFS failed | Retry; if persistent, check Pinata status |
+| `CLI error` on `GET /v0/agents/{agentId}/devices` | Underlying OpenClaw CLI returned non-zero | Check Logs for OpenClaw errors; restart gateway |
+| `Reset failed` | Git reset to the snapshot commit failed | The commit hash may be missing - try a different snapshot |
+| `Configuration failed` on channel configure | OpenClaw rejected the channel config | Validate token format (e.g. Slack `xoxb-` / `xapp-`) |
+| `Execution failed` on console exec | Command shell terminated unexpectedly | Inspect the command; if hung, restart gateway |
+
+### `503 Service Unavailable`
+
+A dependency the server needs is down.
+
+| Cause | Fix |
+| --- | --- |
+| `POST /v0/secrets` returns 503 with "Secrets not configured" | Server-side encryption key not provisioned. Contact support. |
+| Snapshot/IPFS backend unreachable | Retry; check Pinata status page |
+
+## By symptom
+
+### "I just created the agent and the chat shows offline"
+
+The container takes ~30 seconds to provision. A `500` with the agent body in the response means provisioning succeeded but the gateway didn't start cleanly - the agent will appear in your list and you can restart it.
+
+### "My push to the workspace returns auth errors"
+
+Re-grab the URL with **Copy with Token** on the Files tab. The gateway token may have been rotated.
+
+### "Tasks return 500 from `GET /v0/agents/.../tasks`"
+
+This usually means the OpenClaw CLI inside the container failed. Restart the gateway; if it keeps failing, check the Logs filtered to `cron/runner`.
+
+### "Channel configure returns 500"
+
+OpenClaw could not write the channel config or restart. Almost always a malformed token or a channel that's already enabled. Re-check the token, then **Reconfigure**.
+
+### "Domain stuck `pending_ownership`"
+
+Your `_pinata-verify.<domain>` TXT record isn't visible. Confirm with `dig TXT _pinata-verify.<domain> +short` and wait for propagation.
+
+### "Issues endpoints all return 404"
+
+Issues is closed beta and restricted to `@pinata.cloud` accounts today.
+
+## Common error responses
+
+Errors documented in the API spec, grouped by where they appear. Use this as a starting point when you're trying to interpret an error response — the exact string returned by the API is the source of truth.
+
+| Response | Where it appears | What it means |
+| --- | --- | --- |
+| `Missing userId` | Several JWT-protected endpoints | Pinata JWT couldn't be resolved to a user — regenerate the key |
+| `Agent limit reached` | `POST /v0/agents` (`403`) | Workspace at its agent quota — upgrade or delete an unused agent |
+| `Storage not configured` | `POST /v0/agents/{agentId}/snapshots/sync` (`400`) | Workspace has no backing storage; contact support |
+| `Sync failed` | Snapshot sync (`500`) | IPFS pin or workspace serialization failed — retry |
+| `Snapshot not found` | `POST /v0/agents/{agentId}/snapshots/reset` (`404`) | Snapshot CID isn't in this agent's history |
+| `Invalid snapshot CID` | Snapshot reset (`400`) | The provided CID didn't parse |
+| `Unsupported channel` | `DELETE /v0/agents/{agentId}/channels/{channel}` (`400`) | Channel must be `telegram` / `slack` / `discord` / `whatsapp` |
+| `Configuration failed` | Channel configure (`500`) | OpenClaw rejected the token/config |
+| `Removal failed` | Channel delete (`500`) | OpenClaw failed to remove and restart |
+| `Invalid command` | Console exec (`400`) | `command` field empty or invalid `cwd` |
+| `Execution failed` | Console exec (`500`) | Shell exited unexpectedly |
+| `Invalid JSON` | Config validate / write (`400`) | The `config` field isn't valid JSON |
+| `Validation command failed` | `POST /v0/agents/{agentId}/config/validate` (`500`) | OpenClaw CLI returned non-zero |
+| `Failed to read config` | `GET /v0/agents/{agentId}/config` (`500`) | Couldn't read `openclaw.json` |
+| `Failed to write config` | `PUT /v0/agents/{agentId}/config` (`500`) | Couldn't write `openclaw.json` |
+| `Invalid version` | `POST /v0/agents/{agentId}/restart` (`400`) | Requested OpenClaw version doesn't exist |
+| `Restart failed` | Restart (`500`) | Gateway didn't come back up — check Logs |
+| `Script launch failed` | `POST /v0/agents/{agentId}/scripts/retry` (`500`) | Build or start couldn't be launched |
+| `File too large` | `POST /v0/agents/{agentId}/files/upload` (`413`) | Body over the upload limit — chunk or push via git |
+| `CLI error` | Several OpenClaw-backed endpoints (`500`) | Underlying `openclaw` CLI returned non-zero — check Logs |
+| `Token generation failed` | `POST /v0/agents/{agentId}/platform/token` (`500`) | Platform JWT couldn't be minted — rotate gateway token |
+| `Secrets not configured` | `POST /v0/secrets` (`503`) | Server-side encryption key not provisioned — contact support |
+| `Duplicate secret name` | `POST /v0/secrets` (`409`) | Secret name is already taken |
+| `Conflicting secrets` | `POST /v0/agents/{agentId}/secrets` (`409`) | Attaching two creds for the same provider (e.g. API key + subscription) |
+| `Invalid parameters` | Tasks create (`400`) | One of `name`, `schedule`, or `payload` is missing or malformed |
+| `Failed to create cron job` | Tasks create (`500`) | OpenClaw rejected the cron config |
+| `Failed to list cron jobs` | Tasks list (`500`) | OpenClaw CLI failed |
+
+## See also
+
+- [Concepts](/agents/concepts) - terminology and how the pieces fit
+- [Troubleshooting](/agents/troubleshooting) - step-by-step debugging by symptom
+- [HTTP API](/agents/api) - auth and base URLs
+- [Manifest reference](/agents/manifest) - manifest schema details
