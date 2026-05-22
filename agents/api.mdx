@@ -92,11 +92,23 @@ curl -X POST \
     "name": "My Agent",
     "description": "Personal assistant",
     "emoji": "🤖",
+    "engine": "openclaw",
     "skillCids": ["@pinata/api"],
     "secretIds": ["secret-id-1"]
   }' \
   https://agents.pinata.cloud/v0/agents
 ```
+
+`engine` is optional and defaults to `openclaw`. Pass `hermes` to provision the opinionated engine instead — see [Concepts → Engine](/agents/concepts#engine). For Hermes agents you can also pass a `channels` object on create (Telegram / Slack / Discord token + DM policy) and the channel will come up with the agent, avoiding a post-creation restart.
+
+To list engines enabled for the current deployment:
+
+```bash
+curl -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/engines
+```
+
+Returns `{ "engines": [ { "id": "openclaw", "label": "OpenClaw" }, { "id": "hermes", "label": "Hermes" } ] }`.
 
 Returns `201` with the created agent. Returns `403` if you're at the agent limit.
 

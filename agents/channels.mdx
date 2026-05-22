@@ -73,7 +73,7 @@ Same shape as Telegram — make a bot in Discord's developer portal, copy the to
 - **Remove** — same dialog, **Remove** action. This deletes the channel config and restarts the agent's gateway.
 
 <Note>
-  Channel changes take effect after the gateway restarts. Configure and remove handle that automatically.
+  Channel changes take effect after the gateway restarts. Configure and remove handle that automatically. If you're creating a [Hermes](/agents/concepts#engine) agent via the API, pass a `channels` object on `POST /v0/agents` to wire them up at creation and avoid the post-create restart entirely — see [API → Create an agent](/agents/api#create-an-agent).
 </Note>
 
 <Warning>
