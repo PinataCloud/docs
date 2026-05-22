@@ -38,7 +38,7 @@ curl -H "Authorization: Bearer $PINATA_JWT" \
 | `build` script failed | Fix the script, then **Retry Scripts** on the Danger tab (or `POST /v0/agents/{agentId}/scripts/retry`) |
 | Missing required secret | The Danger page flags missing secrets. Attach in the [Secrets Vault](/agents/secrets), then restart the gateway |
 | Container OOM | A heavy `npm install` or model load can hit the memory ceiling. Slim dependencies or break up the script |
-| OpenClaw version pinned to a broken release | Danger → **Change** to update to latest |
+| Engine version pinned to a broken release | Danger → **Change** to update to latest (works for OpenClaw and Hermes) |
 
 ## Gateway won't connect / chat is offline
 

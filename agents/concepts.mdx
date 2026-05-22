@@ -29,7 +29,14 @@ A single isolated container with a persistent workspace, gateway, and `{agentId}
 
 ### Engine
 
-The runtime that powers the agent. `openclaw` is the default; `hermes` is also enumerated. Set via `engine` in [`manifest.json`](/agents/manifest).
+The runtime that powers the agent. Two engines are supported:
+
+| Engine | Tagline | When to pick it |
+| --- | --- | --- |
+| `openclaw` (default) | Configurable agent for custom workflows and power users | You want full control over manifest fields, scripts, routes, and skills |
+| `hermes` | Opinionated agent with a smoother out-of-the-box experience | You want fewer knobs and channels wired up from the start |
+
+Pick the engine when creating the agent — either in the **Agent Engine** card on the Create Agent wizard, or by passing `engine` in `POST /v0/agents`, or by setting `engine` in [`manifest.json`](/agents/manifest) for a template. Available engines per deployment are listed at `GET /v0/agents/engines`.
 
 ### Gateway
 
