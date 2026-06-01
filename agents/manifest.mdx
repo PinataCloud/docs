@@ -226,7 +226,7 @@ Only used when the manifest is the source for a marketplace template. Ignored fo
 ## Validation
 
 <Note>
-  `manifest.json` is different from `openclaw.json` - see [Concepts → manifest vs openclaw config](/agents/concepts#manifest-json-vs-openclaw-json). The `/v0/agents/{agentId}/config/validate` endpoint validates `openclaw.json`, not `manifest.json`.
+  `manifest.json` is different from engine runtime config - see [Concepts → manifest vs runtime config](/agents/concepts#manifest-json-vs-openclaw-json). The `/v0/agents/{agentId}/config/validate` endpoint validates runtime config, not `manifest.json`.
 </Note>
 
 To validate `manifest.json` ahead of committing, run it through the template validator (which checks `manifest.json` + `README.md` + `workspace/`):

@@ -19,7 +19,7 @@ NAME:
    pinata agents - Interact with AI agents on Pinata
 
 USAGE:
-   pinata agents command [command options] [arguments...]
+   pinata agents [command [command options]]
 
 COMMANDS:
    list, l          List all agents
@@ -28,7 +28,7 @@ COMMANDS:
    delete, d        Delete an agent
    restart, r       Restart an agent
    logs             Get agent logs
-   chat             Interactive chat with an agent
+   chat, c          Interactive chat with an agent
    exec             Execute a command in an agent container
    skills, sk       Manage agent skills
    secrets, sec     Manage secrets
@@ -39,14 +39,14 @@ COMMANDS:
    ports, p         Manage agent port forwarding
    domains, dom     Manage custom domains (beta)
    files            Agent file operations
-   templates, tpl   Browse pre-built agent templates
+   templates, tpl   Browse and manage agent templates
    clawhub, hub     Browse and install skills from ClawHub
    config, cfg      Manage agent configuration
    update, up       Manage agent openclaw updates
    versions, ver    List available agent versions
-   auth             Authenticate with AI providers (anthropic, openai, openrouter)
+   engines          List the agent engines enabled for this deployment
+   auth             Authenticate with a provider and store the credential as a secret
    feedback         Submit feedback or feature request
-   help, h          Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
@@ -59,7 +59,7 @@ NAME:
    pinata agents list - List all agents
 
 USAGE:
-   pinata agents list [command options] [arguments...]
+   pinata agents list [options]
 
 OPTIONS:
    --help, -h  show help
@@ -72,18 +72,24 @@ NAME:
    pinata agents create - Create a new agent
 
 USAGE:
-   pinata agents create [command options] [arguments...]
+   pinata agents create [options]
 
 OPTIONS:
-   --name value, -n value             Name of the agent (required)
-   --description value, -d value      Agent personality description
-   --vibe value                       Agent vibe/tagline
-   --emoji value                      Agent emoji
-   --skill value [ --skill value ]    Skill CIDs to attach (can be specified multiple times)
-   --secret value [ --secret value ]  Secret IDs to attach (can be specified multiple times)
-   --template value, -t value         Template ID to deploy from (uses template snapshot, skills, and defaults)
-   --help, -h                         show help
+   --name string, -n string             Name of the agent (required)
+   --description string, -d string      Agent personality description
+   --vibe string                        Agent vibe/tagline
+   --emoji string                       Agent emoji
+   --engine string                      Container engine: openclaw (default) or hermes
+   --skill string [ --skill string ]    Skill CIDs to attach (can be specified multiple times)
+   --secret string [ --secret string ]  Secret IDs to attach (can be specified multiple times)
+   --template string, -t string         Template ID to deploy from (uses template snapshot, skills, and defaults)
+   --user-name string                   Owner display name (written into workspace/USER.md)
+   --user-email string                  Owner email (written into workspace/USER.md)
+   --channels string                    Channel config as JSON (for Hermes agents; set at creation to avoid a restart), e.g. '{"telegram":{"botToken":"...","dmPolicy":"open"}}'
+   --help, -h                           show help
 ```
+
+`--engine` selects the container engine. It defaults to `openclaw` server-side; pass `hermes` for the opinionated engine. Run [`pinata agents engines`](#engines) to see which engines your deployment allows. See [Concepts → Engine](/agents/concepts#engine) for the differences.
 
 **Example with template:**
 
@@ -95,23 +101,124 @@ pinata agents templates list
 pinata agents create --name "My IPFS Agent" --template tpchchgg
 ```
 
+**Example with a Hermes engine and channels:**
+
+Pass `--channels` as a JSON object to configure Telegram, Slack, or Discord at creation for engines that support create-time channel bootstrap. This is especially useful for Hermes agents because the channel can come up with the agent and avoid a post-create restart. The per-channel fields (`botToken`, `appToken`, `dmPolicy`, `allowFrom`) match the [Channels API](/agents/api#channels) and the [`channels` block in `manifest.json`](/agents/manifest#channels).
+
+```bash
+# Create a Hermes agent
+pinata agents create --name "My Hermes Agent" --engine hermes
+
+# Create a Hermes agent with Telegram configured at creation
+pinata agents create \
+  --name "My Hermes Agent" \
+  --engine hermes \
+  --user-name "Ada Lovelace" \
+  --user-email "ada@example.com" \
+  --channels '{"telegram":{"botToken":"123:abc","dmPolicy":"open"}}'
+```
+
+## `get`
+
+```
+NAME:
+   pinata agents get - Get agent details
+
+USAGE:
+   pinata agents get [options] [agent ID]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+The response includes the agent's `engine` so you can tell OpenClaw, Hermes, and other enabled engines apart.
+
+## `delete`
+
+```
+NAME:
+   pinata agents delete - Delete an agent
+
+USAGE:
+   pinata agents delete [options] [agent ID]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+## `restart`
+
+```
+NAME:
+   pinata agents restart - Restart an agent
+
+USAGE:
+   pinata agents restart [options] [agent ID]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+## `logs`
+
+```
+NAME:
+   pinata agents logs - Get agent logs
+
+USAGE:
+   pinata agents logs [options] [agent ID]
+
+OPTIONS:
+   --help, -h  show help
+```
+
 ## `chat`
 
-Start an interactive chat session with an agent. Supports multiple output modes for different use cases.
+Start an interactive chat session with an agent. Supports multiple output modes for different use cases, and works across supported agent engines.
 
 ```
 NAME:
    pinata agents chat - Interactive chat with an agent
 
 USAGE:
-   pinata agents chat [command options] [agent ID] [optional prompt]
+   pinata agents chat [options] [agent ID] [optional prompt]
+
+DESCRIPTION:
+   Start an interactive chat session with an agent.
+
+   The gateway URL and token are automatically fetched from the agent's configuration.
+
+   Output modes:
+     - TTY stdout:     Interactive TUI with markdown rendering
+     - Non-TTY stdout: JSONL streaming (machine-readable, default for pipes)
+     - --text:         Plain text streaming (simpler alternative to JSONL)
+     - --conversation: Multi-turn mode (read messages from stdin line-by-line)
+
+   Examples:
+     # Interactive TUI mode
+     pinata agents chat <agent-id>
+
+     # Single message with plain text response (for agents/scripts)
+     echo "Hello" | pinata agents chat <agent-id> --text
+
+     # JSONL output (machine-readable, default when piped)
+     echo "Hello" | pinata agents chat <agent-id>
+
+     # Multi-turn conversation (each line is a message)
+     echo -e "Hello\nHow are you?" | pinata agents chat <id> -C --text
+
+     # Interactive conversation from a file
+     pinata agents chat <id> --conversation --text < messages.txt
+
+     # Filter JSONL with jq
+     echo "hi" | pinata agents chat <id> | jq -c 'select(.type=="content_delta")'
 
 OPTIONS:
-   --model value       Model override
+   --model string      Model override
    --json              Force JSONL output (auto-enabled when stdout is not a TTY)
    --text              Force plain text output (simpler alternative to JSONL for pipes)
    --conversation, -C  Multi-turn conversation mode (read messages from stdin line-by-line)
-   --session value     Session key for conversation context
+   --session string    Session key for conversation context (default: agent:main:cli)
    --help, -h          show help
 ```
 
@@ -152,11 +259,11 @@ NAME:
    pinata agents exec - Execute a command in an agent container
 
 USAGE:
-   pinata agents exec [command options] [agent ID] [command]
+   pinata agents exec [options] [agent ID] [command]
 
 OPTIONS:
-   --cwd value  Working directory for the command
-   --help, -h   show help
+   --cwd string  Working directory for the command
+   --help, -h    show help
 ```
 
 **Examples:**
@@ -181,11 +288,10 @@ NAME:
    pinata agents files - Agent file operations
 
 USAGE:
-   pinata agents files command [command options] [arguments...]
+   pinata agents files [command [command options]]
 
 COMMANDS:
    read, r  Read a file from agent container
-   help, h  Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
@@ -207,13 +313,12 @@ NAME:
    pinata agents devices - Manage agent devices
 
 USAGE:
-   pinata agents devices command [command options] [arguments...]
+   pinata agents devices [command [command options]]
 
 COMMANDS:
    list, l      List pending and paired devices
    approve, a   Approve a device pairing request
    approve-all  Approve all pending device requests
-   help, h      Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
@@ -239,7 +344,7 @@ NAME:
    pinata agents skills - Manage agent skills
 
 USAGE:
-   pinata agents skills command [command options] [arguments...]
+   pinata agents skills [command [command options]]
 
 COMMANDS:
    list, l    List available skills in library
@@ -247,10 +352,37 @@ COMMANDS:
    delete, d  Delete a skill from library
    attach, a  Attach skills to an agent
    detach     Detach a skill from an agent
-   help, h    Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
+```
+
+**`create` options:**
+
+```
+OPTIONS:
+   --cid string                     Content ID of the skill (required)
+   --name string, -n string         Skill name (required)
+   --description string, -d string  Skill description
+   --env string [ --env string ]    Required environment variable names
+   --file-id string                 Pinata v3 file ID
+   --help, -h                       show help
+```
+
+**Examples:**
+
+```bash
+# List skills in your library
+pinata agents skills list
+
+# Create a skill from a CID
+pinata agents skills create --cid <skill-cid> --name "My Skill" --env API_KEY
+
+# Attach skills to an agent
+pinata agents skills attach <agent-id> <skill-cid> <skill-cid>
+
+# Detach a skill from an agent
+pinata agents skills detach <agent-id> <skill-id>
 ```
 
 ## `secrets`
@@ -260,7 +392,7 @@ NAME:
    pinata agents secrets - Manage secrets
 
 USAGE:
-   pinata agents secrets command [command options] [arguments...]
+   pinata agents secrets [command [command options]]
 
 COMMANDS:
    list, l    List all secrets
@@ -269,10 +401,31 @@ COMMANDS:
    delete, d  Delete a secret
    attach, a  Attach secrets to an agent
    detach     Detach a secret from an agent
-   help, h    Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
+```
+
+**`create` options:**
+
+```
+OPTIONS:
+   --name string, -n string   Secret name (e.g. ANTHROPIC_API_KEY)
+   --value string, -v string  Secret value
+   --help, -h                 show help
+```
+
+**Examples:**
+
+```bash
+# Create a secret
+pinata agents secrets create --name ANTHROPIC_API_KEY --value sk-ant-...
+
+# Update a secret's value
+pinata agents secrets update <secret-id> --value sk-ant-...
+
+# Attach secrets to an agent
+pinata agents secrets attach <agent-id> <secret-id> <secret-id>
 ```
 
 ## `channels`
@@ -282,17 +435,31 @@ NAME:
    pinata agents channels - Manage agent channels
 
 USAGE:
-   pinata agents channels command [command options] [arguments...]
+   pinata agents channels [command [command options]]
 
 COMMANDS:
    status, s     Get channel configuration status
    configure, c  Configure a channel (telegram, slack, discord, whatsapp)
    remove, r     Remove a channel configuration
-   help, h       Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
 ```
+
+**`configure` options:**
+
+```
+OPTIONS:
+   --bot-token string                           Bot token
+   --app-token string                           App token (Slack only)
+   --dm-policy string                           DM policy: open or pairing
+   --allow-from string [ --allow-from string ]  Allowed user IDs/phone numbers
+   --enabled                                    Enable or disable the channel
+   --skip-restart                               Skip restarting the agent after configuring
+   --help, -h                                   show help
+```
+
+Pass `--skip-restart` to batch multiple channel changes and avoid a gateway restart per call; the new configuration takes effect on the next restart.
 
 **Examples:**
 
@@ -302,6 +469,12 @@ pinata agents channels status <agent-id>
 
 # Configure Telegram
 pinata agents channels configure <agent-id> telegram --bot-token <token>
+
+# Configure a channel without restarting the agent
+pinata agents channels configure <agent-id> telegram --bot-token <token> --skip-restart
+
+# Disable a channel without removing its configuration
+pinata agents channels configure <agent-id> telegram --enabled=false
 
 # Remove a channel
 pinata agents channels remove <agent-id> telegram
@@ -314,14 +487,13 @@ NAME:
    pinata agents snapshots - Manage agent snapshots
 
 USAGE:
-   pinata agents snapshots command [command options] [arguments...]
+   pinata agents snapshots [command [command options]]
 
 COMMANDS:
    list, l    List agent snapshots
    create, c  Create a snapshot
    status, s  Get sync status
    reset, r   Reset to a snapshot
-   help, h    Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
@@ -350,7 +522,7 @@ NAME:
    pinata agents tasks - Manage agent cron jobs/tasks
 
 USAGE:
-   pinata agents tasks command [command options] [arguments...]
+   pinata agents tasks [command [command options]]
 
 COMMANDS:
    list, l    List tasks
@@ -360,33 +532,108 @@ COMMANDS:
    toggle     Enable or disable a task
    run        Run a task immediately
    history    View task run history
-   help, h    Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
 ```
 
-**Creating tasks:**
+### `create`
 
-```bash
-# Create hourly task with system event
-pinata agents tasks create --name "hourly-check" --every 1h --system-event "Check status" <agent-id>
+```
+NAME:
+   pinata agents tasks create - Create a new task
 
-# Create daily task with cron expression
-pinata agents tasks create --name "daily-report" --cron "0 9 * * *" --agent-turn "Generate report" <agent-id>
+USAGE:
+   pinata agents tasks create [options] [agent ID]
 
-# Create one-time task
-pinata agents tasks create --name "scheduled-job" --at "2026-04-01T12:00:00Z" --system-event "Run once" <agent-id>
+DESCRIPTION:
+   Create a new cron job for an agent.
+
+   Schedule types:
+     --at       Run once at a specific time (ISO 8601 format)
+     --every    Run at intervals (e.g., "1h", "30m", "24h")
+     --cron     Run on a cron schedule (e.g., "0 9 * * *")
+
+   Payload types (choose one):
+     --system-event  System event text (triggers heartbeat-style execution)
+     --agent-turn    Agent turn message (triggers conversational response)
+
+   Examples:
+     # Run every hour with a system event
+     pinata agents tasks create <agent-id> --name "hourly-check" --every 1h --system-event "Check for updates"
+
+     # Run daily at 9am UTC with agent turn
+     pinata agents tasks create <agent-id> --name "daily-report" --cron "0 9 * * *" --agent-turn "Generate daily report"
+
+     # Run once at a specific time
+     pinata agents tasks create <agent-id> --name "one-time" --at "2026-04-01T12:00:00Z" --system-event "Do task"
+
+OPTIONS:
+   --name string, -n string           Task name (required)
+   --description string               Task description
+   --disabled                         Create task in disabled state
+   --at string                        Run once at this time (ISO 8601)
+   --every string                     Run every interval (e.g., 1h, 30m)
+   --cron string                      Cron expression (e.g., '0 9 * * *')
+   --tz string                        Timezone for cron schedule
+   --system-event string              System event payload text
+   --agent-turn string                Agent turn message
+   --model string                     Model override for agent turn
+   --timeout int                      Timeout in seconds (default: 0)
+   --session string                   Session target: main or isolated (default: "main")
+   --skill string [ --skill string ]  Skill CIDs to make available to the task (can be specified multiple times)
+   --help, -h                         show help
 ```
 
-**Schedule types:**
-- `--every` - Interval (e.g., "1h", "30m", "24h")
-- `--cron` - Cron expression (e.g., "0 9 * * *")
-- `--at` - One-time at ISO 8601 timestamp
+### `update`
 
-**Payload types:**
-- `--system-event` - Triggers heartbeat-style execution
-- `--agent-turn` - Triggers conversational response
+```
+NAME:
+   pinata agents tasks update - Update an existing task
+
+USAGE:
+   pinata agents tasks update [options] [agent ID] [job ID]
+
+DESCRIPTION:
+   Update an existing cron job. Only specified fields are changed.
+
+   Examples:
+     # Change task name
+     pinata agents tasks update <agent-id> <job-id> --name "new-name"
+
+     # Update schedule to run every 2 hours
+     pinata agents tasks update <agent-id> <job-id> --every 2h
+
+     # Update payload message
+     pinata agents tasks update <agent-id> <job-id> --system-event "New message"
+
+OPTIONS:
+   --name string, -n string           New task name
+   --description string               New task description
+   --at string                        Run once at this time (ISO 8601)
+   --every string                     Run every interval (e.g., 1h, 30m)
+   --cron string                      Cron expression (e.g., '0 9 * * *')
+   --tz string                        Timezone for cron schedule
+   --system-event string              System event payload text
+   --agent-turn string                Agent turn message
+   --model string                     Model override for agent turn
+   --timeout int                      Timeout in seconds (default: 0)
+   --skill string [ --skill string ]  Skill CIDs to make available to the task (can be specified multiple times)
+   --help, -h                         show help
+```
+
+**Scoping skills to a task:**
+
+`create` and `update` accept `--skill` (repeatable) to make specific skill CIDs available only while the task runs:
+
+```bash
+# Create a task with task-scoped skills
+pinata agents tasks create --name "nightly-report" --cron "0 0 * * *" \
+  --agent-turn "Summarize today" --skill <skill-cid> --skill <skill-cid> <agent-id>
+
+# Add or change task-scoped skills on an existing task
+pinata agents tasks update <agent-id> <task-id> --skill <skill-cid>
+```
 
 ## `templates`
 
@@ -397,7 +644,7 @@ NAME:
    pinata agents templates - Browse and manage agent templates
 
 USAGE:
-   pinata agents templates command [command options] [arguments...]
+   pinata agents templates [command [command options]]
 
 COMMANDS:
    list, l      List available templates
@@ -408,7 +655,8 @@ COMMANDS:
    update, u    Update an existing template submission (re-pull from repo)
    delete, d    Archive a template submission
    branches     List branches for a git repository
-   help, h      Shows a list of commands or help for one command
+   refs         List branches and tags (with the default branch) for a git repository
+   search-refs  Search branches and tags by name for a git repository
 
 OPTIONS:
    --help, -h  show help
@@ -434,21 +682,50 @@ pinata agents templates get ipfs-expert
 
 Your git repo must contain a valid `manifest.json`, a `README.md`, and a `workspace/` directory. See [Creating Templates](/agents/templates#creating-templates) for the full specification.
 
+`submit`, `update`, and `validate` share the `--ref` and `--path` flags:
+
+```
+OPTIONS:
+   --ref string, -r string, --branch string, -b string  Git ref to submit from (e.g. refs/heads/main, refs/tags/v1.0.0, or a bare branch name; default: main)
+   --path string, -p string                             Subdirectory within the repo to use as the template root (for monorepos)
+   --name string                                        Override the template name from manifest.json
+   --slug string                                        Override the template slug from manifest.json (lowercase, hyphens only)
+   --help, -h                                           show help
+```
+
+<Note>
+`--branch`/`-b` are kept as aliases for `--ref`. You can pass a full ref (`refs/heads/main`, `refs/tags/v1.0.0`) or a bare branch name. Use `--path` to point at a subdirectory when your template lives inside a monorepo. `--name`/`--slug` are available on `submit` and `update` only.
+</Note>
+
 ```bash
 # Validate your repo before submitting
 pinata agents templates validate https://github.com/user/my-agent-template
 
-# Validate a specific branch
-pinata agents templates validate https://github.com/user/my-agent-template --branch develop
+# Validate a specific ref (branch or tag)
+pinata agents templates validate https://github.com/user/my-agent-template --ref refs/tags/v1.0.0
 
-# List available branches
-pinata agents templates branches https://github.com/user/my-agent-template
+# Validate a template that lives in a subdirectory (monorepo)
+pinata agents templates validate https://github.com/user/monorepo --path packages/my-agent
 
 # Submit the template
 pinata agents templates submit https://github.com/user/my-agent-template
 
-# Submit from a specific branch
-pinata agents templates submit https://github.com/user/my-agent-template --branch develop
+# Submit from a specific branch with name/slug overrides
+pinata agents templates submit https://github.com/user/my-agent-template \
+  --ref develop --name "My Agent" --slug my-agent
+```
+
+**Discovering refs:**
+
+```bash
+# List branches for a repo
+pinata agents templates branches https://github.com/user/my-agent-template
+
+# List branches and tags (with the default branch)
+pinata agents templates refs https://github.com/user/my-agent-template
+
+# Search branches and tags by name
+pinata agents templates search-refs https://github.com/user/my-agent-template v1
 ```
 
 **Managing your submissions:**
@@ -460,8 +737,8 @@ pinata agents templates mine
 # Update an existing submission (re-pull from repo)
 pinata agents templates update <template-id>
 
-# Update with a new repo URL or branch
-pinata agents templates update <template-id> --git-url https://github.com/user/new-repo --branch main
+# Update with a new repo URL or ref
+pinata agents templates update <template-id> --git-url https://github.com/user/new-repo --ref main
 
 # Archive a submission
 pinata agents templates delete <template-id>
@@ -476,16 +753,26 @@ NAME:
    pinata agents clawhub - Browse and install skills from ClawHub
 
 USAGE:
-   pinata agents clawhub command [command options] [arguments...]
+   pinata agents clawhub [command [command options]]
 
 COMMANDS:
-   list, l     List ClawHub skills
-   get, g      Get skill details
+   list, l     Browse ClawHub skills
+   get, g      Get ClawHub skill details by slug
    install, i  Install a ClawHub skill to your library
-   help, h     Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
+```
+
+**`list` options:**
+
+```
+OPTIONS:
+   --category string, -c string  Filter by category
+   --sort string, -s string      Sort by: popular, newest, name
+   --featured                    Show only featured skills
+   --cursor string               Pagination cursor
+   --help, -h                    show help
 ```
 
 **Examples:**
@@ -494,7 +781,10 @@ OPTIONS:
 # Browse available skills
 pinata agents clawhub list
 
-# Get skill details
+# Browse featured skills, newest first
+pinata agents clawhub list --featured --sort newest
+
+# Get skill details by slug
 pinata agents clawhub get clawdhub
 
 # Install a skill to your library
@@ -510,17 +800,39 @@ NAME:
    pinata agents domains - Manage custom domains (beta)
 
 USAGE:
-   pinata agents domains command [command options] [arguments...]
+   pinata agents domains [command [command options]]
 
 COMMANDS:
    list, l    List custom domains
    add, a     Register a custom domain
    update, u  Update a custom domain
    delete, d  Remove a custom domain
-   help, h    Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
+```
+
+**`add` options:**
+
+```
+OPTIONS:
+   --subdomain string  Subdomain name (e.g., 'myapp' for myapp.apps.pinata.cloud)
+   --domain string     Custom domain (e.g., 'api.example.com')
+   --port int          Target container port
+   --protected         Require authentication
+   --help, -h          show help
+```
+
+**`update` options:**
+
+```
+OPTIONS:
+   --subdomain string  New subdomain name
+   --domain string     New custom domain
+   --port int          New target port (default: 0)
+   --protected         Enable authentication
+   --no-protected      Disable authentication
+   --help, -h          show help
 ```
 
 **Examples:**
@@ -535,8 +847,11 @@ pinata agents domains add <agent-id> --subdomain myapp --port 8080
 # Add a custom domain
 pinata agents domains add <agent-id> --domain api.example.com --port 3000 --protected
 
-# Update domain
+# Update domain port
 pinata agents domains update <agent-id> <domain-id> --port 8081
+
+# Disable authentication on a domain
+pinata agents domains update <agent-id> <domain-id> --no-protected
 
 # Remove domain
 pinata agents domains delete <agent-id> <domain-id>
@@ -551,12 +866,11 @@ NAME:
    pinata agents ports - Manage agent port forwarding
 
 USAGE:
-   pinata agents ports command [command options] [arguments...]
+   pinata agents ports [command [command options]]
 
 COMMANDS:
    list, l  List port forwarding rules
    set, s   Set port forwarding rules
-   help, h  Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
@@ -568,8 +882,11 @@ OPTIONS:
 # List current port mappings
 pinata agents ports list <agent-id>
 
-# Set port forwarding (port:pathPrefix format)
+# Set port forwarding (port:pathPrefix format, up to 10 rules)
 pinata agents ports set <agent-id> 8080:/api 3000:/app
+
+# Clear all port forwarding rules
+pinata agents ports set <agent-id>
 ```
 
 ## `config`
@@ -581,13 +898,12 @@ NAME:
    pinata agents config - Manage agent configuration
 
 USAGE:
-   pinata agents config command [command options] [arguments...]
+   pinata agents config [command [command options]]
 
 COMMANDS:
-   get, g       Read openclaw config
-   set, s       Write openclaw config
-   validate, v  Validate openclaw config
-   help, h      Shows a list of commands or help for one command
+   get, g       Get agent openclaw config
+   set, s       Set agent openclaw config (JSON)
+   validate, v  Validate agent openclaw config
 
 OPTIONS:
    --help, -h  show help
@@ -615,15 +931,22 @@ NAME:
    pinata agents update - Manage agent openclaw updates
 
 USAGE:
-   pinata agents update command [command options] [arguments...]
+   pinata agents update [command [command options]]
 
 COMMANDS:
    check, c  Check for openclaw updates
    apply, a  Apply openclaw update
-   help, h   Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
+```
+
+**`apply` options:**
+
+```
+OPTIONS:
+   --tag string  Specific version or tag to install (e.g., 'latest', '0.3.0', 'beta')
+   --help, -h    show help
 ```
 
 **Examples:**
@@ -648,7 +971,7 @@ NAME:
    pinata agents versions - List available agent versions
 
 USAGE:
-   pinata agents versions [agent ID]
+   pinata agents versions [options] [agent ID]
 
 OPTIONS:
    --help, -h  show help
@@ -660,6 +983,38 @@ OPTIONS:
 pinata agents versions <agent-id>
 ```
 
+For agents on an engine that publishes versions per engine (such as Hermes), the output includes `availableVersionsPerEngine` (grouped by `openclaw`/`hermes`) alongside the agent's current `engine` and version.
+
+## `engines`
+
+List the agent engines enabled for the current deployment. Use this to discover which values are valid for `agents create --engine`.
+
+```
+NAME:
+   pinata agents engines - List the agent engines enabled for this deployment
+
+USAGE:
+   pinata agents engines [options]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Example:**
+
+```bash
+pinata agents engines
+```
+
+Returns the enabled engines, each with an `id` (the value you pass to `--engine`) and a human-readable `label`:
+
+```json
+[
+  { "id": "openclaw", "label": "OpenClaw" },
+  { "id": "hermes", "label": "Hermes" }
+]
+```
+
 ## `auth`
 
 Authenticate with AI providers and store credentials as secrets for your agents.
@@ -669,11 +1024,11 @@ NAME:
    pinata agents auth - Authenticate with a provider and store the credential as a secret
 
 USAGE:
-   pinata agents auth [command options] [provider: anthropic, openai, openrouter]
+   pinata agents auth [options] [provider: anthropic, openai, openrouter, venice]
 
 OPTIONS:
-   --oauth        Use OAuth browser flow instead of API key (openai only)
-   --help, -h     show help
+   --oauth     Use OAuth browser flow instead of API key (openai only)
+   --help, -h  show help
 ```
 
 **Supported Providers:**
@@ -683,6 +1038,7 @@ OPTIONS:
 | `anthropic` | `ANTHROPIC_API_KEY` | - |
 | `openai` | `OPENAI_API_KEY` or `OPENAI_OAUTH_TOKEN` | `--oauth` for Codex OAuth flow |
 | `openrouter` | `OPENROUTER_API_KEY` | - |
+| `venice` | `VENICE_API_KEY` | - |
 
 **Examples:**
 
@@ -698,4 +1054,28 @@ pinata agents auth openai --oauth
 
 # Store OpenRouter API key
 pinata agents auth openrouter
+
+# Store Venice API key
+pinata agents auth venice
+```
+
+## `feedback`
+
+Submit feedback or a feature request from the terminal.
+
+```
+NAME:
+   pinata agents feedback - Submit feedback or feature request
+
+USAGE:
+   pinata agents feedback [options] [message]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**Example:**
+
+```bash
+pinata agents feedback "It would be great to..."
 ```

@@ -4,7 +4,7 @@ description: "Talk to your agent through the web interface"
 icon: "message"
 ---
 
-The Chat tab is your main conversation with the agent. Messages stream in real time. You see your prompts, the agent's responses, any tools it called along the way, and — if you enable it — its thinking.
+The Chat tab is your main conversation with the agent. You see your prompts, the agent's responses, any tools it called along the way, and — if you enable it — its thinking.
 
 Open your agent → **Chat**.
 
@@ -31,7 +31,7 @@ Type `/` at the start of a message to run a command instead of a regular prompt:
 | `/status` | Prints the current model, session info, and key flags |
 | `/help` | Shows the commands your agent supports |
 
-The list depends on your agent's OpenClaw version and any skills you've attached, so `/help` is the best way to see what's actually available.
+The list depends on your agent engine and any skills you've attached, so `/help` is the best way to see what's actually available.
 
 ## Reading agent responses
 
@@ -43,6 +43,8 @@ Each turn the agent sends back has a few elements you'll see in the chat:
 - **Model badge** — after the response, a small badge shows which model produced it. Useful when you've been switching models mid-conversation.
 
 When you want to debug a bad answer, expand the thinking block and the tool calls before anything else. That's almost always where the answer is.
+
+Response delivery is engine-specific. OpenClaw agents usually stream assistant text token-by-token; Hermes agents can deliver a complete assistant message in one event. The transcript renders the same either way, but the reply may appear to type in for OpenClaw and appear all at once for Hermes.
 
 ## Switching models mid-conversation
 
@@ -60,4 +62,4 @@ Click **Hide navbar** in the top-right corner to collapse the left sidebar — t
 - If the chat looks disconnected and stays that way, the gateway probably needs a kick. Open **Danger** → **Restart Gateway**.
 - If you change a secret, attach a new skill, or add a channel, restart the gateway so the agent picks up the change.
 
-For deeper debugging, the [Logs](/agents/logs) tab streams everything OpenClaw is doing under the hood. See [Troubleshooting](/agents/troubleshooting) for common failure modes.
+For deeper debugging, the [Logs](/agents/logs) tab streams what the agent engine is doing under the hood. See [Troubleshooting](/agents/troubleshooting) for common failure modes.

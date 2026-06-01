@@ -1,10 +1,10 @@
 ---
 title: "Logs"
-description: "Stream OpenClaw's output in real time"
+description: "Stream your agent engine's output in real time"
 icon: "scroll"
 ---
 
-The Logs tab is a live stream of what OpenClaw is doing inside your agent. New entries appear without refreshing — the tab uses a WebSocket under the hood. If the small status badge in the header reads `WEBSOCKET CONNECTED`, you're streaming. If it reads `WEBSOCKET NOT CONNECTED`, either the agent isn't running or the connection dropped — hit the refresh button or check the agent's status.
+The Logs tab is a live stream of what the agent engine is doing inside your agent. New entries appear without refreshing — the tab uses a WebSocket under the hood. If the small status badge in the header reads **Connected**, you're streaming. If it reads **WebSocket not connected**, either the agent isn't running, the connection dropped, or there are no gateway log lines yet — hit the refresh button or check the agent's status.
 
 <Frame>
   ![Image](/images/image-38.png)
@@ -35,14 +35,14 @@ The **AUTO-FOLLOW** checkbox keeps the view pinned to the latest entry. Uncheck 
 
 ## Where the logs live on disk
 
-Inside the container, OpenClaw writes daily log files to `/tmp/openclaw/openclaw-{date}.log`. From the [Console](/agents/console):
+Inside an OpenClaw container, daily log files live at `/tmp/openclaw/openclaw-{date}.log`. From the [Console](/agents/console):
 
 ```bash
 ls /tmp/openclaw/
 tail -f /tmp/openclaw/openclaw-$(date +%Y-%m-%d).log
 ```
 
-That's identical to what the Logs tab streams, with one difference: only the last 100 lines are retained when the gateway restarts. If you need long-term retention, export periodically.
+For other engines, use the Logs tab or the logs API as the stable interface; on-disk log paths are engine-specific. The API keeps the latest 100 lines when the gateway restarts. If you need long-term retention, export periodically.
 
 ## Reading logs over the API
 

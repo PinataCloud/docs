@@ -6,7 +6,7 @@ icon: "lobster"
 
 Pinata Agents gives you a hosted AI agent in its own sandboxed container. The agent has a workspace it can read and write to, a terminal it can run commands in, and connectors for the outside world — chat apps, web servers, scheduled jobs. You talk to it through the dashboard, the CLI, or whichever messaging platform you connect it to.
 
-Each agent runs on an **Agent Engine** — `openclaw` (default) for full configurability, or `hermes` for an opinionated, smoother out-of-the-box experience. You pick one when you create the agent. The default OpenClaw engine is documented at [openclaw.org](https://openclaw.org); for the differences see [Concepts → Engine](/agents/concepts#engine).
+Each agent runs on an **Agent Engine** — `openclaw` (default) for full configurability, or `hermes` for an opinionated smoother out-of-the-box experience. You pick one when you create the agent. The default OpenClaw engine is documented at [openclaw.org](https://openclaw.org); for the differences see [Concepts → Engine](/agents/concepts#engine).
 
 <Note>
   Agents require a paid Pinata plan. [Upgrade here](https://app.pinata.cloud/billing).
@@ -35,7 +35,7 @@ Head to [My Agents](https://agents.pinata.cloud/agents) and click **Create Agent
 You have two paths:
 
 - **Start from a template** — fastest. Templates come pre-wired with skills, settings, and a personality. Pick one from the [Marketplace](https://agents.pinata.cloud/marketplace) (others' templates) or [My Templates](https://agents.pinata.cloud/templates) (your own). Add the secrets it needs, deploy.
-- **Build from scratch** — full control. The wizard walks you through naming the agent, choosing an **Agent Engine** (OpenClaw or Hermes), picking a personality preset (Atlas, Nova, Sage, or custom), choosing skills, and connecting your LLM provider.
+- **Build from scratch** — full control. The wizard walks you through naming the agent, choosing an **Agent Engine** (OpenClaw, Hermes, or another enabled engine), picking a personality preset, choosing skills, connecting your LLM provider, and optionally configuring channels before deploy.
 
 Either way, the agent takes about 30 seconds to provision. When it's ready you land on its Chat tab.
 

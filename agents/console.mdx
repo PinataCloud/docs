@@ -17,6 +17,8 @@ Working directory: /home/node/clawd/workspace
 ~/clawd/workspace $
 ```
 
+That example is an OpenClaw agent. Hermes agents use `/home/hermes/data/workspace`. The current path is also shown on the agent's [Danger](/agents/devtools) tab.
+
 Anything you can do with a shell, you can do here:
 
 - Run `bash`, `python`, `node`, `git`, `curl`, `jq`
@@ -25,7 +27,7 @@ Anything you can do with a shell, you can do here:
 - Confirm a service is listening: `ss -tlnp`
 - Edit a file with `vi` or `nano`
 
-The session starts in `/home/node/clawd/workspace` — the same workspace shown on the Files tab. Skills live under `skills/`, uploaded files under `uploads/`.
+The session starts in the engine's workspace directory — the same workspace shown on the Files and Danger tabs. Skills live under `skills/`, uploaded files under `uploads/`.
 
 <Tip>
   The button in the top-right of the panel switches to fullscreen mode, which is much more pleasant for anything beyond a one-liner.
@@ -49,14 +51,17 @@ tail -n 200 /tmp/user-build.log
 # What did the start script say?
 tail -n 200 /tmp/user-start.log
 
-# Latest OpenClaw log
+# Latest OpenClaw log (OpenClaw agents)
 ls -la /tmp/openclaw/
 
 # OpenClaw runtime config
 cat /home/node/.openclaw/openclaw.json
 
+# Hermes runtime config
+cat /home/hermes/data/config.yaml
+
 # Manifest the agent is using
-cat workspace/manifest.json
+cat manifest.json
 
 # Is anything listening on common dev ports?
 ss -tlnp
@@ -68,11 +73,13 @@ For workflows by symptom, see [Troubleshooting](/agents/troubleshooting).
 
 If you're scripting against an agent, hit the API:
 
+Set `cwd` to the workspace path for that engine. For OpenClaw that's `/home/node/clawd/workspace`; for Hermes that's `/home/hermes/data/workspace`.
+
 ```bash
 curl -X POST \
   -H "Authorization: Bearer $PINATA_JWT" \
   -H "Content-Type: application/json" \
-  -d '{"command":"ls -la workspace","cwd":"/home/node/clawd"}' \
+  -d '{"command":"ls -la","cwd":"/home/node/clawd/workspace"}' \
   https://agents.pinata.cloud/v0/agents/$AGENT_ID/console/exec
 ```
 
