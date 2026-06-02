@@ -98,9 +98,9 @@ Common variants:
 | --- | --- | --- |
 | `Gateway failed to start` after agent create | Provisioning succeeded but the gateway crashed | Wait 30s and retry, or check Logs |
 | `Sync failed` | Workspace snapshot upload to Pinata IPFS failed | Retry; if persistent, check Pinata status |
-| `CLI error` on `GET /v0/agents/{agentId}/devices` | Underlying OpenClaw CLI returned non-zero | Check Logs for OpenClaw errors; restart gateway |
+| `CLI error` on `GET /v0/agents/{agentId}/devices` | Underlying engine CLI returned non-zero | Check Logs for engine errors; restart gateway |
 | `Reset failed` | Git reset to the snapshot commit failed | The commit hash may be missing - try a different snapshot |
-| `Configuration failed` on channel configure | OpenClaw rejected the channel config | Validate token format (e.g. Slack `xoxb-` / `xapp-`) |
+| `Configuration failed` on channel configure | The engine rejected the channel config | Validate token format (e.g. Slack `xoxb-` / `xapp-`) |
 | `Execution failed` on console exec | Command shell terminated unexpectedly | Inspect the command; if hung, restart gateway |
 
 ### `503 Service Unavailable`
@@ -124,11 +124,11 @@ Re-grab the URL with **Copy with Token** on the Files tab. The gateway token may
 
 ### "Tasks return 500 from `GET /v0/agents/.../tasks`"
 
-This usually means the OpenClaw CLI inside the container failed. Restart the gateway; if it keeps failing, check the Logs filtered to `cron/runner`.
+This usually means the engine CLI inside the container failed. Restart the gateway; if it keeps failing, check the Logs filtered to `cron/runner`.
 
 ### "Channel configure returns 500"
 
-OpenClaw could not write the channel config or restart. Almost always a malformed token or a channel that's already enabled. Re-check the token, then **Reconfigure**.
+The engine could not write the channel config or restart. Almost always a malformed token or a channel that's already enabled. Re-check the token, then **Reconfigure**.
 
 ### "Domain stuck `pending_ownership`"
 
@@ -151,26 +151,26 @@ Errors documented in the API spec, grouped by where they appear. Use this as a s
 | `Snapshot not found` | `POST /v0/agents/{agentId}/snapshots/reset` (`404`) | Snapshot CID isn't in this agent's history |
 | `Invalid snapshot CID` | Snapshot reset (`400`) | The provided CID didn't parse |
 | `Unsupported channel` | `DELETE /v0/agents/{agentId}/channels/{channel}` (`400`) | Channel must be `telegram` / `slack` / `discord` / `whatsapp` |
-| `Configuration failed` | Channel configure (`500`) | OpenClaw rejected the token/config |
-| `Removal failed` | Channel delete (`500`) | OpenClaw failed to remove and restart |
+| `Configuration failed` | Channel configure (`500`) | Engine rejected the token/config |
+| `Removal failed` | Channel delete (`500`) | Engine failed to remove and restart |
 | `Invalid command` | Console exec (`400`) | `command` field empty or invalid `cwd` |
 | `Execution failed` | Console exec (`500`) | Shell exited unexpectedly |
-| `Invalid JSON` | Config validate / write (`400`) | The `config` field isn't valid JSON |
-| `Validation command failed` | `POST /v0/agents/{agentId}/config/validate` (`500`) | OpenClaw CLI returned non-zero |
-| `Failed to read config` | `GET /v0/agents/{agentId}/config` (`500`) | Couldn't read `openclaw.json` |
-| `Failed to write config` | `PUT /v0/agents/{agentId}/config` (`500`) | Couldn't write `openclaw.json` |
-| `Invalid version` | `POST /v0/agents/{agentId}/restart` (`400`) | Requested OpenClaw version doesn't exist |
+| `Invalid JSON` / invalid config | Config validate / write (`400`) | The `config` field isn't valid for this engine |
+| `Validation command failed` | `POST /v0/agents/{agentId}/config/validate` (`500`) | Engine validator returned non-zero |
+| `Failed to read config` | `GET /v0/agents/{agentId}/config` (`500`) | Couldn't read runtime config |
+| `Failed to write config` | `PUT /v0/agents/{agentId}/config` (`500`) | Couldn't write runtime config |
+| `Invalid version` | `POST /v0/agents/{agentId}/restart` (`400`) | Requested engine version doesn't exist |
 | `Restart failed` | Restart (`500`) | Gateway didn't come back up — check Logs |
 | `Script launch failed` | `POST /v0/agents/{agentId}/scripts/retry` (`500`) | Build or start couldn't be launched |
 | `File too large` | `POST /v0/agents/{agentId}/files/upload` (`413`) | Body over the upload limit — chunk or push via git |
-| `CLI error` | Several OpenClaw-backed endpoints (`500`) | Underlying `openclaw` CLI returned non-zero — check Logs |
+| `CLI error` | Several engine-backed endpoints (`500`) | Underlying engine CLI returned non-zero — check Logs |
 | `Token generation failed` | `POST /v0/agents/{agentId}/platform/token` (`500`) | Platform JWT couldn't be minted — rotate gateway token |
 | `Secrets not configured` | `POST /v0/secrets` (`503`) | Server-side encryption key not provisioned — contact support |
 | `Duplicate secret name` | `POST /v0/secrets` (`409`) | Secret name is already taken |
 | `Conflicting secrets` | `POST /v0/agents/{agentId}/secrets` (`409`) | Attaching two creds for the same provider (e.g. API key + subscription) |
 | `Invalid parameters` | Tasks create (`400`) | One of `name`, `schedule`, or `payload` is missing or malformed |
-| `Failed to create cron job` | Tasks create (`500`) | OpenClaw rejected the cron config |
-| `Failed to list cron jobs` | Tasks list (`500`) | OpenClaw CLI failed |
+| `Failed to create cron job` | Tasks create (`500`) | Engine rejected the cron config |
+| `Failed to list cron jobs` | Tasks list (`500`) | Engine CLI failed |
 
 ## See also
 

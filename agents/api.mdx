@@ -5,7 +5,7 @@ description: "Authenticate, manage agents, and talk to gateways over HTTP"
 icon: "plug"
 ---
 
-The Agents API is the same API the dashboard uses. Everything in the UI is exposed at `agents.pinata.cloud` - including agent management, secrets, skills, channels, snapshots, custom domains, devices, and OpenClaw config.
+The Agents API is the same API the dashboard uses. Everything in the UI is exposed at `agents.pinata.cloud` - including agent management, secrets, skills, channels, snapshots, custom domains, devices, and engine runtime config.
 
 Full OpenAPI reference: [agents.pinata.cloud/openapi](https://agents.pinata.cloud/openapi) (also linked from the Support → OpenAPI Docs item in the sidebar).
 
@@ -67,7 +67,7 @@ Inside an agent, the `@pinata/platform` skill can exchange the gateway token for
 ```bash
 # From inside the agent container:
 curl -X POST \
-  -H "Authorization: Bearer $OPENCLAW_GATEWAY_TOKEN" \
+  -H "Authorization: Bearer $GATEWAY_TOKEN" \
   https://{agentId}.agents.pinata.cloud/v0/platform/token
 ```
 
@@ -99,7 +99,16 @@ curl -X POST \
   https://agents.pinata.cloud/v0/agents
 ```
 
-`engine` is optional and defaults to `openclaw`. Pass `hermes` to provision the opinionated engine instead — see [Concepts → Engine](/agents/concepts#engine). For Hermes agents you can also pass a `channels` object on create (Telegram / Slack / Discord token + DM policy) and the channel will come up with the agent, avoiding a post-creation restart.
+`engine` is optional and defaults to `openclaw`. Pass `hermes` for the opinionated engine — see [Concepts → Engine](/agents/concepts#engine). For chat-oriented engines, the dashboard exposes channel setup during create, and engines that support create-time channel bootstrap can accept a `channels` object on this request so Telegram, Slack, or Discord come up with the agent without a post-create gateway restart. Each channel object accepts:
+
+| Field | Type | Required | Notes |
+| --- | --- | :---: | --- |
+| `botToken` | string | yes (all channels) | Bot token from the platform. Slack uses the `xoxb-` bot token. |
+| `appToken` | string | yes (Slack only) | Slack `xapp-` app-level token for Socket Mode. |
+| `dmPolicy` | string | optional | `open` (anyone can DM) or `pairing` (must be approved). Defaults to `open`. |
+| `allowFrom` | array of strings | optional | Allow-list of platform user IDs that can DM the bot. |
+
+These are the same fields accepted by the per-channel `POST /v0/agents/{agentId}/channels/{channel}` endpoint and by `channels` in [`manifest.json`](/agents/manifest#channels).
 
 To list engines enabled for the current deployment:
 
@@ -108,7 +117,7 @@ curl -H "Authorization: Bearer $PINATA_JWT" \
   https://agents.pinata.cloud/v0/agents/engines
 ```
 
-Returns `{ "engines": [ { "id": "openclaw", "label": "OpenClaw" }, { "id": "hermes", "label": "Hermes" } ] }`.
+Returns `{ "engines": [ { "id": "openclaw", "label": "OpenClaw" }, { "id": "hermes", "label": "Hermes" } ] }`, depending on which engines are enabled for the deployment.
 
 Returns `201` with the created agent. Returns `403` if you're at the agent limit.
 
@@ -263,7 +272,7 @@ Compact index of every endpoint, grouped by purpose. `JWT` = Pinata JWT, `GW` = 
 | `DELETE` | `/v0/agents/{agentId}` | JWT | Delete the agent |
 | `POST` | `/v0/agents/{agentId}/restart` | JWT / GW | Restart the gateway |
 | `GET` | `/v0/agents/{agentId}/logs` | JWT / GW | Last 100 log lines |
-| `GET` | `/v0/agents/engines` | JWT | List available engines (`openclaw`, `hermes`) |
+| `GET` | `/v0/agents/engines` | JWT | List available engines (`openclaw`, `hermes`, etc.) |
 | `GET` | `/v0/agents/{agentId}/available-agent-versions` | JWT / GW | Versions you can upgrade to |
 | `POST` | `/v0/agents/{agentId}/scripts/retry` | JWT / GW | Re-run `build` then `start` |
 | `GET` | `/v0/agents/{agentId}/update` | JWT / GW | Check for OpenClaw updates |
@@ -366,16 +375,16 @@ Compact index of every endpoint, grouped by purpose. `JWT` = Pinata JWT, `GW` = 
 | `POST` | `/v0/agents/{agentId}/devices/{requestId}/approve` | JWT / GW | Approve one |
 | `POST` | `/v0/agents/{agentId}/devices/approve-all` | JWT / GW | Approve every pending |
 
-### Config (OpenClaw runtime)
+### Config (engine runtime)
 
 | Method | Path | Auth | Description |
 | --- | --- | :---: | --- |
-| `GET` | `/v0/agents/{agentId}/config` | JWT / GW | Read `openclaw.json` |
-| `PUT` | `/v0/agents/{agentId}/config` | JWT / GW | Write `openclaw.json` (validated server-side) |
-| `POST` | `/v0/agents/{agentId}/config/validate` | JWT / GW | Validate `openclaw.json` without applying |
+| `GET` | `/v0/agents/{agentId}/config` | JWT / GW | Read the engine runtime config shown in the Danger tab |
+| `PUT` | `/v0/agents/{agentId}/config` | JWT / GW | Write runtime config (validated server-side) |
+| `POST` | `/v0/agents/{agentId}/config/validate` | JWT / GW | Validate runtime config without applying |
 
 <Note>
-  Note `config/validate` validates `openclaw.json` (runtime config), **not** `manifest.json`. To validate a manifest, use `POST /v0/templates/validate` or run `pinata agents templates validate`.
+  Note `config/validate` validates runtime config, **not** `manifest.json`. OpenClaw agents use `/home/node/.openclaw/openclaw.json`; Hermes agents use `/home/hermes/data/config.yaml`. To validate a manifest, use `POST /v0/templates/validate` or run `pinata agents templates validate`.
 </Note>
 
 ### Templates

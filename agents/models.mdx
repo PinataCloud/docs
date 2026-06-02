@@ -49,7 +49,9 @@ openrouter/tencent/hy3-preview
 openai/gpt-5.4
 ```
 
-The provider prefix tells the agent engine (OpenClaw or Hermes) which connected provider to use. If you give it a model that isn't enabled on this agent, the request falls back to the default.
+The provider prefix tells the agent engine which connected provider to use. If you give it a model that isn't enabled on this agent, the request falls back to the default.
+
+Provider availability and default enabled models can vary by engine. For example, fresh OpenClaw and Hermes agents can start with different Anthropic defaults.
 
 ## What's available today
 

@@ -13,14 +13,14 @@ NAME:
    pinata upload - Upload a file to Pinata
 
 USAGE:
-   pinata upload [command options] [path to file]
+   pinata upload [options] [path to file]
 
 OPTIONS:
-   --group value, -g value  Upload a file to a specific group by passing in the groupId
-   --name value, -n value   Add a name for the file you are uploading. By default it will use the filename on your system. (default: "nil")
-   --verbose                Show upload progress (default: false)
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h               show help
+   --group string, -g string       Upload a file to a specific group by passing in the groupId
+   --name string, -n string        Add a name for the file you are uploading. By default it will use the filename on your system. (default: "nil")
+   --verbose                        Show upload progress
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                       show help
 ```
 
 ## `files`
@@ -30,14 +30,13 @@ NAME:
    pinata files - Interact with your files on Pinata
 
 USAGE:
-   pinata files command [command options] [arguments...]
+   pinata files [command [command options]]
 
 COMMANDS:
    delete, d  Delete a file by ID
    get, g     Get file info by ID
    update, u  Update a file by ID
    list, l    List most recent files
-   help, h    Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
@@ -50,11 +49,11 @@ NAME:
    pinata files get - Get file info by ID
 
 USAGE:
-   pinata files get [command options] [ID of file]
+   pinata files get [options] [ID of file]
 
 OPTIONS:
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```
 
 ### `list`
@@ -64,19 +63,19 @@ NAME:
    pinata files list - List most recent files
 
 USAGE:
-   pinata files list [command options] [arguments...]
+   pinata files list [options]
 
 OPTIONS:
-   --name value, -n value                                           Filter by name of the target file
-   --cid value, -c value                                            Filter results by CID
-   --group value, -g value                                          Filter results by group ID
-   --mime value, -m value                                           Filter results by file mime type
-   --amount value, -a value                                         The number of files you would like to return
-   --token value, -t value                                          Paginate through file results using the pageToken
-   --cidPending                                                     Filter results based on whether or not the CID is pending (default: false)
-   --keyvalues value, --kv value [ --keyvalues value, --kv value ]  Filter results by metadata keyvalues (format: key=value)
-   --network value, --net value                                     Specify the network (public or private). Uses default if not specified
-   --help, -h                                                       show help
+   --name string, -n string                                             Filter by name of the target file
+   --cid string, -c string                                              Filter results by CID
+   --group string, -g string                                            Filter results by group ID
+   --mime string, -m string                                             Filter results by file mime type
+   --amount string, -a string                                           The number of files you would like to return
+   --token string, -t string                                            Paginate through file results using the pageToken
+   --cidPending                                                         Filter results based on whether or not the CID is pending
+   --keyvalues string, --kv string [ --keyvalues string, --kv string ]  Filter results by metadata keyvalues (format: key=value)
+   --network string, --net string                                       Specify the network (public or private). Uses default if not specified
+   --help, -h                                                           show help
 ```
 
 ### `update`
@@ -86,12 +85,12 @@ NAME:
    pinata files update - Update a file by ID
 
 USAGE:
-   pinata files update [command options] [ID of file]
+   pinata files update [options] [ID of file]
 
 OPTIONS:
-   --name value, -n value        Update the name of a file
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --name string, -n string        Update the name of a file
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```
 
 ### `delete`
@@ -101,11 +100,11 @@ NAME:
    pinata files delete - Delete a file by ID
 
 USAGE:
-   pinata files delete [command options] [ID of file]
+   pinata files delete [options] [ID of file]
 
 OPTIONS:
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```
 
 ## `groups`
@@ -115,7 +114,7 @@ NAME:
    pinata groups - Interact with file groups
 
 USAGE:
-   pinata groups command [command options] [arguments...]
+   pinata groups [command [command options]]
 
 COMMANDS:
    create, c  Create a new group
@@ -125,7 +124,6 @@ COMMANDS:
    get, g     Get group info by ID
    add, a     Add a file to a group
    remove, r  Remove a file from a group
-   help, h    Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
@@ -138,11 +136,11 @@ NAME:
    pinata groups create - Create a new group
 
 USAGE:
-   pinata groups create [command options] [name of group]
+   pinata groups create [options] [name of group]
 
 OPTIONS:
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```
 
 ### `get`
@@ -152,11 +150,11 @@ NAME:
    pinata groups get - Get group info by ID
 
 USAGE:
-   pinata groups get [command options] [ID of group]
+   pinata groups get [options] [ID of group]
 
 OPTIONS:
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```
 
 ### `list`
@@ -166,14 +164,29 @@ NAME:
    pinata groups list - List groups on your account
 
 USAGE:
-   pinata groups list [command options] [arguments...]
+   pinata groups list [options]
 
 OPTIONS:
-   --amount value, -a value      The number of groups you would like to return (default: "10")
-   --name value, -n value        Filter groups by name
-   --token value, -t value       Paginate through results using the pageToken
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --amount string, -a string      The number of groups you would like to return (default: "10")
+   --name string, -n string        Filter groups by name
+   --token string, -t string       Paginate through results using the pageToken
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
+```
+
+### `update`
+
+```
+NAME:
+   pinata groups update - Update a group
+
+USAGE:
+   pinata groups update [options] [ID of group]
+
+OPTIONS:
+   --name string, -n string        Update the name of a group
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```
 
 ### `add`
@@ -183,11 +196,11 @@ NAME:
    pinata groups add - Add a file to a group
 
 USAGE:
-   pinata groups add [command options] [group id] [file id]
+   pinata groups add [options] [group id] [file id]
 
 OPTIONS:
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```
 
 ### `remove`
@@ -197,11 +210,11 @@ NAME:
    pinata groups remove - Remove a file from a group
 
 USAGE:
-   pinata groups remove [command options] [group id] [file id]
+   pinata groups remove [options] [group id] [file id]
 
 OPTIONS:
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```
 
 ## `gateways`
@@ -211,13 +224,12 @@ NAME:
    pinata gateways - Interact with your gateways on Pinata
 
 USAGE:
-   pinata gateways command [command options] [arguments...]
+   pinata gateways [command [command options]]
 
 COMMANDS:
    set, s   Set your default gateway to be used by the CLI
    open, o  Open a file in the browser
    link, l  Get either an IPFS link for a public file or a temporary access link for a Private IPFS file
-   help, h  Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
@@ -234,7 +246,7 @@ NAME:
    pinata gateways set - Set your default gateway to be used by the CLI
 
 USAGE:
-   pinata gateways set [command options] [domain of the gateway]
+   pinata gateways set [options] [domain of the gateway]
 
 OPTIONS:
    --help, -h  show help
@@ -247,11 +259,11 @@ NAME:
    pinata gateways link - Get either an IPFS link for a public file or a temporary access link for a Private IPFS file
 
 USAGE:
-   pinata gateways link [command options] [cid of the file, seconds the url is valid for]
+   pinata gateways link [options] [cid of the file, seconds the url is valid for]
 
 OPTIONS:
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```
 
 ### `open`
@@ -261,11 +273,11 @@ NAME:
    pinata gateways open - Open a file in the browser
 
 USAGE:
-   pinata gateways open [command options] [CID of the file]
+   pinata gateways open [options] [CID of the file]
 
 OPTIONS:
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```
 
 ## `keys`
@@ -275,13 +287,12 @@ NAME:
    pinata keys - Create and manage generated API keys
 
 USAGE:
-   pinata keys command [command options] [arguments...]
+   pinata keys [command [command options]]
 
 COMMANDS:
    create, c  Create an API key with admin or scoped permissions
    list, l    List and filter API key
    revoke, r  Revoke an API key
-   help, h    Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
@@ -294,14 +305,14 @@ NAME:
    pinata keys create - Create an API key with admin or scoped permissions
 
 USAGE:
-   pinata keys create [command options] [arguments...]
+   pinata keys create [options]
 
 OPTIONS:
-   --name value, -n value                                       Name of the API key
-   --admin, -a                                                  Set the key as Admin (default: false)
-   --uses value, -u value                                       Max uses a key can use (default: 0)
-   --endpoints value, -e value [ --endpoints value, -e value ]  Optional array of endpoints the key is allowed to use
-   --help, -h                                                   show help
+   --name string, -n string                                         Name of the API key
+   --admin, -a                                                      Set the key as Admin
+   --uses int, -u int                                               Max uses a key can use (default: 0)
+   --endpoints string, -e string [ --endpoints string, -e string ]  Optional array of endpoints the key is allowed to use
+   --help, -h                                                       show help
 ```
 
 ### `list`
@@ -311,15 +322,15 @@ NAME:
    pinata keys list - List and filter API key
 
 USAGE:
-   pinata keys list [command options] [arguments...]
+   pinata keys list [options]
 
 OPTIONS:
-   --name value, -n value    Name of the API key
-   --revoked, -r             Set the key as Admin (default: false)
-   --exhausted, -e           Filter keys that are exhausted or not (default: false)
-   --uses, -u                Filter keys that do or don't have limited uses (default: false)
-   --offset value, -o value  Offset the number of results to paginate
-   --help, -h                show help
+   --name string, -n string    Name of the API key
+   --revoked, -r               Set the key as Admin
+   --exhausted, -e             Filter keys that are exhausted or not
+   --uses, -u                  Filter keys that do or don't have limited uses
+   --offset string, -o string  Offset the number of results to paginate
+   --help, -h                  show help
 ```
 
 ### `revoke`
@@ -329,7 +340,7 @@ NAME:
    pinata keys revoke - Revoke an API key
 
 USAGE:
-   pinata keys revoke [command options] [key]
+   pinata keys revoke [options] [key]
 
 OPTIONS:
    --help, -h  show help
@@ -342,13 +353,12 @@ NAME:
    pinata swaps - Interact and manage hot swaps on Pinata
 
 USAGE:
-   pinata swaps command [command options] [arguments...]
+   pinata swaps [command [command options]]
 
 COMMANDS:
    list, l    List swaps for a given gateway domain or for your config gateway domain
    add, a     Add a swap for a CID
    delete, d  Remeove a swap for a CID
-   help, h    Shows a list of commands or help for one command
 
 OPTIONS:
    --help, -h  show help
@@ -361,11 +371,11 @@ NAME:
    pinata swaps list - List swaps for a given gateway domain or for your config gateway domain
 
 USAGE:
-   pinata swaps list [command options] [cid] [optional gateway domain]
+   pinata swaps list [options] [cid] [optional gateway domain]
 
 OPTIONS:
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```
 
 ### `add`
@@ -375,11 +385,11 @@ NAME:
    pinata swaps add - Add a swap for a CID
 
 USAGE:
-   pinata swaps add [command options] [cid] [swap cid]
+   pinata swaps add [options] [cid] [swap cid]
 
 OPTIONS:
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```
 
 ### `delete`
@@ -389,9 +399,9 @@ NAME:
    pinata swaps delete - Remeove a swap for a CID
 
 USAGE:
-   pinata swaps delete [command options] [cid]
+   pinata swaps delete [options] [cid]
 
 OPTIONS:
-   --network value, --net value  Specify the network (public or private). Uses default if not specified
-   --help, -h                    show help
+   --network string, --net string  Specify the network (public or private). Uses default if not specified
+   --help, -h                      show help
 ```

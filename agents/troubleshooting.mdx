@@ -10,7 +10,7 @@ Most problems with an agent fall into a small number of buckets, and the answer 
 2. **Danger tab** — the [Danger](/agents/devtools) tab is the inventory page. Check status, last sync, the lifecycle-script state, and whether your secrets show as `Synced`.
 3. **Console** — the [Console](/agents/console) is a shell. `tail /tmp/user-build.log`, `env`, `ps aux` answer about 80% of "why doesn't my service work" questions.
 4. **Files** — if something used to work and broke after a recent change, restore an earlier snapshot from the [Files](/agents/snapshots) tab.
-5. **Validate config** — `POST /v0/templates/validate` checks `manifest.json`; `POST /v0/agents/{agentId}/config/validate` checks the runtime `openclaw.json`. These are two different files, see [Concepts](/agents/concepts#manifest-json-vs-openclaw-json) for the difference.
+5. **Validate config** — `POST /v0/templates/validate` checks `manifest.json`; `POST /v0/agents/{agentId}/config/validate` checks the engine runtime config shown on the Danger tab. These are different files, see [Concepts](/agents/concepts#manifest-json-vs-openclaw-json) for the difference.
 
 If you're staring at an HTTP error code, the [Error reference](/agents/errors) goes status-by-status with the common responses.
 
@@ -38,7 +38,7 @@ curl -H "Authorization: Bearer $PINATA_JWT" \
 | `build` script failed | Fix the script, then **Retry Scripts** on the Danger tab (or `POST /v0/agents/{agentId}/scripts/retry`) |
 | Missing required secret | The Danger page flags missing secrets. Attach in the [Secrets Vault](/agents/secrets), then restart the gateway |
 | Container OOM | A heavy `npm install` or model load can hit the memory ceiling. Slim dependencies or break up the script |
-| Engine version pinned to a broken release | Danger → **Change** to update to latest (works for OpenClaw and Hermes) |
+| Engine version pinned to a broken release | Danger → **Change** to update to latest, when the engine exposes version changes |
 
 ## Gateway won't connect / chat is offline
 
@@ -222,7 +222,7 @@ Switch the agent's model dropdown in chat to see what model is actually being us
 Open a ticket from **Support → Chat with us** in the sidebar, or email `team@pinata.cloud`. Useful info to include:
 
 - Agent ID (Danger → Agent → Agent ID)
-- OpenClaw version
+- Engine and version, if shown on the Danger tab
 - A recent `EXPORT VISIBLE` from the Logs tab (filter to `ERROR` first)
 - The relevant section of `manifest.json` if config-related
 - What you expected vs. what happened

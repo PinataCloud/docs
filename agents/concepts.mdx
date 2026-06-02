@@ -19,7 +19,7 @@ Workspace (your team)  ──►  Agent (container)  ──►  Channels / Route
 Pinata IPFS + R2 (storage)
 ```
 
-A **workspace** is a Pinata team. Inside it you create one or more **agents** — each is an isolated container running the [OpenClaw](https://openclaw.org) engine, with its own files, gateway, and per-agent subdomain.
+A **workspace** is a Pinata team. Inside it you create one or more **agents** — each is an isolated container running an agent engine, with its own files, gateway, and per-agent subdomain.
 
 ## Glossary
 
@@ -29,12 +29,12 @@ A single isolated container with a persistent workspace, gateway, and `{agentId}
 
 ### Engine
 
-The runtime that powers the agent. Two engines are supported:
+The runtime that powers the agent. Engines are enabled per deployment:
 
 | Engine | Tagline | When to pick it |
 | --- | --- | --- |
 | `openclaw` (default) | Configurable agent for custom workflows and power users | You want full control over manifest fields, scripts, routes, and skills |
-| `hermes` | Opinionated agent with a smoother out-of-the-box experience | You want fewer knobs and channels wired up from the start |
+| `hermes` | Opinionated agent with a smoother out-of-the-box experience | You want fewer knobs and first-run channel setup to feel more direct |
 
 Pick the engine when creating the agent — either in the **Agent Engine** card on the Create Agent wizard, or by passing `engine` in `POST /v0/agents`, or by setting `engine` in [`manifest.json`](/agents/manifest) for a template. Available engines per deployment are listed at `GET /v0/agents/engines`.
 
@@ -64,7 +64,7 @@ Per-agent credential used to authenticate against the agent's own subdomain (`{a
 Two meanings - context disambiguates:
 
 1. **Team workspace** - your Pinata account or shared team. Switch under **Account → Workspaces**.
-2. **Agent workspace** - the per-agent file tree at `/home/node/clawd/workspace/` inside the container. Includes [`manifest.json`](/agents/manifest), `SOUL.md`, attached skills under `skills/`, file uploads under `uploads/`, and anything else your agent has written.
+2. **Agent workspace** - the per-agent file tree inside the container. OpenClaw agents use `/home/node/clawd/workspace/`; Hermes agents use `/home/hermes/data/workspace/`. The workspace includes [`manifest.json`](/agents/manifest), `SOUL.md`, attached skills under `skills/`, file uploads under `uploads/`, and anything else your agent has written.
 
 ### Workspace anatomy
 
@@ -85,16 +85,19 @@ The default file layout inside `workspace/`:
 
 You can commit and push anything else (`projects/`, `scripts/`, etc.) - the agent treats the whole tree as fair game.
 
-### `manifest.json` vs `openclaw.json`
+<a id="manifest-json-vs-openclaw-json"></a>
 
-These are two different files. Both are JSON; they live in different places and have different schemas.
+### `manifest.json` vs runtime config
+
+These are different files. They live in different places and have different schemas.
 
 | File | Path | Schema | Edited by |
 | --- | --- | --- | --- |
 | `manifest.json` | `<workspace>/manifest.json` | [`manifest.v1.json`](/agents/manifest) | You (committed to git, validated via `POST /v0/templates/validate`) |
-| `openclaw.json` | `/home/node/.openclaw/openclaw.json` | OpenClaw runtime schema | OpenClaw at runtime (validated via `POST /v0/agents/{agentId}/config/validate`) |
+| OpenClaw runtime config | `/home/node/.openclaw/openclaw.json` | OpenClaw runtime schema | OpenClaw at runtime (validated via `POST /v0/agents/{agentId}/config/validate`) |
+| Hermes runtime config | `/home/hermes/data/config.yaml` | Hermes runtime schema | Hermes at runtime (edited from the Danger tab's Config row) |
 
-Day-to-day, edit `manifest.json`. `openclaw.json` is the engine's runtime mirror and is generally only touched via the **OpenClaw Settings UI** on the Danger tab.
+Day-to-day, edit `manifest.json`. Runtime config is the engine's own view of that configuration and is usually only touched from the [Danger](/agents/devtools) tab when you're debugging the engine itself.
 
 ### Skill
 
@@ -158,11 +161,13 @@ Paths agents and developers reach for most often inside the container:
 
 | Path | What's there |
 | --- | --- |
-| `/home/node/clawd/` | Runner root - where `build`/`start` execute |
-| `/home/node/clawd/workspace/` | Agent workspace (see anatomy above) |
-| `/home/node/clawd/workspace/skills/<name>/` | Attached skill files |
-| `/home/node/clawd/workspace/uploads/` | Uploaded files |
+| `/home/node/clawd/` | OpenClaw runner root - where `build`/`start` execute |
+| `/home/node/clawd/workspace/` | OpenClaw workspace |
+| `/home/hermes/data/workspace/` | Hermes workspace |
+| `<workspace>/skills/<name>/` | Attached skill files |
+| `<workspace>/uploads/` | Uploaded files |
 | `/home/node/.openclaw/openclaw.json` | OpenClaw runtime config |
+| `/home/hermes/data/config.yaml` | Hermes runtime config |
 | `/tmp/openclaw/openclaw-YYYY-MM-DD.log` | Daily OpenClaw log file |
 | `/tmp/user-build.log` | `build` script output |
 | `/tmp/user-start.log` | `start` script output |

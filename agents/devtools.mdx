@@ -4,7 +4,7 @@ description: "Full agent inventory, plus restart and delete"
 icon: "triangle-exclamation"
 ---
 
-The Danger tab does two things. First, it's the single place where you can see *everything* about an agent — every secret attached, every skill installed, every channel configured, every snapshot CID. It's also where you'll find restart, settings edit, and delete.
+The Danger tab does two things. First, it's the single place where you can see *everything* about an agent — every secret attached, every skill installed, every channel configured, every snapshot CID. It's also where you'll find restart, runtime config edit, and delete.
 
 The name is mostly about the buttons at the bottom — Restart Gateway is disruptive, Delete is permanent. But it's also the page you'll open most often when you're answering "how is this agent actually configured?"
 
@@ -12,8 +12,8 @@ The name is mostly about the buttons at the bottom — Restart Gateway is disrup
 
 Two big sections.
 
-- **General** — agent details, workspace state, lifecycle scripts, channels, skills, devices, secrets. One row at a time.
-- **Actions** — three buttons: Restart Gateway, OpenClaw Settings UI, Delete This Agent.
+- **General** — agent details, workspace state, lifecycle scripts, channels where supported, skills, devices, secrets. One row at a time.
+- **Actions** — engine-specific controls such as Restart Gateway, OpenClaw Settings UI, and Delete This Agent.
 
 ## Agent details
 
@@ -24,20 +24,22 @@ The first block in **General** is the agent itself:
 | **Agent ID** | The unique slug used in URLs and API calls (e.g. `x0i33jye`) |
 | **Status** | `starting`, `running`, or `not_running` |
 | **Name** | What you named it |
-| **Engine** | The container engine — `openclaw` (default) or `hermes` |
-| **Version** | Engine version. **Change** lets you bump it. |
-| **Config** | Path to `openclaw.json` inside the container. **Edit** opens an editor. |
+| **Engine** | The container engine — `openclaw` (default), `hermes`, or another enabled engine |
+| **Version** | Engine version, when the engine exposes one. OpenClaw agents show **Change** for version updates. |
+| **Config** | Path to the engine runtime config. OpenClaw uses `/home/node/.openclaw/openclaw.json`; Hermes uses `/home/hermes/data/config.yaml`. **Edit** opens an editor. |
 | **Gateway Token** | The credential used to authenticate against the agent's own subdomain. See [API → Gateway token](/agents/api#gateway-token). |
 | **Created** | When the agent was created |
 | **Base URL** | `https://{agentId}.agents.pinata.cloud` |
 
 The **manifest.json schema** link at the top of this section jumps to the [full field reference](/agents/manifest).
 
+While a new agent is still `starting`, Chat and most settings tabs are disabled. The Danger tab stays available so you can check the current status, engine, config path, workspace path, and delete the agent if provisioning went wrong.
+
 ## Workspace
 
 | Field | What it shows |
 | --- | --- |
-| **Path** | The workspace directory inside the container (default `/home/node/clawd/workspace`) |
+| **Path** | The workspace directory inside the container. OpenClaw uses `/home/node/clawd/workspace`; Hermes uses `/home/hermes/data/workspace`. |
 | **Snapshot CID** | IPFS CID of the most recent synced snapshot |
 | **Last Sync** | How recently the workspace was captured |
 
@@ -47,7 +49,7 @@ For diffs and restore, use the [Files](/agents/snapshots) tab.
 
 Whether your `build` and `start` scripts are configured, and their current status. The states are self-explanatory: `Not configured`, `pending`, `running`, `success`, `failed`.
 
-If something failed, use the **OpenClaw Settings UI** action or `POST /v0/agents/{agentId}/scripts/retry` to re-run the lifecycle. Logs end up in `/tmp/user-build.log` and `/tmp/user-start.log` — see [Manifest → Scripts](/agents/manifest#scripts) for the details.
+If something failed, use `POST /v0/agents/{agentId}/scripts/retry` to re-run the lifecycle. OpenClaw agents also expose the **OpenClaw Settings UI** action for low-level runtime debugging. Logs end up in `/tmp/user-build.log` and `/tmp/user-start.log` — see [Manifest → Scripts](/agents/manifest#scripts) for the details.
 
 ## Scheduled Tasks
 
@@ -55,7 +57,7 @@ Just a status summary. Manage them on the [Tasks](/agents/tasks) tab.
 
 ## Channels
 
-A quick rollup — for each of Telegram, Slack, Discord, and WhatsApp, you'll see either `Enabled` or `Not configured`.
+A quick rollup for engines that support messaging channels. For each of Telegram, Slack, Discord, and WhatsApp, you'll see either `Enabled` or `Not configured`.
 
 ## Skills
 
@@ -102,15 +104,17 @@ curl -X POST \
 
 ### OpenClaw Settings UI
 
-Opens OpenClaw's internal settings panel. This is a low-level config editor for the engine itself — useful for advanced debugging.
+OpenClaw agents show an **Open Settings UI** action. It opens OpenClaw's internal settings panel, a low-level config editor for the engine itself — useful for advanced debugging.
 
 <Warning>
   Misconfiguration here can break the agent. For day-to-day config, edit `manifest.json` instead. See the [manifest reference](/agents/manifest).
 </Warning>
 
+Hermes agents do not show this action. Use the **Config** row's **Edit** button for Hermes runtime config.
+
 ### Edit config
 
-The **Edit** button next to the **Config** row opens `openclaw.json` directly. Changes are validated server-side before they're written.
+The **Edit** button next to the **Config** row opens the engine runtime config directly. For OpenClaw this is `openclaw.json`; for Hermes it is `config.yaml`. Changes are validated server-side before they're written.
 
 You can also validate any config string without applying it:
 
@@ -122,11 +126,11 @@ curl -X POST \
   https://agents.pinata.cloud/v0/agents/$AGENT_ID/config/validate
 ```
 
-This validates `openclaw.json` (the runtime config), not `manifest.json`. For manifest validation, see [Manifest → Validation](/agents/manifest#validation).
+This validates the runtime config, not `manifest.json`. For manifest validation, see [Manifest → Validation](/agents/manifest#validation).
 
 ### Update OpenClaw
 
-The **Change** button next to the Version field checks for updates and applies them. Equivalent CLI calls:
+OpenClaw agents show a **Change** button next to the Version field. It checks for updates and applies them. Equivalent CLI calls:
 
 ```bash
 # Check
