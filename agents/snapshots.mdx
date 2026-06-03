@@ -5,7 +5,7 @@ description: "Browse, version, and edit your agent's workspace"
 icon: "folder-open"
 ---
 
-The Files tab gives you three things: a snapshot history of the agent's workspace, content diffs so you can see what changed between snapshots, and a git URL so you can clone the workspace locally and edit it like any other repo.
+The Files tab gives you four things: a snapshot history of the agent's workspace, content diffs so you can see what changed between snapshots, a file browser for the agent's container, and a git URL so you can clone the workspace locally and edit it like any other repo.
 
 <Frame>
   ![Image](/images/image-39.png)
@@ -51,6 +51,16 @@ curl -X POST \
 ```
 
 The same endpoint with `GET` returns sync status — whether storage is configured, when it last synced, and a human-readable message.
+
+## Workspace Files — browse the container
+
+Below the snapshot list, the **Workspace Files** panel is a live file browser for the agent's pod filesystem — not just the workspace, the whole container.
+
+- **Navigate** — click a folder to enter it, use the breadcrumb or **← Up** to go back, **Workspace** to jump straight to the workspace root, **Refresh** to re-read the current directory
+- **View a file** — click it. Text and markdown files preview inline with size and MIME type; binary files offer a **Download** instead
+- **Upload** — drop files onto the listing or click **Upload** to put files into the current directory
+
+Handy for checking what an agent actually wrote, reading logs in place (e.g. `/home/hermes/data/logs/` on a Hermes agent), or dropping in a config file without opening the [Console](/agents/console).
 
 ## Editing the workspace locally
 

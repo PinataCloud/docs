@@ -6,24 +6,21 @@ icon: "lobster"
 
 Pinata Agents gives you a hosted AI agent in its own sandboxed container. The agent has a workspace it can read and write to, a terminal it can run commands in, and connectors for the outside world — chat apps, web servers, scheduled jobs. You talk to it through the dashboard, the CLI, or whichever messaging platform you connect it to.
 
-Each agent runs on an **Agent Engine** — `openclaw` (default) for full configurability, or `hermes` for an opinionated smoother out-of-the-box experience. You pick one when you create the agent. The default OpenClaw engine is documented at [openclaw.org](https://openclaw.org); for the differences see [Concepts → Engine](/agents/concepts#engine).
-
-<Note>
-  Agents require a paid Pinata plan. [Upgrade here](https://app.pinata.cloud/billing).
-</Note>
+Each agent runs on an **Agent Engine** — `openclaw` (default) for full configurability, `hermes` for an opinionated smoother out-of-the-box experience, or `super-builder` (beta), a headless coding agent built for [issue-board work](/agents/issues). You pick one when you create the agent. The default OpenClaw engine is documented at [openclaw.org](https://openclaw.org); for the differences see [Concepts → Engine](/agents/concepts#engine).
 
 ## Get your first agent running
 
-It takes a couple of minutes. You'll connect an LLM provider, create the agent, and start chatting.
+It takes a couple of minutes. You'll pick an LLM provider, create the agent, and start chatting.
 
-### 1. Connect an LLM provider
+### 1. Pick an LLM provider
 
-Your agent needs an LLM to think. Go to the [Secrets Vault](https://agents.pinata.cloud/secrets).
+Your agent needs an LLM to think. You have two options:
 
-At the top of that page you'll see a row of provider cards: **Anthropic**, **OpenAI**, **OpenRouter**, **Pinata**, **Venice**, and **Custom**. Click **Connect** on whichever one you use, paste your API key (or run through OAuth if you're using an OpenAI Codex subscription), and save.
+- **Free tier — no key needed.** Select the **Free tier** card in the Create Agent wizard and skip provider setup entirely. Your agent runs on a shared, rate-limited model (OpenRouter's free pool, e.g. `openrouter/free`). Expect lower quality, smaller context, and occasional rate limits compared with a paid provider — but it's a real agent, free, today.
+- **Bring your own key.** Go to the [Secrets Vault](https://agents.pinata.cloud/secrets). At the top of that page you'll see a row of provider cards: **Anthropic**, **OpenAI**, **OpenRouter**, **Pinata**, **Venice**, and **Custom**. Click **Connect** on whichever one you use, paste your API key (or run through OAuth if you're using an OpenAI Codex subscription), and save.
 
 <Tip>
-  Don't have an API key? [Anthropic](https://console.anthropic.com/), [OpenAI](https://platform.openai.com/), and [OpenRouter](https://openrouter.ai/) all offer free trial credits.
+  Start free, upgrade whenever — adding a provider key in Secrets later unlocks full model capabilities for the same agent, no re-create needed.
 </Tip>
 
 You can connect more than one provider — useful so you have a fallback if one is down.
@@ -35,9 +32,13 @@ Head to [My Agents](https://agents.pinata.cloud/agents) and click **Create Agent
 You have two paths:
 
 - **Start from a template** — fastest. Templates come pre-wired with skills, settings, and a personality. Pick one from the [Marketplace](https://agents.pinata.cloud/marketplace) (others' templates) or [My Templates](https://agents.pinata.cloud/templates) (your own). Add the secrets it needs, deploy.
-- **Build from scratch** — full control. The wizard walks you through naming the agent, choosing an **Agent Engine** (OpenClaw, Hermes, or another enabled engine), picking a personality preset, choosing skills, connecting your LLM provider, and optionally configuring channels before deploy.
+- **Build from scratch** — full control. The wizard walks you through naming the agent, choosing an **Agent Engine** (OpenClaw, Hermes, or Super Builder), picking an AI provider (including the free tier), a personality preset, skills, and optionally channels before deploy.
 
 Either way, the agent takes about 30 seconds to provision. When it's ready you land on its Chat tab.
+
+<Note>
+  Plans cap how many agents you can run at once. If a deploy fails with "Agent limit reached", delete an agent you're not using or upgrade your plan.
+</Note>
 
 ### 3. Start a conversation
 
@@ -53,8 +54,8 @@ The sidebar on the left is the same on every page. Top half is the workspace its
 
 | Section | What's in it |
 | --- | --- |
-| **My Agents** | Every agent you've created. Click one to expand its tabs (Chat, Channels, Files, Skills, etc.). |
-| **My Issues** | A kanban board for assigning work to agents. Closed beta — `@pinata.cloud` accounts today. |
+| **My Agents** | Every agent you've created. Click one to expand its tabs (Chat, Channels, Files, Skills, etc.). The **ⓘ** on each agent card opens a floating info peek — live status, the default-model picker, skill/secret/task counts, and live CPU, memory, disk, and network meters. |
+| **My Issues** | Kanban boards for assigning work to agents — file an issue, the agent runs it, you review the diff. See [Issues & Boards](/agents/issues). |
 | **Skills Library** | Skills you've installed, plus a community catalog under **Browse ClawHub**. |
 | **Secrets Vault** | All your encrypted credentials, in one place, shared across agents. |
 | **My Templates** | Templates you've created or imported. |
@@ -72,7 +73,7 @@ Click any agent and you'll see tabs across the top of the page. Each tab is a sl
 
 - **Chat** — your conversation with the agent
 - **Channels** — wire it up to Telegram, Slack, or Discord
-- **Files** — workspace snapshot history, content diffs, git URL
+- **Files** — a file browser for the agent's container, workspace snapshot history, content diffs, git URL
 - **Skills** — capabilities attached to this specific agent (pulled from your Skills Library)
 - **Secrets** — provider connections and env vars this agent can see
 - **Models** — which models from your providers it's allowed to use, and which is the default
@@ -130,6 +131,10 @@ Full reference: [Agents CLI](/tools/cli/agents).
 </CardGroup>
 
 <CardGroup cols={2}>
+  <Card title="Issues & Boards" icon="table-columns" href="/agents/issues">
+    Assign work on a kanban board and review the diff
+  </Card>
+
   <Card title="Templates" icon="grid-2" href="/agents/templates/overview">
     Deploy a pre-built agent in one click
   </Card>
