@@ -8,6 +8,10 @@ Pinata Agents gives you a hosted AI agent in its own sandboxed container. The ag
 
 Each agent runs on an **Agent Engine** — `openclaw` (default) for full configurability, `hermes` for an opinionated smoother out-of-the-box experience, or `super-builder` (beta), a headless coding agent built for [issue-board work](/agents/issues). You pick one when you create the agent. The default OpenClaw engine is documented at [openclaw.org](https://openclaw.org); for the differences see [Concepts → Engine](/agents/concepts#engine).
 
+<Note>
+  New accounts get a **10-hour free trial** of agents — no payment and no LLM key required, thanks to the free-tier model available throughout your account. After the trial, agents require a paid plan. [Upgrade here](https://app.pinata.cloud/billing).
+</Note>
+
 ## Get your first agent running
 
 It takes a couple of minutes. You'll pick an LLM provider, create the agent, and start chatting.
@@ -16,7 +20,7 @@ It takes a couple of minutes. You'll pick an LLM provider, create the agent, and
 
 Your agent needs an LLM to think. You have two options:
 
-- **Free tier — no key needed.** Select the **Free tier** card in the Create Agent wizard and skip provider setup entirely. Your agent runs on a shared, rate-limited model (OpenRouter's free pool, e.g. `openrouter/free`). Expect lower quality, smaller context, and occasional rate limits compared with a paid provider — but it's a real agent, free, today.
+- **Free tier — no key, zero config.** Select the **Free tier** card in the Create Agent wizard and skip provider setup entirely. Your agent runs on a shared, rate-limited model (OpenRouter's free pool, e.g. `openrouter/free`) that's available throughout your account. Expect lower quality, smaller context, and occasional rate limits compared with a paid provider — but it's a real agent, free, today.
 - **Bring your own key.** Go to the [Secrets Vault](https://agents.pinata.cloud/secrets). At the top of that page you'll see a row of provider cards: **Anthropic**, **OpenAI**, **OpenRouter**, **Pinata**, **Venice**, and **Custom**. Click **Connect** on whichever one you use, paste your API key (or run through OAuth if you're using an OpenAI Codex subscription), and save.
 
 <Tip>
