@@ -1,0 +1,101 @@
+---
+title: "Issues & Boards"
+sidebarTitle: "Issues"
+description: "Assign work to agents on a kanban board, review the diff, ship it"
+icon: "table-columns"
+---
+
+**My Issues** is a kanban board for handing work to your agents. You file an issue — a title plus a prompt — assign it to an agent, and the agent runs it in an isolated copy of its workspace. When it finishes, the card lands in Review with a full diff for you to accept, revise, or turn into a pull request.
+
+Open **My Issues** in the sidebar. Each workspace can have multiple boards — the **+** next to the board name creates another one.
+
+## The board
+
+Four columns plus an archive:
+
+| Column | What's in it |
+| --- | --- |
+| **Backlog** | Drafted or unassigned issues. This is where new issues start. |
+| **In Progress** | Queued or running. Dragging a backlog card here kicks off the run. |
+| **Review** | Finished runs waiting on you. Check the diff and decide. |
+| **Done** | Accepted work. |
+
+The **Archive** strip at the bottom takes backlog or review cards you're finished with. Cards can also be reordered within a column — ordering is scoped per board.
+
+Above the columns: search, sort, and filters for priority, agent, owner, and tags.
+
+## File an issue
+
+Click **New Issue**. The composer asks for:
+
+- **Who does the work** — **An Agent** (hand the prompt to an agent and review the result) or **I'll do it myself** (no agent; the card just tracks work as you drag it across the board).
+- **Title and prompt** — the prompt is what the agent actually receives. Markdown supported, attachments and checklists too.
+- **Assign** — the agent, an optional **repository**, and tags. Owner, reviewer, priority, and due date live on the card after creation.
+
+Issues start in Backlog. **Start issue** (or dragging the card to In Progress) queues it; the agent picks it up as soon as a slot frees up.
+
+## How a run works
+
+Each run executes in an isolated directory inside the agent's workspace — `<workspace>/runs/<runId>/` — with its own git history, so concurrent runs don't trample each other and the agent's main workspace stays clean. A `.gitignore` entry for `/runs` is added automatically so run directories stay out of workspace snapshots.
+
+While the run is going, the card and the issue drawer both update live:
+
+- The drawer hero shows elapsed time and a **live token count**
+- The conversation pane streams the agent's tool calls and output token count as they happen
+- **Files Changed** renders the diff in real time — you can watch the work land
+
+When the agent finishes it marks the issue **Ready for Review** and the card moves to the Review column on its own.
+
+## Reviewing
+
+Open a Review card. The drawer splits into **Conversation** (the full exchange, including tool calls and the commit the agent made) and **Files Changed** (per-file diffs, unified or split view, expandable to full screen).
+
+From here you can:
+
+- **Accept & Done** — approve the work and mark the issue done. The run's changes stay as-is.
+- **Send revision** — reply with feedback; the agent picks the issue back up and continues in the same run.
+- **Create a PR** — open a pull request from the drawer with a custom title and description (requires a connected repository — see below).
+- **Add comment** — discussion without triggering a run.
+
+## Working against a GitHub repo
+
+Connect GitHub under **Account → Integrations**, then save repositories from the issue composer's repository picker (**Manage repositories**). With a repo attached to an issue:
+
+- **Self-driving issues** spin up a branch and a **draft PR** automatically when the run starts, and the agent continues its work on that branch.
+- **Create PR from the drawer** turns a finished run into a pull request with the title and description you give it.
+- The board tracks PR state — when a PR merges, the card reflects it. GitHub syncing is rate-limit-aware, so large orgs don't get throttled mid-sweep.
+
+## Board settings
+
+Board options (the **⋯** next to the board name) → **Board settings**:
+
+| Setting | What it does | Default |
+| --- | --- | --- |
+| **Instructions** | Markdown prepended to *every* run on this board — coding conventions, commit-message rules, test requirements. Up to 20,000 characters. | empty |
+| **Model override** | Force a specific model for every run on the board. Blank = each agent's own default. | agent default |
+| **Max turns** | Per-run conversation-turn cap (1–1000). The run stops when it hits the limit. | 200 |
+| **Max cost (USD)** | Per-run spend ceiling — the run stops when estimated spend exceeds it. | $25 |
+
+Board instructions are genuinely injected into runs — if your instructions say "prefix commits with `[bot]`", the commits come back prefixed.
+
+## Cost & token tracking
+
+Spend is tracked at three levels:
+
+- **Cards** show the run's cost next to the diffstat (e.g. `$0.13 +5 -0`).
+- **The drawer hero** shows duration and total tokens; hovering it reveals the full **Agent Usage** breakdown — total spend, input/output tokens, and **cached tokens** accounted separately.
+- **The board-level chip** (top right) opens a rollup panel with a **Cost | Tokens** toggle: totals by agent, by model, and a token table splitting input, output, cache reads, and cache writes.
+
+<Note>
+  Live cost during a run is an estimate and can settle to a lower final number once cache pricing is reconciled. Usage reporting depends on the engine — Super Builder runs report the richest data.
+</Note>
+
+## Which engine should issue agents use?
+
+Any agent can take issues, but the **Super Builder** engine exists for exactly this: a headless coding agent optimized for issue-board work, with a higher default turn cap (200) for longer-running jobs. It skips chat-first surfaces like Channels in favor of doing the work and reporting back. See [Concepts → Engine](/agents/concepts#engine).
+
+## Tips
+
+- Use board instructions for anything you'd otherwise paste into every prompt — conventions compound.
+- Set a reviewer on cards that need a second pair of eyes; filter the board by owner when triaging.
+- Run history on a card is ordered by actual run time, so the latest attempt is always what you're reviewing.

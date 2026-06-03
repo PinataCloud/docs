@@ -52,6 +52,15 @@ Use the **MODEL** dropdown in the composer. You can switch between any models yo
 
 If you want to confirm what the agent is currently using without scrolling, send `/status`.
 
+## Chatting while the agent is stopped or restarting
+
+You don't have to wait for a stopped or restarting agent. The composer stays open ("Agent is starting — type a message and it'll send when ready…") and anything you send is queued:
+
+- Each queued message shows a **QUEUED** clock chip, with an **×** to cancel it before it sends
+- A status line tracks the backlog — "3 messages queued · sending when the agent finishes starting…"
+- Queued messages **survive a page reload** — refresh or navigate away mid-restart and they're still waiting when you come back
+- The moment the agent is back online, messages deliver automatically, **in order, one at a time** — no duplicates, and the agent answers each one individually
+
 ## More room for the conversation
 
 Click **Hide navbar** in the top-right corner to collapse the left sidebar — the conversation gets the full width of the screen. Click it again to bring the sidebar back.
@@ -59,7 +68,7 @@ Click **Hide navbar** in the top-right corner to collapse the left sidebar — t
 ## Tips
 
 - Long-running tool calls show a progress indicator. Wait for it before assuming the agent is stuck.
-- If the chat looks disconnected and stays that way, the gateway probably needs a kick. Open **Danger** → **Restart Gateway**.
-- If you change a secret, attach a new skill, or add a channel, restart the gateway so the agent picks up the change.
+- If the chat looks disconnected and stays that way, the gateway probably needs a kick. Open **Danger** → **Restart Gateway**. Messages you send during the restart queue up and deliver when it's back.
+- If you change a secret, attach a new skill, or add a channel, restart the gateway so the agent picks up the change. Attaching a new LLM provider restarts the agent with a fresh environment automatically.
 
 For deeper debugging, the [Logs](/agents/logs) tab streams what the agent engine is doing under the hood. See [Troubleshooting](/agents/troubleshooting) for common failure modes.

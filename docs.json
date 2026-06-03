@@ -68,6 +68,7 @@
                   "agents/overview",
                   "agents/concepts",
                   "agents/chat",
+                  "agents/issues",
                   "agents/secrets",
                   "agents/models",
                   "agents/skills",

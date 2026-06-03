@@ -14,6 +14,10 @@ Each agent has its own list of allowed models, grouped by provider. The default 
 
 Open your agent → **Models**. The page lists each connected provider as a separate section. Only providers you've connected in the [Secrets Vault](/agents/secrets) show up here — if you don't see OpenAI, for example, it's because you haven't connected an OpenAI key.
 
+### Free-tier agents
+
+If the agent was created on the **Free tier** (no provider key), the Models page shows a single "Running on Pinata's free tier" state instead of provider sections. The agent uses a free, rate-limited model from OpenRouter's free pool (`openrouter/free`); there's nothing to configure. Add your own provider key in Secrets — the **Add a provider key →** link takes you there — and the full provider/model UI appears for this agent.
+
 Inside each provider section:
 
 - One row per model that's currently enabled
@@ -60,7 +64,10 @@ The exact list updates as providers ship. A current snapshot:
 - **Anthropic** — `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5`
 - **OpenAI Codex** (subscription) — `gpt-5.4`
 - **OpenRouter** — `auto` (lets OpenRouter pick), plus any specific model on the platform (e.g. `tencent/hy3-preview`)
+- **Free tier** — `openrouter/free` (shared pool, rate-limited, no key needed)
 - **Venice / Pinata / Custom** — whatever the provider exposes
+
+Provider availability also varies by engine — for example, Super Builder agents offer a narrower provider list at creation than OpenClaw agents.
 
 <Tip>
   When you select `auto` on OpenRouter, OpenRouter picks the underlying model for each request. Handy if you don't want to micromanage which model handles what.

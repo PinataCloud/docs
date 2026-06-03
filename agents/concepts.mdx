@@ -35,6 +35,7 @@ The runtime that powers the agent. Engines are enabled per deployment:
 | --- | --- | --- |
 | `openclaw` (default) | Configurable agent for custom workflows and power users | You want full control over manifest fields, scripts, routes, and skills |
 | `hermes` | Opinionated agent with a smoother out-of-the-box experience | You want fewer knobs and first-run channel setup to feel more direct |
+| `super-builder` (beta) | Headless coding agent optimized for issue-board work | You're assigning work through [Issues & Boards](/agents/issues) and want longer runs (200-turn default cap) over chat features. Chat-first surfaces like Channels aren't available. |
 
 Pick the engine when creating the agent — either in the **Agent Engine** card on the Create Agent wizard, or by passing `engine` in `POST /v0/agents`, or by setting `engine` in [`manifest.json`](/agents/manifest) for a template. Available engines per deployment are listed at `GET /v0/agents/engines`.
 
@@ -153,7 +154,7 @@ A pre-configured agent (manifest + workspace files + skill list) packaged for on
 
 ### Issue
 
-(Closed beta, `@pinata.cloud` accounts only.) Kanban-style work item assigned to an agent - title + prompt + optional repo. The agent runs, you review the workspace diff, then approve or revert.
+Kanban-style work item assigned to an agent - title + prompt + optional repo. The agent runs it in an isolated `<workspace>/runs/<runId>/` directory (its own git history; ignored by snapshots), you review the diff, then accept, revise, or open a PR. Boards carry per-board instructions, model overrides, and turn/cost caps. See [Issues & Boards](/agents/issues).
 
 ## Filesystem reference
 
@@ -166,6 +167,7 @@ Paths agents and developers reach for most often inside the container:
 | `/home/hermes/data/workspace/` | Hermes workspace |
 | `<workspace>/skills/<name>/` | Attached skill files |
 | `<workspace>/uploads/` | Uploaded files |
+| `<workspace>/runs/<runId>/` | Isolated working dir for each [issue](/agents/issues) run (gitignored, excluded from snapshots) |
 | `/home/node/.openclaw/openclaw.json` | OpenClaw runtime config |
 | `/home/hermes/data/config.yaml` | Hermes runtime config |
 | `/tmp/openclaw/openclaw-YYYY-MM-DD.log` | Daily OpenClaw log file |
