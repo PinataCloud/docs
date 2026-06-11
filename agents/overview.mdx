@@ -4,9 +4,9 @@ description: "Hosted AI agents that can run code, manage files, and connect to o
 icon: "lobster"
 ---
 
-Pinata Agents gives you a hosted AI agent in its own sandboxed container. The agent has a workspace it can read and write to, a terminal it can run commands in, and connectors for the outside world — chat apps, web servers, scheduled jobs. You talk to it through the dashboard, the CLI, or whichever messaging platform you connect it to.
+Pinata Agents gives you a hosted AI agent in its own sandboxed container. The agent has a workspace it can read and write to, a terminal it can run commands in, and connectors for the outside world — chat apps, web servers, scheduled jobs. You talk to it through the dashboard, the CLI, or whichever messaging platform you connect it to. The current dashboard also includes a built-in copilot ("Pinnie"), a standalone AI model catalog, and an issue board for assigning work to agents.
 
-Each agent runs on an **Agent Engine** — `openclaw` (default) for full configurability, or `hermes` for an opinionated smoother out-of-the-box experience. You pick one when you create the agent. The default OpenClaw engine is documented at [openclaw.org](https://openclaw.org); for the differences see [Concepts → Engine](/agents/concepts#engine).
+Each agent runs on an **Agent Engine** — `openclaw` (default) for full configurability, `hermes` for an opinionated smoother out-of-the-box experience, or other enabled engines such as `superbuilder` for issue-board coding workflows. You pick one when you create the agent. The default OpenClaw engine is documented at [openclaw.org](https://openclaw.org); for the differences see [Concepts → Engine](/agents/concepts#engine).
 
 <Note>
   Agents require a paid Pinata plan. [Upgrade here](https://app.pinata.cloud/billing).
@@ -18,9 +18,9 @@ It takes a couple of minutes. You'll connect an LLM provider, create the agent, 
 
 ### 1. Connect an LLM provider
 
-Your agent needs an LLM to think. Go to the [Secrets Vault](https://agents.pinata.cloud/secrets).
+Your agent needs an LLM to think. Go to the [Secrets Vault](https://agents.pinata.cloud/secrets), open **AI Models** in the dashboard, or just start the create flow — all three surfaces can connect a provider key.
 
-At the top of that page you'll see a row of provider cards: **Anthropic**, **OpenAI**, **OpenRouter**, **Pinata**, **Venice**, and **Custom**. Click **Connect** on whichever one you use, paste your API key (or run through OAuth if you're using an OpenAI Codex subscription), and save.
+In the current UI you'll see provider cards for **Pinata**, **OpenAI**, **Anthropic**, **OpenRouter**, **Venice**, and **Custom**. Click **Connect** on whichever one you use, paste your API key (or run through OAuth if you're using an OpenAI Codex subscription), and save.
 
 <Tip>
   Don't have an API key? [Anthropic](https://console.anthropic.com/), [OpenAI](https://platform.openai.com/), and [OpenRouter](https://openrouter.ai/) all offer free trial credits.
@@ -35,16 +35,20 @@ Head to [My Agents](https://agents.pinata.cloud/agents) and click **Create Agent
 You have two paths:
 
 - **Start from a template** — fastest. Templates come pre-wired with skills, settings, and a personality. Pick one from the [Marketplace](https://agents.pinata.cloud/marketplace) (others' templates) or [My Templates](https://agents.pinata.cloud/templates) (your own). Add the secrets it needs, deploy.
-- **Build from scratch** — full control. The wizard walks you through naming the agent, choosing an **Agent Engine** (OpenClaw, Hermes, or another enabled engine), picking a personality preset, choosing skills, connecting your LLM provider, and optionally configuring channels before deploy.
+- **Build from scratch** — full control. The current wizard is a two-step `Setup -> Deploy` flow. You choose an **Agent Engine** (OpenClaw, Hermes, Super Builder, or another enabled engine), connect an AI provider or use Pinata's free tier, name the agent, and optionally expand **Advanced options** for personality, channels, variables/secrets, and skills before deploying.
 
 Either way, the agent takes about 30 seconds to provision. When it's ready you land on its Chat tab.
+
+<Frame>
+  ![Current create wizard](/images/agents-create-advanced-2026-06-10.png)
+</Frame>
 
 ### 3. Start a conversation
 
 Say hello. Ask it to write some code, summarize a webpage, or set up a workflow. It can use a terminal, edit files, search the web, and call any skills you've attached.
 
 <Frame>
-  ![Image](/images/image-29.png)
+  ![Current My Agents landing page](/images/agents-home-2026-06-10.png)
 </Frame>
 
 ## Finding your way around
@@ -54,11 +58,12 @@ The sidebar on the left is the same on every page. Top half is the workspace its
 | Section | What's in it |
 | --- | --- |
 | **My Agents** | Every agent you've created. Click one to expand its tabs (Chat, Channels, Files, Skills, etc.). |
-| **My Issues** | A kanban board for assigning work to agents. Closed beta — `@pinata.cloud` accounts today. |
+| **My Issues** | A kanban-style issue board for agent work. Backlog, In progress, Review, and Done columns let you queue and review runs. |
 | **Skills Library** | Skills you've installed, plus a community catalog under **Browse ClawHub**. |
 | **Secrets Vault** | All your encrypted credentials, in one place, shared across agents. |
-| **My Templates** | Templates you've created or imported. |
+| **AI Models** | A standalone model catalog where you can browse providers, star models, and run direct BYOK test chats without creating an agent. |
 | **Marketplace** | Published templates from Pinata and other builders, ready to deploy in one click. |
+| **My Templates** | Still available, but currently nested under **Marketplace** in the sidebar. |
 | **Account** | **Workspaces** (switch teams), **Integrations** (e.g. GitHub OAuth), **Activity** (audit log). |
 | **Support** | Docs, the OpenAPI reference, changelog, and a way to chat with the Pinata team. |
 
@@ -132,6 +137,10 @@ Full reference: [Agents CLI](/tools/cli/agents).
 <CardGroup cols={2}>
   <Card title="Templates" icon="grid-2" href="/agents/templates/overview">
     Deploy a pre-built agent in one click
+  </Card>
+
+  <Card title="Issues" icon="list-check" href="/agents/issues">
+    Assign work, review runs, and track agent tasks on the board
   </Card>
 
   <Card title="Channels" icon="comments" href="/agents/channels">

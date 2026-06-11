@@ -1,12 +1,12 @@
 ---
 title: "Channels"
-description: "Let people talk to your agent on Telegram, Slack, or Discord"
+description: "Let people talk to your agent on Telegram, Slack, Discord, and rollout-dependent channels"
 icon: "comments"
 ---
 
 By default, the only way to talk to your agent is through the Pinata dashboard. Channels change that — connect Telegram, Slack, or Discord, and your agent shows up wherever you and your team already chat.
 
-WhatsApp is on the roadmap; you'll see its card grayed out as **Coming Soon**.
+The current dashboard flows prominently expose Telegram, Slack, and Discord. The OpenAPI schema also includes WhatsApp channel types/status, so channel availability can vary by deployment and engine rollout.
 
 <Frame>
   ![Image](/images/image-31.png)
@@ -73,7 +73,7 @@ Same shape as Telegram — make a bot in Discord's developer portal, copy the to
 - **Remove** — same dialog, **Remove** action. This deletes the channel config and restarts the agent's gateway.
 
 <Note>
-  Channels are available for chat-oriented engines such as OpenClaw and Hermes. Channel changes take effect after the gateway restarts; Configure and Remove handle that automatically. The create wizard can collect channel setup before deployment. If you're creating an agent via the API or CLI, pass a `channels` object on `POST /v0/agents` for engines that support create-time channel bootstrap — see [API → Create an agent](/agents/api#create-an-agent).
+  Channels are available for chat-oriented engines such as OpenClaw and Hermes. Channel changes take effect after the gateway restarts; Configure and Remove handle that automatically. In the current create wizard, channel setup lives under **Advanced options**, so you can configure it before deployment instead of waiting until the agent detail page. If you're creating an agent via the API or CLI, pass a `channels` object on `POST /v0/agents` for engines that support create-time channel bootstrap — see [API → Create an agent](/agents/api#create-an-agent).
 </Note>
 
 <Warning>

@@ -1,33 +1,44 @@
 ---
 title: "Models"
-description: "Pick which AI models this agent can use"
+description: "Browse models globally and choose which ones an agent can use"
 icon: "microchip"
 ---
 
-Each agent has its own list of allowed models, grouped by provider. The default model is what the agent reaches for when nothing else says otherwise; you can also swap models in the middle of a conversation if you want a faster (or smarter) one for a specific turn.
+There are now two model surfaces in the Agents product:
+
+- **AI Models** in the main sidebar — a standalone catalog where you can browse the live provider/model inventory, star favorites, and run direct BYOK test chats without creating an agent.
+- An individual agent's **Models** tab — where you decide which models that specific agent is allowed to use and which one is the default.
 
 <Frame>
-  ![Image](/images/image-34.png)
+  ![Current AI Models page](/images/agents-ai-models-2026-06-10.png)
 </Frame>
 
-## What you see
+## AI Models
 
-Open your agent → **Models**. The page lists each connected provider as a separate section. Only providers you've connected in the [Secrets Vault](/agents/secrets) show up here — if you don't see OpenAI, for example, it's because you haven't connected an OpenAI key.
+Open **AI Models** from the sidebar when you want to browse what's available platform-wide.
 
-Inside each provider section:
+The current page gives you:
 
-- One row per model that's currently enabled
-- A **DEFAULT** badge marks the agent's default model
-- An **×** on a row removes that model from this agent
-- **+ ADD** at the top right of each section lets you enable more models from that provider
+- A single searchable catalog across providers
+- Provider, capability, and sort filters
+- Per-model badges for context window, vision support, speed, and pricing metadata
+- **Star** actions for favorites
+- **Chat** actions for direct test chats on your own provider key
+- A **Manage AI providers** shortcut back to provider connections
 
-## Enable a model
+If a provider isn't connected yet, it still appears in the catalog but its chat actions stay disabled until you add a key.
 
-Click **+ ADD** in the provider section and pick a model from the list. It's now available to this agent — you can call it from chat or set it as default. Removing one with **×** doesn't disconnect the provider, it just narrows the menu.
+## Per-agent Models tab
 
-## Set the default
+Open an individual agent → **Models** when you want to control that agent's allowed model set and default model.
 
-The default is what gets used when you don't specify a model. Click a model row to set it as default; the **DEFAULT** badge moves.
+That view still handles the agent-specific decisions:
+
+- Which connected provider/models are enabled for this agent
+- Which enabled model is the default
+- Which models appear in the chat composer for per-turn switching
+
+Only providers you've connected in the [Secrets Vault](/agents/secrets) show up there. Removing a model from an agent does not disconnect the provider globally; it just narrows what that agent can choose.
 
 ## Switch models mid-conversation
 
@@ -53,15 +64,15 @@ The provider prefix tells the agent engine which connected provider to use. If y
 
 Provider availability and default enabled models can vary by engine. For example, fresh OpenClaw and Hermes agents can start with different Anthropic defaults.
 
-## What's available today
+## API surfaces
 
-The exact list updates as providers ship. A current snapshot:
+The HTTP API now exposes the same split:
 
-- **Anthropic** — `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5`
-- **OpenAI Codex** (subscription) — `gpt-5.4`
-- **OpenRouter** — `auto` (lets OpenRouter pick), plus any specific model on the platform (e.g. `tencent/hy3-preview`)
-- **Venice / Pinata / Custom** — whatever the provider exposes
+- `GET /v0/models` — unified model-centric catalog
+- `GET /v0/models/catalog` — connected providers plus their live/curated catalogs
+- `GET /v0/models/enabled` — models pinned for the per-agent picker
+- `GET /v0/models/chats` — direct test-chat history
 
 <Tip>
-  When you select `auto` on OpenRouter, OpenRouter picks the underlying model for each request. Handy if you don't want to micromanage which model handles what.
+  The exact catalog changes constantly as providers ship and Pinata refreshes metadata. Prefer the live **AI Models** page over hard-coded lists when you want to know what's available right now.
 </Tip>

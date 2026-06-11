@@ -5,7 +5,7 @@ description: "Authenticate, manage agents, and talk to gateways over HTTP"
 icon: "plug"
 ---
 
-The Agents API is the same API the dashboard uses. Everything in the UI is exposed at `agents.pinata.cloud` - including agent management, secrets, skills, channels, snapshots, custom domains, devices, and engine runtime config.
+The Agents API is the same API the dashboard uses. Everything in the UI is exposed at `agents.pinata.cloud` - including agent management, secrets, skills, channels, snapshots, custom domains, devices, engine runtime config, the issue board, integrations, and the standalone AI Models surface.
 
 Full OpenAPI reference: [agents.pinata.cloud/openapi](https://agents.pinata.cloud/openapi) (also linked from the Support → OpenAPI Docs item in the sidebar).
 
@@ -99,7 +99,7 @@ curl -X POST \
   https://agents.pinata.cloud/v0/agents
 ```
 
-`engine` is optional and defaults to `openclaw`. Pass `hermes` for the opinionated engine — see [Concepts → Engine](/agents/concepts#engine). For chat-oriented engines, the dashboard exposes channel setup during create, and engines that support create-time channel bootstrap can accept a `channels` object on this request so Telegram, Slack, or Discord come up with the agent without a post-create gateway restart. Each channel object accepts:
+`engine` is optional and defaults to `openclaw`. Pass `hermes` for the opinionated engine, or another enabled engine such as `superbuilder` when your deployment exposes it — see [Concepts → Engine](/agents/concepts#engine). For chat-oriented engines, the dashboard exposes channel setup during create, and engines that support create-time channel bootstrap can accept a `channels` object on this request so Telegram, Slack, or Discord come up with the agent without a post-create gateway restart. Each channel object accepts:
 
 | Field | Type | Required | Notes |
 | --- | --- | :---: | --- |
@@ -117,7 +117,7 @@ curl -H "Authorization: Bearer $PINATA_JWT" \
   https://agents.pinata.cloud/v0/agents/engines
 ```
 
-Returns `{ "engines": [ { "id": "openclaw", "label": "OpenClaw" }, { "id": "hermes", "label": "Hermes" } ] }`, depending on which engines are enabled for the deployment.
+Returns `{ "engines": [ { "id": "openclaw", "label": "OpenClaw" }, { "id": "hermes", "label": "Hermes" }, { "id": "superbuilder", "label": "Super Builder" } ] }`, depending on which engines are enabled for the deployment.
 
 Returns `201` with the created agent. Returns `403` if you're at the agent limit.
 
