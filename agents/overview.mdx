@@ -18,10 +18,11 @@ It takes a couple of minutes. You'll pick an LLM provider, create the agent, and
 
 ### 1. Pick an LLM provider
 
-Your agent needs an LLM to think. You have two options:
+Your agent needs an LLM to think. You have three options:
 
 - **Free tier — no key, zero config.** Select the **Free tier** card in the Create Agent wizard and skip provider setup entirely. Your agent runs on a shared, rate-limited model (OpenRouter's free pool, e.g. `openrouter/free`) that's available throughout your account. Expect lower quality, smaller context, and occasional rate limits compared with a paid provider — but it's a real agent, free, today.
-- **Bring your own key.** Go to the [Secrets Vault](https://agents.pinata.cloud/secrets). At the top of that page you'll see a row of provider cards: **Anthropic**, **OpenAI**, **OpenRouter**, **Pinata**, **Venice**, and **Custom**. Click **Connect** on whichever one you use, paste your API key (or run through OAuth if you're using an OpenAI Codex subscription), and save.
+- **Pinata-hosted models — no key, pay as you go.** Connect the **Pinata** card in the [Secrets Vault](https://agents.pinata.cloud/secrets). It's first-party, so there's no API key to paste — connecting just turns on [Pinata Inference](/inference/overview) for your account. Your agent gets full-quality hosted models, billed per token from your [credit balance](/inference/credits). The same models are also callable directly over an OpenAI-compatible [API](/inference/chat-completions).
+- **Bring your own key.** Go to the [Secrets Vault](https://agents.pinata.cloud/secrets). At the top of that page you'll see a row of provider cards: **Anthropic**, **OpenAI**, **OpenRouter**, **Venice**, and **Custom**. Click **Connect** on whichever one you use, paste your API key (or run through OAuth if you're using an OpenAI Codex subscription), and save.
 
 <Tip>
   Start free, upgrade whenever — adding a provider key in Secrets later unlocks full model capabilities for the same agent, no re-create needed.
