@@ -1,0 +1,45 @@
+---
+title: "Models"
+description: "Models available on Pinata Inference"
+icon: "microchip"
+---
+
+Models are referenced as `provider/model` (e.g. `anthropic/claude-sonnet-4-6`) and passed as the `model` field to the [chat completions endpoint](/inference/chat-completions). The list and pricing are served live from the API, so query the endpoint for the current set rather than relying on a static table.
+
+<Note>
+  These are the same Pinata-hosted models an [agent](/agents/models) can use via the `Pinata` provider. Calling them directly through Inference and using them inside an agent both draw down the same [credit balance](/inference/credits).
+</Note>
+
+## List models
+
+This endpoint is public — no authentication required.
+
+```bash
+curl https://agents.pinata.cloud/v0/llm/models
+```
+
+```json Response
+[
+  {
+    "model_id": "anthropic/claude-sonnet-4-6",
+    "input_usd_per_1m_tokens": 3.0,
+    "output_usd_per_1m_tokens": 15.0,
+    "cache_read_usd_per_1m_tokens": 0.3
+  }
+]
+```
+
+| Field | Description |
+| --- | --- |
+| `model_id` | The `provider/model` id to pass as `model` |
+| `input_usd_per_1m_tokens` | Price per 1M input (prompt) tokens |
+| `output_usd_per_1m_tokens` | Price per 1M output (completion) tokens |
+| `cache_read_usd_per_1m_tokens` | Price per 1M cached-input tokens read |
+
+<Note>
+  The example prices above are illustrative — always read the live endpoint for current rates.
+</Note>
+
+## Pricing
+
+Usage is metered per token at the rates above and billed against your [credit balance](/inference/credits). See [Credits](/inference/credits) for how billing works and how to fund usage.
