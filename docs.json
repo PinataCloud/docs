@@ -111,6 +111,16 @@
                   }
                 ]
               },
+              {
+                "group": "Inference",
+                "icon": "bolt",
+                "pages": [
+                  "inference/overview",
+                  "inference/chat-completions",
+                  "inference/models"
+                ]
+              },
+              "inference/credits",
               "tools/cli/agents",
               "llm-docs",
               {

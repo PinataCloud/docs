@@ -1,0 +1,107 @@
+---
+title: "Chat Completions"
+description: "OpenAI-compatible chat completions endpoint"
+icon: "message"
+---
+
+The chat completions endpoint is OpenAI-compatible, so most OpenAI SDKs and tools work by changing only the base URL and API key. [Enable inference](/inference/overview#enable-inference) first to mint your `privateKey`, then send requests.
+
+## Endpoint
+
+```http
+POST https://agents.pinata.cloud/v0/llm/chat/completions
+```
+
+| | |
+| --- | --- |
+| **Auth** | `Authorization: Bearer <PINATA_LLM_KEY>` — the `privateKey` returned when you [enabled](/inference/overview#enable-inference), **not** your Pinata JWT |
+| **Content-Type** | `application/json` |
+| **Billing** | Token usage draws down [credits](/inference/credits) |
+
+<Note>
+  For an OpenAI-compatible client, set the base URL to `https://agents.pinata.cloud/v0/llm` — the SDK appends `/chat/completions` itself.
+</Note>
+
+## Request
+
+```bash cURL
+curl https://agents.pinata.cloud/v0/llm/chat/completions \
+  -H "Authorization: Bearer $PINATA_LLM_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "anthropic/claude-sonnet-4-6",
+    "messages": [
+      { "role": "user", "content": "Hello!" }
+    ]
+  }'
+```
+
+```ts OpenAI SDK
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.PINATA_LLM_KEY,
+  baseURL: "https://agents.pinata.cloud/v0/llm",
+});
+
+const completion = await client.chat.completions.create({
+  model: "anthropic/claude-sonnet-4-6",
+  messages: [{ role: "user", content: "Hello!" }],
+});
+
+console.log(completion.choices[0].message.content);
+```
+
+### Parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `model` | string | A `provider/model` id from [Models](/inference/models) |
+| `messages` | array | Conversation history (`role` + `content`) |
+| `stream` | boolean | Stream tokens as server-sent events. Defaults to `false` |
+| `max_tokens` / `max_completion_tokens` | number | Output token cap. Defaults to `4096` if neither is set. For OpenAI `gpt-5.x` / o-series models, `max_tokens` is translated to `max_completion_tokens` for you |
+
+Other standard OpenAI sampling fields (`temperature`, `top_p`, etc.) are passed through to the underlying model.
+
+## Response
+
+```json
+{
+  "id": "chatcmpl-...",
+  "object": "chat.completion",
+  "model": "anthropic/claude-sonnet-4-6",
+  "choices": [
+    {
+      "index": 0,
+      "message": { "role": "assistant", "content": "Hi there!" },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0
+  }
+}
+```
+
+## Streaming
+
+Set `"stream": true` to receive server-sent events. Usage is included in the stream, and the final event is `data: [DONE]`.
+
+```bash
+curl https://agents.pinata.cloud/v0/llm/chat/completions \
+  -H "Authorization: Bearer $PINATA_LLM_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "model": "anthropic/claude-sonnet-4-6", "messages": [...], "stream": true }'
+```
+
+## Errors
+
+| Status | Meaning |
+| --- | --- |
+| `401` | Missing `Authorization` header, or an invalid/revoked key |
+| `402` | Insufficient credits — top up or set [auto top-up](/inference/credits#auto-top-up). The body includes `availableMicrocredits` |
+| `429` | Rate limited — retry after a short wait |
+
+Error bodies follow the OpenAI error shape, e.g. `{ "error": { "message": "..." } }`.
