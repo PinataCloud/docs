@@ -53,6 +53,15 @@ paths:
                 car:
                   type: boolean
                   description: Upload a file as a raw CAR file (only supported for public network)
+                cid_version:
+                  type: string
+                  enum:
+                    - v0
+                    - v1
+                    - unixfs-v1-2025
+                  default: v1
+                  description: |
+                    UnixFS import profile used to hash the upload. `v1` (default) produces a CIDv1 (`bafy…`) with raw leaves, 256 KiB chunks and up to 174 links per node, matching `ipfs add --cid-version=1`. `v0` produces a legacy CIDv0 (`Qm…`) with dag-pb leaves, matching `ipfs add --cid-version=0`. `unixfs-v1-2025` produces a CIDv1 using the [IPIP-499](https://github.com/ipfs/specs/pull/499) profile — 1 MiB chunks and up to 1024 links per node — matching kubo's `test-cid-v1-wide` config profile. The profile is fixed when the upload is created and cannot be changed while resuming it.
       responses:
         "200":
           description: Successful response
@@ -125,6 +134,14 @@ paths:
                 filename:
                   type: string
                   description: Name of the file that will be uploaded
+                cid_version:
+                  type: string
+                  enum:
+                    - v0
+                    - v1
+                    - unixfs-v1-2025
+                  default: v1
+                  description: UnixFS import profile used to hash the upload made with this URL. See the `cid_version` option on `POST /files`.
       responses:
         "200":
           description: Successful response
