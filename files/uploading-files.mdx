@@ -297,6 +297,76 @@ async function update() {
 
 </CodeGroup>
 
+### CID Version
+
+The `cid_version` option selects the UnixFS import profile Pinata uses to hash your upload. It changes the CID your content gets — the bytes you upload and the file you download are identical either way. Every profile produces CIDs that standard IPFS tooling can reproduce and resolve.
+
+| | `v1` (default) | `v0` (legacy) | `unixfs-v1-2025` |
+| --- | --- | --- | --- |
+| CID format | CIDv1, base32 (`bafy…`) | CIDv0, base58btc (`Qm…`) | CIDv1, base32 (`bafy…`) |
+| Leaf blocks | Raw | dag-pb (UnixFS protobuf) | Raw |
+| Chunk size | 256 KiB | 256 KiB | 1 MiB |
+| Max links per file node | 174 | 174 | 1024 |
+| Hash function | sha2-256 | sha2-256 | sha2-256 |
+| `ipfs add` equivalent | `--cid-version=1` | `--cid-version=0` | `ipfs config profile apply test-cid-v1-wide` |
+
+Use `v1` unless you have a reason not to. Use `v0` for backward compatibility with systems that expect the classic `Qm…` format. Use `unixfs-v1-2025` — the profile proposed in [IPIP-499](https://github.com/ipfs/specs/pull/499) — when you want a large file to hash to the same CID in Pinata and in other IPFS implementations, with fewer blocks per file thanks to the larger 1 MiB chunks.
+
+<Note>
+  The `unixfs-v1-2025` chunk and link widening applies to file DAGs. Directory shard settings are unchanged, so folder uploads large enough to shard (roughly 2,000+ entries) may not match a `test-cid-v1-wide` kubo import.
+</Note>
+
+<CodeGroup>
+
+```typescript API {13}
+const JWT = "YOUR_PINATA_JWT";
+
+async function upload() {
+  try {
+    const formData = new FormData();
+
+    const file = new File(["hello"], "Testing.txt", { type: "text/plain" });
+
+    formData.append("file", file);
+
+    formData.append("network", "public");
+
+    formData.append("cid_version", "unixfs-v1-2025");
+
+    const request = await fetch("https://uploads.pinata.cloud/v3/files", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+      body: formData,
+    });
+    const response = await request.json();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
+```typescript SDK {3}
+const upload = await pinata.upload.public
+  .file(file)
+  .cidVersion("v0")
+```
+
+</CodeGroup>
+
+<Tip>
+  The SDK's `cidVersion()` types currently accept `v0` and `v1`. To request `unixfs-v1-2025`, use the API directly with the `cid_version` form field.
+</Tip>
+
+The same option is available everywhere an upload starts:
+
+- **Resumable (TUS) uploads** — pass it as `cid_version` in the upload metadata, or as the `X-Upload-Option-Cid-Version` query parameter on the creation request. The profile is fixed when the upload is created, so changing it while resuming has no effect.
+- **Signed upload URLs** — pass `cid_version` in the body of [`POST /files/sign`](/api-reference/endpoint/create-signed-upload-url), and every upload made with that URL uses it.
+
+The profile a file was uploaded with is returned as `cid_version` on the file's metadata, so you can always tell how an existing CID was produced.
+
 ### Client Side Uploads
 
 There are situations where you may need to upload a file client side instead of server side. A great example is in Next.js where there is a 4MB file size restriction for files passed through Next's API routes. To solve this you can create a signed upload URL on the server and then pass it to the client for it to be consumed. This way your admin API key stays safe behind a server. Creating signed upload URLs can be done with either the [SDK](/sdk/upload/public/create-signed-url) or the [API](/api-reference/endpoint/create-signed-upload-url), and you can designate how long the URL is valid for or if there is other infromation you want to include such as metadata or a group ID.
