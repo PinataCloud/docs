@@ -14,7 +14,7 @@ ERC-8004 is an open standard for AI agent identity and trust. It gives your agen
 ### The Three Registries
 
 | Registry | Purpose |
-|----------|---------|
+| --- | --- |
 | **Identity** | Stores who agents are and how to reach them |
 | **Reputation** | Records feedback and ratings from clients |
 | **Validation** | Provides independent verification for high-stakes tasks |
@@ -26,7 +26,7 @@ This guide focuses on the **Identity Registry** — registering your agent so it
 For example agent cards and ready-to-run scripts, check out [PinataCloud/erc8004](https://github.com/PinataCloud/erc8004). For an interactive experience, try the [wizard](https://github.com/PinataCloud/erc8004/tree/main/wizard):
 
 ```bash
-npx @pinata/erc8004-wizard
+npx @pinata/erc8004
 ```
 
 ## Prerequisites
@@ -40,7 +40,7 @@ npx @pinata/erc8004-wizard
 ERC-8004 is deployed on multiple chains with consistent addresses:
 
 | Network | Chain ID | Identity Registry | Faucet |
-|---------|----------|-------------------|--------|
+| --- | --- | --- | --- |
 | Ethereum Mainnet | 1 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | — |
 | Ethereum Sepolia | 11155111 | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | [Alchemy](https://www.alchemy.com/faucets/ethereum-sepolia) |
 | Base Mainnet | 8453 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | — |
@@ -53,9 +53,9 @@ ERC-8004 is deployed on multiple chains with consistent addresses:
 | BSC Testnet | 97 | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | [BNB Chain](https://www.bnbchain.org/en/testnet-faucet) |
 
 <Note>
-All mainnets share the same address: `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`
+  All mainnets share the same address: `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`
 
-All testnets share the same address: `0x8004A818BFB912233c491871b3d84c89A494BD9e`
+  All testnets share the same address: `0x8004A818BFB912233c491871b3d84c89A494BD9e`
 </Note>
 
 ## Using the Scripts
@@ -172,7 +172,7 @@ async function registerAgent(name: string, description: string) {
 ## Agent Card Schema
 
 | Field | Required | Description |
-|-------|----------|-------------|
+| --- | --- | --- |
 | `type` | Yes | Always `https://eips.ethereum.org/EIPS/eip-8004#registration-v1` |
 | `name` | Yes | Your agent's display name |
 | `description` | Yes | What it does, capabilities, pricing |
@@ -188,7 +188,7 @@ async function registerAgent(name: string, description: string) {
 The `supportedTrust` array declares how clients can verify your agent:
 
 | Model | Description |
-|-------|-------------|
+| --- | --- |
 | `reputation` | Trust based on historical feedback from clients |
 | `crypto-economic` | Trust backed by staked tokens that can be slashed |
 | `tee-attestation` | Trust verified by Trusted Execution Environment |
@@ -219,6 +219,7 @@ Most agents use `["reputation"]`.
 Agents can prove they control their advertised endpoints by serving a `.well-known` file.
 
 **How it works:**
+
 1. Agent lists an HTTPS endpoint in their card
 2. Verifier fetches `https://{domain}/.well-known/agent-registration.json`
 3. File must contain a `registrations[]` entry matching the agent
@@ -237,7 +238,7 @@ Create `/.well-known/agent-registration.json` on your domain:
 ```
 
 <Note>
-Verification isn't needed if your agent URI and endpoint share the same domain — domain control is already demonstrated.
+  Verification isn't needed if your agent URI and endpoint share the same domain — domain control is already demonstrated.
 </Note>
 
 ## Payment Wallet
@@ -296,7 +297,7 @@ bun run check-registration <agent-id>  # Check registrations[] matches on-chain
 ```
 
 <Note>
-To verify agents you didn't register, set up [Gateway Access Controls](/gateways/gateway-access-controls) and add a gateway key to your `.env` or pass it via CLI: `--gateway-key your_token`
+  To verify agents you didn't register, set up [Gateway Access Controls](/gateways/gateway-access-controls) and add a gateway key to your `.env` or pass it via CLI: `--gateway-key your_token`
 </Note>
 
 ## Resources
