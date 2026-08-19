@@ -175,8 +175,7 @@
                 "icon": "coins",
                 "pages": [
                   "files/mpp/overview",
-                  "files/mpp/quickstart",
-                  "files/mpp/self-hosting"
+                  "files/mpp/quickstart"
                 ]
               },
               {
