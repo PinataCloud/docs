@@ -219,7 +219,7 @@ async function main() {
     const data = await pinata.gateways.public.get("bafkreibm6jg3ux5qumhcn2b3flc3tyu6dmlb4xa7u5bf44yegnrjhc4yeq");
     console.log(data)
 
-    const url = await pinata.gateways.convert(
+    const url = await pinata.gateways.public.convert(
       "bafkreib4pqtikzdjlj4zigobmd63lig7u6oxlug24snlr6atjlmlza45dq"
     )
     console.log(url)
