@@ -1,0 +1,197 @@
+---
+title: "folder"
+description: "`org:files:write`"
+---
+
+Upload a folder file by file. Each file is its own resumable upload, several files are sent at the same time, and each file is retried on its own, so large folders (many files, large files, or both) upload reliably. Progress events report when each file starts, finishes, is retried or fails.
+
+<Note>
+  Requires `pinata` 2.6.0 or later.
+</Note>
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+// From an <input type="file" webkitdirectory> selection
+const files = Array.from(input.files);
+
+const upload = await pinata.upload.private.folder(files, {
+  onProgress: (event) => {
+    console.log(event.type, event.path, `${event.completed}/${event.total}`);
+  },
+});
+```
+
+## Returns
+
+The folder, with the CID that covers every file, and each file's own CID.
+
+```typescript
+type FolderUploadResponse = {
+  id: string;
+  name: string;
+  cid: string;
+  size: number;
+  created_at: string;
+  number_of_files: number;
+  mime_type: string; // "directory"
+  group_id: string | null;
+  keyvalues: {
+    [key: string]: string;
+  };
+  vectorized: boolean;
+  network: string;
+  files: {
+    path: string;
+    size: number;
+    cid: string;
+  }[];
+};
+```
+
+If some files still fail after their retries, the upload goes on with the other files and then throws a `FolderUploadError`:
+
+```typescript
+import { FolderUploadError } from "pinata";
+
+try {
+  await pinata.upload.private.folder(files);
+} catch (error) {
+  if (error instanceof FolderUploadError) {
+    console.log(error.folderId); // the folder holding the files that were uploaded
+    console.log(error.uploaded); // { path, size, cid }[]
+    console.log(error.failed); // { path, size, error }[]
+  }
+}
+```
+
+An authentication failure stops the upload: files not sent yet fail with it. If the first file fails, nothing else is sent and its error is thrown.
+
+## Parameters
+
+### files
+
+- Type: `File[]` or `{ path: string; file: File }[]`
+
+File objects take their path from `webkitRelativePath` (set for an `<input webkitdirectory>` selection), else from their name. In Node.js, or to choose the paths yourself, pass entries:
+
+```typescript
+const upload = await pinata.upload.private.folder([
+  { path: "photos/a.jpg", file: fileA },
+  { path: "photos/2024/b.jpg", file: fileB },
+]);
+```
+
+The folder is named after the top directory all paths share (`photos` above). If the paths share none, files go into a folder named `folder_from_sdk`, or the one set with [name](#name-optional). Two files cannot have the same path, and paths cannot contain `.` or `..` segments.
+
+### onProgress (Optional)
+
+- Type: `(event: FolderUploadEvent) => void`
+
+Called for every file event:
+
+```typescript
+type FolderUploadEvent = {
+  // start: the file's bytes start to be sent (again on each attempt)
+  // complete: the file is registered in the folder
+  // retry: an attempt failed; the file is sent again after delayMs
+  // error: the file failed for good
+  type: "start" | "complete" | "retry" | "error";
+  path: string; // the file's path in the folder, folder name included
+  size: number;
+  attempt: number; // 1 for the first attempt
+  cid?: string; // complete
+  error?: Error; // retry and error
+  delayMs?: number; // retry
+  completed: number; // files registered so far
+  failed: number; // files failed for good so far
+  total: number;
+};
+```
+
+### concurrency (Optional)
+
+- Type: `number`
+- Default: `4`
+
+How many files send their bytes at the same time.
+
+```typescript {2}
+const upload = await pinata.upload.private.folder(files, {
+  concurrency: 8,
+});
+```
+
+### retries (Optional)
+
+- Type: `number`
+- Default: `3`
+
+How many times a file is sent again after a transient failure (network error, timeout, rate limiting, server error). Other failures, such as an invalid file, are not retried.
+
+### name (Optional)
+
+- Type: `string`
+
+Name of the folder, instead of the top directory the paths share
+
+```typescript {3}
+const upload = await pinata.upload.private
+  .folder(files)
+  .name("album")
+```
+
+### group (Optional)
+
+- Type: `string`
+
+Upload to a specific group by passing in the `groupId`
+
+```typescript {3}
+const upload = await pinata.upload.private
+  .folder(files)
+  .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
+```
+
+### keyvalues (Optional)
+
+- Type: `Record<string, string>`
+
+Add optional keyvalues to the folder
+
+```typescript {3-5}
+const upload = await pinata.upload.private
+  .folder(files)
+  .keyvalues({
+    env: "prod"
+  })
+```
+
+### cidVersion (Optional)
+
+- Type: `"v0" | "v1"`
+
+CID version of the files and the folder
+
+### key (Optional)
+
+- Type: `string`
+
+Upload using a secondary API key generated through `keys.create()`
+
+```typescript {3}
+const upload = await pinata.upload.private
+  .folder(files)
+  .key("GENERATED_API_JWT")
+```
+
+<Note>
+  `vectorize`, `url` (signed upload URLs), `car`, `streamable`, `peerAddress` and `waitForCid(false)` are not supported for folder uploads.
+</Note>
