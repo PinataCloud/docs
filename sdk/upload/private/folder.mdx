@@ -1,0 +1,281 @@
+---
+title: "folder"
+description: "`org:files:write`"
+---
+
+Upload a folder file by file. Each file is its own resumable upload, several files are sent at the same time, and each file is retried on its own, so large folders (many files, large files, or both) upload reliably. Progress events report when each file starts sending, has all its bytes stored, is registered, is retried or fails.
+
+<Note>
+  Requires `pinata` 2.6.0 or later. Until it is released, install the prerelease with `npm i pinata@next`.
+</Note>
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+// From an <input type="file" webkitdirectory> selection
+const input = document.querySelector<HTMLInputElement>("input[webkitdirectory]")!;
+const files = Array.from(input.files ?? []);
+
+const upload = await pinata.upload.private.folder(files, {
+  onProgress: (event) => {
+    console.log(event.type, event.path, `${event.completed}/${event.total}`);
+  },
+});
+```
+
+<Warning>
+  `folder()` doesn't support signed upload URLs, so in a browser it sends a JWT. Don't ship your admin JWT: create a scoped, short-lived key on your server with `keys.create()`, pass it as `pinataJwt`, and renew it with [refreshJwt](#refreshjwt-optional).
+</Warning>
+
+## Returns
+
+The folder, with the CID that covers every file, and each file's own CID.
+
+```typescript
+type FolderUploadResponse = {
+  id: string;
+  name: string;
+  cid: string;
+  size: number;
+  created_at: string;
+  number_of_files: number;
+  mime_type: string; // "directory"
+  group_id: string | null;
+  keyvalues: {
+    [key: string]: string;
+  };
+  vectorized: boolean;
+  network: string;
+  is_duplicate?: boolean; // the same content was uploaded before: id, name, cid and the paths are that earlier folder's
+  files: {
+    index: number; // position in the files given
+    path: string;
+    size: number;
+    cid: string; // empty in the rare case Pinata did not return it
+  }[];
+};
+```
+
+`files` are in the order given. `group_id` and `keyvalues` are the ones requested. With `is_duplicate`, Pinata kept an earlier folder with the same content and removed this one, so its group and keyvalues may differ from the ones requested.
+
+A `FolderUploadError` means the folder did not complete:
+
+- Some files failed for good after their retries. The others stay in folder `folderId`, which Pinata finishes without the failed ones. `folder` is that folder (`id`, `name`, `cid`, `is_duplicate?`) when the SDK could ask for it (not after a cancel or an authentication failure).
+- Every file was uploaded but the folder couldn't be finished (the final sync kept failing for about 5 minutes). `failed` is empty, `uploaded` holds every file, and `folder` is undefined. Nothing needs to be sent again: Pinata finishes the folder on its own, so get it by `folderId` later for its CID.
+- The upload was cancelled with `signal`: files not uploaded yet are in `failed` with an error named `"AbortError"`.
+
+```typescript
+import { FolderUploadError } from "pinata";
+
+try {
+  await pinata.upload.private.folder(files);
+} catch (error) {
+  if (error instanceof FolderUploadError) {
+    console.log(error.folderId); // the folder holding the uploaded files
+    console.log(error.folderName); // its name; every path starts with it
+    console.log(error.uploaded); // { index, path, size, cid }[]
+    console.log(error.failed); // { index, path, size, error }[]
+    console.log(error.folder); // { id, name, cid, is_duplicate? } | undefined
+  }
+}
+```
+
+To send the failed files again into the same folder:
+
+```typescript
+if (error.folder?.is_duplicate) {
+  await pinata.upload.private.folder(files);
+} else if (error.failed.length > 0) {
+  await pinata.upload.private.folder(
+    error.failed.map((f) => ({ path: f.path, file: files[f.index] })),
+    { folderId: error.folderId },
+  );
+}
+```
+
+Send them within 30 minutes when `error.folder` is undefined, and within 24 hours in any case (see [folderId](#folderid-optional)). With `folder.is_duplicate`, the folder `folderId` was removed: send every file again without `folderId`.
+
+A new folder is created by its first file, the smallest file at the top level, which is sent alone. If it's refused for a reason of its own (its path, type or size), the next file tries. Without `folderId`, if it fails for any other reason, or 3 files in a row are refused for the same reason, nothing else is sent and that error is thrown (an `AuthenticationError`, `NetworkError` or other `PinataError`), not a `FolderUploadError`.
+
+With [folderId](#folderid-optional), the SDK first asks the API whether that folder exists (one request). If it does, every file starts at once. If it doesn't, or the SDK can't tell, the folder is created by its first file sent alone, as for a new folder. When that first file stops the upload, the files not sent yet fail with its error, and the upload rejects with a `FolderUploadError` holding `folderId`.
+
+With `folderId`, unless the folder is known not to exist yet, files that fail for good also stop the others: once 3 in a row fail with the same status and reason, the files not sent yet fail with that error without being sent. Failures due to the file's own size or path (HTTP 413, 414, 431, or a `ValidationError`) don't count toward these 3. Refusals that every file may get, such as HTTP 400, 415 or 422 for a missing group or a folder no longer accepting files, do count.
+
+When Pinata refuses the JWT (401 or 403), the SDK calls [refreshJwt](#refreshjwt-optional) if you gave it. Without it, the refused files fail with an `AuthenticationError`, and so do files not sent yet, until you set another JWT with `pinata.setNewJwt()`.
+
+## Parameters
+
+### files
+
+- Type: `File[]` or `{ path: string; file: File }[]`
+
+File objects take their path from `webkitRelativePath` (set for an `<input webkitdirectory>` selection), else from their name. In Node.js, or to choose the paths yourself, pass entries:
+
+```typescript
+const upload = await pinata.upload.private.folder([
+  { path: "photos/a.jpg", file: fileA },
+  { path: "photos/2024/b.jpg", file: fileB },
+]);
+```
+
+The folder is named after the top directory all paths share (`photos` above). If they don't all share one top directory, files go into a folder named `folder_from_sdk`, or the one set with [name](#name-optional). Entry paths may use `\` as a separator. Two files with the same path, or a path with empty, `.` or `..` segments, throw a `ValidationError` before anything is sent. A file whose path contains `%` can't be uploaded yet: it fails (in `FolderUploadError.failed`) and the other files go on. The folder name can't contain `/`, `\` or `%`.
+
+### onProgress (Optional)
+
+- Type: `(event: FolderUploadEvent) => void`
+
+Called for every file event:
+
+```typescript
+type FolderUploadEvent = {
+  // start: the file's bytes start to be sent (again on each attempt that sends them)
+  // sent: Pinata has every byte and is registering the file (seconds to minutes)
+  // complete: the file is registered in the folder
+  // retry: an attempt failed; the file is sent again after delayMs
+  // error: the file failed for good; the other files go on
+  type: "start" | "sent" | "complete" | "retry" | "error";
+  index: number; // the file's position in the files given
+  path: string; // the file's path in the folder, folder name included
+  size: number;
+  attempt: number; // 1 for the first attempt; 0 for a file that failed before it was sent
+  cid?: string; // complete: the file's own CID (empty in the rare case Pinata did not return it)
+  error?: Error; // retry and error
+  delayMs?: number; // retry (0 with waitingForOnline)
+  waitingForOnline?: boolean; // retry: the browser is offline; the next attempt starts once it's back online and this one doesn't count against retries
+  waitingForPreviousUpload?: boolean; // retry: Pinata is still finishing an earlier upload of this path (HTTP 409); not counted against retries for up to 10 minutes plus 5 per GiB
+  completed: number; // files registered so far
+  failed: number; // files failed for good so far
+  total: number;
+};
+```
+
+Each file's events arrive in order. A retry whose bytes are all stored already only checks the file's registration: it emits `sent` but not `start`. Errors thrown by `onProgress` are ignored.
+
+### concurrency (Optional)
+
+- Type: `number`
+- Default: `4`
+
+How many files send their bytes at the same time. Files whose bytes are stored wait for Pinata to register them without holding a slot. At most 8 times as many files (32 by default) are under way at once.
+
+```typescript {2}
+const upload = await pinata.upload.private.folder(files, {
+  concurrency: 8,
+});
+```
+
+### retries (Optional)
+
+- Type: `number`
+- Default: `3`
+
+How many times a file is sent again after a transient failure: no answer, or HTTP 408, 409, 423, 425, 429 or 5xx. The SDK waits 1 s, doubling up to 10 s, or as long as Pinata asks (`Retry-After`, up to 5 minutes). Some attempts don't count: those made while the browser is offline, those refused while Pinata finishes an earlier upload of the same path, and those refused a JWT that `refreshJwt` replaced. Other refusals, such as an invalid file, fail the file at once.
+
+`retries` is also how many times the final folder sync is sent again. When every file was uploaded, the sync waits up to 5 minutes without counting while Pinata is rate limited. After some files failed, the sync is only a best effort: a single attempt, without waiting for `Retry-After` or rate limiting.
+
+### folderId (Optional)
+
+- Type: `string` (a UUID)
+
+Add files to a folder uploaded with `folder()`. Pinata accepts new files into such a folder for 24 hours after its last upload. After that, and for folders uploaded in one request (`fileArray`, form data, `/pinFileToIPFS`), each file is refused and the upload rejects with a `FolderUploadError`. Give the files paths under the folder's name (as `FolderUploadError.failed[].path` are), or set it with `.name()`. A file whose path is already in the folder replaces it. A value that isn't a UUID throws a `ValidationError`.
+
+```typescript {3}
+const upload = await pinata.upload.private.folder(
+  [{ path: "photos/c.jpg", file: fileC }],
+  { folderId: "FOLDER_ID" },
+);
+```
+
+### signal (Optional)
+
+- Type: `AbortSignal`
+
+Cancels the upload: requests under way are aborted, and files not uploaded yet fail with an error named `"AbortError"`. Files already uploaded stay in the folder. The upload rejects with a `FolderUploadError`, or with a `PinataError` named `"AbortError"` if every file was uploaded and the folder was being finished.
+
+```typescript {4}
+const controller = new AbortController();
+cancelButton.onclick = () => controller.abort();
+
+await pinata.upload.private.folder(files, { signal: controller.signal });
+```
+
+The `await` matters: the upload starts only when it's awaited.
+
+### refreshJwt (Optional)
+
+- Type: `() => Promise<string | undefined> | string | undefined`
+
+Called when Pinata refuses the JWT (401 or 403) during the upload, the final folder sync included. Return a new JWT: the SDK uses it from then on, as with `setNewJwt`, and sends the refused requests again without counting them against `retries`. It's called once per refused JWT, however many files that JWT failed. Without it, or when it returns nothing, the refused files fail with an `AuthenticationError`. Not used with `.key()`.
+
+```typescript {2}
+await pinata.upload.private.folder(files, {
+  refreshJwt: async () => (await fetch("/api/pinata-key")).text(),
+});
+```
+
+### name (Optional)
+
+- Type: `string`
+
+Name of the folder, instead of the top directory the paths share
+
+```typescript {3}
+const upload = await pinata.upload.private
+  .folder(files)
+  .name("album")
+```
+
+### group (Optional)
+
+- Type: `string`
+
+Upload to a specific group by passing in the `groupId`
+
+```typescript {3}
+const upload = await pinata.upload.private
+  .folder(files)
+  .group("b07da1ff-efa4-49af-bdea-9d95d8881103")
+```
+
+### keyvalues (Optional)
+
+- Type: `Record<string, string>`
+
+Add optional keyvalues to the folder
+
+```typescript {3-5}
+const upload = await pinata.upload.private
+  .folder(files)
+  .keyvalues({
+    env: "prod"
+  })
+```
+
+### cidVersion (Optional)
+
+- Type: `"v0" | "v1"`
+
+CID version of the files and the folder
+
+### key (Optional)
+
+- Type: `string`
+
+Upload using a secondary API key generated through `keys.create()`. `refreshJwt` isn't used with `key()`.
+
+```typescript {3}
+const upload = await pinata.upload.private
+  .folder(files)
+  .key("GENERATED_API_JWT")
+```
+
+<Note>
+  `vectorize`, `url` (signed upload URLs), `car`, `streamable`, `peerAddress` and `waitForCid(false)` are not supported for folder uploads. As options they are type errors; the builder methods throw a `ValidationError` before anything is sent.
+</Note>
