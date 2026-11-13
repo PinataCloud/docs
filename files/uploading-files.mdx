@@ -687,13 +687,15 @@ async function upload() {
 
 ### Folders
 
-For large folders, use the SDK's [folder](/sdk/upload/public/folder) method (public and private). It uploads the folder file by file, several files at a time, retries each file on its own and reports the progress of each file:
+For large folders, use the SDK's folder method ([public](/sdk/upload/public/folder), [private](/sdk/upload/private/folder)). It uploads the folder file by file, several files at a time, retries each file on its own and reports the progress of each file:
 
 ```typescript
 const upload = await pinata.upload.public.folder(files, {
   onProgress: (event) => console.log(event.type, event.path),
 });
 ```
+
+Folders uploaded with `folder()` accept more files for 24 hours after their last upload (see [folderId](/sdk/upload/public/folder#folderid-optional)). Folders uploaded in one request can't be changed.
 
 The SDK can also accept an array of files using the [fileArray](/sdk/upload/public/file-array) method, which sends the whole folder in one request. Folders can also be uploaded via the API by creating an array of files and mapping over them to add them to the form data. This is different then having a single `file` entry and having multiple files for that one entry, which does not work.
 
