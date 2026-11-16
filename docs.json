@@ -737,6 +737,106 @@
     {
       "source": "/x402",
       "destination": "/files/x402"
+    },
+    {
+      "source": "/docs/api-keys",
+      "destination": "/account-management/api-keys"
+    },
+    {
+      "source": "/docs/welcome-to-pinata",
+      "destination": "/introduction"
+    },
+    {
+      "source": "/docs/limits",
+      "destination": "/account-management/limits"
+    },
+    {
+      "source": "/gateways/dedicated-gateways",
+      "destination": "/gateways/dedicated-ipfs-gateways"
+    },
+    {
+      "source": "/docs/gateway-access-controls",
+      "destination": "/gateways/gateway-access-controls"
+    },
+    {
+      "source": "/web3/sdk/getting-started",
+      "destination": "/sdk/getting-started"
+    },
+    {
+      "source": "/tools/ipfs-cli",
+      "destination": "/tools/cli/ipfs"
+    },
+    {
+      "source": "/docs/getting-started",
+      "destination": "/quickstart"
+    },
+    {
+      "source": "/files/groups",
+      "destination": "/files/file-groups"
+    },
+    {
+      "source": "/ipfs-sdk",
+      "destination": "/sdk/getting-started"
+    },
+    {
+      "source": "/web3/sdk/upload/file",
+      "destination": "/sdk/upload/public/file"
+    },
+    {
+      "source": "/docs/cids",
+      "destination": "/ipfs-101/what-are-cids"
+    },
+    {
+      "source": "/docs/nextjs-starter",
+      "destination": "/tools/nextjs-starter"
+    },
+    {
+      "source": "/web3/pinning/pinning-files",
+      "destination": "/files/uploading-files"
+    },
+    {
+      "source": "/api-reference/endpoint/pin-file-to-ipfs",
+      "destination": "/api-reference/endpoint/ipfs/pin-file-to-ipfs"
+    },
+    {
+      "source": "/web3/ipfs-101/how-does-ipfs-work-with-nfts",
+      "destination": "/ipfs-101/how-does-ipfs-work-with-nfts"
+    },
+    {
+      "source": "/sdk-beta/getting-started",
+      "destination": "/sdk/getting-started"
+    },
+    {
+      "source": "/web3/sdk",
+      "destination": "/sdk/getting-started"
+    },
+    {
+      "source": "/ipfs-sdk/upload/base64",
+      "destination": "/sdk/upload/private/base64"
+    },
+    {
+      "source": "/quickstart/react",
+      "destination": "/frameworks/react"
+    },
+    {
+      "source": "/web3/ipfs-101/what-are-cids",
+      "destination": "/ipfs-101/what-are-cids"
+    },
+    {
+      "source": "/web3/ipfs-101/what-is-ipfs",
+      "destination": "/ipfs-101/what-is-ipfs"
+    },
+    {
+      "source": "/web3/gateways/gateway-access-controls",
+      "destination": "/gateways/gateway-access-controls"
+    },
+    {
+      "source": "/docs/ipfs-and-nfts",
+      "destination": "/ipfs-101/how-does-ipfs-work-with-nfts"
+    },
+    {
+      "source": "/ipfs-sdk/groups/create",
+      "destination": "/sdk/groups/private/create"
     }
   ]
 }
