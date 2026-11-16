@@ -3,18 +3,11 @@ title: Signatures
 ---
 
 ### SignatureOptions
+Used when submitting a signed CID with the user's wallet address.
+
 ```typescript
 export type SignatureOptions = {
-	cid: string;
-	signature: string;
-	address: string;
+  cid: string;
+  signature: string;
+  address: string;
 };
-```
-
-### SignatureResponse
-```typescript
-export type SignatureResponse = {
-	cid: string;
-	signature: string;
-};
-```
