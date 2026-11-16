@@ -295,6 +295,7 @@
                 "pages": [
                   "sdk/upload/public/file",
                   "sdk/upload/public/file-array",
+                  "sdk/upload/public/folder",
                   "sdk/upload/public/json",
                   "sdk/upload/public/base64",
                   "sdk/upload/public/url",
@@ -306,6 +307,7 @@
                 "group": "private",
                 "pages": [
                   "sdk/upload/private/file",
+                  "sdk/upload/private/folder",
                   "sdk/upload/private/json",
                   "sdk/upload/private/base64",
                   "sdk/upload/private/url",
