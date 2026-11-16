@@ -6,7 +6,7 @@ description: "`org:files:write`"
 Upload a folder file by file. Each file is its own resumable upload, several files are sent at the same time, and each file is retried on its own, so large folders (many files, large files, or both) upload reliably. Progress events report when each file starts sending, has all its bytes stored, is registered, is retried or fails.
 
 <Note>
-  Requires `pinata` 2.6.0 or later. Until it is released, install the prerelease with `npm i pinata@next`.
+  Requires `pinata` 2.6.0 or later (`npm i pinata@latest`).
 </Note>
 
 ## Usage
