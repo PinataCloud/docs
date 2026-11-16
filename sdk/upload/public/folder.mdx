@@ -87,14 +87,17 @@ try {
 }
 ```
 
-To send the failed files again into the same folder:
+To send the failed files again into the same folder (`files` is the array you uploaded: `File[]` or `{ path, file }[]`):
 
 ```typescript
+// The File behind an item of `files`, whichever form it has
+const fileAt = (item: File | { file: File }) => ("file" in item ? item.file : item);
+
 if (error.folder?.is_duplicate) {
   await pinata.upload.public.folder(files);
 } else if (error.failed.length > 0) {
   await pinata.upload.public.folder(
-    error.failed.map((f) => ({ path: f.path, file: files[f.index] })),
+    error.failed.map((f) => ({ path: f.path, file: fileAt(files[f.index]) })),
     { folderId: error.folderId },
   );
 }
