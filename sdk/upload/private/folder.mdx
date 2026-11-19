@@ -113,6 +113,12 @@ With `folderId`, unless the folder is known not to exist yet, files that fail fo
 
 When Pinata refuses the JWT (401 or 403), the SDK calls [refreshJwt](#refreshjwt-optional) if you gave it. Without it, the refused files fail with an `AuthenticationError`, and so do files not sent yet, until you set another JWT with `pinata.setNewJwt()`.
 
+## Folder file limit
+
+A folder holds at most `folder_max_files` files: 30,000 unless your account has its own limit. [pinata.upload.limits()](/sdk/upload/limits) gives yours. Pinata refuses a new path sent into a folder that holds as many with HTTP 413 (`This folder has reached the maximum of N files`), before any byte is sent. A path the folder already has can still be replaced.
+
+From `pinata` 2.7.0, `folder()` asks for the limit before uploading a new folder (no `folderId`, or one Pinata doesn't have). A folder of more files rejects with a `ValidationError` before any file is sent, with `details.code` `"FOLDER_MAX_FILES"` and `details.metadata` `{ folderMaxFiles, files }`. Upload the files as several folders instead. If the limit can't be read, the upload goes ahead and Pinata refuses each file past the limit. A folder given with `folderId` that exists is not checked, since some files may replace files already in it.
+
 ## Parameters
 
 ### files

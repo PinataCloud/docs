@@ -46,6 +46,19 @@ Upload this image to my Pinata account as a public file named "My Logo"
 Upload ~/data/config.json to Pinata and add it to group abc123
 ```
 
+### getUploadLimits
+
+Get your account's upload limits: `folder_max_files`, the most files one folder can hold (30,000 unless your account has its own limit). `uploadFolder` refuses a new folder of more files before sending any, and lists how many files each top-level subdirectory holds so the directory can be uploaded as several folders.
+
+This tool takes no parameters.
+
+**Example Prompts:**
+```
+How many files can one folder hold on my Pinata account?
+
+Check whether ~/datasets/images fits in one Pinata folder before uploading it
+```
+
 ### searchFiles
 
 Search for files in your Pinata account by name, CID, or MIME type.
