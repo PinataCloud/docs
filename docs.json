@@ -313,7 +313,8 @@
                   "sdk/upload/private/url",
                   "sdk/upload/private/create-signed-url"
                 ]
-              }
+              },
+              "sdk/upload/limits"
             ]
           },
           {
@@ -448,7 +449,8 @@
                 "group": "Uploads",
                 "pages": [
                   "api-reference/endpoint/upload-a-file",
-                  "api-reference/endpoint/create-signed-upload-url"
+                  "api-reference/endpoint/create-signed-upload-url",
+                  "api-reference/endpoint/get-upload-limits"
                 ]
               },
               {

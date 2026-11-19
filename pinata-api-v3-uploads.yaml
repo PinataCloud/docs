@@ -152,6 +152,32 @@ paths:
                 properties:
                   data:
                     type: string
+  /files/limits:
+    get:
+      tags:
+        - default
+      summary: Get Upload Limits
+      description: |
+        `org:files:read`
+
+        The upload limits of the authenticated account, to check an upload before sending it.
+
+        `folder_max_files` is the most files one folder can hold: 30,000 unless the account has its own limit. A new path sent into a folder that holds as many is refused with `413` before any byte is sent. A path the folder already has can still be replaced.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      folder_max_files:
+                        type: integer
+                        description: The most files one folder can hold
+                        example: 30000
   /vectorize/files/{file_id}:
     post:
       tags:

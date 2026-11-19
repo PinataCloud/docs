@@ -46,6 +46,23 @@ Upload this image to my Pinata account as a public file named "My Logo"
 Upload ~/data/config.json to Pinata and add it to group abc123
 ```
 
+### getUploadLimits
+
+<Note>
+  Requires `pinata-mcp` 0.5.0 or later.
+</Note>
+
+Get your account's upload limits: `folder_max_files`, the most files one folder can hold (30,000 unless your account has its own limit). `uploadFolder` refuses a new folder of more files before sending any, and lists how many files each top-level subdirectory holds so the directory can be uploaded as several folders.
+
+This tool takes no parameters.
+
+**Example Prompts:**
+```
+How many files can one folder hold on my Pinata account?
+
+Check whether ~/datasets/images fits in one Pinata folder before uploading it
+```
+
 ### searchFiles
 
 Search for files in your Pinata account by name, CID, or MIME type.
@@ -110,6 +127,66 @@ Delete a file from your Pinata account.
 **Example Prompt:**
 ```
 Delete file abc123 from my Pinata account
+```
+
+---
+
+## Folder Operations
+
+<Note>
+  Requires `pinata-mcp` 0.4.0 or later.
+</Note>
+
+### uploadFolder
+
+Upload a local directory as one folder with one CID, subdirectories included. Use it instead of `uploadFile` whenever the content is a directory (a website, a dataset, a set of images). Each file is its own resumable upload, several are sent at a time, and each is retried on its own, so a large folder or a flaky connection doesn't start over. Progress is reported per file to clients that ask for it.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `directory` | string | Yes | Path of the local directory (or its `file://` URI); must be inside the allowed directories |
+| `network` | `"public"` \| `"private"` | No | Upload to public or private IPFS (default: `"public"`) |
+| `name` | string | No | Name of the folder, the top directory of every file path in it (default: the directory's name). When adding files to an existing folder, pass that folder's name |
+| `group_id` | string | No | ID of a group to add the folder to |
+| `keyvalues` | object | No | Metadata key-value pairs for the folder |
+| `cidVersion` | `"v0"` \| `"v1"` | No | CID version of the folder and its files (default: `"v1"`) |
+| `concurrency` | number | No | How many files send their bytes at the same time, 1 to 32 (default: 4) |
+| `folderId` | string | No | ID of an existing folder to upload into: to send failed files again, or to add files. A file whose path is already in the folder replaces it |
+| `paths` | string[] | No | Upload only these files: paths relative to the directory, with `/` separators. Defaults to every file |
+
+Every regular file under the directory is uploaded, hidden files and empty files included. A symlink to a file is followed only when its target is inside the allowed directories; symlinks to directories, symlinks leaving the allowed directories, empty directories and names holding `%` are skipped and listed in the result.
+
+When some files fail for good, the others stay in the folder, and the result lists the failed paths with their reasons (the first 50) and the arguments of a call that sends only the failed files again into the same folder (`folderId` and `paths`).
+
+A folder holds at most `folder_max_files` files ([getUploadLimits](#getuploadlimits); 30,000 unless your account has its own limit). From `pinata-mcp` 0.5.0, a new folder of more files is refused before any file is sent, with the file count of each top-level subdirectory: upload the directory as several folders, one call per subdirectory. Files refused because a folder is full come with the arguments that upload them as a new folder instead.
+
+Pinata accepts new files into a folder for 24 hours after its last upload; [listFolder](#listfolder) shows whether it still does (`appendable`, `appendable_until`).
+
+**Example Prompts:**
+```
+Upload the folder ~/sites/blog to Pinata as a public folder
+
+Upload ~/datasets/images to Pinata as a private folder named "training-images"
+
+Add ~/sites/blog/posts/new.md to the folder I just uploaded
+```
+
+### listFolder
+
+List one level of a folder: its files and subdirectories with their names, paths, sizes and CIDs, plus the folder's CID, its `root` (the name every file path starts with) and whether files can still be added to it (`appendable`, `appendable_until`).
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `folderId` | string | Yes | ID of the folder (the `id` returned by `uploadFolder`) |
+| `network` | `"public"` \| `"private"` | No | Network the folder is on; when given, a folder on the other network is not found |
+| `path` | string | No | Subdirectory to list, relative to the folder root, without the root name (e.g. `images/2024`). Defaults to the root |
+| `limit` | number | No | Maximum number of entries, 1 to 1000 (default: 100) |
+| `pageToken` | string | No | `next_page_token` of the previous page |
+
+**Example Prompts:**
+```
+What's in the folder I uploaded to Pinata?
+
+List the images/2024 directory of folder 019a8b2c-4d5e-7f60-8a1b-2c3d4e5f6a7b
 ```
 
 ---
