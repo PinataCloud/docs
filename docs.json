@@ -123,6 +123,7 @@
               "inference/credits",
               "tools/cli/agents",
               "llm-docs",
+              "tools/skills",
               {
                 "group": "MCP Server",
                 "icon": "plug",
