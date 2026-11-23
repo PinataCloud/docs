@@ -17,17 +17,26 @@ The **Pinata MCP server** gives Claude (and other MCP-compatible assistants) the
 - Vectorize files for semantic search
 - Pin existing CIDs from the IPFS network
 
-## Prerequisites
+## Two ways to connect
+
+- **[Hosted server](/tools/mcp/hosted)** at `https://mcp.pinata.cloud`: add the URL and your API key to any client that supports remote MCP servers (Claude Code, Codex, Cursor, VS Code, Gemini CLI, Windsurf, Claude Desktop). Nothing to install. In early access.
+- **Local server** (`pinata-mcp` on npm, below): runs on your machine with `npx`, and can read files and directories from your disk directly, so the assistant can upload large files and whole folders on its own.
+
+Both have the same tools for files, groups, links, x402 payments, signatures, pins and vectors, with the same names, so the same prompts work on both. The [Tools Reference](/tools/mcp/tools) notes where they differ.
+
+## Local server
+
+### Prerequisites
 
 - Node.js 18+ installed
 - A [Pinata account](https://app.pinata.cloud) with an [API key (JWT)](/account-management/api-keys)
 - A [Pinata Gateway](/gateways/dedicated-ipfs-gateways) URL
 
-## Installation
+### Installation
 
-The Pinata MCP server is available on npm and can be run via `npx`. Installation depends on which Claude client you're using.
+The local Pinata MCP server is available on npm and can be run via `npx`. Installation depends on which client you're using.
 
-### Claude Code
+#### Claude Code
 
 Run `claude mcp add` and follow the prompts:
 
@@ -39,7 +48,7 @@ Command Arguments: pinata-mcp /path/to/allowed/directory
 Environment Variables: PINATA_JWT=<YOUR_JWT>,GATEWAY_URL=example.mypinata.cloud
 ```
 
-### Claude Desktop
+#### Claude Desktop
 
 Add the following to your `claude_desktop_config.json`:
 
@@ -66,7 +75,7 @@ Add the following to your `claude_desktop_config.json`:
 The directory arguments are optional and control which local directories the MCP server can access for file uploads. If not provided, the server only allows access to the current working directory. You can specify multiple directories.
 </Note>
 
-## Configuration
+### Configuration
 
 | Environment Variable | Required | Description |
 |---------------------|----------|-------------|
@@ -81,7 +90,7 @@ Once installed, ask Claude to test the connection:
 Test my Pinata authentication to make sure everything is working
 ```
 
-Claude will use the `testAuthentication` tool to verify your JWT is valid.
+Claude will use the `testAuthentication` tool to verify your JWT is valid. This works the same on the hosted and the local server.
 
 ## Next Steps
 
