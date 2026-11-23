@@ -178,13 +178,15 @@ Every file and group is on public or private IPFS.
 
 ### Gateways
 
-Link and fetch tools use your account's first [dedicated gateway](/gateways/dedicated-ipfs-gateways) unless you name another one. `listGateways` shows them all, with their custom domains, and you can name any of them, including a custom domain, in a prompt:
+Link and fetch tools use your account's first [dedicated gateway](/gateways/dedicated-ipfs-gateways) without [access controls](/gateways/gateway-access-controls) unless you name another one. `listGateways` shows them all, with their custom domains and whether they have access controls, and you can name any of them, including a custom domain, in a prompt:
 
 ```
 Create a public link for bafkrei... on files.example.com
 ```
 
 The tools only use your own gateways: a host that isn't one of them is refused.
+
+A public link through a gateway with access controls opens only with one of its access tokens or from its allowed hosts or IPs; `createLink` says so in its answer. The assistant can still read your files through such a gateway.
 
 ### Uploading content the assistant writes
 
@@ -233,7 +235,7 @@ The URL lets anyone holding it upload to your account until it expires (at most 
 | `403` "not open to your account yet" | Your account doesn't have early access | [Email us](mailto:team@pinata.cloud), or use the [local server](/tools/mcp/overview#local-server) |
 | `403` naming a scope or permission | The key lacks a permission the call needs | Use a key with that permission |
 | `429` | Your API rate limit is reached | Wait for the `Retry-After` seconds, then retry |
-| A tool error "gateway … responded 401" or "403" | That gateway doesn't serve this content, or the network is wrong | Check the file's network, or name another gateway from `listGateways` |
+| A tool error "gateway … responded 401" or "403" | That gateway refused the content: the network is wrong, or the CID isn't in your account and the gateway has access controls or is restricted | Check the file's network, or name another gateway from `listGateways` |
 | A tool error "… is not one of your gateways" | The named host isn't one of your gateways or their custom domains | Use a host `listGateways` returns |
 
 ## Next steps
