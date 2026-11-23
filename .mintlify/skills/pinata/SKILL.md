@@ -12,9 +12,9 @@ Pinata stores files on IPFS and serves them through dedicated gateways. Every fi
 
 ## Choose the interface
 
-1. **Pinata MCP tools are connected** (`testAuthentication`, `searchFiles`, `uploadContent` or `uploadFile`, …): use them for actions on the user's account. See [references/mcp.md](references/mcp.md).
-2. **Writing JavaScript or TypeScript**: use the `pinata` npm package. See [references/sdk.md](references/sdk.md).
-3. **Any other language, or the shell**: call the REST API. See [references/rest-api.md](references/rest-api.md).
+1. **Pinata MCP tools are connected** (`testAuthentication`, `searchFiles`, `uploadContent` or `uploadFile`, …): use them for actions on the user's account. See [references/mcp.md](https://raw.githubusercontent.com/PinataCloud/skills/main/skills/pinata/references/mcp.md).
+2. **Writing JavaScript or TypeScript**: use the `pinata` npm package. See [references/sdk.md](https://raw.githubusercontent.com/PinataCloud/skills/main/skills/pinata/references/sdk.md).
+3. **Any other language, or the shell**: call the REST API. See [references/rest-api.md](https://raw.githubusercontent.com/PinataCloud/skills/main/skills/pinata/references/rest-api.md).
 
 For new code, don't use the legacy `@pinata/sdk` package or the v1 `/pinning/*` endpoints such as `pinFileToIPFS`. The `pinata` package and the `/v3` API replace them.
 
