@@ -5,10 +5,6 @@ description: "Connect AI assistants to Pinata's hosted MCP server at mcp.pinata.
 
 The hosted Pinata MCP server runs at `https://mcp.pinata.cloud`. Point your AI assistant at that URL with your Pinata API key and it can manage your files, groups, links and payment instructions, with no Node.js and nothing to install or update.
 
-<Info>
-  The hosted server is in early access and is enabled per account. If it answers that it is not open to your account yet, [email us](mailto:team@pinata.cloud) to ask for access, or use the [local server](/tools/mcp/overview#local-server) in the meantime.
-</Info>
-
 ## Hosted or local?
 
 | | Hosted (`mcp.pinata.cloud`) | Local (`pinata-mcp` on npm) |
@@ -234,7 +230,6 @@ The URL lets anyone holding it upload to your account until it expires (at most 
 | Answer | Meaning | Fix |
 |---|---|---|
 | `401` | The `Authorization` header is missing, or the key is invalid or revoked | Check the header starts with `Bearer `, and that the key exists on the [API Keys page](https://app.pinata.cloud/developers/api-keys) |
-| `403` "not open to your account yet" | Your account doesn't have early access | [Email us](mailto:team@pinata.cloud), or use the [local server](/tools/mcp/overview#local-server) |
 | `403` naming a scope or permission | The key lacks a permission the call needs | Use a key with that permission |
 | `429` | Your API rate limit is reached | Wait for the `Retry-After` seconds, then retry |
 | A tool error "gateway … responded 401" or "403" | That gateway refused the content: the network is wrong, or the CID isn't in your account and the gateway has access controls or is restricted | Check the file's network, or name another gateway from `listGateways` |
