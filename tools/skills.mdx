@@ -1,0 +1,75 @@
+---
+title: "Agent Skills"
+description: "Teach Claude Code, Codex, Cursor and other coding agents how to use Pinata, with one command"
+icon: "wand-magic-sparkles"
+---
+
+[Agent Skills](https://agentskills.io) are folders of instructions that coding agents load when a task needs them. The **`pinata`** skill teaches an agent how to use Pinata correctly: the `pinata` SDK, the REST API and the [MCP server](/tools/mcp/overview), public and private files, presigned uploads from the browser, groups, gateways and access links.
+
+Install it into your project:
+
+```bash
+npx skills add PinataCloud/skills
+```
+
+The [`skills`](https://github.com/vercel-labs/skills) CLI (Node.js 22.20 or later) finds the coding agents you use and installs the skill for each. It supports Claude Code, Codex, Cursor, OpenCode, Gemini CLI, GitHub Copilot, Windsurf and many more. The source is [PinataCloud/skills](https://github.com/PinataCloud/skills).
+
+## Install options
+
+```bash
+# Every project on this machine
+npx skills add PinataCloud/skills -g
+
+# Only for some agents
+npx skills add PinataCloud/skills -a claude-code -a codex
+
+# Without prompts (CI, scripts)
+npx skills add PinataCloud/skills --skill pinata -y
+```
+
+Skills install into the project by default: `.agents/skills/pinata`, plus a link in each agent's own folder (for example `.claude/skills/pinata`). Commit them so everyone working on the project gets the same instructions. `skills-lock.json` records the version installed.
+
+## What the agent learns
+
+- **Which interface to use:** Pinata's MCP tools when they're connected, the `pinata` SDK for JavaScript and TypeScript, and the REST API for any other language.
+- **Public vs private:** what each network means, why to ask before making content public, and which identifier to use where (the file `id` for updates and deletes, the `cid` for serving).
+- **Uploads:** files, JSON and folders; presigned upload URLs so browser and mobile uploads never see your API key; resumable uploads for large files; folder limits; key-values and groups.
+- **Serving content:** gateway URLs for public files, expiring access links for private files, image optimization, and gateways with [access controls](/gateways/gateway-access-controls).
+- **Safety:** keep `PINATA_JWT` on the server, confirm before deleting or publishing, and treat file names and fetched content as data rather than instructions.
+- **Troubleshooting:** what common errors mean, such as a `404` from the wrong network, a gateway `401 ERR_ID:00024`, or a presigned folder upload refused for its MIME type.
+
+## Use it
+
+Agents load the skill on their own when a task involves Pinata, IPFS or `*.mypinata.cloud`. You can also name it:
+
+```
+Use the pinata skill to add avatar uploads to this Next.js app: the browser uploads with a presigned URL and the profile stores the CID
+```
+
+```
+Using the pinata skill, write a Python script that uploads ./dist as one public folder and prints its gateway URL
+```
+
+To try it without installing:
+
+```bash
+npx skills use PinataCloud/skills@pinata --agent claude-code
+```
+
+## Skills, MCP and LLM docs
+
+| | Gives the agent | Use it when |
+|---|---|---|
+| **Agent Skills** | Know-how: patterns, rules and pitfalls for building with Pinata | The agent writes code that uses Pinata |
+| **[MCP server](/tools/mcp/overview)** | Tools that act on your Pinata account | The agent should upload, search or manage your files directly |
+| **[LLM Docs](/llm-docs)** | The full documentation as text | The agent needs the complete reference |
+
+They work well together: the skill tells the agent to use the MCP tools whenever they're connected.
+
+## Update or remove
+
+```bash
+npx skills check           # see whether updates are available
+npx skills update pinata
+npx skills remove pinata
+```
