@@ -126,7 +126,7 @@
               {
                 "group": "MCP Server",
                 "icon": "plug",
-                "pages": ["tools/mcp/overview", "tools/mcp/tools"]
+                "pages": ["tools/mcp/overview", "tools/mcp/hosted", "tools/mcp/tools"]
               },
               {
                 "group": "ERC-8004",
