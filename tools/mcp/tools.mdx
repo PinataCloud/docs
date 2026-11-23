@@ -12,7 +12,7 @@ The [hosted server](/tools/mcp/hosted) and the local `pinata-mcp` server share t
 - **Local server only:** [uploadFile](#uploadfile), [uploadFolder](#uploadfolder) and [listAllowedDirectories](#listalloweddirectories), which read your disk.
 - **Hosted server only:** [uploadContent](#uploadcontent), [uploadFolderContent](#uploadfoldercontent) and [listGateways](#listgateways).
 - **Network on the hosted server:** uploads, searches, lists, new groups and links need `network`. Tools that take a file or group ID find it on either network when `network` is left out.
-- **Gateway on the hosted server:** link and fetch tools take an optional `gateway` (one of yours, or one of its custom domains) and default to your account's first gateway without access controls.
+- **Gateway on the hosted server:** link and fetch tools take an optional `gateway` (one of yours, or one of its custom domains). Left out, they use your default gateway: the one set when connecting (`X-Pinata-Gateway` header or `?gateway=`, see [Hosted Server](/tools/mcp/hosted#gateways)), or else your account's first gateway without access controls.
 - **Results on the hosted server** are the record itself, without the API's `data` wrapper; an action with nothing to return answers `{"success": true}`.
 
 ## Authentication
@@ -275,7 +275,7 @@ List the images/2024 directory of folder 019a8b2c-4d5e-7f60-8a1b-2c3d4e5f6a7b
 ## Content Access
 
 <Note>
-  **Hosted server:** `createLink`, `createPrivateDownloadLink` and `fetchFromGateway` also take `gateway` (optional: one of your gateways or its custom domains; default: your account's first gateway without access controls) and `path` (optional: a file inside a folder CID, e.g. `css/site.css`). `createLink` and `fetchFromGateway` need `network`. Private links last at most 7 days. `fetchFromGateway` returns up to 100 KB of text or 50 KB of other content.
+  **Hosted server:** `createLink`, `createPrivateDownloadLink` and `fetchFromGateway` also take `gateway` (optional: one of your gateways or its custom domains; default: your [default gateway](/tools/mcp/hosted#gateways)) and `path` (optional: a file inside a folder CID, e.g. `css/site.css`). `createLink` and `fetchFromGateway` need `network`. Private links last at most 7 days. `fetchFromGateway` returns up to 100 KB of text or 50 KB of other content.
 </Note>
 
 ### listGateways
@@ -284,7 +284,7 @@ List the images/2024 directory of folder 019a8b2c-4d5e-7f60-8a1b-2c3d4e5f6a7b
   Hosted server only.
 </Note>
 
-List your [dedicated gateways](/gateways/dedicated-ipfs-gateways): each one's host, whether it only serves your own content (`restricted`), whether it has [access controls](/gateways/gateway-access-controls) (`access_controls`), and its custom domains. The link and fetch tools use the first one without access controls unless you name another. A public link through a gateway with access controls opens only with one of its access tokens or from its allowed hosts or IPs; `createLink` notes this in its answer.
+List your [dedicated gateways](/gateways/dedicated-ipfs-gateways): each one's host, whether it only serves your own content (`restricted`), whether it has [access controls](/gateways/gateway-access-controls) (`access_controls`), and its custom domains. `default_gateway` is the one the link and fetch tools use when you name none. A public link through a gateway with access controls opens only with one of its access tokens or from its allowed hosts or IPs, so `createLink` also returns a `temporary_url` anyone can open until it expires (`expires`).
 
 This tool takes no parameters.
 

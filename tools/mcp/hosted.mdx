@@ -43,6 +43,8 @@ Every client needs the same two things:
 - **URL:** `https://mcp.pinata.cloud` (Streamable HTTP transport)
 - **Header:** `Authorization: Bearer <your API key JWT>`
 
+Optionally, choose the [gateway](#gateways) links and fetches use by default: add an `X-Pinata-Gateway: <your gateway host>` header next to `Authorization`, or, in clients that can't set headers, put it in the URL as `https://mcp.pinata.cloud/?gateway=<your gateway host>`.
+
 ### Claude Code
 
 ```bash
@@ -178,7 +180,7 @@ Every file and group is on public or private IPFS.
 
 ### Gateways
 
-Link and fetch tools use your account's first [dedicated gateway](/gateways/dedicated-ipfs-gateways) without [access controls](/gateways/gateway-access-controls) unless you name another one. `listGateways` shows them all, with their custom domains and whether they have access controls, and you can name any of them, including a custom domain, in a prompt:
+Link and fetch tools use your default gateway unless you name another one. The default is the one you set when connecting (`X-Pinata-Gateway` header or `?gateway=` in the URL), or else your account's first [dedicated gateway](/gateways/dedicated-ipfs-gateways) without [access controls](/gateways/gateway-access-controls). `listGateways` shows them all, with their custom domains, whether they have access controls, and which one is the default. You can name any of them, including a custom domain, in a prompt:
 
 ```
 Create a public link for bafkrei... on files.example.com
@@ -186,7 +188,7 @@ Create a public link for bafkrei... on files.example.com
 
 The tools only use your own gateways: a host that isn't one of them is refused.
 
-A public link through a gateway with access controls opens only with one of its access tokens or from its allowed hosts or IPs; `createLink` says so in its answer. The assistant can still read your files through such a gateway.
+A public link through a gateway with access controls opens only with one of its access tokens or from its allowed hosts or IPs. For such a gateway, `createLink` also returns a `temporary_url` anyone can open until it expires (10 minutes by default, at most 7 days), so you can share a file even when all your gateways have access controls. The assistant can still read your files through such a gateway.
 
 ### Uploading content the assistant writes
 
