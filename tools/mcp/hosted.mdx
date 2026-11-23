@@ -234,6 +234,7 @@ The URL lets anyone holding it upload to your account until it expires (at most 
 | `429` | Your API rate limit is reached | Wait for the `Retry-After` seconds, then retry |
 | A tool error "gateway … responded 401" or "403" | That gateway refused the content: the network is wrong, or the CID isn't in your account and the gateway has access controls or is restricted | Check the file's network, or name another gateway from `listGateways` |
 | A tool error "… is not one of your gateways" | The named host isn't one of your gateways or their custom domains | Use a host `listGateways` returns |
+| Anything else that keeps failing | A bug on our side | [Open an issue](https://github.com/PinataCloud/pinata-mcp/issues/new?template=bug_report.yml) with the tool, the error, the time and, for HTTP errors, the `request_id` from the response |
 
 ## Next steps
 
