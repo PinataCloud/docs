@@ -52,6 +52,20 @@ To try it without installing:
 npx skills use PinataCloud/skills@pinata --agent claude-code
 ```
 
+## Plugins
+
+The plugins bundle the `pinata` skill with the [hosted MCP server](/tools/mcp/hosted), so the agent can also upload, share and manage files on your account.
+
+| Agent | Install | Connects with |
+|---|---|---|
+| Claude Code | `claude plugin install pinata --marketplace PinataCloud/skills` | Your Pinata account: sign in when Claude asks, or from `/mcp` → **pinata** → **Authenticate** |
+| Gemini CLI | `gemini extensions install https://github.com/PinataCloud/skills` | Your Pinata account: run `/mcp auth pinata` in a Gemini CLI session |
+| Codex | `codex plugin marketplace add PinataCloud/skills`, then `codex plugin add pinata@pinata` | An [API key](/account-management/api-keys) read from `PINATA_JWT`, exported before Codex starts |
+
+When you sign in, you choose the workspace to connect, and Pinata creates an API key named `MCP OAuth · <client>` for the connection. [Sign in or use an API key](/tools/mcp/hosted#sign-in-or-use-an-api-key) explains what it can do and how to disconnect. To use your own API key instead of signing in, add the MCP server yourself with an `Authorization` header, as shown for each client in [Hosted Server](/tools/mcp/hosted#connect-your-assistant).
+
+Update the plugins with `claude plugin update pinata@pinata`, `gemini extensions update pinata` or `codex plugin marketplace upgrade pinata`.
+
 ## Skills, MCP and LLM docs
 
 | | Gives the agent | Use it when |

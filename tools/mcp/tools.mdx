@@ -14,12 +14,13 @@ The [hosted server](/tools/mcp/hosted) and the local `pinata-mcp` server share t
 - **Network on the hosted server:** uploads, searches, lists, new groups and links need `network`. Tools that take a file or group ID find it on either network when `network` is left out.
 - **Gateway on the hosted server:** link and fetch tools take an optional `gateway` (one of yours, or one of its custom domains). Left out, they use your default gateway: the one set when connecting (`X-Pinata-Gateway` header or `?gateway=`, see [Hosted Server](/tools/mcp/hosted#gateways)), or else your account's first gateway without access controls.
 - **Results on the hosted server** are the record itself, without the API's `data` wrapper; an action with nothing to return answers `{"success": true}`.
+- **Signing in to the hosted server** gives every tool except the [x402 payment instruction](#x402-payment-instructions) tools, which need an admin API key. See [Sign in or use an API key](/tools/mcp/hosted#sign-in-or-use-an-api-key).
 
 ## Authentication
 
 ### testAuthentication
 
-Verify that your Pinata JWT is valid and working.
+Check that the connection works and show the account it acts as: your API key's account, or the account you signed in with on the hosted server.
 
 **Parameters:** None
 
@@ -456,6 +457,10 @@ Remove file xyz789 from group abc123
 ## x402 Payment Instructions
 
 Tools for content monetization using the [x402 protocol](/files/x402/intro). Currently supports USDC on Base and Base Sepolia.
+
+<Note>
+  These tools need an admin API key. On the hosted server, they aren't available when you connect by signing in.
+</Note>
 
 ### createPaymentInstruction
 

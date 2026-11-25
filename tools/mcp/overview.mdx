@@ -19,10 +19,10 @@ The **Pinata MCP server** gives Claude (and other MCP-compatible assistants) the
 
 ## Two ways to connect
 
-- **[Hosted server](/tools/mcp/hosted)** at `https://mcp.pinata.cloud`: add the URL and your API key to any client that supports remote MCP servers (Claude Code, Codex, Cursor, VS Code, Gemini CLI, Windsurf, Claude Desktop). Nothing to install.
+- **[Hosted server](/tools/mcp/hosted)** at `https://mcp.pinata.cloud`: add the URL to any client that supports remote MCP servers (Claude Code, Claude Desktop and claude.ai, ChatGPT, Codex, Cursor, VS Code, Gemini CLI, Windsurf), then sign in with your Pinata account or use an API key. Nothing to install.
 - **Local server** (`pinata-mcp` on npm, below): runs on your machine with `npx`, and can read files and directories from your disk directly, so the assistant can upload large files and whole folders on its own.
 
-Both have the same tools for files, groups, links, x402 payments, signatures, pins and vectors, with the same names, so the same prompts work on both. The [Tools Reference](/tools/mcp/tools) notes where they differ.
+Both have the same tools for files, groups, links, x402 payments, signatures, pins and vectors, with the same names, so the same prompts work on both. When you sign in to the hosted server instead of using an API key, the x402 payment tools aren't available. The [Tools Reference](/tools/mcp/tools) notes where they differ.
 
 ## Local server
 
@@ -90,7 +90,7 @@ Once installed, ask Claude to test the connection:
 Test my Pinata authentication to make sure everything is working
 ```
 
-Claude will use the `testAuthentication` tool to verify your JWT is valid. This works the same on the hosted and the local server.
+Claude will use the `testAuthentication` tool to check the connection and show which account it acts as. This works the same on the hosted and the local server.
 
 ## Next Steps
 
