@@ -5,6 +5,28 @@ description: "Connect AI assistants to Pinata's hosted MCP server at mcp.pinata.
 
 The hosted Pinata MCP server runs at `https://mcp.pinata.cloud`. Point your AI assistant at that URL, then sign in with your Pinata account or give it a Pinata API key, and it can manage your files, groups and links, with no Node.js and nothing to install or update.
 
+## Try Pinata with Claude Code
+
+Upload a private text file and open it in your browser. You don't need a Pinata API key or a file on your computer.
+
+1. In a terminal, from the directory where you'll use Claude Code, run:
+
+   ```bash
+   claude mcp add --transport http pinata https://mcp.pinata.cloud
+   ```
+
+2. Start `claude` in the same directory. Run `/mcp`, select **pinata**, then **Authenticate**. In the browser, sign in or create a Pinata account, choose your workspace, and select **Allow**.
+
+3. Back in Claude Code, paste this prompt:
+
+   ```text
+   Upload a private file called hello-pinata.txt containing only "Hello from Pinata". Give me a download link that expires in 10 minutes.
+   ```
+
+4. Open the link Claude returns. The file should contain `Hello from Pinata`. Anyone with the link can read it until it expires; the file stays private in your workspace afterward.
+
+If Claude says your workspace has no gateway, create one in **Gateways** in the Pinata app. Then ask Claude to make the link for the file it just uploaded; you don't need to upload it again.
+
 ## Hosted or local?
 
 | | Hosted (`mcp.pinata.cloud`) | Local (`pinata-mcp` on npm) |
@@ -60,13 +82,7 @@ The Codex, Cursor, VS Code and Windsurf examples below use an API key. If your c
 
 ### Claude Code
 
-To sign in, add the server, then authenticate from a Claude Code session:
-
-```bash
-claude mcp add --transport http pinata https://mcp.pinata.cloud
-```
-
-In Claude Code, run `/mcp`, select **pinata**, then **Authenticate**. To switch workspaces later, choose **Clear authentication** there, then **Authenticate** again.
+For sign-in without an API key, follow [Try Pinata with Claude Code](#try-pinata-with-claude-code). To switch workspaces later, use `/mcp`, select **pinata**, choose **Clear authentication**, then **Authenticate** again.
 
 With an API key instead:
 
