@@ -1,0 +1,20 @@
+---
+title: "Try Pinata with ChatGPT"
+sidebarTitle: "ChatGPT"
+description: "Add Pinata as a custom MCP server in ChatGPT on the web to save a private file from a conversation and get an expiring download link."
+---
+
+import FirstPrivateFile from '/snippets/mcp-first-private-file.mdx';
+
+ChatGPT connects to Pinata with your Pinata account, not an API key. Use ChatGPT on the web in a workspace that allows [custom MCP servers](https://developers.openai.com/api/docs/guides/custom-mcp-server).
+
+## Connect Pinata to ChatGPT
+
+1. Open [ChatGPT Plugins](https://chatgpt.com/plugins), select **+**, then **Add custom MCP server**. If you don't see that option, check whether your workspace admin allows custom plugins.
+2. Name it `Pinata`. Under **Connection**, enter `https://mcp.pinata.cloud` as the server URL and choose **OAuth**. If asked how to identify the client, use ChatGPT's published identity (CIMD); leave the client ID and secret blank.
+3. Review the warning, select **I understand and want to continue**, and choose **Create as a plugin**. Install the resulting plugin from your personal or workspace plugins. When prompted, sign in to Pinata, choose your workspace, and select **Allow**.
+4. Open a new chat, type `@`, and select **Pinata**. Review the requested tool inputs before approving the upload or link creation.
+
+## Upload your first private file
+
+<FirstPrivateFile />

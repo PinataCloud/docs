@@ -1,0 +1,44 @@
+---
+title: "Try Pinata with Gemini CLI"
+sidebarTitle: "Gemini CLI"
+description: "Install Pinata's Gemini CLI extension and use its MCP tools to upload a private file and open a time-limited download link."
+---
+
+import FirstPrivateFile from '/snippets/mcp-first-private-file.mdx';
+
+## Connect Gemini CLI to Pinata
+
+1. In your terminal, install the extension from [Pinata's GitHub repository](https://github.com/PinataCloud/skills). It includes the `pinata` skill and configures `https://mcp.pinata.cloud` as a remote MCP server.
+
+   ```bash
+   gemini extensions install https://github.com/PinataCloud/skills
+   ```
+
+2. Start a new `gemini` session. At the Gemini prompt, enter:
+
+   ```text
+   /mcp auth pinata
+   ```
+
+3. In the browser, sign in to Pinata or create an account. Choose the workspace where you want to upload, review the permissions, and select **Allow**. Return to Gemini CLI and enter `/mcp` to see Pinata's tools. No API key is needed for this connection.
+
+<Accordion title="Use a scoped API key instead of the extension">
+  Create a [non-admin key](/account-management/api-keys) with file read/write and gateway read access. Export its JWT as `PINATA_JWT` before starting Gemini. Instead of installing the extension, add this server to `~/.gemini/settings.json`, keeping any existing settings:
+
+  ```json
+  {
+    "mcpServers": {
+      "pinata": {
+        "httpUrl": "https://mcp.pinata.cloud",
+        "headers": { "Authorization": "Bearer $PINATA_JWT" }
+      }
+    }
+  }
+  ```
+
+  Keep `$PINATA_JWT` as written rather than pasting the JWT into the file or chat. Start `gemini` from that terminal; skip `/mcp auth`.
+</Accordion>
+
+## Upload your first private file
+
+<FirstPrivateFile />

@@ -1,0 +1,40 @@
+---
+title: "Try Pinata with Claude"
+sidebarTitle: "Claude"
+description: "Connect claude.ai or Claude Desktop to Pinata over MCP, then ask Claude to upload a private file and share a time-limited link."
+---
+
+import FirstPrivateFile from '/snippets/mcp-first-private-file.mdx';
+
+On claude.ai and in Claude Desktop, you can connect your Pinata workspace by signing in. You don't need an API key or a local server.
+
+## Add Pinata as a custom connector
+
+1. Open [Customize → Connectors](https://claude.ai/customize/connectors) and choose **+ Add → Add custom connector**. On Team or Enterprise, ask an owner to add the connector in [Organization settings → Connectors](https://claude.ai/admin-settings/connectors) via **Add → Custom → Web**. If it's already there, skip to connecting your account.
+2. Name the connector `Pinata`, enter `https://mcp.pinata.cloud` as the server URL, and select **Continue**. Keep **Use Claude's published identity** for OAuth and finish adding the connector. No client ID or secret is needed.
+3. Select **Connect** next to Pinata if Claude hasn't already opened the sign-in page. Sign in to Pinata or create an account, choose your workspace, and select **Allow**. Each team member connects their own Pinata account this way.
+4. Start a chat. Under **+ → Connectors**, turn on **Pinata** for this conversation.
+
+## Upload your first private file
+
+<FirstPrivateFile />
+
+<Accordion title="Use a scoped API key instead of signing in">
+  If you need to restrict Claude to specific permissions, create a dedicated [Pinata API key](/account-management/api-keys). In a personal custom connector, choose **No sign in** and add `Authorization` under **Request headers**, with the value `Bearer <your API key JWT>`. Don't set this header on a Team or Enterprise organization connector: every member who uses it would act with the same key.
+
+  If request headers aren't available, **Claude Desktop only** can forward the key through a local `mcp-remote` bridge. Install Node.js LTS, open **Settings → Developer → Edit Config**, and add this entry to `claude_desktop_config.json` (keep any existing servers):
+
+  ```json
+  {
+    "mcpServers": {
+      "pinata": {
+        "command": "npx",
+        "args": ["-y", "mcp-remote", "https://mcp.pinata.cloud", "--header", "Authorization:${AUTH_HEADER}"],
+        "env": { "AUTH_HEADER": "Bearer <your API key JWT>" }
+      }
+    }
+  }
+  ```
+
+  Replace the placeholder locally and restart Claude Desktop. The config now contains your key: don't share it, commit it, or paste it into chat.
+</Accordion>
