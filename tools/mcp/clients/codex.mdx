@@ -1,0 +1,30 @@
+---
+title: "Try Pinata with Codex"
+sidebarTitle: "Codex"
+description: "Use a scoped API key to connect Codex CLI to Pinata's hosted MCP server, upload a private text file, and share it with an expiring link."
+---
+
+import FirstPrivateFile from '/snippets/mcp-first-private-file.mdx';
+
+## Connect Codex CLI to Pinata
+
+1. In the Pinata workspace where you want to upload, open [API Keys](https://app.pinata.cloud/developers/api-keys) and select **New Key**. Create a key just for Codex with file read/write access (to upload and access the file) and gateway read access (to find the gateway for the link). Leave admin access off. Copy the **JWT**, not the API key ID or secret.
+
+2. In Bash or Zsh, run the following line, paste the JWT at the hidden prompt, and press Enter. This keeps the value out of chat and shell history.
+
+   ```bash
+   printf 'Pinata JWT: '; IFS= read -rs PINATA_JWT; printf '\n'; export PINATA_JWT
+   ```
+
+3. Register the server once, then start Codex in the same terminal:
+
+   ```bash
+   codex mcp add pinata --url https://mcp.pinata.cloud --bearer-token-env-var PINATA_JWT
+   codex
+   ```
+
+   Codex saves the variable **name**, not the JWT, in `~/.codex/config.toml`. In a new shell, set `PINATA_JWT` again before starting Codex. The Codex IDE extension shares this configuration; its process also needs the environment variable.
+
+## Upload your first private file
+
+<FirstPrivateFile />

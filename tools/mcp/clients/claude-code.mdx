@@ -1,0 +1,35 @@
+---
+title: "Try Pinata with Claude Code"
+sidebarTitle: "Claude Code"
+description: "Connect Claude Code to Pinata over MCP, sign in to your workspace, and ask Claude for a private file with a ten-minute download link."
+---
+
+import FirstPrivateFile from '/snippets/mcp-first-private-file.mdx';
+
+## Connect Claude Code to Pinata
+
+1. In the directory where you use Claude Code, add Pinata's hosted MCP server:
+
+   ```bash
+   claude mcp add --transport http pinata https://mcp.pinata.cloud
+   ```
+
+   The connection is available only to you in this project. To use it in all your projects, add `--scope user` to the command.
+
+2. Start `claude` in the same directory. Enter `/mcp`, select **pinata**, then **Authenticate**.
+3. In your browser, sign in to Pinata or create an account. Choose the workspace where you want the file, review the permissions, and select **Allow**. Return to Claude Code; you don't need to paste a key into chat. To switch workspaces later, open `/mcp`, select **pinata**, then **Clear authentication** and **Authenticate** again.
+
+<Accordion title="Use a scoped API key instead of signing in">
+  To limit Claude to file and gateway operations, create a [non-admin key](/account-management/api-keys) with file read/write and gateway read access. Export its JWT as `PINATA_JWT` in the terminal where you'll start Claude. Instead of the setup command above, run:
+
+  ```bash
+  claude mcp add --transport http pinata https://mcp.pinata.cloud \
+    --header 'Authorization: Bearer ${PINATA_JWT}'
+  ```
+
+  Keep the single quotes: Claude reads the variable when it starts rather than saving the JWT in its configuration. Start `claude` from that terminal; skip the browser sign-in.
+</Accordion>
+
+## Upload your first private file
+
+<FirstPrivateFile />

@@ -1,0 +1,76 @@
+---
+title: "Try Pinata with Docker MCP Toolkit"
+sidebarTitle: "Docker MCP Toolkit"
+description: "Route Pinata tools through Docker MCP Toolkit to Claude Desktop, then upload a private file and request a temporary download link in chat."
+---
+
+import FirstPrivateFile from '/snippets/mcp-first-private-file.mdx';
+
+**Advanced setup.** Docker MCP Toolkit is a bridge, not a chat client. Use it if you manage your assistant's tools in Docker Desktop. To upload a file from Claude without configuring Docker, [connect Claude directly](/tools/mcp/clients/claude).
+
+The Pinata [Docker catalog submission](https://github.com/docker/mcp-registry/pull/7758) isn't published yet. The steps below use a local catalog and an API key. Docker Desktop 4.86.0 with Toolkit CLI 0.43.3 supported this route on macOS; its browser sign-in failed with `invalid_target`.
+
+## Add Pinata to a Docker profile
+
+Start Docker Desktop with [MCP Toolkit enabled](https://docs.docker.com/ai/mcp-catalog-and-toolkit/get-started/#setup). You'll also need Claude Desktop installed for the chat step.
+
+1. In a macOS terminal, create the catalog file under Docker's MCP catalogs directory. Leave `${PINATA_API_KEY}` as written: Docker fills it from its secret store.
+
+   ```bash
+   mkdir -p "$HOME/.docker/mcp/catalogs"
+   cat > "$HOME/.docker/mcp/catalogs/pinata-local.yaml" <<'YAML'
+   version: 2
+   name: pinata-local
+   displayName: Pinata local catalog
+   registry:
+     pinata:
+       title: Pinata
+       type: remote
+       remote:
+         transport_type: streamable-http
+         url: https://mcp.pinata.cloud
+         headers:
+           Authorization: "Bearer ${PINATA_API_KEY}"
+       secrets:
+         - name: pinata.api_key
+           env: PINATA_API_KEY
+       oauth:
+         providers:
+           - provider: pinata
+             secret: pinata.personal_access_token
+             env: PINATA_PERSONAL_ACCESS_TOKEN
+   YAML
+   ```
+
+2. Import that local catalog and create a profile for Pinata:
+
+   ```bash
+   docker mcp catalog create pinata-local --from-legacy-catalog "$HOME/.docker/mcp/catalogs/pinata-local.yaml"
+   docker mcp profile create --id pinata --name Pinata --server catalog://pinata-local/pinata
+   ```
+
+3. Create a dedicated key on your workspace's [API Keys page](https://app.pinata.cloud/developers/api-keys) with permission to read and upload files, read gateways, and create private download links. Run this command, then paste **only the JWT** at its hidden prompt. Don't put the key in the YAML or in chat.
+
+   ```bash
+   bash -c 'read -rsp "Pinata JWT: " jwt && printf %s "$jwt" | docker mcp secret set pinata.api_key'
+   ```
+
+4. Check that Docker can use the secret before attaching a client:
+
+   ```bash
+   docker mcp tools call --gateway-arg=--profile=pinata testAuthentication
+   ```
+
+   Look for `"authenticated":true` and your Pinata account. If Docker already has a Pinata OAuth credential, it takes precedence over the key. Don't continue if you see another account.
+
+5. Connect Claude Desktop to the profile:
+
+   ```bash
+   docker mcp client connect claude-desktop --global --profile pinata
+   ```
+
+   Restart Claude Desktop and make sure **MCP_DOCKER** is enabled in the chat's tools menu. Use the prompt below **in Claude**, not in Docker.
+
+## Upload your first private file
+
+<FirstPrivateFile />

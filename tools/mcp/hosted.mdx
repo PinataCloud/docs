@@ -1,31 +1,37 @@
 ---
-title: "Hosted Server"
-description: "Connect AI assistants to Pinata's hosted MCP server at mcp.pinata.cloud, with nothing to install"
+title: "Connect your AI assistant to Pinata MCP"
+sidebarTitle: "Hosted server"
+description: "Choose your MCP client and upload a private file to Pinata from Claude Code, Codex, Gemini CLI, Claude or ChatGPT. Find setup and authentication options for other clients."
 ---
 
-The hosted Pinata MCP server runs at `https://mcp.pinata.cloud`. Point your AI assistant at that URL, then sign in with your Pinata account or give it a Pinata API key, and it can manage your files, groups and links, with no Node.js and nothing to install or update.
+Choose the assistant you already use. Each quickstart connects it to the hosted Pinata MCP server, uploads a small private file, and gives you a download link that expires in 10 minutes. You don't need a file on your computer.
 
-## Try Pinata with Claude Code
+## Connect your assistant
 
-Upload a private text file and open it in your browser. You don't need a Pinata API key or a file on your computer.
+<span id="try-pinata-with-claude-code" />
 
-1. In a terminal, from the directory where you'll use Claude Code, run:
+<CardGroup cols={3}>
+  <Card title="Claude Code" icon="terminal" href="/tools/mcp/clients/claude-code">
+    <span id="claude-code">Sign in from your terminal.</span>
+  </Card>
+  <Card title="OpenAI Codex" icon="code" href="/tools/mcp/clients/codex">
+    <span id="codex">Use your Pinata API key.</span>
+  </Card>
+  <Card title="Gemini CLI" icon="terminal" href="/tools/mcp/clients/gemini-cli">
+    <span id="gemini-cli">Connect Google's command-line assistant.</span>
+  </Card>
+  <Card title="Claude" icon="comment" href="/tools/mcp/clients/claude">
+    <span id="claude-desktop-and-claudeai">Add a connector in Claude Desktop or claude.ai.</span>
+  </Card>
+  <Card title="ChatGPT" icon="comments" href="/tools/mcp/clients/chatgpt">
+    <span id="chatgpt">Add Pinata as a custom MCP server.</span>
+  </Card>
+  <Card title="Docker MCP Toolkit" icon="layer-group" href="/tools/mcp/clients/docker">
+    Connect an assistant through Docker Desktop.
+  </Card>
+</CardGroup>
 
-   ```bash
-   claude mcp add --transport http pinata https://mcp.pinata.cloud
-   ```
-
-2. Start `claude` in the same directory. Run `/mcp`, select **pinata**, then **Authenticate**. In the browser, sign in or create a Pinata account, choose your workspace, and select **Allow**.
-
-3. Back in Claude Code, paste this prompt:
-
-   ```text
-   Upload a private file called hello-pinata.txt containing only "Hello from Pinata". Give me a download link that expires in 10 minutes.
-   ```
-
-4. Open the link Claude returns. The file should contain `Hello from Pinata`. Anyone with the link can read it until it expires; the file stays private in your workspace afterward.
-
-If Claude says your workspace has no gateway, create one in **Gateways** in the Pinata app. Then ask Claude to make the link for the file it just uploaded; you don't need to upload it again.
+Using an editor? See the configuration for [Cursor](#cursor), [VS Code with GitHub Copilot](#vs-code-github-copilot), or [Windsurf](#windsurf). To inspect the tools without an assistant, use [MCP Inspector](#mcp-inspector).
 
 ## Hosted or local?
 
@@ -72,34 +78,11 @@ The API key examples below read the key from an environment variable:
 export PINATA_JWT="<your API key JWT>"
 ```
 
-## Connect your assistant
+## Other MCP clients
 
-Every client needs the URL `https://mcp.pinata.cloud` (Streamable HTTP transport), and then either signs in or sends the header `Authorization: Bearer <your API key JWT>`.
+Use `https://mcp.pinata.cloud` as the Streamable HTTP endpoint. These editor configurations use [a Pinata API key](#use-an-api-key).
 
 Optionally, choose the [gateway](#gateways) links and fetches use by default: add an `X-Pinata-Gateway: <your gateway host>` header, or, in clients that can't set headers, put it in the URL as `https://mcp.pinata.cloud/?gateway=<your gateway host>`.
-
-The Codex, Cursor, VS Code and Windsurf examples below use an API key. If your client supports MCP sign-in, you can leave the header out and sign in instead.
-
-### Claude Code
-
-For sign-in without an API key, follow [Try Pinata with Claude Code](#try-pinata-with-claude-code). To switch workspaces later, use `/mcp`, select **pinata**, choose **Clear authentication**, then **Authenticate** again.
-
-With an API key instead:
-
-```bash
-claude mcp add --transport http pinata https://mcp.pinata.cloud \
-  --header "Authorization: Bearer $PINATA_JWT"
-```
-
-Add `--scope user` to either command to use Pinata in every project. The [Pinata plugin](/tools/skills#plugins) sets up the sign-in for you, together with the `pinata` skill.
-
-### Codex
-
-Codex CLI and the Codex IDE extension share `~/.codex/config.toml`. Export `PINATA_JWT` before starting Codex.
-
-```bash
-codex mcp add pinata --url https://mcp.pinata.cloud --bearer-token-env-var PINATA_JWT
-```
 
 ### Cursor
 
@@ -135,35 +118,6 @@ In `.vscode/mcp.json`. VS Code asks for the key once and stores it securely.
 }
 ```
 
-### Gemini CLI
-
-To sign in, add the server to `~/.gemini/settings.json` without headers:
-
-```json
-{
-  "mcpServers": {
-    "pinata": {
-      "httpUrl": "https://mcp.pinata.cloud"
-    }
-  }
-}
-```
-
-Then run `/mcp auth pinata` in a Gemini CLI session. It opens the sign-in page in your browser. The [Pinata extension](/tools/skills#plugins) sets this up for you.
-
-With an API key instead:
-
-```json
-{
-  "mcpServers": {
-    "pinata": {
-      "httpUrl": "https://mcp.pinata.cloud",
-      "headers": { "Authorization": "Bearer $PINATA_JWT" }
-    }
-  }
-}
-```
-
 ### Windsurf
 
 In `~/.codeium/windsurf/mcp_config.json`:
@@ -178,38 +132,6 @@ In `~/.codeium/windsurf/mcp_config.json`:
   }
 }
 ```
-
-### Claude Desktop and claude.ai
-
-Remote servers are added as custom connectors (**Settings → Connectors → Add custom connector**). Enter the URL, add the connector, then select **Connect** and sign in. On Team and Enterprise plans, each member who connects signs in with their own Pinata account.
-
-To use an API key instead:
-
-- **If the dialog has a Request headers section:** enter the URL, choose no sign-in, and add a header named `authorization` with the value `Bearer <your API key JWT>`, including `Bearer `. Add the connector to your own account: on Team and Enterprise plans, a connector an Owner adds for the organization sends the same header for every member, so everyone would act as one Pinata account.
-- **Otherwise, in Claude Desktop**, connect through the `mcp-remote` bridge in `claude_desktop_config.json` (requires Node.js):
-
-```json
-{
-  "mcpServers": {
-    "pinata": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote", "https://mcp.pinata.cloud", "--header", "Authorization:${AUTH_HEADER}"],
-      "env": { "AUTH_HEADER": "Bearer <your API key JWT>" }
-    }
-  }
-}
-```
-
-### ChatGPT
-
-ChatGPT connects by signing in; it can't send an API key header.
-
-1. Go to [ChatGPT Plugins](https://chatgpt.com/plugins), select the plus button, then **Add custom MCP server**.
-2. Enter a name, such as Pinata, and the URL `https://mcp.pinata.cloud`.
-3. Choose OAuth for authentication, confirm the warning, and select **Create as a plugin**.
-4. Sign in to Pinata, choose the workspace and select **Allow** when ChatGPT asks.
-
-Account and workspace policies apply: a ChatGPT workspace admin may need to allow custom MCP servers.
 
 ### MCP Inspector
 
