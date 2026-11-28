@@ -1,0 +1,79 @@
+---
+title: "list"
+---
+
+List all CIDs associated with a payment instruction
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const cids = await pinata.x402.listCids(
+  "01234567-89ab-cdef-0123-456789abcdef"
+);
+```
+
+## Returns
+
+```typescript
+type CidListResponse = {
+  data: {
+    cids: string[];
+    next_page_token?: string;
+  };
+};
+```
+
+## Parameters
+
+### paymentInstructionId (required)
+
+- Type: `string`
+
+The unique identifier of the payment instruction
+
+```typescript
+const cids = await pinata.x402.listCids(
+  "01234567-89ab-cdef-0123-456789abcdef"
+);
+```
+
+### options
+
+Optional parameters for pagination.
+
+#### limit
+
+- Type: `number`
+
+Limit the number of results returned
+
+```typescript {3-5}
+const cids = await pinata.x402.listCids(
+  "01234567-89ab-cdef-0123-456789abcdef",
+  {
+    limit: 10,
+  }
+);
+```
+
+#### pageToken
+
+- Type: `string`
+
+Paginate through results using a page token from a previous response
+
+```typescript {3-5}
+const cids = await pinata.x402.listCids(
+  "01234567-89ab-cdef-0123-456789abcdef",
+  {
+    pageToken: "MDE5MWIzZWYtM2U0Zi03YTY5LWE3OTQtOTRhZDE5NjQxMTk0",
+  }
+);
+```

@@ -1,0 +1,261 @@
+---
+title: "Services & IPFS"
+description: "Service endpoint types and IPFS usage in ERC-8004 agents"
+---
+
+ERC-8004 agents can advertise multiple service endpoints. This guide covers all 7 service types, when to use each, and how Pinata fits in.
+
+## Overview
+
+Services are listed in the `services[]` array of your agent card. Each service has:
+
+- `name` — Service type identifier (required)
+- `endpoint` — Where to reach the service (required)
+- `version` — Protocol version (recommended)
+
+```json
+{
+  "services": [
+    { "name": "web", "endpoint": "https://myagent.com" },
+    { "name": "MCP", "endpoint": "https://mcp.myagent.com", "version": "2025-06-18" }
+  ]
+}
+```
+
+## Web
+
+**Purpose:** Agent's public website or landing page.
+
+```json
+{
+  "name": "web",
+  "endpoint": "https://myagent.com"
+}
+```
+
+**When to use:** Every agent should have a web endpoint for human discovery. This is where users learn about your agent, see pricing, and find documentation.
+
+**Requirements:**
+- Must be HTTPS
+- Should be human-readable
+
+## MCP (Model Context Protocol)
+
+**Purpose:** Expose tools, prompts, and resources to LLM applications.
+
+```json
+{
+  "name": "MCP",
+  "endpoint": "https://mcp.myagent.com",
+  "version": "2025-06-18"
+}
+```
+
+**When to use:** Your agent provides tools that other AI systems can call — search, calculation, data retrieval, actions.
+
+**Requirements:**
+- Must be HTTPS
+- Implements MCP server protocol
+- Version should match MCP spec date
+
+**Resources:**
+- [MCP Specification](https://modelcontextprotocol.io)
+
+## A2A (Agent-to-Agent)
+
+**Purpose:** Direct communication between agents via the A2A protocol.
+
+```json
+{
+  "name": "A2A",
+  "endpoint": "https://myagent.com/.well-known/agent-card.json",
+  "version": "0.3.0"
+}
+```
+
+**When to use:** Your agent can receive tasks from other agents, advertise skills, and participate in multi-agent workflows.
+
+**Requirements:**
+- Must be HTTPS
+- Points to A2A agent card (often at `.well-known/agent-card.json`)
+- Implements A2A protocol for task lifecycle
+
+**Resources:**
+- [A2A Specification](https://github.com/google/A2A)
+
+## OASF (Open Agent Services Framework)
+
+**Purpose:** Standardized skills and domain classification.
+
+```json
+{
+  "name": "OASF",
+  "endpoint": "ipfs://bafkreioasfmanifest...",
+  "version": "0.8",
+  "skills": ["data-analysis", "summarization"],
+  "domains": ["finance", "research"]
+}
+```
+
+**When to use:** You want your agent discoverable by skill or domain, using the OASF taxonomy.
+
+**Requirements:**
+- Can be IPFS or HTTPS
+- Optional `skills[]` and `domains[]` arrays for classification
+
+<Note>
+**Use Pinata for OASF manifests.** OASF manifests are static JSON documents — perfect for IPFS. Upload via Pinata and use the CID as your endpoint.
+</Note>
+
+**Resources:**
+- [OASF Specification](https://github.com/agntcy/oasf)
+
+## ENS (Ethereum Name Service)
+
+**Purpose:** Human-readable name for your agent.
+
+```json
+{
+  "name": "ENS",
+  "endpoint": "myagent.eth",
+  "version": "v1"
+}
+```
+
+**When to use:** You've registered an ENS name for your agent and want it discoverable.
+
+**Requirements:**
+- Must be a valid `.eth` name
+- You should control the ENS name
+
+## DID (Decentralized Identifier)
+
+**Purpose:** W3C-standard decentralized identity.
+
+```json
+{
+  "name": "DID",
+  "endpoint": "did:web:myagent.com",
+  "version": "v1"
+}
+```
+
+**When to use:** Your agent has a DID for cross-platform identity verification.
+
+**Common DID methods:**
+- `did:web:domain.com` — Web-based DID
+- `did:ethr:0x...` — Ethereum-based DID
+- `did:key:z...` — Key-based DID
+
+**Resources:**
+- [W3C DID Specification](https://www.w3.org/TR/did-core/)
+
+## Email
+
+**Purpose:** Contact email for the agent operator.
+
+```json
+{
+  "name": "email",
+  "endpoint": "contact@myagent.com"
+}
+```
+
+**When to use:** You want to provide a human contact point for support, business inquiries, or abuse reports.
+
+## Service Selection Guide
+
+| If your agent... | Include these services |
+|------------------|------------------------|
+| Has a landing page | `web` |
+| Provides tools to LLMs | `MCP` |
+| Talks to other agents | `A2A` |
+| Uses OASF taxonomy | `OASF` |
+| Has an ENS name | `ENS` |
+| Has a DID | `DID` |
+| Needs human contact | `email` |
+
+Most agents should include at least `web` and one protocol endpoint (MCP or A2A).
+
+## Using Pinata with ERC-8004
+
+Pinata handles IPFS storage for several parts of your agent registration. The ERC-8004 spec explicitly recommends IPFS: *"we suggest using IPFS for full data"*
+
+### Agent URI (Token URI)
+
+The most important use — your agent's identity document lives on IPFS, making it censorship-resistant and permanently verifiable.
+
+```typescript
+const result = await pinata.upload.public.file(agentCardFile)
+const agentURI = `ipfs://${result.cid}`
+
+await contract.setAgentURI(agentId, agentURI)
+```
+
+### Agent Image
+
+The agent's avatar. Images don't change often, making them perfect for content-addressing.
+
+```json
+{
+  "image": "ipfs://bafkreiaims435hmzeg3l6ixlrlvnei7wept5kmfd6c2ncz3ucl466xhucu"
+}
+```
+
+### OASF Manifests
+
+Static skill/domain definitions are ideal for IPFS:
+
+```typescript
+const manifest = { skills: ["data-analysis"], domains: ["finance"] }
+const result = await pinata.upload.public.json(manifest)
+// Use ipfs://${result.cid} as your OASF endpoint
+```
+
+### Reputation Feedback
+
+When storing feedback details on IPFS, the `feedbackHash` parameter is **optional** because the CID already guarantees integrity:
+
+```typescript
+await contract.giveFeedback(
+  agentId,
+  100,                        // value
+  0,                          // decimals
+  "quality",                  // tag1
+  "",                         // tag2
+  "",                         // endpoint
+  `ipfs://${result.cid}`,     // feedbackURI
+  "0x00...00"                 // hash NOT needed for IPFS
+)
+```
+
+### .well-known via IPFS Gateway
+
+Serve your domain verification file from IPFS using a Cloudflare Worker:
+
+```javascript
+if (url.pathname === '/.well-known/agent-registration.json') {
+  const response = await fetch('https://your-gateway.mypinata.cloud/ipfs/bafkrei...')
+  return new Response(response.body, {
+    headers: { 'Content-Type': 'application/json' }
+  })
+}
+```
+
+## About agentWallet (On-Chain Metadata)
+
+Payment wallet is **not** a service endpoint — it's on-chain metadata managed by the Identity Registry contract.
+
+**How it works:**
+1. When you register, `agentWallet` is initially set to your owner address
+2. To change it, call `setAgentWallet()` with an EIP-712 signature (EOA) or ERC-1271 signature (smart contract wallet)
+3. When the agent NFT is transferred, `agentWallet` is automatically cleared
+
+**Contract functions:**
+```solidity
+function setAgentWallet(uint256 agentId, address newWallet, uint256 deadline, bytes signature)
+function getAgentWallet(uint256 agentId) returns (address)
+function unsetAgentWallet(uint256 agentId)
+```
+
+This design ensures the payment wallet is cryptographically verified on-chain, not just declared in a JSON file.

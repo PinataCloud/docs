@@ -1,0 +1,127 @@
+---
+title: "update"
+---
+
+Update an existing payment instruction
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const instruction = await pinata.x402.updatePaymentInstruction(
+  "01234567-89ab-cdef-0123-456789abcdef",
+  {
+    name: "Updated Premium Content",
+  }
+);
+```
+
+## Returns
+
+```typescript
+type PaymentInstructionResponse = {
+  data: PaymentInstruction;
+};
+
+type PaymentInstruction = {
+  id: string;
+  version: number;
+  payment_requirements: PaymentRequirement[];
+  name: string;
+  description?: string;
+  created_at: string;
+};
+
+type PaymentRequirement = {
+  asset: string;
+  pay_to: string;
+  network: "base" | "base-sepolia" | "eip155:8453" | "eip155:84532";
+  amount: string;
+  description?: string;
+};
+```
+
+## Parameters
+
+### id (required)
+
+- Type: `string`
+
+The unique identifier of the payment instruction to update
+
+```typescript
+const instruction = await pinata.x402.updatePaymentInstruction(
+  "01234567-89ab-cdef-0123-456789abcdef",
+  {
+    name: "Updated Name",
+  }
+);
+```
+
+### name
+
+- Type: `string`
+
+Update the name of the payment instruction
+
+```typescript {4}
+const instruction = await pinata.x402.updatePaymentInstruction(
+  "01234567-89ab-cdef-0123-456789abcdef",
+  {
+    name: "Updated Premium Content",
+  }
+);
+```
+
+### payment_requirements
+
+- Type: `PaymentRequirement[]`
+
+Update the payment requirements array
+
+```typescript {4-11}
+const instruction = await pinata.x402.updatePaymentInstruction(
+  "01234567-89ab-cdef-0123-456789abcdef",
+  {
+    payment_requirements: [
+      {
+        asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC on Base
+        pay_to: "0xnewaddress1234567890abcdef12345678",
+        network: "base",
+        amount: "20000", // $0.02 in USDC (6 decimals)
+      },
+    ],
+  }
+);
+```
+
+#### PaymentRequirement Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `asset` | `string` | Yes | The USDC token contract address for the network |
+| `pay_to` | `string` | Yes | The wallet address to receive payments |
+| `network` | `"base"` \| `"base-sepolia"` \| `"eip155:8453"` \| `"eip155:84532"` | Yes | The blockchain network |
+| `amount` | `string` | Yes | The amount required for access |
+| `description` | `string` | No | Optional description for this requirement |
+
+### description
+
+- Type: `string`
+
+Update the description of the payment instruction
+
+```typescript {4}
+const instruction = await pinata.x402.updatePaymentInstruction(
+  "01234567-89ab-cdef-0123-456789abcdef",
+  {
+    description: "Updated description for the payment instruction",
+  }
+);
+```

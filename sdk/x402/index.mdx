@@ -1,0 +1,88 @@
+---
+title: "x402 Monetization"
+---
+
+<Note>
+  x402 is available on paid Pinata accounts. [Upgrade your account](https://app.pinata.cloud/billing) to access x402 monetization features.
+</Note>
+
+Monetize your private IPFS files by receiving USDC payments directly to your wallet using the x402 protocol.
+
+For detailed concepts and workflows, see the [x402 Introduction](/files/x402/intro).
+
+## Quick Example
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "your-gateway.mypinata.cloud",
+});
+
+// 1. Upload a private file
+const file = new File(["premium content"], "content.pdf", { type: "application/pdf" });
+const upload = await pinata.upload.private.file(file);
+
+// 2. Create a payment instruction
+const instruction = await pinata.x402.createPaymentInstruction({
+  name: "Premium Content Access",
+  payment_requirements: [
+    {
+      asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC on Base
+      pay_to: "0xYourWalletAddress", // YOU receive payments here
+      network: "base",
+      amount: "10000", // $0.01 in USDC
+    },
+  ],
+});
+
+// 3. Attach CID to payment instruction
+await pinata.x402.addCid(instruction.data.id, upload.cid);
+
+// 4. Share the x402 gateway URL
+// https://your-gateway.mypinata.cloud/x402/cid/{cid}
+```
+
+## Network Configuration
+
+**USDC is currently the only supported token.**
+
+| Network | USDC Token Address | Use Case |
+|---------|-------------------|----------|
+| Base (Mainnet) | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` | Production monetization |
+| Base Sepolia (Testnet) | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` | Testing payment flows |
+
+## Payment Amounts
+
+USDC has 6 decimals. To convert USD to token amount, multiply by 1,000,000:
+
+| USD | `amount` |
+|-----|----------|
+| $0.01 | `"10000"` |
+| $0.10 | `"100000"` |
+| $1.00 | `"1000000"` |
+
+## Available Methods
+
+### Payment Instructions
+
+- [list](/sdk/x402/payment-instructions/list) - List all payment instructions
+- [create](/sdk/x402/payment-instructions/create) - Create a new payment instruction
+- [get](/sdk/x402/payment-instructions/get) - Get a payment instruction by ID
+- [update](/sdk/x402/payment-instructions/update) - Update a payment instruction
+- [delete](/sdk/x402/payment-instructions/delete) - Delete a payment instruction
+
+### CID Management
+
+- [list](/sdk/x402/cids/list) - List CIDs attached to a payment instruction
+- [add](/sdk/x402/cids/add) - Attach a CID to a payment instruction
+- [remove](/sdk/x402/cids/remove) - Remove a CID from a payment instruction
+
+## Related Resources
+
+- [x402 Introduction](/files/x402/intro) - Overview of x402 monetization
+- [Quick Start Guide](/files/x402/x402-quick-start) - Step-by-step setup guide
+- [Payment Instructions Guide](/files/x402/x402-payment-instructions) - Detailed workflow guide
+- [Accessing Paid Content](/files/x402/x402-accessing-paid-content) - How requesters access paid content
+- [x402 Types](/sdk/types/x402) - TypeScript type definitions

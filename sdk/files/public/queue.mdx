@@ -1,0 +1,119 @@
+---
+title: "queue"
+description: "`org:files:read`"
+---
+
+List pin by CID requests in queue
+
+## Usage
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "example-gateway.mypinata.cloud",
+});
+
+const queue = await pinata.files.public.queue().status("prechecking")
+```
+
+## Returns
+
+```typescript
+export type PinQueueResponse = {
+	rows: PinQueueItem[];
+	next_page_token: string;
+};
+
+export type PinQueueItem = {
+	id: string;
+	cid: string;
+	date_queued: string;
+	name: string;
+	status: string;
+	keyvalues: any;
+	host_nodes: string[];
+	pin_policy: {
+		regions: {
+			id: string;
+			desiredReplicationCount: number;
+		}[];
+		version: number;
+	};
+};
+```
+
+## Parameters
+
+Filter results with the following methods. All filters are optional.
+
+### cid
+
+- Type: `string`
+
+Filter by `cid`
+
+```typescript
+const jobs = await pinata.files.public
+  .queue()
+  .cid('bafkreih5aznjvttude6c3wbvqeebb6rlx5wkbzyppv7garjiubll2ceym4')
+```
+
+### status
+
+- Type: ` "prechecking" | "retrieving" | "expired" | "backfilled" | "over_free_limit" | "over_max_size" | "invalid_object" | "bad_host_node"`
+
+Filter by current status
+
+```typescript
+const jobs = await pinata.files.public
+  .queue()
+  .status("prechecking")
+```
+
+### sort
+
+- Type: `"ASC" | "DSC"`
+
+Order results by either ascending or descending by submission
+
+```typescript
+const jobs = await pinata.files.public
+  .queue()
+  .sort("ASC")
+```
+
+### pageLimit
+
+- Type: `number`
+
+Limit the number of results. Default is `10`, max is `250`
+
+```typescript
+const jobs = await pinata.files.public
+  .queue()
+  .pageLimit(100)
+```
+
+### pageToken
+
+- Type: `string`
+
+Paginate through results
+
+```typescript
+const jobs = await pinata.files.public
+  .queue()
+  .pageToken("TOKEN")
+```
+
+## Auto Paginate
+
+The `pinJobs` method has an auto pagination feature that is triggered when used inside a `for await` iterator
+
+```typescript
+for await (const job of pinata.files.public.queue().status("expired") {
+  console.log(job.cid);
+}
+```

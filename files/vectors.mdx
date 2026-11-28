@@ -1,9 +1,10 @@
 ---
 title: "File Vectors (Beta)"
+icon: "microchip-ai"
 ---
 
 <Warning>
-  The file vectors feature is still in beta. Please contact the team at <a href="mailto:team@pinata.cloud" target="_blank">team@pinata.cloud</a> if you have any issues.
+  The file vectors feature is still in beta and is only available on Private IPFS. Please contact the team at <a href="mailto:team@pinata.cloud" target="_blank">team@pinata.cloud</a> if you have any issues.
 </Warning>
 
 ## Overview
@@ -11,7 +12,7 @@ title: "File Vectors (Beta)"
 A common nusance when building AI apps is context embeddings. If you use a traditional stack you generall have to store an embedding, vectorize it, store the vector, then when you query a vector you'll get another reference to the file which you then have to fetch again. Pinata's solution is much more elegant. With Pinata's file vectoring you can upload a file and vector it at the same time.
 
 ```typescript
-const upload = await pinata.upload
+const upload = await pinata.upload.private
   .file(file)
   .group("GROUP_ID")
   .vectorize()
@@ -20,7 +21,7 @@ const upload = await pinata.upload
 When it comes time to query a vector, you have the option to either list your query results and judge the matching score, or just return the highest scoring file itself.
 
 ```typescript
-const { data, contentType } = await pinata.files
+const { data, contentType } = await pinata.files.private
   .queryVectors({
     groupId: "GROUP_ID",
     query: "Hello World!",
@@ -50,7 +51,7 @@ There are two ways you can vectorize file uploads, and with both options **files
 If you use the [Files SDK](/sdk/getting-started) you can vectorize a file on upload.
 
 ```typescript {4}
-const upload = await pinata.upload
+const upload = await pinata.upload.private
   .file(file)
   .group("GROUP_ID")
   .vectorize()
@@ -58,10 +59,10 @@ const upload = await pinata.upload
 
 ### Vectorize After Upload
 
-If you already have a file that's been uploaded and it's [part of a group](/file-groups) then you can vectorize it.
+If you already have a file that's been uploaded and it's [part of a group](/files/file-groups) then you can vectorize it.
 
 ```typescript
-const update = await pinata.files.vectorize("FILE_ID")
+const update = await pinata.files.private.vectorize("FILE_ID")
 ```
 
 ## Querying Vectors
@@ -69,7 +70,7 @@ const update = await pinata.files.vectorize("FILE_ID")
 After a file has been vectorized and it's part of a group, you can query vectors for a given group.
 
 ```typescript
-const results = await pinata.files.queryVectors({
+const results = await pinata.files.private.queryVectors({
   groupId: "52681e41-86f4-407b-8f79-33a7e7e5df68",
   query: "Hello World"
 })
@@ -95,7 +96,7 @@ type VectorQueryMatch = {
 A unique feature in the SDK is if you pass in the `returnFile` flag then you will get the file and it's contents rather than just the reference to the file.
 
 ```typescript {4}
-const { data, contentType }  = await pinata.files.queryVectors({
+const { data, contentType }  = await pinata.files.private.queryVectors({
   groupId: "52681e41-86f4-407b-8f79-33a7e7e5df68",
   query: "Hello World",
   returnFile: true
@@ -107,5 +108,5 @@ const { data, contentType }  = await pinata.files.queryVectors({
 If at any point you need to delete vectors for a file you can do so with the `deleteVectors` method in the SDK.
 
 ```typescript
-const update = await pinata.files.deleteVectors("FILE_ID")
+const update = await pinata.files.private.deleteVectors("FILE_ID")
 ```

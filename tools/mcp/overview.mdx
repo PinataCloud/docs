@@ -1,0 +1,99 @@
+---
+title: "Overview"
+description: "Use the Pinata MCP server to give AI assistants access to IPFS file storage"
+---
+
+## What is MCP?
+
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) is an open standard that allows AI assistants like Claude to interact with external tools and services. MCP servers expose capabilities that AI models can use to perform actions on your behalf.
+
+The **Pinata MCP server** gives Claude (and other MCP-compatible assistants) the ability to:
+
+- Upload and manage files on IPFS (public and private)
+- Search, retrieve, and delete files
+- Organize files into groups
+- Create gateway links for sharing content
+- Set up content monetization with x402 payment instructions
+- Vectorize files for semantic search
+- Pin existing CIDs from the IPFS network
+
+## Two ways to connect
+
+- **[Hosted server](/tools/mcp/hosted)** at `https://mcp.pinata.cloud`: add the URL to any client that supports remote MCP servers (Claude Code, Claude Desktop and claude.ai, ChatGPT, Codex, Cursor, VS Code, Gemini CLI, Windsurf), then sign in with your Pinata account or use an API key. Nothing to install.
+- **Local server** (`pinata-mcp` on npm, below): runs on your machine with `npx`, and can read files and directories from your disk directly, so the assistant can upload large files and whole folders on its own.
+
+Both have the same tools for files, groups, links, x402 payments, signatures, pins and vectors, with the same names, so the same prompts work on both. When you sign in to the hosted server instead of using an API key, the x402 payment tools aren't available. The [Tools Reference](/tools/mcp/tools) notes where they differ.
+
+## Local server
+
+### Prerequisites
+
+- Node.js 18+ installed
+- A [Pinata account](https://app.pinata.cloud) with an [API key (JWT)](/account-management/api-keys)
+- A [Pinata Gateway](/gateways/dedicated-ipfs-gateways) URL
+
+### Installation
+
+The local Pinata MCP server is available on npm and can be run via `npx`. Installation depends on which client you're using.
+
+#### Claude Code
+
+Run `claude mcp add` and follow the prompts:
+
+```
+Server Name: pinata
+Server Scope: Project or Global
+Server Command: npx
+Command Arguments: pinata-mcp /path/to/allowed/directory
+Environment Variables: PINATA_JWT=<YOUR_JWT>,GATEWAY_URL=example.mypinata.cloud
+```
+
+#### Claude Desktop
+
+Add the following to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "pinata": {
+      "command": "npx",
+      "args": [
+        "pinata-mcp",
+        "/path/to/allowed/directory",
+        "/another/allowed/directory"
+      ],
+      "env": {
+        "PINATA_JWT": "<YOUR_JWT>",
+        "GATEWAY_URL": "example.mypinata.cloud"
+      }
+    }
+  }
+}
+```
+
+<Note>
+The directory arguments are optional and control which local directories the MCP server can access for file uploads. If not provided, the server only allows access to the current working directory. You can specify multiple directories.
+</Note>
+
+### Configuration
+
+| Environment Variable | Required | Description |
+|---------------------|----------|-------------|
+| `PINATA_JWT` | Yes | Your Pinata API JWT from the [API Keys page](https://app.pinata.cloud/developers/api-keys) |
+| `GATEWAY_URL` | Yes | Your Pinata gateway domain (e.g., `example.mypinata.cloud`) |
+
+## Verifying the Connection
+
+Once installed, ask Claude to test the connection:
+
+```
+Test my Pinata authentication to make sure everything is working
+```
+
+Claude will use the `testAuthentication` tool to check the connection and show which account it acts as. This works the same on the hosted and the local server.
+
+## Next Steps
+
+See the [Tools Reference](/tools/mcp/tools) for a complete list of available tools with parameters and example prompts.
+
+To also teach your coding agent how to build with Pinata (the SDK, presigned uploads, gateways), install the [Agent Skill](/tools/skills): `npx skills add PinataCloud/skills`.

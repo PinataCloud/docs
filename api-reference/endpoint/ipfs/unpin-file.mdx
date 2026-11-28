@@ -3,7 +3,7 @@ openapi: delete /pinning/unpin/{CID}
 ---
 
 <Accordion title="Unpin All Files">
-If you find yourself in a place where you need to unpin a lot of files or perhaps all your files, you can use a script like this to create an array of CIDs and unpin them one by one. The example below uses the [`pinList`](/api-reference/endpoint/ipfs/list-files) queries to target all pinned files and return 1000 for each request. This could easily be done with a different query to target different files, please check out the [listing files](/web3/pinning/listing-files) doc for more info.
+If you find yourself in a place where you need to unpin a lot of files or perhaps all your files, you can use a script like this to create an array of CIDs and unpin them one by one. The example below uses the [`pinList`](/api-reference/endpoint/ipfs/list-files) queries to target all pinned files and return 1000 for each request. This could easily be done with a different query to target different files, please check out the [listing files](/files/listing-files) doc for more info.
 
 ```javascript Unpin All Files
 const PINATA_JWT = "YOUR_JWT_HERE";

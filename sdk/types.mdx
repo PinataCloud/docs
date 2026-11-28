@@ -2,25 +2,280 @@
 Title: "Types"
 ---
 
-## `AuthTestResponse`
+## Analytics Types
 
+### `AnalyticsQuery`
 ```typescript
-type AuthTestResponse = {
-  message: string;
+type AnalyticsQuery = {
+  gateway_domain: string;
+  start_date: string;
+  end_date: string;
+  cid?: string;
+  file_name?: string;
+  user_agent?: string;
+  country?: string;
+  region?: string;
+  referer?: string;
+  limit?: number;
+  sort_order?: "asc" | "desc";
 };
 ```
 
-## `ContainsCIDResponse`
-
+### `TopAnalyticsQuery`
 ```typescript
-type ContainsCIDResponse = {
-  containsCid: boolean;
-  cid: string | null;
+type TopAnalyticsQuery = AnalyticsQuery & {
+  sort_by: "requests" | "bandwidth";
+  attribute: "cid" | "country" | "region" | "user_agent" | "referer" | "file_name";
 };
 ```
 
-## `ContentType`
+### `TopAnalyticsResponse`
+```typescript
+type TopAnalyticsResponse = {
+  data: TopAnalyticsItem[];
+};
+```
 
+### `TopAnalyticsItem`
+```typescript
+type TopAnalyticsItem = {
+  value: string;
+  requests: number;
+  bandwidth: number;
+};
+```
+
+### `TimeIntervalAnalyticsQuery`
+```typescript
+type TimeIntervalAnalyticsQuery = AnalyticsQuery & {
+  sort_by?: "requests" | "bandwidth";
+  date_interval: "day" | "week";
+};
+```
+
+### `TimePeriodItem`
+```typescript
+type TimePeriodItem = {
+  period_start_time: string;
+  requests: number;
+  bandwidth: number;
+};
+```
+
+### `TimeIntervalAnalyticsResponse`
+```typescript
+type TimeIntervalAnalyticsResponse = {
+  total_requests: number;
+  total_bandwidth: number;
+  time_periods: TimePeriodItem[];
+};
+```
+
+### `UserPinnedDataResponse`
+```typescript
+type UserPinnedDataResponse = {
+  pin_count: number;
+  pin_size_total: number;
+  pin_size_with_replications_total: number;
+};
+```
+
+## Config Types
+
+### `PinataConfig`
+```typescript
+type PinataConfig = {
+  pinataJwt?: string;
+  pinataGateway?: string;
+  pinataGatewayKey?: string;
+  customHeaders?: Record<string, string>;
+  endpointUrl?: string;
+  uploadUrl?: string;
+};
+```
+
+## File Types
+
+### `FileObject`
+```typescript
+type FileObject = {
+  name: string;
+  size: number;
+  type: string;
+  lastModified: number;
+  arrayBuffer: () => Promise<ArrayBuffer>;
+};
+```
+
+### `JsonBody`
+```typescript
+type JsonBody = Record<string, unknown>;
+```
+
+### `PinataMetadata`
+```typescript
+type PinataMetadata = {
+  name?: string;
+  keyvalues?: Record<string, string>;
+};
+```
+
+### `UpdateFileOptions`
+```typescript
+type UpdateFileOptions = {
+  id: string;
+  name?: string;
+  keyvalues?: Record<string, string>;
+};
+```
+
+### `DeleteResponse`
+```typescript
+type DeleteResponse = {
+  id: string;
+  status: string;
+};
+```
+
+### `FileListItem`
+```typescript
+type FileListItem = {
+  id: string;
+  name: string | null;
+  cid: "pending" | string;
+  size: number;
+  number_of_files: number;
+  mime_type: string;
+  keyvalues: Record<string, string>;
+  group_id: string | null;
+  created_at: string;
+};
+```
+
+### `FileListResponse`
+```typescript
+type FileListResponse = {
+  files: FileListItem[];
+  next_page_token: string;
+};
+```
+
+### `FileListQuery`
+```typescript
+type FileListQuery = {
+  name?: string;
+  group?: string;
+  noGroup?: boolean;
+  mimeType?: string;
+  cid?: string;
+  cidPending?: boolean;
+  metadata?: Record<string, string>;
+  order?: "ASC" | "DESC";
+  limit?: number;
+  pageToken?: string;
+};
+```
+
+### `PinQueueQuery`
+```typescript
+type PinQueueQuery = {
+  sort?: "ASC" | "DSC";
+  status?: "prechecking" | "retrieving" | "expired" | "backfilled" | "over_free_limit" | "over_max_size" | "invalid_object" | "bad_host_node";
+  cid?: string;
+  limit?: number;
+  pageToken?: string;
+};
+```
+
+### `PinQueueItem`
+```typescript
+type PinQueueItem = {
+  id: string;
+  cid?: string;
+  ipfs_pin_hash?: string;
+  date_queued: string;
+  name: string;
+  status: string;
+  keyvalues: any;
+  host_nodes: string[];
+  pin_policy: {
+    regions: {
+      id: string;
+      desiredReplicationCount: number;
+    }[];
+    version: number;
+  };
+};
+```
+
+### `PinQueueResponse`
+```typescript
+type PinQueueResponse = {
+  rows: PinQueueItem[];
+  next_page_token: string;
+};
+```
+
+### `SwapCidOptions`
+```typescript
+type SwapCidOptions = {
+  cid: string;
+  swapCid: string;
+};
+```
+
+### `SwapHistoryOptions`
+```typescript
+type SwapHistoryOptions = {
+  cid: string;
+  domain: string;
+};
+```
+
+### `SwapCidResponse`
+```typescript
+type SwapCidResponse = {
+  mapped_cid: string;
+  created_at: string;
+};
+```
+
+### `VectorizeFileResponse`
+```typescript
+type VectorizeFileResponse = {
+  status: boolean;
+};
+```
+
+### `VectorizeQuery`
+```typescript
+type VectorizeQuery = {
+  groupId: string;
+  query: string;
+  returnFile?: boolean;
+};
+```
+
+### `VectorQueryMatch`
+```typescript
+type VectorQueryMatch = {
+  file_id: string;
+  cid: string;
+  score: number;
+};
+```
+
+### `VectorizeQueryResponse`
+```typescript
+type VectorizeQueryResponse = {
+  count: number;
+  matches: VectorQueryMatch[];
+};
+```
+
+## Gateway Types
+
+### `ContentType`
 ```typescript
 type ContentType =
   | "application/json"
@@ -43,99 +298,7 @@ type ContentType =
   | null;
 ```
 
-## `DataEndpoints`
-
-```typescript
-type DataEndpoints = {
-  pinList?: boolean;
-  userPinnedDataTotal?: boolean;
-};
-```
-
-## `DeleteResponse`
-
-```typescript
-type DeleteResponse = {
-  id: string;
-  status: string;
-};
-```
-
-## `Endpoints`
-
-```typescript
-type Endpoints = {
-  data?: DataEndpoints;
-  pinning?: PinningEndpoints;
-};
-```
-
-## `FileListItem`
-
-```typescript
-type FileListItem = {
-  id: string;
-  name: string | null;
-  cid: "pending" | string;
-  size: number;
-  number_of_files: number;
-  mime_type: string;
-  group_id: string | null;
-  created_at: string;
-};
-```
-
-## `FileListQuery`
-
-```typescript
-type FileListQuery = {
-  limit?: number;
-  pageToken?: string;
-  cidPending?: boolean;
-};
-```
-
-## `FileListResponse`
-
-```typescript
-type FileListResponse = {
-  files: FileListItem[];
-  next_page_token: string;
-};
-```
-
-## `FileObject`
-
-```typescript
-type FileObject = {
-  name: string;
-  size: number;
-  type: string;
-  lastModified: number;
-  arrayBuffer: () => Promise<ArrayBuffer>;
-};
-```
-
-## `GatewayAnalyticsQuery`
-
-```typescript
-type GatewayAnalyticsQuery = {
-  gateway_domain: string;
-  start_date: string;
-  end_date: string;
-  cid?: string;
-  file_name?: string;
-  user_agent?: string;
-  country?: string;
-  region?: string;
-  referer?: string;
-  limit?: number;
-  sort_order?: "asc" | "desc";
-};
-```
-
-## `GetCIDResponse`
-
+### `GetCIDResponse`
 ```typescript
 type GetCIDResponse = {
   data?: JSON | string | Blob | null;
@@ -143,153 +306,7 @@ type GetCIDResponse = {
 };
 ```
 
-## `GetGroupOptions`
-
-```typescript
-type GetGroupOptions = {
-  groupId: string;
-};
-```
-
-## `GroupCIDOptions`
-
-```typescript
-type GroupCIDOptions = {
-  groupId: string;
-  cids: string[];
-};
-```
-
-## `GroupListResponse`
-
-```typescript
-type GroupListResponse = {
-  groups: GroupResponseItem[];
-  next_page_token: string;
-};
-```
-
-## `GroupOptions`
-
-```typescript
-type GroupOptions = {
-  name: string;
-  isPublic?: boolean;
-};
-```
-
-## `GroupQueryOptions`
-
-```typescript
-type GroupQueryOptions = {
-  nameContains?: string;
-  limit?: number;
-  pageToken?: string;
-  isPublic?: boolean;
-};
-```
-
-## `GroupResponseItem`
-
-```typescript
-type GroupResponseItem = {
-  id: string;
-  is_public: boolean;
-  name: string;
-  createdAt: string;
-};
-```
-
-## `JsonBody`
-
-```typescript
-type JsonBody = Record<string, unknown>;
-```
-
-## `KeyListItem`
-
-```typescript
-type KeyListItem = {
-  id: string;
-  name: string;
-  key: string;
-  secret: string;
-  max_uses: number;
-  uses: number;
-  user_id: string;
-  scopes: KeyScopes;
-  revoked: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-```
-
-## `KeyListQuery`
-
-```typescript
-type KeyListQuery = {
-  revoked?: boolean;
-  limitedUse?: boolean;
-  exhausted?: boolean;
-  name?: string;
-  offset?: number;
-};
-```
-
-## `KeyListResponse`
-
-```typescript
-type KeyListResponse = {
-  keys: KeyListItem[];
-  count: number;
-};
-```
-
-## `KeyOptions`
-
-```typescript
-type KeyOptions = {
-  keyName: string;
-  permissions: KeyPermissions;
-  maxUses?: number;
-};
-```
-
-## `KeyPermissions`
-
-```typescript
-type KeyPermissions = {
-  admin?: boolean;
-  endpoints?: Endpoints;
-};
-```
-
-## `KeyResponse`
-
-```typescript
-type KeyResponse = {
-  JWT: string;
-  pinata_api_key: string;
-  pinata_api_secret: string;
-};
-```
-
-## `KeyScopes`
-
-```typescript
-type KeyScopes = {
-  endpoints: {
-    pinning: {
-      pinFileToIPFS: boolean;
-      pinJSONToIPFS: boolean;
-    };
-  };
-  admin: boolean;
-};
-```
-
-## `OptimizeImageOptions`
-
+### `OptimizeImageOptions`
 ```typescript
 type OptimizeImageOptions = {
   width?: number;
@@ -306,30 +323,137 @@ type OptimizeImageOptions = {
 };
 ```
 
-## `PinataConfig`
-
+### `AccessLinkOptions`
 ```typescript
-type PinataConfig = {
-  pinataJwt: string | undefined;
-  pinataGateway?: string;
-  pinataGatewayKey?: string;
-  customHeaders?: Record<string, string>;
-  endpointUrl?: string;
-  uploadUrl?: string;
+type AccessLinkOptions = {
+  cid: string;
+  date?: number;
+  expires: number;
+  gateway?: string;
 };
 ```
 
-## `PinataMetadata`
-
+### `ContainsCIDResponse`
 ```typescript
-type PinataMetadata = {
+type ContainsCIDResponse = {
+  containsCid: boolean;
+  cid: string | null;
+};
+```
+
+## Group Types
+
+### `GroupOptions`
+```typescript
+type GroupOptions = {
+  name: string;
+  isPublic?: boolean;
+};
+```
+
+### `UpdateGroupOptions`
+```typescript
+type UpdateGroupOptions = {
+  groupId: string;
   name?: string;
-  keyvalues: Record<string, string>;
+  isPublic?: boolean;
 };
 ```
 
-## `PinningEndpoints`
+### `GetGroupOptions`
+```typescript
+type GetGroupOptions = {
+  groupId: string;
+};
+```
 
+### `GroupListResponse`
+```typescript
+type GroupListResponse = {
+  groups: GroupResponseItem[];
+  next_page_token: string;
+};
+```
+
+### `GroupResponseItem`
+```typescript
+type GroupResponseItem = {
+  id: string;
+  is_public: boolean;
+  name: string;
+  createdAt: string;
+};
+```
+
+### `GroupQueryOptions`
+```typescript
+type GroupQueryOptions = {
+  name?: string;
+  limit?: number;
+  pageToken?: string;
+  isPublic?: boolean;
+};
+```
+
+### `GroupCIDOptions`
+```typescript
+type GroupCIDOptions = {
+  groupId: string;
+  files: string[];
+};
+```
+
+### `UpdateGroupFilesResponse`
+```typescript
+type UpdateGroupFilesResponse = {
+  id: string;
+  status: string;
+};
+```
+
+## Key Types
+
+### `KeyPermissions`
+```typescript
+type KeyPermissions = {
+  admin?: boolean;
+  endpoints?: Endpoints;
+  resources?: ResourcePermission[];
+};
+```
+
+### `ResourcePermission`
+```typescript
+type ResourcePermission =
+  | "org:read"
+  | "org:write"
+  | "org:files:read"
+  | "org:files:write"
+  | "org:groups:read"
+  | "org:groups:write"
+  | "org:gateways:read"
+  | "org:gateways:write"
+  | "org:analytics:read"
+  | "org:analytics:write";
+```
+
+### `Endpoints`
+```typescript
+type Endpoints = {
+  data?: DataEndponts;
+  pinning?: PinningEndpoints;
+};
+```
+
+### `DataEndponts`
+```typescript
+type DataEndponts = {
+  pinList?: boolean;
+  userPinnedDataTotal?: boolean;
+};
+```
+
+### `PinningEndpoints`
 ```typescript
 type PinningEndpoints = {
   hashMetadata?: boolean;
@@ -343,8 +467,74 @@ type PinningEndpoints = {
 };
 ```
 
-## `RevokeKeyResponse`
+### `KeyOptions`
+```typescript
+type KeyOptions = {
+  keyName: string;
+  permissions: KeyPermissions;
+  maxUses?: number;
+};
+```
 
+### `KeyResponse`
+```typescript
+type KeyResponse = {
+  JWT: string;
+  pinata_api_key: string;
+  pinata_api_secret: string;
+};
+```
+
+### `KeyListQuery`
+```typescript
+type KeyListQuery = {
+  revoked?: boolean;
+  limitedUse?: boolean;
+  exhausted?: boolean;
+  name?: string;
+  offset?: number;
+};
+```
+
+### `KeyListItem`
+```typescript
+type KeyListItem = {
+  id: string;
+  name: string;
+  key: string;
+  secret: string;
+  max_uses: number;
+  uses: number;
+  user_id: string;
+  scopes: KeyScopes;
+  revoked: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+### `KeyScopes`
+```typescript
+type KeyScopes = {
+  endpoints: {
+    pinning: {
+      pinFileToIPFS: boolean;
+      pinJSONToIPFS: boolean;
+    };
+  };
+  admin: boolean;
+};
+```
+
+### `KeyListResponse`
+```typescript
+type KeyListResponse = {
+  keys: KeyListItem[];
+  count: number;
+};
+```
+
+### `RevokeKeyResponse`
 ```typescript
 type RevokeKeyResponse = {
   key: string;
@@ -352,17 +542,18 @@ type RevokeKeyResponse = {
 };
 ```
 
-## `SignatureOptions`
+## Signature Types
 
+### `SignatureOptions`
 ```typescript
 type SignatureOptions = {
   cid: string;
   signature: string;
+  address: string;
 };
 ```
 
-## `SignatureResponse`
-
+### `SignatureResponse`
 ```typescript
 type SignatureResponse = {
   cid: string;
@@ -370,128 +561,9 @@ type SignatureResponse = {
 };
 ```
 
-## `SignedUrlOptions`
+## Upload Types
 
-```typescript
-type SignedUrlOptions = {
-  cid: string;
-  date?: number;
-  expires: number;
-};
-```
-
-## `SwapCidOptions`
-
-```typescript
-type SwapCidOptions = {
-  cid: string;
-  swapCid: string;
-};
-```
-
-## `SwapCidResponse`
-
-```typescript
-type SwapCidResponse = {
-  mappedCid: string;
-  createdAt: string;
-};
-```
-
-## `SwapHistoryOptions`
-
-```typescript
-type SwapHistoryOptions = {
-  cid: string;
-  domain: string;
-};
-```
-
-## `TimeIntervalGatewayAnalyticsQuery`
-
-```typescript
-type TimeIntervalGatewayAnalyticsQuery = GatewayAnalyticsQuery & {
-  sort_by?: "requests" | "bandwidth";
-  date_interval: "day" | "week";
-};
-```
-
-## `TimeIntervalGatewayAnalyticsResponse`
-
-```typescript
-type TimeIntervalGatewayAnalyticsResponse = {
-  total_requests: number;
-  total_bandwidth: number;
-  time_periods: TimePeriodItem[];
-};
-```
-
-## `TimePeriodItem`
-
-```typescript
-type TimePeriodItem = {
-  period_start_time: string;
-  requests: number;
-  bandwidth: number;
-};
-```
-
-## `TopGatewayAnalyticsItem`
-
-```typescript
-type TopGatewayAnalyticsItem = {
-  value: string;
-  requests: number;
-  bandwidth: number;
-};
-```
-
-## `TopGatewayAnalyticsQuery`
-
-```typescript
-type TopGatewayAnalyticsQuery = GatewayAnalyticsQuery & {
-  sort_by: "requests" | "bandwidth";
-  attribute:
-    | "cid"
-    | "country"
-    | "region"
-    | "user_agent"
-    | "referer"
-    | "file_name";
-};
-```
-
-## `UpdateFileOptions`
-
-```typescript
-type UpdateFileOptions = {
-  id: string;
-  name?: string;
-};
-```
-
-## `UpdateGroupOptions`
-
-```typescript
-type UpdateGroupOptions = {
-  groupId: string;
-  name?: string;
-  isPublic?: boolean;
-};
-```
-
-## `UploadOptions`
-
-```typescript
-type UploadOptions = {
-  metadata?: PinataMetadata;
-  keys?: string;
-  groupId?: string;
-};
-```
-
-## `UploadResponse`
-
+### `UploadResponse`
 ```typescript
 type UploadResponse = {
   id: string;
@@ -501,18 +573,60 @@ type UploadResponse = {
   created_at: string;
   number_of_files: number;
   mime_type: string;
-  user_id: string;
   group_id: string | null;
-  is_duplicate: boolean | null;
+  keyvalues: {
+    [key: string]: string;
+  };
+  vectorized: boolean;
+  network: string;
 };
 ```
 
-## `UserPinnedDataResponse`
-
+### `UploadOptions`
 ```typescript
-type UserPinnedDataResponse = {
-  pin_count: number;
-  pin_size_total: number;
-  pin_size_with_replications_total: number;
+type UploadOptions = {
+  metadata?: PinataMetadata;
+  keys?: string;
+  groupId?: string;
+  vectorize?: boolean;
+  url?: string;
+  peerAddresses?: string[];
 };
 ```
+
+### `SignedUploadUrlOptions`
+```typescript
+type SignedUploadUrlOptions = {
+  date?: number;
+  expires: number;
+  groupId?: string;
+  name?: string;
+  keyvalues?: Record<string, string>;
+  vectorize?: boolean;
+  maxFileSize?: number;
+  mimeTypes?: string[];
+};
+```
+
+### `UploadCIDOptions`
+```typescript
+type UploadCIDOptions = {
+  metadata?: PinataMetadata;
+  peerAddresses?: string[];
+  keys?: string;
+  groupId?: string;
+};
+```
+
+### `PinByCIDResponse`
+```typescript
+type PinByCIDResponse = {
+  id: string;
+  cid: string;
+  date_queued: string;
+  name: string;
+  status: string;
+  keyvalues: Record<string, any> | null;
+  host_nodes: string[] | null;
+  group_id: string | null;
+};

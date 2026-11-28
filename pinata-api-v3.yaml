@@ -12,11 +12,13 @@ components:
 security:
   - bearerAuth: []
 paths:
-  /pinata/keys:
+  /api_keys:
     get:
       tags:
         - default
       summary: List API Keys
+      description: |
+        `org:write`
       parameters:
         - name: revoked
           in: query
@@ -83,8 +85,6 @@ paths:
                   - id: d4ea5a38-4e0a-4126-8fd4-7534d258a995
                     name: 5d945010-d9f0-4ef5-a7a9-4eb487dcdf53
                     key: 6270c5f4ed520756d498effbb6eb4b5f
-                    secret: >-
-                      secretkey
                     max_uses: 2
                     uses: 2
                     user_id: 32bd7147-51d5-4df2-8771-7aeb9dcac7a2
@@ -102,6 +102,8 @@ paths:
       tags:
         - default
       summary: Create API Key
+      description: |
+        `org:write`
       requestBody:
         content:
           application/json:
@@ -117,8 +119,16 @@ paths:
                     admin:
                       type: boolean
                       description: Provides full access to permissions
+                    resources:
+                      type: array
+                      description: Provide an array of scopes in the form `org:<RESOURCE>:<PERMISSION>`. Resources include `files`, `groups`, `gateways`, and `analytics`. Permissions are either `read` or `write` (`write` includes `read` permissions)
+                      items:
+                        type: string
                     endpoints:
                       type: object
+                      description: |
+                        ### Legacy endpoints
+                        These properties are to be used with [legacy endpoints](/api-reference/endpoint/ipfs/pin-file-to-ipfs), any V3 endpoints should use `resources` instead
                       properties:
                         data:
                           type: object
@@ -146,12 +156,8 @@ paths:
                               type: boolean
                             userPinPolicy:
                               type: boolean
-                maxUses:
-                  type: integer
-                  description: Maximum number of uses for the API key
               required:
                 - keyName
-                - permissions
               example:
                 keyname: A test
                 permissions:
@@ -191,11 +197,13 @@ paths:
                 pinata_api_key: key
                 pinata_api_secret: >-
                   secret
-  /pinata/keys/{key}:
-    put:
+  /api_keys/{key}:
+    delete:
       tags:
         - default
       summary: Revoke API Key
+      description: |
+        `org:write`
       parameters:
         - name: key
           in: path
@@ -232,11 +240,13 @@ paths:
               schema:
                 type: object
               example: Revoked
-  /ipfs/gateways:
+  /gateways:
     get:
       tags:
         - default
       summary: List Gateways
+      description: |
+        `org:gateways:read`
       parameters:
         - name: pageSize
           in: query
@@ -299,6 +309,8 @@ paths:
       tags:
         - default
       summary: Create Gateway
+      description: |
+        `org:gateways:write`
       requestBody:
         content:
           application/json:
@@ -354,11 +366,13 @@ paths:
                       accessTokens: []
                       allowedHosts: []
                       allowedIPAddresses: []
-  /ipfs/gateways/{id}:
+  /gateways/{id}:
     get:
       tags:
         - default
       summary: Gateway Details
+      description: |
+        `org:gateways:read`
       parameters:
         - name: id
           in: path
@@ -429,6 +443,8 @@ paths:
       tags:
         - default
       summary: Delete Gateway
+      description: |
+        `org:gateways:write`
       parameters:
         - name: id
           in: path
@@ -471,11 +487,13 @@ paths:
                 type: object
               example:
                 data: null
-  /ipfs/gateways/{id}/custom_domain/{custom_domain_id}:
+  /gateways/{id}/custom_domain/{custom_domain_id}:
     get:
       tags:
         - default
       summary: Gateway Custom Domain Details
+      description: |
+        `org:gateways:read`
       parameters:
         - name: id
           in: path
@@ -533,6 +551,8 @@ paths:
       tags:
         - default
       summary: Delete Gateway Custom Domain
+      description: |
+        `org:gateways:write`
       parameters:
         - name: id
           in: path
@@ -582,11 +602,13 @@ paths:
                 type: object
               example:
                 data: null
-  /ipfs/gateways/exists/{domain}:
+  /gateways/exists/{domain}:
     get:
       tags:
         - default
       summary: Gateway Domain Available
+      description: |
+        `org:gateways:read`
       parameters:
         - name: domain
           in: path
@@ -629,11 +651,13 @@ paths:
               example:
                 data:
                   exists: true
-  /ipfs/gateways/{id}/custom_domain:
+  /gateways/{id}/custom_domain:
     post:
       tags:
         - default
       summary: Create Custom Domain for Gateway
+      description: |
+        `org:gateways:write`
       requestBody:
         content:
           application/json:
@@ -691,11 +715,13 @@ paths:
                   domain_validation_status: pending
                   custom_domain_id: 81bc0135-346d-4d81-ad81-1e313297702f
                   ssl_validation_status: initializing
-  /ipfs/gateways/{id}/access_tokens:
+  /gateways/{id}/access_tokens:
     post:
       tags:
         - default
       summary: Create Gateway Key Restriction
+      description: |
+        `org:gateways:write`
       parameters:
         - name: id
           in: path
@@ -742,11 +768,13 @@ paths:
                   value: >-
                     key
                   createdAt: "2024-07-12T15:34:59.786198063Z"
-  /ipfs/gateways/{id}/ips:
+  /gateways/{id}/ips:
     post:
       tags:
         - default
       summary: Create Gateway IP Address Restriction
+      description: |
+        `org:gateways:write`
       requestBody:
         content:
           application/json:
@@ -803,11 +831,13 @@ paths:
                   id: 66b6f3c5-2733-442b-a558-960be4b5a921
                   value: 1.1.1.1
                   createdAt: "2024-07-12T15:37:04.871996078Z"
-  /ipfs/gateways/{id}/hosts:
+  /gateways/{id}/hosts:
     post:
       tags:
         - default
       summary: Create Gateway Host Origin Restriction
+      description: |
+        `org:gateways:write`
       requestBody:
         content:
           application/json:
@@ -864,11 +894,13 @@ paths:
                   id: b0165cb6-59e2-476e-aa60-b63b9326bcc6
                   value: https://ipfs.pinata.cloud
                   createdAt: "2024-07-12T15:40:40.258353687Z"
-  /ipfs/gateways/{id}/access_tokens/{access_token_id}:
+  /gateways/{id}/access_tokens/{access_token_id}:
     delete:
       tags:
         - default
       summary: Revoke Gateway Key
+      description: |
+        `org:gateways:write`
       parameters:
         - name: id
           in: path
@@ -918,11 +950,13 @@ paths:
                 type: object
               example:
                 data: null
-  /ipfs/gateways/{id}/ips/{ip_id}:
+  /gateways/{id}/ips/{ip_id}:
     delete:
       tags:
         - default
       summary: Revoke IP Address Restricton
+      description: |
+        `org:gateways:write:
       parameters:
         - name: id
           in: path
@@ -972,11 +1006,13 @@ paths:
                 type: object
               example:
                 data: null
-  /ipfs/gateways/{id}/hosts/{host_id}:
+  /gateways/{id}/hosts/{host_id}:
     delete:
       tags:
         - default
       summary: Revoke Host Origin Restriction
+      description: |
+        `org:gateways:write`
       parameters:
         - name: id
           in: path
@@ -1026,11 +1062,13 @@ paths:
                 type: object
               example:
                 data: null
-  /ipfs/gateway_analytics_top:
+  /analytics/gateways/top:
     get:
       tags:
         - Gateway Analytics
       summary: Top Gateway Analytics
+      description: |
+        `org:analytics:read`
       parameters:
         - name: gateway_domain
           in: query
@@ -1057,7 +1095,15 @@ paths:
           in: query
           schema:
             type: string
-            enum: ["cid","country","region", "user_agent", "referrer", "file_name"]
+            enum:
+              [
+                "cid",
+                "country",
+                "region",
+                "user_agent",
+                "referrer",
+                "file_name",
+              ]
           description: >-
             Attribute to aggregaate results by, must be `cid`, `country`, `region`,
             `user_agent`, `referer`, or `file_name`.
@@ -1111,7 +1157,8 @@ paths:
           in: query
           schema:
             type: string
-            enum: ["200", "206", "301", "302","304", "307", "308", "404", "499"]
+            enum:
+              ["200", "206", "301", "302", "304", "307", "308", "404", "499"]
           description: Filter results by HTTP status code
           example: "200"
         - name: limit
@@ -1165,11 +1212,13 @@ paths:
                       bafybeiegx7bgm5gpiutivw6e234gflheqjmp7hxlxfkihd3zdfx6omocia
                     requests: 1341
                     bandwidth: 287310699
-  /ipfs/gateway_analytics_time_series:
+  /analytics/gateways/time_series:
     get:
       tags:
         - Gateway Analytics
       summary: Time Interval Gateway Analytics
+      description: |
+        `org:analytics:read`
       parameters:
         - name: gateway_domain
           in: query
@@ -1247,7 +1296,8 @@ paths:
           in: query
           schema:
             type: string
-            enum: ["200", "206", "301", "302","304", "307", "308", "404", "499"]
+            enum:
+              ["200", "206", "301", "302", "304", "307", "308", "404", "499"]
           description: Filter results by HTTP status code
           example: "200"
         - name: limit
@@ -1344,12 +1394,24 @@ paths:
                     - period_start_time: "2024-08-01"
                       requests: 108
                       bandwidth: 42130724
-  /ipfs/signature/{cid}:
+  /files/{network}/signature/{cid}:
     get:
       tags:
         - default
       summary: Get Signature for a CID
+      description: |
+        `org:files:read`
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: cid
           in: path
           schema:
@@ -1406,6 +1468,8 @@ paths:
       tags:
         - default
       summary: Add Signature to CId
+      description: |
+        `org:files:write`
       requestBody:
         content:
           application/json:
@@ -1415,7 +1479,11 @@ paths:
                 signature:
                   type: string
                   description: Signature for the target CID
+                address:
+                  type: string
+                  description: Wallet address that made the signature
               example:
+                address: "0xbC18447255e86f7f6c01C25e82636dDc587Ef9dc"
                 signature: >-
                   0x1ba6c2a8412dc9b0be37b013ea5bddd97251dab4d435cc9c4c7bcf331d4017ca2de07485ad6a15ce60d3700cee802787bc7ede0c112c7843f702bb1e71b750911b
       parameters:
@@ -1426,6 +1494,16 @@ paths:
           required: true
           example: QmXGeVy9dVwfuFJmvbzz8y4dYK1TdxXbDGzwbNuyZ5xXSU
           description: Target CID to add a signature to
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
       responses:
         "200":
           description: OK
@@ -1475,7 +1553,19 @@ paths:
       tags:
         - default
       summary: Remove Signature from CID
+      description: |
+        `org:files:write`
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: cid
           in: path
           schema:
@@ -1517,11 +1607,13 @@ paths:
                 type: object
               example:
                 data: null
-  /ipfs/plugins_marketplace:
+  /gateways/plugins/marketplace:
     get:
       tags:
         - default
       summary: List Marketplace Plugins
+      description: |
+        `org:gateways:read`
       responses:
         "200":
           description: OK
@@ -1594,11 +1686,13 @@ paths:
                       https://mktg.mypinata.cloud/ipfs/QmVpy6v7YASWUQjmqgUxKwbn6zgzuVSRudzdZMynpBjSJo
                     tags:
                       - files
-  /ipfs/plugins_marketplace/{id}:
+  /gateways/plugins/marketplace/{id}:
     get:
       tags:
         - default
       summary: Get Marketplace Plugin Details
+      description: |
+        `org:gateways:read`
       parameters:
         - name: id
           in: path
@@ -1666,11 +1760,13 @@ paths:
                   tags:
                     - verifiability
                     - security
-  /ipfs/gateway_plugins/{gateway_id}:
+  /gateways/plugins/{gateway_id}:
     post:
       tags:
         - default
       summary: Install Gateway Plugin
+      description: |
+        `org:gateways:write`
       requestBody:
         content:
           application/json:
@@ -1737,6 +1833,8 @@ paths:
       tags:
         - default
       summary: List Installed Plugins for Gateway
+      description: |
+        `org:gateways:read`
       parameters:
         - name: gateway_id
           in: path
@@ -1792,11 +1890,13 @@ paths:
                     plugin_id: 1
                   - gateway_id: 2bfaa2ae-b590-4cb4-bb9c-5af43c2c9541
                     plugin_id: 2
-  /ipfs/gateway_plugins:
+  /gateways/plugins:
     get:
       tags:
         - default
       summary: List Gateway Plugins
+      description: |
+        `org:gateways:read`
       responses:
         "200":
           description: OK
@@ -1845,11 +1945,13 @@ paths:
                     plugin_id: 1
                   - gateway_id: 2bfaa2ae-b590-4cb4-bb9c-5af43c2c9541
                     plugin_id: 2
-  /ipfs/gateway_plugins/{gateway_id}/plugin/{plugin_id}:
+  /gateways/plugins/{gateway_id}/plugin/{plugin_id}:
     delete:
       tags:
         - default
       summary: Uninstall Gateway Plugin
+      description: |
+        `org:gateways:write`
       parameters:
         - name: gateway_id
           in: path
@@ -1897,6 +1999,68 @@ paths:
                 type: object
               example:
                 data: null
+  /ipfs/gateway_plugins/{gateway_id}:
+    get:
+      tags:
+        - default
+      summary: List Installed Plugins for Gateway
+      description: |
+        `org:gateways:read`
+      parameters:
+        - name: gateway_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 2bfaa2ae-b590-4cb4-bb9c-5af43c2c9541
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 22 Jul 2024 17:53:24 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "147"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 81ee012022a1ae7dccdff5cbf8e10d9a
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        gateway_id:
+                          type: string
+                        plugin_id:
+                          type: number
+              example:
+                data:
+                  - gateway_id: 2bfaa2ae-b590-4cb4-bb9c-5af43c2c9541
+                    plugin_id: 1
+                  - gateway_id: 2bfaa2ae-b590-4cb4-bb9c-5af43c2c9541
+                    plugin_id: 2
   /ipfs/swap/{cid}:
     put:
       tags:
@@ -2082,13 +2246,23 @@ paths:
                 type: object
               example:
                 data: null
-  /files:
+  /files/{network}:
     get:
-      tags:
-        - Private Files
       summary: List Files
+      description: |
+        `org:files:read`
       operationId: listFiles
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: name
           in: query
           schema:
@@ -2216,13 +2390,23 @@ paths:
                         whimsey: "true"
                       created_at: "2024-08-27T14:57:51.485934Z"
                   next_page_token: MDE5MTk0NTctYzJjNi03NzBlLTkzOTEtOGM3MmM0ZjQxZjY0
-  /files/{id}:
+  /files/{network}/{id}:
     get:
-      tags:
-        - Private Files
       summary: Get File by ID
+      description: |
+        `org:files:read`
       operationId: getFile
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           schema:
@@ -2297,9 +2481,9 @@ paths:
                     whimsey: "true"
                   created_at: "2024-08-27T14:57:51.485934Z"
     put:
-      tags:
-        - Private Files
       summary: Update File
+      description: |
+        `org:files:write`
       operationId: updateFile
       requestBody:
         content:
@@ -2317,6 +2501,16 @@ paths:
               example:
                 name: Hello Files API
       parameters:
+        - name: network
+          description: Target a file on either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           schema:
@@ -2391,11 +2585,21 @@ paths:
                     whimsey: "true"
                   created_at: "2024-08-27T14:57:51.485934Z"
     delete:
-      tags:
-        - Private Files
       summary: Delete File by ID
+      description: |
+        `org:files:write`
       operationId: deleteFile
       parameters:
+        - name: network
+          description: Target a file on either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           schema:
@@ -2436,12 +2640,256 @@ paths:
                 type: object
               example:
                 data: null
-  /files/sign:
+  /files/public/pin_by_cid:
+    post:
+      summary: Pin by CID
+      description: |
+        `org:files:write`
+      operationId: pinByCid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - cid
+              properties:
+                cid:
+                  type: string
+                  description: CID of the file you want to pin
+                name:
+                  type: string
+                  description: Add a custom name for the file
+                group_id:
+                  type: string
+                  description: ID of the group you would like to upload
+                keyvalues:
+                  type: object
+                  description: Add additional key value metadata to files upon upload
+                  additionalProperties:
+                    type: string
+                host_nodes:
+                  type: array
+                  description: An optional array of host node IDs, use `ipfs id` in Kubo to get these
+                  items:
+                    type: string
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:04:00 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "303"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 5cda7fd04bb31bc8c6bd461089fcfa1c
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      cid:
+                        type: string
+                      keyvalues:
+                        type: object
+                      group_id:
+                        type: string
+                      status:
+                        type: string
+                      date_queued:
+                        type: string
+                      hose_nodes:
+                        type: array
+                        items:
+                          type: string
+    get:
+      summary: Query Pin Requests
+      description: |
+        `org:files:read`
+      operationId: queryPinRequests
+      parameters:
+        - name: order
+          description: Change the order of the results by date_queued
+          in: query
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+          example: ASC
+        - name: status
+          description: Filter pin by CID status
+          in: query
+          schema:
+            type: string
+            enum:
+              - prechecking
+              - backfilled
+              - retreiving
+              - expired
+              - searching
+              - over_free_limit
+              - over_max_size
+              - invalid_object
+              - bad_host_node
+        - name: cid
+          description: Filter queue by CID
+          in: query
+          schema:
+            type: string
+          example: QmVLwvmGehsrNEvhcCnnsw5RQNseohgEkFNN1848zNzdng
+        - name: limit
+          description: Limit the number of results returned when querying the queue
+          in: query
+          schema:
+            type: string
+          example: 10
+        - name: pageToken
+          description: Paginate through pin by cid request results
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:04:00 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "303"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 5cda7fd04bb31bc8c6bd461089fcfa1c
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      jobs:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            cid:
+                              type: string
+                            name:
+                              type: string
+                            status:
+                              type: string
+                            keyvalues:
+                              type: object
+                            host_nodes:
+                              type: array
+                              items:
+                                type: string
+                            group_id:
+                              type: string
+                            date_queued:
+                              type: string
+                      next_page_token:
+                        type: string
+  /files/public/pin_by_cid/{id}:
+    delete:
+      summary: Cancel Request
+      description: |
+        `org:files:write`
+      operationId: cancelPinByCID
+      parameters:
+        - name: id
+          description: ID of the pin_by_cid request
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2024 15:04:00 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "303"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Request-Id:
+              schema:
+                type: string
+                example: 5cda7fd04bb31bc8c6bd461089fcfa1c
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+  /files/private/download_link:
     post:
       tags:
         - Private Files
-      summary: Create Signed URL
-      operationId: createSignedURL
+      summary: Create Download Link
+      description: |
+        `org:files:write`
+      operationId: createDownloadLink
       requestBody:
         content:
           application/json:
@@ -2505,12 +2953,25 @@ paths:
               example:
                 data: >-
                   https://blush-fast-impala-660.mypinata.cloud/files/bafybeifq444z4b7yqzcyz4a5gspb2rpyfcdxp3mrfpigmllh52ld5tyzwm?X-Algorithm=PINATA1&X-Date=1724875300&X-Expires=500000&X-Method=GET&X-Signature=example-signature
-  /files/groups:
+  /groups/{network}:
     post:
       tags:
         - Groups
       summary: Create Group
+      description: |
+        `org:groups:write`
       operationId: createGroup
+      parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
       requestBody:
         content:
           application/json:
@@ -2581,6 +3042,8 @@ paths:
       tags:
         - Groups
       summary: List Groups
+      description: |
+        `org:groups:read`
       operationId: listGroups
       parameters:
         - name: name
@@ -2664,13 +3127,25 @@ paths:
                       is_public: false
                       created_at: "2024-08-28T14:49:31.246596Z"
                   next_page_token: MDE5MTk5NzYtOTU1Zi03ZDA2LWJkNTktNzJlODA3NDNmYjk1
-  /files/groups/{id}:
+  /groups/{network}/{id}:
     get:
       tags:
         - Groups
       summary: Get Group
+      description: |
+        `org:groups:read`
       operationId: getGroup
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           schema:
@@ -2731,6 +3206,8 @@ paths:
       tags:
         - Groups
       summary: Update Group
+      description: |
+        `org:groups:write`
       operationId: updateGroup
       requestBody:
         content:
@@ -2748,6 +3225,16 @@ paths:
                 name: Updated Name
                 is_public: true
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           description: The ID of the target group
@@ -2809,8 +3296,20 @@ paths:
       tags:
         - Groups
       summary: Delete Group
+      description: |
+        `org:groups:write`
       operationId: deleteGroup
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           schema:
@@ -2851,13 +3350,25 @@ paths:
                 type: object
               example:
                 data: null
-  /files/groups/{id}/ids/{file_id}:
+  /groups/{network}/{id}/ids/{file_id}:
     put:
       tags:
         - Groups
       summary: Add File To Group
+      description: |
+        `org:groups:write`
       operationId: addFileToGroup
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           description: The ID of the target group
@@ -2913,8 +3424,20 @@ paths:
       tags:
         - Groups
       summary: Remove File From Group
+      description: |
+        `org:groups:write`
       operationId: removeFileFromGroup
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: id
           in: path
           description: The ID of the target group
@@ -2966,11 +3489,13 @@ paths:
                     type: object
               example:
                 data: null
-  /files/swap/{cid}:
+  /files/{network}/swap/{cid}:
     put:
       tags:
         - Swaps
       summary: Add Swap
+      description: |
+        `org:files:write`
       operationId: add-swap
       requestBody:
         content:
@@ -2978,14 +3503,24 @@ paths:
             schema:
               type: object
               required:
-                - swap_cid
+                - swapCid
               properties:
-                swap_cid:
+                swapCid:
                   type: string
                   description: The CID you want to redirect to
               example:
-                swap_cid: bafkreig4zcnmqa23zff3ye7tuef6wrlq3aimffzm22axfeh3ddmawzlzz4
+                swapCid: bafkreig4zcnmqa23zff3ye7tuef6wrlq3aimffzm22axfeh3ddmawzlzz4
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: cid
           in: path
           schema:
@@ -3043,8 +3578,20 @@ paths:
       tags:
         - Swaps
       summary: Get Swap History
+      description: |
+        `org:files:read`
       operationId: get-swap
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: domain
           in: query
           schema:
@@ -3111,8 +3658,20 @@ paths:
       tags:
         - Swaps
       summary: Remove Swap
+      description: |
+        `org:files:write`
       operationId: delete-swap
       parameters:
+        - name: network
+          description: Target either the public or private IPFS network
+          in: path
+          schema:
+            type: string
+            enum:
+              - public
+              - private
+          required: true
+          example: public
         - name: cid
           in: path
           schema:

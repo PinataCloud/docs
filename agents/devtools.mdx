@@ -1,0 +1,160 @@
+---
+title: "Danger"
+description: "Full agent inventory, plus restart and delete"
+icon: "triangle-exclamation"
+---
+
+The Danger tab does two things. First, it's the single place where you can see *everything* about an agent — every secret attached, every skill installed, every channel configured, every snapshot CID. It's also where you'll find restart, runtime config edit, and delete.
+
+The name is mostly about the buttons at the bottom — Restart Gateway is disruptive, Delete is permanent. But it's also the page you'll open most often when you're answering "how is this agent actually configured?"
+
+## Layout
+
+Two big sections.
+
+- **General** — agent details, workspace state, lifecycle scripts, channels where supported, skills, devices, secrets. One row at a time.
+- **Actions** — engine-specific controls such as Restart Gateway, OpenClaw Settings UI, and Delete This Agent.
+
+## Agent details
+
+The first block in **General** is the agent itself:
+
+| Field | What it is |
+| --- | --- |
+| **Agent ID** | The unique slug used in URLs and API calls (e.g. `x0i33jye`) |
+| **Status** | `starting`, `running`, or `not_running` |
+| **Name** | What you named it |
+| **Engine** | The container engine — `openclaw` (default), `hermes`, or another enabled engine |
+| **Version** | Engine version, when the engine exposes one. OpenClaw agents show **Change** for version updates. |
+| **Config** | Path to the engine runtime config. OpenClaw uses `/home/node/.openclaw/openclaw.json`; Hermes uses `/home/hermes/data/config.yaml`. **Edit** opens an editor. |
+| **Gateway Token** | The credential used to authenticate against the agent's own subdomain. See [API → Gateway token](/agents/api#gateway-token). |
+| **Created** | When the agent was created |
+| **Base URL** | `https://{agentId}.agents.pinata.cloud` |
+
+The **manifest.json schema** link at the top of this section jumps to the [full field reference](/agents/manifest).
+
+While a new agent is still `starting`, Chat and most settings tabs are disabled. The Danger tab stays available so you can check the current status, engine, config path, workspace path, and delete the agent if provisioning went wrong.
+
+## Workspace
+
+| Field | What it shows |
+| --- | --- |
+| **Path** | The workspace directory inside the container. OpenClaw uses `/home/node/clawd/workspace`; Hermes uses `/home/hermes/data/workspace`. |
+| **Snapshot CID** | IPFS CID of the most recent synced snapshot |
+| **Last Sync** | How recently the workspace was captured |
+
+For diffs and restore, use the [Files](/agents/snapshots) tab.
+
+## Lifecycle Scripts
+
+Whether your `build` and `start` scripts are configured, and their current status. The states are self-explanatory: `Not configured`, `pending`, `running`, `success`, `failed`.
+
+If something failed, use `POST /v0/agents/{agentId}/scripts/retry` to re-run the lifecycle. OpenClaw agents also expose the **OpenClaw Settings UI** action for low-level runtime debugging. Logs end up in `/tmp/user-build.log` and `/tmp/user-start.log` — see [Manifest → Scripts](/agents/manifest#scripts) for the details.
+
+## Scheduled Tasks
+
+Just a status summary. Manage them on the [Tasks](/agents/tasks) tab.
+
+## Channels
+
+A quick rollup for engines that support messaging channels. For each of Telegram, Slack, Discord, and WhatsApp, you'll see either `Enabled` or `Not configured`.
+
+## Skills
+
+Every attached skill, its installed version, and its IPFS CID. The same info as the [Skills](/agents/skills) tab, in a flat-list format.
+
+## Devices
+
+Clients paired with the agent — mobile, the CLI, browser sessions. Each is listed with its status (`paired`, `pending`) and last activity.
+
+<a id="device-pairing"></a>
+### Device pairing
+
+Some clients (the CLI in particular) need to be approved before they can talk to the agent. The flow:
+
+1. The client asks to pair. A pending entry appears in this list.
+2. You approve it — either click **Approve** here or hit `POST /v0/agents/{agentId}/devices/{requestId}/approve`.
+3. To approve everything pending at once: `POST /v0/agents/{agentId}/devices/approve-all`.
+
+## Secrets
+
+Every attached secret, with a **Synced** indicator that tells you whether the *running* gateway has picked up the latest value. If you updated a secret and the indicator says out of sync, restart the gateway.
+
+## Actions
+
+### Restart Gateway
+
+Restarts the gateway process inside the container. Use it when:
+
+- You changed a secret, skill, or channel and want the agent to actually pick it up
+- The agent is misbehaving
+- WebSocket connections look stuck
+
+<Warning>
+  Restarting disconnects all clients (chat, channel bots, custom domain traffic) for a minute or two.
+</Warning>
+
+From the API:
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/restart
+```
+
+### OpenClaw Settings UI
+
+OpenClaw agents show an **Open Settings UI** action. It opens OpenClaw's internal settings panel, a low-level config editor for the engine itself — useful for advanced debugging.
+
+<Warning>
+  Misconfiguration here can break the agent. For day-to-day config, edit `manifest.json` instead. See the [manifest reference](/agents/manifest).
+</Warning>
+
+Hermes agents do not show this action. Use the **Config** row's **Edit** button for Hermes runtime config.
+
+### Edit config
+
+The **Edit** button next to the **Config** row opens the engine runtime config directly. For OpenClaw this is `openclaw.json`; for Hermes it is `config.yaml`. Changes are validated server-side before they're written.
+
+You can also validate any config string without applying it:
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{"config":"{...}"}' \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/config/validate
+```
+
+This validates the runtime config, not `manifest.json`. For manifest validation, see [Manifest → Validation](/agents/manifest#validation).
+
+### Update OpenClaw
+
+OpenClaw agents show a **Change** button next to the Version field. It checks for updates and applies them. Equivalent CLI calls:
+
+```bash
+# Check
+curl -H "Authorization: Bearer $PINATA_JWT" \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/update
+
+# Apply
+curl -X POST \
+  -H "Authorization: Bearer $PINATA_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{"tag":"latest"}' \
+  https://agents.pinata.cloud/v0/agents/$AGENT_ID/update
+```
+
+### Delete Agent
+
+Permanent. Removes:
+
+- The container
+- All workspace files and snapshots
+- All R2 storage tied to the agent
+- Channel configurations
+- Custom domains
+
+<Warning>
+  There's no undo. The agent ID is gone — it won't be reissued.
+</Warning>

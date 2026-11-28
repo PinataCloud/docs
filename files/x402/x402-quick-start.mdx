@@ -1,0 +1,149 @@
+---
+title: "Quick Start"
+---
+
+Get started monetizing your private IPFS files with x402 in just a few minutes.
+
+With x402, you monetize your private files by setting payment requirements. Payments go directly to your wallet. You control the price and receive the funds.
+
+<Note>
+  x402 is available on paid Pinata accounts. [Upgrade your account](https://app.pinata.cloud/billing) to access x402 monetization features.
+</Note>
+
+## Prerequisites
+
+- Paid Pinata account
+- [Pinata SDK](/sdk/getting-started) installed
+- Ethereum wallet address to receive payments
+
+## Step 1: Upload a Private File
+
+First, upload a file to Private IPFS:
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "your-gateway.mypinata.cloud",
+});
+
+const file = new File(["file contents"], "your-file.pdf", {
+  type: "application/pdf",
+});
+const upload = await pinata.upload.private.file(file);
+const cid = upload.cid;
+```
+
+Save the returned `cid` for the next step.
+
+## Step 2: Create a Payment Instruction
+
+Define your payment requirements:
+
+```typescript
+const instruction = await pinata.x402.createPaymentInstruction({
+  name: "Premium Content Access",
+  description: "One-time payment for file access",
+  payment_requirements: [
+    {
+      asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC on Base
+      pay_to: "YOUR_WALLET_ADDRESS", // YOU receive payments here
+      network: "base",
+      description: "Access fee",
+      amount: "10000", // $0.01 in USDC
+    },
+  ],
+});
+const instructionId = instruction.data.id;
+```
+
+**Understanding Payment Amounts:** The `amount` uses USDC's smallest unit. USDC has 6 decimals, so to convert USD to the token amount, multiply by 1,000,000:
+
+| USD Amount | `amount` | Calculation |
+|------------|----------|-------------|
+| $0.01 | `"10000"` | $0.01 × 1,000,000 |
+| $0.10 | `"100000"` | $0.10 × 1,000,000 |
+| $1.00 | `"1000000"` | $1.00 × 1,000,000 |
+| $5.00 | `"5000000"` | $5.00 × 1,000,000 |
+| $10.00 | `"10000000"` | $10.00 × 1,000,000 |
+
+**Formula:** USD Amount × 1,000,000 = token amount
+
+**Networks:**
+- Production: Use `"base"` (or `"eip155:8453"`) with `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
+- Testing: Use `"base-sepolia"` (or `"eip155:84532"`) with `0x036CbD53842c5426634e7929541eC2318f3dCF7e`
+
+Save the returned `id` for the next step.
+
+## Step 3: Attach CID to Payment Instruction
+
+Link your private file to the payment instruction:
+
+```typescript
+await pinata.x402.addCid(instructionId, cid);
+```
+
+## Step 4: Share Your Monetized Content
+
+Your file is now monetized! Share this URL with requesters:
+
+```
+https://your-gateway.mypinata.cloud/x402/cid/{cid}
+```
+
+<Note>
+  Replace `your-gateway.mypinata.cloud` with your actual dedicated Pinata gateway domain (e.g., `my-gateway.mypinata.cloud`), and `{cid}` with your file's CID.
+</Note>
+
+## Step 5: Test the Payment Flow
+
+When a requester accesses your URL without payment, the gateway returns a 402 response with payment requirements:
+
+```typescript
+const response = await fetch(
+  `https://your-gateway.mypinata.cloud/x402/cid/${cid}`
+);
+const paymentRequirements = await response.json();
+console.log(paymentRequirements);
+```
+
+Response:
+
+```json
+{
+  "x402Version": 1,
+  "accepts": [{
+    "scheme": "exact",
+    "network": "base",
+    "maxAmountRequired": "10000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payTo": "YOUR_WALLET_ADDRESS",
+    "resource": "https://your-gateway.mypinata.cloud/x402/cid/{cid}"
+  }],
+  "error": "Provide a valid X-Payment header to access this content"
+}
+```
+
+After payment is made, requesters can access the file by including the payment proof in the `X-Payment` header.
+
+## Next Steps
+
+- **Manage Multiple Files**: Attach multiple CIDs to the same payment instruction
+- **Update Pricing**: Use [`updatePaymentInstruction`](/sdk/x402/payment-instructions/update)
+- **Monitor Access**: Check your gateway analytics to track paid downloads
+- **Requester Guide**: Learn how requesters access paid content in the [Accessing Paid Content](/files/x402/x402-accessing-paid-content) guide
+
+## Common Issues
+
+**404 Not Found**: Verify the CID is private and correctly attached to a payment instruction
+
+**403 Forbidden**: Check that your API key has the required permissions
+
+**409 Conflict**: If deleting a payment instruction fails, remove all CID attachments first
+
+Need help? Contact team@pinata.cloud
+
+## API Reference
+
+For direct API access, see the [x402 API documentation](/api-reference/endpoint/x402/payment-instructions-list).

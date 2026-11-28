@@ -1,0 +1,309 @@
+---
+title: "Payment Instructions Guide"
+---
+
+Payment Instructions are the core mechanism for monetizing private IPFS content through the x402 protocol. You define payment requirements, attach them to your private files, and receive payments directly to your wallet when requesters access your content.
+
+This guide covers how to create, manage, and use Payment Instructions to monetize your content.
+
+## Prerequisites
+
+- Paid Pinata account
+- [Pinata SDK](/sdk/getting-started) installed
+- Private files uploaded to Pinata IPFS
+
+## Understanding Payment Instructions
+
+A Payment Instruction is a reusable configuration that defines:
+- **Payment requirements** - The amount, token, and recipient for payments
+- **Network configuration** - Which blockchain network to use
+- **Metadata** - Name and description for organization
+
+<Note>
+  The `payment_requirements` field is an array, allowing you to define multiple payment options. Each payment instruction can have multiple requirements, giving requesters flexibility in how they pay.
+</Note>
+
+### Payment Instruction Structure
+
+```typescript
+type PaymentInstruction = {
+  id: string;
+  version: number;
+  payment_requirements: PaymentRequirement[];
+  name: string;
+  description?: string;
+  created_at: string;
+};
+
+type PaymentRequirement = {
+  asset: string;           // USDC token contract address
+  pay_to: string;          // Your wallet address
+  network: "base" | "base-sepolia" | "eip155:8453" | "eip155:84532";
+  amount: string;          // Amount in USDC smallest units
+  description?: string;
+};
+```
+
+<Note>
+  The `version` field is automatically managed by Pinata and increments with each update. You don't need to set this field when creating or updating payment instructions.
+</Note>
+
+## Networks and Tokens
+
+Currently supported configurations. **USDC is the only supported token at this time.**
+
+### Base Mainnet (Production)
+- **Network**: `base` (or `eip155:8453`)
+- **USDC Token Address**: `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
+- **Use for**: Production monetization
+
+### Base Sepolia (Testing)
+- **Network**: `base-sepolia` (or `eip155:84532`)
+- **USDC Token Address**: `0x036CbD53842c5426634e7929541eC2318f3dCF7e`
+- **Use for**: Testing payment flows
+
+## Complete Workflow
+
+```typescript
+import { PinataSDK } from "pinata";
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.PINATA_JWT!,
+  pinataGateway: "your-gateway.mypinata.cloud",
+});
+```
+
+### Step 1: Upload Private Content
+
+First, upload your file as private to Pinata:
+
+```typescript
+const file = new File(["file contents"], "premium-content.pdf", {
+  type: "application/pdf",
+});
+const upload = await pinata.upload.private.file(file);
+const cid = upload.cid;
+```
+
+**Important:** The file must be uploaded to the `private` network to be monetized with x402.
+
+### Step 2: Create Payment Instruction
+
+Create a payment instruction with your desired requirements:
+
+```typescript
+const instruction = await pinata.x402.createPaymentInstruction({
+  name: "Premium PDF Access",
+  description: "One-time payment for PDF access",
+  payment_requirements: [
+    {
+      asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC on Base
+      pay_to: "0x6135561038E7C676473431842e586C8248276AED", // YOU receive payments here
+      network: "base",
+      description: "Access fee",
+      amount: "10000", // $0.01 in USDC
+    },
+  ],
+});
+const instructionId = instruction.data.id;
+```
+
+### Step 3: Attach CID to Payment Instruction
+
+Link your private file to the payment instruction:
+
+```typescript
+await pinata.x402.addCid(instructionId, cid);
+```
+
+### Step 4: Share x402 Gateway URL
+
+Your content is now monetized and accessible at:
+```
+https://your-gateway.mypinata.cloud/x402/cid/{cid}
+```
+
+## Managing Payment Instructions
+
+### Listing Instructions
+
+View all your payment instructions with pagination:
+
+```typescript
+const instructions = await pinata.x402.listPaymentInstructions({ limit: 20 });
+```
+
+Filter by specific criteria:
+
+```typescript
+// Find instruction for a specific CID
+const byCid = await pinata.x402.listPaymentInstructions({ cid: "bafkreih..." });
+
+// Filter by name
+const byName = await pinata.x402.listPaymentInstructions({ name: "Premium" });
+
+// Get specific instruction by ID
+const byId = await pinata.x402.listPaymentInstructions({ id: "019a2b6a..." });
+```
+
+### Getting a Single Instruction
+
+```typescript
+const instruction = await pinata.x402.getPaymentInstruction(instructionId);
+```
+
+### Updating Instructions
+
+Modify payment requirements for all attached CIDs:
+
+```typescript
+const updated = await pinata.x402.updatePaymentInstruction(instructionId, {
+  payment_requirements: [
+    {
+      asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      pay_to: "0x6135561038E7C676473431842e586C8248276AED",
+      network: "base",
+      amount: "50000", // Updated to $0.05
+    },
+  ],
+});
+```
+
+### Deleting Instructions
+
+Before deleting, remove all CID attachments:
+
+```typescript
+// 1. List attached CIDs
+const { data: cidData } = await pinata.x402.listCids(instructionId);
+
+// 2. Remove each CID
+for (const cid of cidData.cids) {
+  await pinata.x402.removeCid(instructionId, cid);
+}
+
+// 3. Delete the instruction
+await pinata.x402.deletePaymentInstruction(instructionId);
+```
+
+## CID Management
+
+### CID and Payment Instruction Relationship
+
+- **One Payment Instruction → Multiple CIDs**: A single payment instruction can be attached to multiple CIDs
+- **One CID → One Payment Instruction**: Each CID can only have one payment instruction at a time
+- **Multiple Requirements**: A payment instruction can have multiple payment requirements in its `payment_requirements` array
+- Updating the instruction affects all attached CIDs
+
+### Managing CID Attachments
+
+```typescript
+// List all CIDs for an instruction
+const cids = await pinata.x402.listCids(instructionId);
+
+// Add a CID
+await pinata.x402.addCid(instructionId, cid);
+
+// Remove a CID
+await pinata.x402.removeCid(instructionId, cid);
+```
+
+## Gateway Behavior
+
+When a requester accesses your x402 gateway URL without payment, the gateway returns payment requirements:
+
+### Without Payment (402 Response)
+
+```json
+{
+  "x402Version": 1,
+  "accepts": [
+    {
+      "scheme": "exact",
+      "network": "base",
+      "maxAmountRequired": "10000",
+      "resource": "https://gateway/x402/cid/bafkreig...",
+      "payTo": "0x6135561038E7C676473431842e586C8248276AED",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "extra": {
+        "name": "USD Coin",
+        "version": "2"
+      }
+    }
+  ],
+  "error": "Provide a valid X-Payment header to access this content"
+}
+```
+
+### With Valid Payment
+
+The gateway:
+1. Validates the `X-Payment` header
+2. Verifies the payment proof
+3. Checks amount, recipient, and network match requirements
+4. Serves the private content
+
+## Best Practices
+
+### Payment Amounts
+
+The `amount` uses USDC's smallest unit. USDC has 6 decimals, so to convert USD to the token amount, multiply by 1,000,000:
+
+| USD Amount | `amount` | Calculation |
+|------------|----------|-------------|
+| $0.01 | `"10000"` | $0.01 × 1,000,000 |
+| $0.10 | `"100000"` | $0.10 × 1,000,000 |
+| $1.00 | `"1000000"` | $1.00 × 1,000,000 |
+| $5.00 | `"5000000"` | $5.00 × 1,000,000 |
+| $10.00 | `"10000000"` | $10.00 × 1,000,000 |
+
+**Formula:** USD Amount × 1,000,000 = token amount
+
+**Tips:**
+- Consider transaction costs when setting minimum amounts
+- Test on Base Sepolia before deploying to mainnet
+
+### Instruction Organization
+
+- Use descriptive names for easy management
+- Group similar content under one instruction
+- Document your payment requirements clearly
+
+### Security Considerations
+
+- Only private files can be monetized
+- Ensure your `pay_to` address is correct. **You receive payments directly to this address.**
+- Test payment flows on testnet first
+- Monitor your gateway analytics
+
+## Troubleshooting
+
+### Common Issues
+
+**409 Conflict when deleting instruction**
+- Solution: Remove all CID attachments first
+
+**400 Bad Request when creating instruction**
+- Check `asset` and `pay_to` addresses start with `0x`
+- Verify `network` is `base`, `base-sepolia`, `eip155:8453`, or `eip155:84532`
+- Ensure `amount` is provided
+
+**404 Not Found when accessing CID**
+- Verify the CID exists and is private
+- Check the CID is attached to a payment instruction
+- Ensure the gateway URL format is correct
+
+## SDK Reference
+
+- [List Payment Instructions](/sdk/x402/payment-instructions/list)
+- [Create Payment Instruction](/sdk/x402/payment-instructions/create)
+- [Get Payment Instruction](/sdk/x402/payment-instructions/get)
+- [Update Payment Instruction](/sdk/x402/payment-instructions/update)
+- [Delete Payment Instruction](/sdk/x402/payment-instructions/delete)
+- [List CIDs](/sdk/x402/cids/list)
+- [Add CID](/sdk/x402/cids/add)
+- [Remove CID](/sdk/x402/cids/remove)
+
+## API Reference
+
+For direct API access, see the [x402 API documentation](/api-reference/endpoint/x402/payment-instructions-list).

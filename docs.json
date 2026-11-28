@@ -1,0 +1,747 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Pinata Docs",
+  "colors": {
+    "primary": "#6D6FEB",
+    "light": "#5F61EA",
+    "dark": "#6D6FEB"
+  },
+  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "background": {
+    "color": {
+      "light": "#FFFFFF",
+      "dark": "#16141F"
+    }
+  },
+  "contextual": {
+    "options": ["claude", "chatgpt", "copy", "view"]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:team@pinata.cloud"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Pinata App",
+      "href": "https://app.pinata.cloud"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "quickstart",
+              {
+                "group": "Frameworks",
+                "icon": "react",
+                "pages": [
+                  "frameworks/next-js",
+                  "frameworks/hono",
+                  "frameworks/react",
+                  "frameworks/sveltekit",
+                  "frameworks/astro",
+                  "frameworks/remix",
+                  "frameworks/node-js"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "AI",
+            "pages": [
+              {
+                "group": "Agents",
+                "icon": "lobster",
+                "pages": [
+                  "agents/overview",
+                  "agents/concepts",
+                  "agents/chat",
+                  "agents/issues",
+                  "agents/secrets",
+                  "agents/models",
+                  "agents/skills",
+                  "agents/channels",
+                  "agents/routes",
+                  "agents/tasks",
+                  "agents/snapshots",
+                  {
+                    "group": "Dev Tools",
+                    "icon": "terminal",
+                    "pages": [
+                      "agents/console",
+                      "agents/logs",
+                      "agents/devtools"
+                    ]
+                  },
+                  {
+                    "group": "Build",
+                    "icon": "code",
+                    "pages": [
+                      "agents/manifest",
+                      "agents/api"
+                    ]
+                  },
+                  {
+                    "group": "Templates",
+                    "icon": "clone",
+                    "pages": [
+                      "agents/templates/overview",
+                      "agents/templates/creating"
+                    ]
+                  },
+                  {
+                    "group": "Troubleshooting",
+                    "icon": "wrench",
+                    "pages": [
+                      "agents/troubleshooting",
+                      "agents/errors"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Inference",
+                "icon": "bolt",
+                "pages": [
+                  "inference/overview",
+                  "inference/chat-completions",
+                  "inference/models"
+                ]
+              },
+              "inference/credits",
+              "tools/cli/agents",
+              "llm-docs",
+              "tools/skills",
+              {
+                "group": "MCP Server",
+                "icon": "plug",
+                "pages": ["tools/mcp/overview", "tools/mcp/hosted", "tools/mcp/tools"]
+              },
+              {
+                "group": "ERC-8004",
+                "icon": "robot",
+                "pages": [
+                  "tools/erc-8004/quickstart",
+                  "tools/erc-8004/services"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Account Management",
+            "pages": [
+              "account-management/api-keys",
+              "account-management/workspaces",
+              "account-management/webhooks",
+              "account-management/billing",
+              "account-management/limits"
+            ]
+          },
+          {
+            "group": "Files",
+            "pages": [
+              "files/uploading-files",
+              "files/presigned-urls",
+              "files/listing-files",
+              "files/deleting-files",
+              "gateways/retrieving-files",
+              "files/file-groups",
+              "files/key-values",
+              "files/private-ipfs",
+              "files/vectors",
+              "files/signatures",
+              {
+                "group": "CLI",
+                "icon": "terminal",
+                "pages": [
+                  "tools/cli/overview",
+                  "tools/cli/ipfs",
+                  "tools/cli/agents"
+                ]
+              },
+              {
+                "group": "MPP Server",
+                "icon": "coins",
+                "pages": [
+                  "files/mpp/overview",
+                  "files/mpp/quickstart"
+                ]
+              },
+              {
+                "group": "x402",
+                "icon": "sparkle",
+                "pages": [
+                  {
+                    "group": "x402 Monetization",
+                    "pages": [
+                      "files/x402/intro",
+                      "files/x402/x402-quick-start",
+                      "files/x402/x402-payment-instructions",
+                      "files/x402/x402-accessing-paid-content"
+                    ]
+                  },
+                  "files/x402/x402-services"
+                ]
+              },
+              {
+                "group": "NFT Backup",
+                "icon": "cloud-arrow-up",
+                "pages": [
+                  "files/nft-backup/overview",
+                  "files/nft-backup/wallets",
+                  "files/nft-backup/collections",
+                  "files/nft-backup/sync"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Gateways",
+            "pages": [
+              "gateways/dedicated-ipfs-gateways",
+              "gateways/gateway-access-controls",
+              "gateways/image-optimizations",
+              {
+                "group": "Plugins",
+                "icon": "puzzle-piece-simple",
+                "pages": [
+                  "gateways/plugins/getting-started",
+                  "gateways/plugins/content-addressable",
+                  "gateways/plugins/hot-swaps"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Additional Resources",
+            "pages": [
+              "tools/pinata-expo-hooks",
+              "tools/community-sdks",
+              {
+                "group": "IPFS 101",
+                "icon": "cube",
+                "pages": [
+                  "ipfs-101/what-is-ipfs",
+                  "ipfs-101/what-is-ipfs-pinning",
+                  "ipfs-101/what-are-cids",
+                  "ipfs-101/what-are-ipfs-gateways",
+                  "ipfs-101/how-does-ipfs-work-with-nfts"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "SDK",
+        "groups": [
+          {
+            "group": "SDK",
+            "pages": [
+              "sdk/getting-started",
+              "sdk/v2-migration-guide",
+              "sdk/config",
+              "sdk/react"
+            ]
+          },
+          {
+            "group": "Files",
+            "icon": "file",
+            "pages": [
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/files/public/list",
+                  "sdk/files/public/update",
+                  "sdk/files/public/delete",
+                  "sdk/files/public/add-swap",
+                  "sdk/files/public/get-swap-history",
+                  "sdk/files/public/delete-swap",
+                  "sdk/files/public/queue"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/files/private/list",
+                  "sdk/files/private/update",
+                  "sdk/files/private/delete",
+                  "sdk/files/private/vectorize",
+                  "sdk/files/private/query-vectors",
+                  "sdk/files/private/delete-vectors",
+                  "sdk/files/private/add-swap",
+                  "sdk/files/private/get-swap-history",
+                  "sdk/files/private/delete-swap"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Upload",
+            "pages": [
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/upload/public/file",
+                  "sdk/upload/public/file-array",
+                  "sdk/upload/public/folder",
+                  "sdk/upload/public/json",
+                  "sdk/upload/public/base64",
+                  "sdk/upload/public/url",
+                  "sdk/upload/public/cid",
+                  "sdk/upload/public/create-signed-url"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/upload/private/file",
+                  "sdk/upload/private/folder",
+                  "sdk/upload/private/json",
+                  "sdk/upload/private/base64",
+                  "sdk/upload/private/url",
+                  "sdk/upload/private/create-signed-url"
+                ]
+              },
+              "sdk/upload/limits"
+            ]
+          },
+          {
+            "group": "Gateways",
+            "pages": [
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/gateways/public/get",
+                  "sdk/gateways/public/convert"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/gateways/private/get",
+                  "sdk/gateways/private/create-signed-url"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Groups",
+            "pages": [
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/groups/public/create",
+                  "sdk/groups/public/get",
+                  "sdk/groups/public/list",
+                  "sdk/groups/public/add-files",
+                  "sdk/groups/public/remove-files",
+                  "sdk/groups/public/update",
+                  "sdk/groups/public/delete"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/groups/private/create",
+                  "sdk/groups/private/get",
+                  "sdk/groups/private/list",
+                  "sdk/groups/private/add-files",
+                  "sdk/groups/private/remove-files",
+                  "sdk/groups/private/update",
+                  "sdk/groups/private/delete"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Signatures",
+            "pages": [
+              {
+                "group": "public",
+                "pages": [
+                  "sdk/signatures/public/add",
+                  "sdk/signatures/public/get",
+                  "sdk/signatures/public/delete"
+                ]
+              },
+              {
+                "group": "private",
+                "pages": [
+                  "sdk/signatures/private/add",
+                  "sdk/signatures/private/get",
+                  "sdk/signatures/private/delete"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Analytics",
+            "pages": ["sdk/analytics/requests", "sdk/analytics/bandwidth"]
+          },
+          {
+            "group": "Keys",
+            "pages": ["sdk/keys/create", "sdk/keys/list", "sdk/keys/revoke"]
+          },
+          {
+            "group": "x402 Monetization",
+            "icon": "sparkle",
+            "pages": [
+              "sdk/x402/index",
+              {
+                "group": "Payment Instructions",
+                "pages": [
+                  "sdk/x402/payment-instructions/list",
+                  "sdk/x402/payment-instructions/create",
+                  "sdk/x402/payment-instructions/get",
+                  "sdk/x402/payment-instructions/update",
+                  "sdk/x402/payment-instructions/delete"
+                ]
+              },
+              {
+                "group": "CIDs",
+                "pages": [
+                  "sdk/x402/cids/list",
+                  "sdk/x402/cids/add",
+                  "sdk/x402/cids/remove"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Types",
+            "pages": [
+              "sdk/types/config",
+              "sdk/types/uploads",
+              "sdk/types/files",
+              "sdk/types/groups",
+              "sdk/types/gateways",
+              "sdk/types/analytics",
+              "sdk/types/keys",
+              "sdk/types/signatures",
+              "sdk/types/x402"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "versions": [
+          {
+            "version": "v3",
+            "groups": [
+              {
+                "group": "API Documentation",
+                "pages": ["api-reference/introduction"]
+              },
+              {
+                "group": "Uploads",
+                "pages": [
+                  "api-reference/endpoint/upload-a-file",
+                  "api-reference/endpoint/create-signed-upload-url",
+                  "api-reference/endpoint/get-upload-limits"
+                ]
+              },
+              {
+                "group": "Files",
+                "pages": [
+                  "api-reference/endpoint/list-files",
+                  "api-reference/endpoint/get-file-by-id",
+                  "api-reference/endpoint/get-signed-url",
+                  "api-reference/endpoint/update-file",
+                  "api-reference/endpoint/delete-file-by-id",
+                  "api-reference/endpoint/vectorize-file",
+                  "api-reference/endpoint/query-file-vectors",
+                  "api-reference/endpoint/delete-file-vectors"
+                ]
+              },
+              {
+                "group": "Groups",
+                "pages": [
+                  "api-reference/endpoint/create-group",
+                  "api-reference/endpoint/get-group",
+                  "api-reference/endpoint/list-groups",
+                  "api-reference/endpoint/add-file-to-group",
+                  "api-reference/endpoint/remove-file-from-group",
+                  "api-reference/endpoint/update-group",
+                  "api-reference/endpoint/delete-group"
+                ]
+              },
+              {
+                "group": "Pin by CID",
+                "pages": [
+                  "api-reference/endpoint/pin-by-cid",
+                  "api-reference/endpoint/query-pin-requests",
+                  "api-reference/endpoint/cancel-pin-by-cid"
+                ]
+              },
+              {
+                "group": "Swaps",
+                "pages": [
+                  "api-reference/endpoint/add-swap",
+                  "api-reference/endpoint/get-swap-history",
+                  "api-reference/endpoint/remove-swap"
+                ]
+              },
+              {
+                "group": "API Keys",
+                "pages": [
+                  "api-reference/endpoint/v3-create-api-key",
+                  "api-reference/endpoint/v3-list-api-keys",
+                  "api-reference/endpoint/v3-revoke-api-key"
+                ]
+              },
+              {
+                "group": "Signatures",
+                "pages": [
+                  "api-reference/endpoint/get-signature-for-a-cid",
+                  "api-reference/endpoint/add-signature-to-cid",
+                  "api-reference/endpoint/remove-signature-from-cid"
+                ]
+              },
+              {
+                "group": "Gateways",
+                "pages": [
+                  {
+                    "group": "General",
+                    "pages": [
+                      "api-reference/endpoint/ipfs/list-gateways",
+                      "api-reference/endpoint/ipfs/gateway-details",
+                      "api-reference/endpoint/ipfs/gateway-domain-available",
+                      "api-reference/endpoint/ipfs/create-gateway",
+                      "api-reference/endpoint/ipfs/delete-gateway"
+                    ]
+                  },
+                  {
+                    "group": "Custom Domains",
+                    "pages": [
+                      "api-reference/endpoint/ipfs/gateway-custom-domain-details",
+                      "api-reference/endpoint/ipfs/create-custom-domain-for-gateway",
+                      "api-reference/endpoint/ipfs/delete-gateway-custom-domain"
+                    ]
+                  },
+                  {
+                    "group": "Access Controls",
+                    "pages": [
+                      "api-reference/endpoint/ipfs/create-gateway-key-restriction",
+                      "api-reference/endpoint/ipfs/create-gateway-ip-address-restriction",
+                      "api-reference/endpoint/ipfs/create-gateway-host-origin-restriction",
+                      "api-reference/endpoint/ipfs/revoke-gateway-key",
+                      "api-reference/endpoint/ipfs/revoke-ip-address-restricton",
+                      "api-reference/endpoint/ipfs/revoke-host-origin-restriction"
+                    ]
+                  },
+                  {
+                    "group": "Gateway Analytics",
+                    "pages": [
+                      "api-reference/endpoint/ipfs/top-gateway-analytics",
+                      "api-reference/endpoint/ipfs/time-interval-gateway-analytics"
+                    ]
+                  },
+                  {
+                    "group": "Gateway Plugins",
+                    "pages": [
+                      "api-reference/endpoint/ipfs/list-marketplace-plugins",
+                      "api-reference/endpoint/ipfs/get-marketplace-plugin-details",
+                      "api-reference/endpoint/ipfs/list-installed-plugins-for-gateway",
+                      "api-reference/endpoint/ipfs/install-gateway-plugin",
+                      "api-reference/endpoint/ipfs/list-gateway-plugins",
+                      "api-reference/endpoint/ipfs/uninstall-gateway-plugin"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "x402",
+                "pages": [
+                  {
+                    "group": "x402 Monetization",
+                    "pages": [
+                      {
+                        "group": "Payment Instructions",
+                        "pages": [
+                          "api-reference/endpoint/x402/payment-instructions-list",
+                          "api-reference/endpoint/x402/payment-instructions-create",
+                          "api-reference/endpoint/x402/payment-instructions-get",
+                          "api-reference/endpoint/x402/payment-instructions-update",
+                          "api-reference/endpoint/x402/payment-instructions-delete"
+                        ]
+                      },
+                      {
+                        "group": "CID Management",
+                        "pages": [
+                          "api-reference/endpoint/x402/cids-list",
+                          "api-reference/endpoint/x402/cids-add",
+                          "api-reference/endpoint/x402/cids-remove"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "x402 Services",
+                    "pages": [
+                      "api-reference/endpoint/x402/pin",
+                      "api-reference/endpoint/x402/retrieve"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "version": "legacy",
+            "groups": [
+              {
+                "group": "API Documentation",
+                "pages": ["api-reference/introduction"]
+              },
+              {
+                "group": "Authentication",
+                "pages": ["api-reference/endpoint/ipfs/test-authentication"]
+              },
+              {
+                "group": "Pinning",
+                "pages": [
+                  "api-reference/endpoint/ipfs/pin-file-to-ipfs",
+                  "api-reference/endpoint/ipfs/pin-json-to-ipfs",
+                  "api-reference/endpoint/ipfs/list-files",
+                  "api-reference/endpoint/ipfs/update-file-metadata",
+                  "api-reference/endpoint/ipfs/unpin-file"
+                ]
+              },
+              {
+                "group": "Groups",
+                "pages": [
+                  "api-reference/endpoint/ipfs/create-group",
+                  "api-reference/endpoint/ipfs/get-a-group",
+                  "api-reference/endpoint/ipfs/list-groups",
+                  "api-reference/endpoint/ipfs/update-group",
+                  "api-reference/endpoint/ipfs/add-cids-to-group",
+                  "api-reference/endpoint/ipfs/remove-cids-from-a-group",
+                  "api-reference/endpoint/ipfs/delete-group"
+                ]
+              },
+              {
+                "group": "Pinning by CID",
+                "pages": [
+                  "api-reference/endpoint/ipfs/pin-by-cid",
+                  "api-reference/endpoint/ipfs/list-pin-by-cid-jobs",
+                  "api-reference/pinning-service-api"
+                ]
+              },
+              {
+                "group": "Keys",
+                "pages": [
+                  "api-reference/endpoint/ipfs/generate-pinata-api-key",
+                  "api-reference/endpoint/ipfs/list-api-keys",
+                  "api-reference/endpoint/ipfs/revoke-api-key"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "API Keys",
+          "href": "https://app.pinata.cloud/developers/api-keys",
+          "icon": "key-skeleton-left-right"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://pinata.cloud/blog",
+          "icon": "newspaper"
+        },
+        {
+          "anchor": "Community",
+          "href": "https://github.com/PinataCloud",
+          "icon": "github"
+        }
+      ]
+    }
+  },
+  "seo": {
+    "metatags": {
+      "og:image": "https://docs.mypinata.cloud/ipfs/bafkreicvhjv5mipe2mk4uiq77tg5ykl7qevnj43ubonhtfj5jcseflxvsm",
+      "twitter:image": "https://docs.mypinata.cloud/ipfs/bafkreicvhjv5mipe2mk4uiq77tg5ykl7qevnj43ubonhtfj5jcseflxvsm",
+      "theme-color": "#16141F"
+    },
+    "indexing": "navigable"
+  },
+  "footer": {
+    "socials": {
+      "website": "https://warpcast.com/~/channel/pinata",
+      "twitter": "https://twitter.com/pinatacloud",
+      "github": "https://github.com/PinataCloud",
+      "linkedin": "https://www.linkedin.com/company/pinatacloud"
+    }
+  },
+  "openapi": [
+    "pinata-api-v3.yaml",
+    "pinata-api-ipfs.yaml",
+    "pinata-x402-api-v1.yaml",
+    "pinata-x402-api-v3.yaml",
+    "pinata-api-v3-uploads.yaml"
+  ],
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-5RMPXG14TE"
+    }
+  },
+  "redirects": [
+    {
+      "source": "/agents",
+      "destination": "/agents/overview"
+    },
+    {
+      "source": "/agents/templates",
+      "destination": "/agents/templates/overview"
+    },
+    {
+      "source": "/sdk",
+      "destination": "/sdk/getting-started"
+    },
+    {
+      "source": "/pinning/:slug*",
+      "destination": "/files/uploading-files"
+    },
+    {
+      "source": "/midwestblock",
+      "destination": "events/midwest-blockathon"
+    },
+    {
+      "source": "/blockathon",
+      "destination": "events/midwest-blockathon"
+    },
+    {
+      "source": "/hackutd",
+      "destination": "/events/hackutd"
+    },
+    {
+      "source": "/ugahacks",
+      "destination": "/events/ugahacks"
+    },
+    {
+      "source": "/web3/account-management/limits",
+      "destination": "account-management/limits"
+    },
+    {
+      "source": "/x402",
+      "destination": "/files/x402"
+    }
+  ]
+}

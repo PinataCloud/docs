@@ -1,5 +1,6 @@
 ---
 title: "LLM Docs"
+icon: "sparkles"
 ---
 
 The Pinata Docs have multiple ways they can be used in LLMs or AI empowered code editors like Cursor or Zed. Both of these options return raw text that can be pasted into the LLM or used in a prompt/docs feature for an editor.
@@ -25,7 +26,7 @@ curl https://ai-docs.pinata.cloud
 
 <br/>
 
-<Card title="How to Use Pinata with Cursor, Zed, and other LLMs" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/11/Blog-4.1-1.png" href="https://pinata.cloud/blog/how-to-use-pinata-with-cursor-zed-and-other-llms/"></Card>
+<Card title="How to Use Pinata with Cursor, Zed, and other LLMs" img="https://pinata.cloud/blog/content/images/size/w2000/format/avif/2024/11/Blog-4.1-1.png" href="https://pinata.cloud/blog/how-to-use-pinata-with-cursor-zed-and-other-llms/" />
 
 ## Larger Context
 
@@ -35,7 +36,11 @@ Pinata's docs also offer larger contexts if you prefer it. The standard route wi
 curl https://docs.pinata.cloud/llms.txt
 ```
 
-If you prefer to pull all of the documentaiton you can use the route below.
+If you prefer to pull all of the documentation you can use the route below.
 ```bash Full Docs
 curl https://docs.pinata.cloud/llms-full.txt
 ```
+
+<Tip>
+  For coding agents such as Claude Code, Codex and Cursor, the [Pinata Agent Skill](/tools/skills) is a smaller, task-focused alternative: `npx skills add PinataCloud/skills`.
+</Tip>

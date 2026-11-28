@@ -1,0 +1,104 @@
+---
+title: "Overview"
+description: "Run LLM inference on Pinata with an OpenAI-compatible API"
+icon: "bolt"
+---
+
+Pinata Inference is a hosted, OpenAI-compatible LLM endpoint. Enable it on your account, then use it two ways:
+
+- **API** — point any OpenAI-compatible client at Pinata and call [chat completions](/inference/chat-completions) directly, no agent required.
+- **Agents app** — the same hosted models show up alongside your other providers in an agent's [Models](/agents/models) list (connect the **Pinata** provider in the [Secrets Vault](/agents/secrets#connect-a-provider)).
+
+Either way, requests run against the [models](/inference/models) Pinata hosts, and usage is metered and drawn down from your [credit balance](/inference/credits).
+
+<Note>
+  Inference is billed through credits. Before your first request, make sure your workspace has a credit balance and (optionally) [auto top-up](/inference/credits#auto-top-up) enabled so requests don't fail on an empty balance.
+</Note>
+
+## Enable inference
+
+Turn Pinata-hosted inference on for your account with a single call, authenticated with your standard Pinata JWT:
+
+```bash
+curl -X POST https://agents.pinata.cloud/v0/llm/enable \
+  -H "Authorization: Bearer $PINATA_JWT"
+```
+
+```json Response
+{
+  "success": true,
+  "privateKey": "<your-inference-key>"
+}
+```
+
+Enabling generates an Ed25519 key pair: the **private key is returned once** in this response and also stored encrypted in your [secrets](/agents/secrets) as `PINATA_LLM_KEY`; the public key is kept for request validation.
+
+<Warning>
+  The `privateKey` is your inference credential — it's what authenticates [chat completions](/inference/chat-completions), **not** your Pinata JWT. Save it now; it isn't returned again.
+</Warning>
+
+Once enabled, the [chat completions endpoint](/inference/chat-completions) accepts requests and usage starts drawing down your [credit balance](/inference/credits).
+
+<Tip>
+  Prefer the dashboard? Connecting the **Pinata** provider in the [Secrets Vault](/agents/secrets#connect-a-provider) does the same thing, and is also how Pinata-hosted models become selectable inside your agents.
+</Tip>
+
+### Check status
+
+```bash
+curl https://agents.pinata.cloud/v0/llm/status \
+  -H "Authorization: Bearer $PINATA_JWT"
+```
+
+```json Response
+{ "enabled": true, "createdAt": "2026-06-29T00:00:00.000Z" }
+```
+
+## Disable inference
+
+```bash
+curl -X DELETE https://agents.pinata.cloud/v0/llm/disable \
+  -H "Authorization: Bearer $PINATA_JWT"
+```
+
+```json Response
+{ "success": true }
+```
+
+Disabling revokes the inference key and removes the associated secrets. New requests to the chat completions endpoint are rejected and Pinata-hosted models are no longer selectable in agents — any running agents using the managed key are automatically flipped to the [free tier](/agents/models#free-tier-agents) fallback so they don't break. Your credit balance is untouched — disabling does not refund or expire credits — and you can re-enable at any time (which mints a **new** `privateKey`).
+
+<Warning>
+  Disabling takes effect immediately. Any in-flight requests may be cut off, and anything pointing at the endpoint will start getting errors until you re-enable.
+</Warning>
+
+## Authentication
+
+There are two credentials, used for different routes:
+
+| Routes | Credential |
+| --- | --- |
+| **Management** — `enable`, `disable`, `status` | Your **Pinata JWT** (from [Account → API Keys](/account-management/api-keys)) |
+| **Inference** — `chat/completions` | The **`privateKey`** returned when you enabled (stored as the `PINATA_LLM_KEY` secret) |
+| **Catalog** — `models` | None — public |
+
+```http
+# Management
+Authorization: Bearer <PINATA_JWT>
+
+# Inference
+Authorization: Bearer <PINATA_LLM_KEY>
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Chat Completions" icon="message" href="/inference/chat-completions">
+    Call the OpenAI-compatible endpoint
+  </Card>
+  <Card title="Models" icon="microchip" href="/inference/models">
+    See which models Pinata hosts
+  </Card>
+  <Card title="Credits" icon="coins" href="/inference/credits">
+    Fund usage and set auto top-up
+  </Card>
+</CardGroup>
