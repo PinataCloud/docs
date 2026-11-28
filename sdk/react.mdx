@@ -38,7 +38,7 @@ const {
 ```
 
 <Note>
-Keep in mind that states like `pause`, `resume`, or `progress` are only available on files over 100MB that automatically engage resumable uploads through TUS.
+Keep in mind that states like `pause`, `resume`, or `progress` are only available on files over 90 MiB that automatically engage resumable uploads through TUS.
 </Note>
 
 Return types for `useUpload`
@@ -86,10 +86,13 @@ export type UploadOptions = {
 	metadata?: PinataMetadata;
 	groupId?: string;
 	chunkSize?: number; // Defaults to 1014 * 256 * 20 * 10 (~52MB)
+	waitForCid?: boolean; // Defaults to true, only applies to files over 90 MiB
 };
 ```
 
-Once a file is uploaded the `uploadResponse` will contain either the full upload response or just the CID if your file was over 100MB and utilized TUS resumable uploads.
+Once a file is uploaded the `uploadResponse` will contain either the full upload response or just the CID if your file was over 90 MiB and utilized TUS resumable uploads.
+
+If Pinata is still processing a large file when its last chunk arrives, the hook waits until the file is registered before setting `uploadResponse`, so `loading` stays `true` after every byte is sent. Pass `waitForCid: false` to skip that wait: `uploadResponse` is then the CID Pinata sent with the last chunk, or `null` if it wasn't available yet, and registration can still fail afterwards.
 
 The `convert` helper can be used to turn a CID into a URL like so:
 

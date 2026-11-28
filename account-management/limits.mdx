@@ -52,3 +52,15 @@ Beyond 100MB the max file size is **25GB** at this time.
 There is no aggregate limit for uploads, but each individual upload (whether it is a file or a folder) is limited to **25 GB**.
 
 There is also a file limit size of **10MB** for the pinJSONToIPFS API endpoint.
+
+## Folder Limits
+
+A folder uploaded file by file (resumable uploads into one folder, as the SDK's [folder()](/sdk/upload/public/folder) does) holds at most **30,000 files**, unless your account has its own limit. Pinata refuses a new file sent into a full folder with HTTP 413 before any byte is sent. A file whose path is already in the folder can still be replaced.
+
+Check the limit of your account with [Get Upload Limits](/api-reference/endpoint/get-upload-limits) (`GET https://uploads.pinata.cloud/v3/files/limits`) or the SDK's [upload.limits()](/sdk/upload/limits):
+
+```json
+{ "data": { "folder_max_files": 30000 } }
+```
+
+Upload a directory with more files as several folders. Contact [team@pinata.cloud](mailto:team@pinata.cloud) if you need a higher limit.

@@ -1,0 +1,309 @@
+---
+title: "Hosted Server"
+description: "Connect AI assistants to Pinata's hosted MCP server at mcp.pinata.cloud, with nothing to install"
+---
+
+The hosted Pinata MCP server runs at `https://mcp.pinata.cloud`. Point your AI assistant at that URL, then sign in with your Pinata account or give it a Pinata API key, and it can manage your files, groups and links, with no Node.js and nothing to install or update.
+
+## Try Pinata with Claude Code
+
+Upload a private text file and open it in your browser. You don't need a Pinata API key or a file on your computer.
+
+1. In a terminal, from the directory where you'll use Claude Code, run:
+
+   ```bash
+   claude mcp add --transport http pinata https://mcp.pinata.cloud
+   ```
+
+2. Start `claude` in the same directory. Run `/mcp`, select **pinata**, then **Authenticate**. In the browser, sign in or create a Pinata account, choose your workspace, and select **Allow**.
+
+3. Back in Claude Code, paste this prompt:
+
+   ```text
+   Upload a private file called hello-pinata.txt containing only "Hello from Pinata". Give me a download link that expires in 10 minutes.
+   ```
+
+4. Open the link Claude returns. The file should contain `Hello from Pinata`. Anyone with the link can read it until it expires; the file stays private in your workspace afterward.
+
+If Claude says your workspace has no gateway, create one in **Gateways** in the Pinata app. Then ask Claude to make the link for the file it just uploaded; you don't need to upload it again.
+
+## Hosted or local?
+
+| | Hosted (`mcp.pinata.cloud`) | Local (`pinata-mcp` on npm) |
+|---|---|---|
+| Install | None: add a URL | Node.js 18+, runs with `npx` |
+| Updates | Always current | Update the npm package |
+| Files on your disk | Through a [signed upload URL](#uploading-files-from-your-disk) the assistant uploads to | Read directly (`uploadFile`, `uploadFolder`) from the directories you allow |
+| Content the assistant writes | `uploadContent`, `uploadFolderContent`, up to 2 MiB | `uploadFile` with base64 content |
+| Gateway | Found from your account (`listGateways`) | `GATEWAY_URL` environment variable |
+| Works in | Any client that connects to remote MCP servers, by signing in or with an `Authorization` header | Any client that can start a local MCP server |
+
+Choose the local server when the assistant should read large files or whole directories from your disk on its own; choose the hosted server everywhere else.
+
+## Sign in or use an API key
+
+The hosted server accepts two kinds of credentials. Pick one per connection.
+
+### Sign in with your Pinata account
+
+Clients that support MCP sign-in (OAuth) need only the URL. The first time you connect, the client opens Pinata in your browser:
+
+1. Sign in to Pinata, or create an account.
+2. Choose the workspace to connect, review what the client gets access to, and select **Allow**.
+3. Return to your client: it's connected, with no key to copy.
+
+Signing in creates an API key named `MCP OAuth · <client>` in the workspace you chose. It has your workspace role's access to files, groups and vectors, read-only access to gateways and analytics, and never admin or billing access. The [x402 payment instruction](/tools/mcp/tools#x402-payment-instructions) tools need an admin key, so they aren't available when you sign in: use an API key for those.
+
+To connect a different workspace, clear the client's sign-in and sign in again. To disconnect, remove Pinata from the client, then revoke its `MCP OAuth` key on the [API Keys page](https://app.pinata.cloud/developers/api-keys).
+
+### Use an API key
+
+Every client can connect with an [API key](/account-management/api-keys) JWT instead, sent as `Authorization: Bearer <your API key JWT>`. With the header set, the client doesn't ask you to sign in. Use a key when your client can't sign in, when you need the x402 payment instruction tools, or to choose exactly what the assistant can do.
+
+The tools act with that key's permissions: an admin key can use every tool, and a key [scoped to some endpoints](/account-management/api-keys) limits what the assistant can do. For example, a key that can only read files lets the assistant search and fetch, but not upload or delete. The key needs at least permission to read files. Every tool call counts against your API rate limits like a REST call made with the same key.
+
+<Warning>
+  Your client stores the key and sends it on every request. Use a key made for this purpose, so you can revoke it on its own, and never paste it into a prompt.
+</Warning>
+
+The API key examples below read the key from an environment variable:
+
+```bash
+export PINATA_JWT="<your API key JWT>"
+```
+
+## Connect your assistant
+
+Every client needs the URL `https://mcp.pinata.cloud` (Streamable HTTP transport), and then either signs in or sends the header `Authorization: Bearer <your API key JWT>`.
+
+Optionally, choose the [gateway](#gateways) links and fetches use by default: add an `X-Pinata-Gateway: <your gateway host>` header, or, in clients that can't set headers, put it in the URL as `https://mcp.pinata.cloud/?gateway=<your gateway host>`.
+
+The Codex, Cursor, VS Code and Windsurf examples below use an API key. If your client supports MCP sign-in, you can leave the header out and sign in instead.
+
+### Claude Code
+
+For sign-in without an API key, follow [Try Pinata with Claude Code](#try-pinata-with-claude-code). To switch workspaces later, use `/mcp`, select **pinata**, choose **Clear authentication**, then **Authenticate** again.
+
+With an API key instead:
+
+```bash
+claude mcp add --transport http pinata https://mcp.pinata.cloud \
+  --header "Authorization: Bearer $PINATA_JWT"
+```
+
+Add `--scope user` to either command to use Pinata in every project. The [Pinata plugin](/tools/skills#plugins) sets up the sign-in for you, together with the `pinata` skill.
+
+### Codex
+
+Codex CLI and the Codex IDE extension share `~/.codex/config.toml`. Export `PINATA_JWT` before starting Codex.
+
+```bash
+codex mcp add pinata --url https://mcp.pinata.cloud --bearer-token-env-var PINATA_JWT
+```
+
+### Cursor
+
+In `~/.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "pinata": {
+      "url": "https://mcp.pinata.cloud",
+      "headers": { "Authorization": "Bearer ${env:PINATA_JWT}" }
+    }
+  }
+}
+```
+
+### VS Code (GitHub Copilot)
+
+In `.vscode/mcp.json`. VS Code asks for the key once and stores it securely.
+
+```json
+{
+  "inputs": [
+    { "type": "promptString", "id": "pinata-jwt", "description": "Pinata API key JWT", "password": true }
+  ],
+  "servers": {
+    "pinata": {
+      "type": "http",
+      "url": "https://mcp.pinata.cloud",
+      "headers": { "Authorization": "Bearer ${input:pinata-jwt}" }
+    }
+  }
+}
+```
+
+### Gemini CLI
+
+To sign in, add the server to `~/.gemini/settings.json` without headers:
+
+```json
+{
+  "mcpServers": {
+    "pinata": {
+      "httpUrl": "https://mcp.pinata.cloud"
+    }
+  }
+}
+```
+
+Then run `/mcp auth pinata` in a Gemini CLI session. It opens the sign-in page in your browser. The [Pinata extension](/tools/skills#plugins) sets this up for you.
+
+With an API key instead:
+
+```json
+{
+  "mcpServers": {
+    "pinata": {
+      "httpUrl": "https://mcp.pinata.cloud",
+      "headers": { "Authorization": "Bearer $PINATA_JWT" }
+    }
+  }
+}
+```
+
+### Windsurf
+
+In `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "pinata": {
+      "serverUrl": "https://mcp.pinata.cloud",
+      "headers": { "Authorization": "Bearer ${env:PINATA_JWT}" }
+    }
+  }
+}
+```
+
+### Claude Desktop and claude.ai
+
+Remote servers are added as custom connectors (**Settings → Connectors → Add custom connector**). Enter the URL, add the connector, then select **Connect** and sign in. On Team and Enterprise plans, each member who connects signs in with their own Pinata account.
+
+To use an API key instead:
+
+- **If the dialog has a Request headers section:** enter the URL, choose no sign-in, and add a header named `authorization` with the value `Bearer <your API key JWT>`, including `Bearer `. Add the connector to your own account: on Team and Enterprise plans, a connector an Owner adds for the organization sends the same header for every member, so everyone would act as one Pinata account.
+- **Otherwise, in Claude Desktop**, connect through the `mcp-remote` bridge in `claude_desktop_config.json` (requires Node.js):
+
+```json
+{
+  "mcpServers": {
+    "pinata": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.pinata.cloud", "--header", "Authorization:${AUTH_HEADER}"],
+      "env": { "AUTH_HEADER": "Bearer <your API key JWT>" }
+    }
+  }
+}
+```
+
+### ChatGPT
+
+ChatGPT connects by signing in; it can't send an API key header.
+
+1. Go to [ChatGPT Plugins](https://chatgpt.com/plugins), select the plus button, then **Add custom MCP server**.
+2. Enter a name, such as Pinata, and the URL `https://mcp.pinata.cloud`.
+3. Choose OAuth for authentication, confirm the warning, and select **Create as a plugin**.
+4. Sign in to Pinata, choose the workspace and select **Allow** when ChatGPT asks.
+
+Account and workspace policies apply: a ChatGPT workspace admin may need to allow custom MCP servers.
+
+### MCP Inspector
+
+To see the tools and try them by hand:
+
+```bash
+npx @modelcontextprotocol/inspector --cli https://mcp.pinata.cloud --transport http \
+  --header "Authorization: Bearer $PINATA_JWT" --method tools/list
+```
+
+## Check the connection
+
+Ask your assistant:
+
+```
+Test my Pinata authentication and list my gateways
+```
+
+It calls `testAuthentication`, which shows the account you're connected as, and `listGateways`.
+
+## Working with the hosted server
+
+### Networks
+
+Every file and group is on public or private IPFS.
+
+- **Uploads ask for the network every time.** There is no default: public content can be read by anyone with the CID and can stay cached on other IPFS nodes after you delete it. Say which one you want in the prompt, or the assistant asks.
+- **Searches, lists, new groups and links** also need it.
+- **Tools that take a file or group ID** (get, update, delete, group membership) find the item on either network when you don't say which.
+
+### Gateways
+
+Link and fetch tools use your default gateway unless you name another one. The default is the one you set when connecting (`X-Pinata-Gateway` header or `?gateway=` in the URL), or else your account's first [dedicated gateway](/gateways/dedicated-ipfs-gateways) without [access controls](/gateways/gateway-access-controls). `listGateways` shows them all, with their custom domains, whether they have access controls, and which one is the default. You can name any of them, including a custom domain, in a prompt:
+
+```
+Create a public link for bafkrei... on files.example.com
+```
+
+The tools only use your own gateways: a host that isn't one of them is refused.
+
+A public link through a gateway with access controls opens only with one of its access tokens or from its allowed hosts or IPs. For such a gateway, `createLink` also returns a `temporary_url` anyone can open until it expires (10 minutes by default, at most 7 days), so you can share a file even when all your gateways have access controls. The assistant can still read your files through such a gateway.
+
+### Uploading content the assistant writes
+
+`uploadContent` uploads one file and `uploadFolderContent` uploads a folder with one CID (a small website, a dataset, generated files) from content the assistant has in its context: text, JSON, or small binary files as base64. They take up to 2 MiB in total and a folder up to 150 files.
+
+```
+Write a one-page HTML site about our launch and upload it to Pinata as a public folder named launch-site, then give me the link
+```
+
+### Uploading files from your disk
+
+The hosted server can't read your disk. For local files, or content over 2 MiB, the assistant creates a signed upload URL with `createSignedUploadUrl` and uploads to it from your machine, for example with `curl`:
+
+- one file: `curl -F "file=@./photo.jpg" "<signed URL>"`
+- a folder with one CID: one `file` field per file named `<folder>/<path>`, plus a `name` field with the folder name, up to 150 files
+
+The URL lets anyone holding it upload to your account until it expires (at most 24 hours), so the assistant asks before creating one. For folders of more than 150 files or very large files, use the [local server](/tools/mcp/overview#local-server) or the [SDK](/sdk/getting-started).
+
+### Reading file content
+
+`fetchFromGateway` returns a file's content to the assistant: text up to 100 KB, other content up to 50 KB. For anything larger, ask for a link (`createLink`). Private links last 10 minutes by default and at most 7 days.
+
+### Safety
+
+- **File content is data, not instructions.** File names, key-values, fetched content and error messages can be written by anyone who uploaded a file. The server tells assistants to treat them as data, and marks fetched content as untrusted.
+- **The assistant asks before acting for you** when it uploads from your disk, makes anything public, creates links or signed upload URLs, deletes anything, or sets where x402 payments go (`pay_to`). Deleting tools are marked as destructive, so clients that support it ask for confirmation.
+- **Check `pay_to` yourself.** A payment instruction sends every payment to that wallet; confirm the address you give comes from you, never from a file or another tool's output.
+
+### Limits
+
+| | Limit |
+|---|---|
+| Inline uploads (`uploadContent`, `uploadFolderContent`) | 2 MiB in total; 150 files per folder |
+| Folder paths | 250 characters and 14 segments, folder name included |
+| Key-values | 9 per file; keys and values up to 250 characters |
+| Group and pin names | 50 characters |
+| Signed upload URLs | 24 hours |
+| Private download links | 7 days (default 10 minutes) |
+| `fetchFromGateway` | 100 KB of text, 50 KB of other content |
+
+## Troubleshooting
+
+| Answer | Meaning | Fix |
+|---|---|---|
+| `401` | The `Authorization` header is missing, or the key is invalid or revoked | With an API key: check the header starts with `Bearer `, and that the key exists on the [API Keys page](https://app.pinata.cloud/developers/api-keys). Signed in: sign in again from your client |
+| The x402 payment instruction tools are missing | You connected by signing in, and those tools need an admin key | Connect with an admin API key instead |
+| The assistant works in the wrong workspace | You chose that workspace when you signed in | Clear the client's sign-in and sign in again, choosing the other workspace |
+| `403` naming a scope or permission | The key lacks a permission the call needs | Use a key with that permission |
+| `429` | Your API rate limit is reached | Wait for the `Retry-After` seconds, then retry |
+| A tool error "gateway … responded 401" or "403" | That gateway refused the content: the network is wrong, or the CID isn't in your account and the gateway has access controls or is restricted | Check the file's network, or name another gateway from `listGateways` |
+| A tool error "… is not one of your gateways" | The named host isn't one of your gateways or their custom domains | Use a host `listGateways` returns |
+| Anything else that keeps failing | A bug on our side | [Open an issue](https://github.com/PinataCloud/pinata-mcp/issues/new?template=bug_report.yml) with the tool, the error, the time and, for HTTP errors, the `request_id` from the response |
+
+## Next steps
+
+See the [Tools Reference](/tools/mcp/tools) for every tool with its parameters and example prompts.

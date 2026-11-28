@@ -123,10 +123,11 @@
               "inference/credits",
               "tools/cli/agents",
               "llm-docs",
+              "tools/skills",
               {
                 "group": "MCP Server",
                 "icon": "plug",
-                "pages": ["tools/mcp/overview", "tools/mcp/tools"]
+                "pages": ["tools/mcp/overview", "tools/mcp/hosted", "tools/mcp/tools"]
               },
               {
                 "group": "ERC-8004",
@@ -295,6 +296,7 @@
                 "pages": [
                   "sdk/upload/public/file",
                   "sdk/upload/public/file-array",
+                  "sdk/upload/public/folder",
                   "sdk/upload/public/json",
                   "sdk/upload/public/base64",
                   "sdk/upload/public/url",
@@ -306,12 +308,14 @@
                 "group": "private",
                 "pages": [
                   "sdk/upload/private/file",
+                  "sdk/upload/private/folder",
                   "sdk/upload/private/json",
                   "sdk/upload/private/base64",
                   "sdk/upload/private/url",
                   "sdk/upload/private/create-signed-url"
                 ]
-              }
+              },
+              "sdk/upload/limits"
             ]
           },
           {
@@ -446,7 +450,8 @@
                 "group": "Uploads",
                 "pages": [
                   "api-reference/endpoint/upload-a-file",
-                  "api-reference/endpoint/create-signed-upload-url"
+                  "api-reference/endpoint/create-signed-upload-url",
+                  "api-reference/endpoint/get-upload-limits"
                 ]
               },
               {

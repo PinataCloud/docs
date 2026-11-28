@@ -169,3 +169,22 @@ const upload = await pinata.upload.private
   .file(file)
   .expires(1735689600)
 ```
+
+### waitForCid (Optional)
+
+- Type: `boolean`
+- Default: `true`
+
+Files over 90 MiB are sent with [resumable uploads](/files/uploading-files#resumable-uploads), and Pinata may still be processing the file after its last chunk arrives. By default the SDK waits until the file is registered and returns the full `UploadResponse`. Pass `false` to return as soon as the bytes are stored.
+
+```typescript {3}
+const upload = await pinata.upload.private
+  .file(file)
+  .waitForCid(false)
+```
+
+With `false`, only `cid` and `size` are set in the response and the other fields are empty. `cid` is the CID Pinata sent with the last chunk, or an empty string if it wasn't available yet. Registration can still fail after the method returns.
+
+<Note>
+  `waitForCid` has no effect on files of 90 MiB or less, or when Pinata has already registered the file by the time the last chunk is accepted. It can't be combined with `vectorize()`: for files over 90 MiB the method throws a `ValidationError` before uploading anything.
+</Note>
